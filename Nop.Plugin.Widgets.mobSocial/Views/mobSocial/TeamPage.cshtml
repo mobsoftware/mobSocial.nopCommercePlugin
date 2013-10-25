@@ -1,0 +1,44 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.TeamPage.TeamPageModel
+
+<style type="text/css">
+    .team-container { width: 900px; }
+
+    .team-member-picture { width: 200px; }
+
+    .team-description { }
+
+    .team-group-description { }
+</style>
+
+
+<div class="team-container">
+    
+    <div class="team-picture">
+        <img src="@Model.TeamPictureUrl" alt="@Model.TeamName" title="@Model.TeamName" />
+    </div>
+    
+    <h1>@Model.TeamName</h1>
+
+    <p class="team-description">@Model.TeamDescription</p>
+
+    @foreach (var group in Model.Groups)
+    {
+        <h2>@group.Name</h2>
+        
+        @foreach (var member in group.Members)
+        {
+            <div class="team-member-picture">
+                <a href="@member.ProfileUrl">
+                    <img src="@member.ThumbnailUrl" alt="@member.DisplayName" title="@member.DisplayName" />
+                </a>
+                @member.DisplayName
+            </div>
+        }
+        
+        <p class="team-group-description">@group.Description</p>
+        
+    }
+    
+
+
+</div>

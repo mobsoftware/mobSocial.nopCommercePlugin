@@ -1,0 +1,38 @@
+﻿@using System.Security.Policy
+@using Nop.Core.Infrastructure
+@using Nop.Core.Infrastructure.DependencyManagement
+@using Nop.Web.Framework.UI
+
+@{
+    Layout = "";
+
+    //Html.AddCssFileParts("~/Plugins/SocialNetwork/Content/jquery.simplyscroll.css");
+
+    //Html.AddScriptParts("~/Plugins/SocialNetwork/Scripts/jquery.simplyscroll.js");
+
+}
+
+@model List<Nop.Plugin.Widgets.MobSocial.Models.PlublicInfoModel>
+
+@*
+<script type="text/javascript">
+    (function ($) {
+        $(function () {
+            $("#scroller").simplyScroll({ speed: 2 });
+        });
+    })(jQuery);
+</script>
+*@
+
+@*
+<ul id="scroller">
+    @foreach (var item in Model)
+    {
+        <li>
+            <a href="@item.ProductUrl" title="@item.Title">
+                <img src="@item.ProductPictureUrl" alt="@item.Title" width="100" height="100" title="@item.Title">
+            </a>
+        </li>
+    }
+</ul>
+*@

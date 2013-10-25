@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C225665C-D310-4FB9-B59A-77AD88A752C3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nop.Plugin.Widgets.mobSocial</RootNamespace>
+    <AssemblyName>Nop.Plugin.Widgets.mobSocial</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\mobSocial\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\Libraries\Nop.Core\bin\Debug\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc">
+      <HintPath>..\..\Libraries\Nop.Core\bin\Debug\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nop.Core">
+      <HintPath>..\..\Presentation\Nop.Web\Administration\Bin\Nop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Nop.Data">
+      <HintPath>..\..\Presentation\Nop.Web\Administration\Bin\Nop.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.Mvc">
+      <HintPath>..\..\Presentation\Nop.Web\bin\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\MobSocialMessageService.cs" />
+    <Compile Include="Core\IMobSocialMessageService.cs" />
+    <Compile Include="Domain\SessionState.cs" />
+    <Compile Include="Models\AddFriendButtonModel.cs" />
+    <Compile Include="Controllers\SkateMoveController.cs" />
+    <Compile Include="Controllers\mobSocialController.cs" />
+    <Compile Include="Core\ISkateMoveService.cs" />
+    <Compile Include="Core\SkateMoveService.cs" />
+    <Compile Include="Core\ISocialNetworkService.cs" />
+    <Compile Include="Core\MobSocialPictureService.cs" />
+    <Compile Include="Core\MobSocialService.cs" />
+    <Compile Include="Data\TeamPageMap.cs" />
+    <Compile Include="Data\EfStartUpTask.cs" />
+    <Compile Include="Data\SkateMoveMap.cs" />
+    <Compile Include="Data\CustomerSkateMoveMap.cs" />
+    <Compile Include="Data\CustomerFriendMap.cs" />
+    <Compile Include="Domain\TeamPage.cs" />
+    <Compile Include="Domain\CustomerFriend.cs" />
+    <Compile Include="Domain\CustomerSkateMove.cs" />
+    <Compile Include="Domain\SkateMove.cs" />
+    <Compile Include="Domain\GroupPageMember.cs" />
+    <Compile Include="Data\GroupPageMemberMap.cs" />
+    <Compile Include="Data\GroupPageMap.cs" />
+    <Compile Include="Data\mobSocialObjectContext.cs" />
+    <Compile Include="DependencyRegistrar.cs" />
+    <Compile Include="Domain\GroupPage.cs" />
+    <Compile Include="Models\ConfigurationModel.cs" />
+    <Compile Include="Models\FriendRequestModel.cs" />
+    <Compile Include="Models\CustomerFriendsModel.cs" />
+    <Compile Include="Models\CustomerFriendModel.cs" />
+    <Compile Include="Models\SocialNetworkNavigationModel.cs" />
+    <Compile Include="Models\ProfilePictureModel.cs" />
+    <Compile Include="Models\CustomerFriendBlock\CustomerFriendBlockModel.cs" />
+    <Compile Include="Models\PlublicInfoModel.cs" />
+    <Compile Include="Models\TeamPage\TeamPageGroupMemberModel.cs" />
+    <Compile Include="Models\TeamPage\TeamPageGroupModel.cs" />
+    <Compile Include="Models\TeamPage\TeamPageModel.cs" />
+    <Compile Include="mobSocialPlugin.cs" />
+    <Compile Include="mobSocialSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteProvider.cs" />
+    <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
+    <EmbeddedResource Include="Views\mobSocial\Configure.cshtml" />
+    <EmbeddedResource Include="Views\mobSocial\ProductCarouselAddPopup.cshtml" />
+    <EmbeddedResource Include="Views\mobSocial\PublicInfo.cshtml" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="README.md" />
+    <Content Include="Views\mobSocial\_CustomerFriendBlock.cshtml" />
+    <Content Include="Views\mobSocial\TeamPage.cshtml" />
+    <Content Include="Views\mobSocial\_ColumnsThree.cshtml" />
+    <None Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\images\buttons.png" />
+    <Content Include="Content\jquery.simplyscroll.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jquery.simplyscroll.old2.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Description.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Nop.Services\Nop.Services.csproj">
+      <Project>{210541AD-F659-47DA-8763-16F36C5CD2F4}</Project>
+      <Name>Nop.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+      <Project>{75FD4163-333C-4DD5-854D-2EF294E45D94}</Project>
+      <Name>Nop.Web.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+      <Project>{152C761A-DD2E-4C1F-AF89-DFB2547A3BCA}</Project>
+      <Name>Nop.Admin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj">
+      <Project>{4F1F649C-1020-45BE-A487-F416D9297FF3}</Project>
+      <Name>Nop.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkateMob.Core\SkateMob.Core.csproj">
+      <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
+      <Name>SkateMob.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,8 @@
+﻿Group: Widgets
+FriendlyName: Social Network
+SystemName: Widgets.SocialNetwork
+Version: 1.10
+SupportedVersions: 3.00
+Author: SkateMob team
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.SocialNetwork.dll

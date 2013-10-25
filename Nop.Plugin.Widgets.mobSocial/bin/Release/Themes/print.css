@@ -1,0 +1,36 @@
+﻿.foo{}
+
+body,h1,h2,h3,h4,h5,h6,address,blockquote,dd,dl,hr,form,input{margin:0;padding:0;}
+body{font-family:arial, verdana, helvetica, sans-serif;font-size:12px;text-align:center;}
+
+.nobr{white-space:nowrap!important;}
+.wrap{ white-space:normal!important;}
+.a-left{text-align:left!important;}
+.a-center{text-align:center!important;}
+.a-right{text-align:right!important;}
+.title{padding:10px 10px 5px 0;font-weight:700;clear:both;}
+/* data table */
+.data-table{width:100%;border:1px solid;border-collapse:collapse;border-spacing:0;empty-cells:show;}
+.data-table th{font-weight:bold;padding:3px 8px;white-space:nowrap;vertical-align:middle;}
+.data-table td{padding:3px 8px;}
+.data-table th,.data-table td{border-bottom:1px solid;border-right:1px solid;}
+.data-table .odd{}
+.data-table .even{background-color: #F4FAFF;}
+
+.cart-total-left{width:100%;text-align:right;vertical-align:middle;height:21px;font-weight:700;color:#353434;}
+.cart-total-left-below{width:100%;text-align:right;vertical-align:top;height:30px;}
+.cart-total-right{text-align:right;vertical-align:middle;padding-left:5px;}
+
+.order-details-page{margin-bottom:15px;padding:0;}
+.order-details-page .page-body{border:1px solid #d7d7d7;padding:10px;}
+.order-details-page .order-overview{text-align:left;padding-bottom:10px;}
+.order-details-page .order-overview .order-total{}
+.order-details-page .order-details-area{text-align:left;margin:10px;padding:10px;border:1px solid #EEE;height:auto;}
+.order-details-page .order-details-area table{width:100%;border:0px;border-collapse:collapse;border-spacing:0;}
+.order-details-page .order-details-area td{width:50%;vertical-align:top;}
+.order-details-page .order-details-area ul{float:left;margin-right:20px;}
+.order-details-page .order-details-area li{list-style:none;}
+.order-details-page .order-details-area li:first-child{margin-top:0;}
+.order-details-page .section{text-align:left;padding:10px;margin-bottom:20px;height:auto;}
+.order-details-page .checkout-attributes{text-align:right;vertical-align:middle;padding:10px;height:auto;}
+.order-details-page .cart-total-left{color:#000;}
