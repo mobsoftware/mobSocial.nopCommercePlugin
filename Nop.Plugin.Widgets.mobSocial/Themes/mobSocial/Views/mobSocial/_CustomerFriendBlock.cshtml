@@ -1,0 +1,59 @@
+﻿@model List<Nop.Plugin.Widgets.MobSocial.Models.CustomerFriendModel>
+
+<style type="text/css">
+    .info-friend-block-container {
+        width: 210px;
+    }
+
+    .info-friend-block-picture {
+        width: 51px;
+        padding: 0px;
+        display: inline-block;
+    }
+
+    .view-all-friends-link {
+        cursor: pointer;
+    }
+
+    .no-friends-message { }
+
+    .customer-friend-block-no-friends-container {
+        margin-left: 3px;
+        margin-top: 5px;
+    }
+
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('.view-all-friends-link').click(function() {
+            $('#tabs').tabs("option", "active", 1);
+        });
+    });
+    
+   
+
+</script>
+    
+<div class="info-friend-block-container">
+    
+    @if (Model.Count == 0)
+    {
+        <div class="customer-friend-block-no-friends-container">
+            <span class="no-friends-message">0 Friends</span>
+        </div>
+    }
+    else
+    {
+        foreach (var friend in Model)
+        {
+            <div class="info-friend-block-picture">
+                <a href="@friend.ProfileUrl">
+                    <img src="@friend.ProfileThumbnailUrl" alt="@friend.CustomerDisplayName" title="@friend.CustomerDisplayName" />
+                </a>
+            </div>
+        }
+        <br />
+        <div class="view-all-friends-link"><a href="#">View All Friends>></a></div>
+    }
+</div>

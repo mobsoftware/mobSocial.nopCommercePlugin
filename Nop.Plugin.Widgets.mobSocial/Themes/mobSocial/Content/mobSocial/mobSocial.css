@@ -1,0 +1,152 @@
+﻿
+.profile-page .page-body {
+    margin-top: 10px;
+}
+
+.profile-left {
+    display: inline-block;
+    width: 210px;
+    vertical-align: top;
+}
+
+.profile-center-content {
+    padding-top: 1px;
+    display: inline-block;
+    vertical-align: top;
+    /*width: 545px; <-three column layout width*/
+    width: 725px;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-center-content h2 {
+    font-size: 16pt;
+    color: rgb(58, 64, 69);
+    text-transform: capitalize;
+}
+
+
+
+.profile-right {
+    display: inline-block;
+    width: 175px;
+    min-height: 500px;
+    vertical-align: top;
+    border: 1px solid #cccccc;
+}
+
+.send-pm-box {
+    height: 16px;
+    vertical-align: middle;
+}
+
+    .send-pm-box span { 
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .send-pm-box .pm-link-button {
+        line-height: 14px;
+        padding: 1px 9px 2px 20px;
+        margin-left: 1px;
+    }
+
+
+.friend-button {
+    padding: 2px 6px 0px 0px;
+    vertical-align: middle;
+}
+
+
+.confirm-friend-button:hover, .add-friend-button:hover {
+    cursor: pointer;
+}
+
+.confirm-friend-button {
+    vertical-align: middle;    
+}
+ 
+
+
+.hide {
+    display: none;
+}
+
+
+
+.customer-friends-container {
+    width: 720px;
+}
+
+.customer-friends-friend-block {
+    width: 100px;
+    padding: 0px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.customer-friend-request-block {
+    width: 100px;
+    padding: 0px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.ui-tabs .ui-tabs-panel {
+    border-left: 1px solid #aaaaaa !important;
+    border-right: 1px solid #aaaaaa !important;
+    min-height: 500px;
+}
+
+
+.avatar {
+    margin-bottom: 3px;
+}
+
+
+
+
+/*** TEAM PAGE ***/
+.team-description { }
+
+.team-picture { border: none;display: none; }
+.team-container { width: 725px; }
+.team-container h1 { font-size: 3em; }
+
+    
+.team-member-picture { width: 200px;display: inline-block; margin: 0 10px 10px 0; }
+.team-member-name { font-size: 1.1em;font-weight: bold; text-transform: capitalize; }
+.team-member-title { font-size: 1.1em;font-weight: bold;}
+
+
+.group-container { width: 705px; }
+.group-container h2 {
+    margin-bottom: 15px !important;
+    display: block;
+}
+
+
+.team-group-description { font-size: 1.1em;margin-bottom: 30px; }
+
+.group-members-container { padding-left: 30px; }
+
+/*** END TEAM PAGE ***/
+
+
+
+
+/*** CUSTOMER FRIEND BLOCK ***/
+.info-friend-block-container {
+        width: 210px;
+    }
+
+    .info-friend-block-picture {
+        width: 51px;
+        padding: 0px;
+        display: inline-block;
+    }
+
+    .view-all-friends-link {
+        cursor: pointer;
+    }
+/*** END CUSTOMER FRIEND BLOCK ***/

@@ -1,0 +1,18 @@
+﻿@model List<Nop.Plugin.Widgets.MobSocial.Models.CustomerFriendsModel>
+
+
+    
+<div class="customer-friends-container">
+    @foreach (var friend in Model)
+    {
+        <div class="customer-friends-friend-block">
+            <a href="@friend.ProfileUrl">
+                <img src="@friend.ProfileThumbnailUrl" alt="@friend.CustomerDisplayName" title="@friend.CustomerDisplayName" />
+            </a>
+        </div>
+    }
+</div>
+
+
+
+

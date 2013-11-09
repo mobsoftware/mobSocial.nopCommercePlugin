@@ -1,0 +1,48 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.FriendRequestsModel
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+    Html.AddCssFileParts("~/Themes/Digital/Content/mobSocial/mobSocial.css");
+}
+
+@section left
+{
+    @Html.Partial("~/Views/Customer/MyAccountNavigation.cshtml", Model.NavigationModel, new ViewDataDictionary())
+
+    @Html.Action("SocialNetworkNavigation", "MobSocial", new { NavigationModel = Model.NavigationModel })
+
+}
+<div class="page account-page order-list-page">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - Friend Requests</h1>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="page-body">
+  
+        <div class="customer-friends-container">
+            
+            @if(Model.FriendRequests.Count > 0)
+            {
+                foreach (var friend in Model.FriendRequests)
+                {
+                    <div class="customer-friend-request-block">
+                        <a href="@friend.ProfileUrl">
+                            <img src="@friend.ProfileThumbnailUrl" alt="@friend.CustomerDisplayName" title="@friend.CustomerDisplayName" />
+                        </a>
+                        <span>
+                            @Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = friend.FriendId })
+                        </span>
+                    </div>
+                }
+            }
+            else
+            {
+                <span class="no-friend-requests-message">You have no friend requests.</span>
+            }
+        </div>
+
+    </div>
+</div>

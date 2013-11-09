@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nop.Plugin.Widgets.MobSocial", "Nop.Plugin.Widgets.MobSocial.csproj", "{C225665C-D310-4FB9-B59A-77AD88A752C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mob.Core", "..\Mob.Core\Mob.Core.csproj", "{BB97781D-33C7-4C20-B404-8C6ACC382B7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C225665C-D310-4FB9-B59A-77AD88A752C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C225665C-D310-4FB9-B59A-77AD88A752C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C225665C-D310-4FB9-B59A-77AD88A752C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C225665C-D310-4FB9-B59A-77AD88A752C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB97781D-33C7-4C20-B404-8C6ACC382B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB97781D-33C7-4C20-B404-8C6ACC382B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB97781D-33C7-4C20-B404-8C6ACC382B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB97781D-33C7-4C20-B404-8C6ACC382B7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

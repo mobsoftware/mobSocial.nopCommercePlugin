@@ -1,0 +1,32 @@
+﻿@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Framework.UI
+@{
+    //add browser specific CSS files
+    var browser = Request.Browser;
+    if (browser.Browser == "IE" && browser.MajorVersion == 6)
+    {
+        Html.AppendCssFileParts("~/Themes/mobSocial/Content/ie6.css");
+    }
+    else if (browser.Browser == "IE" && browser.MajorVersion == 7)
+    {
+        Html.AppendCssFileParts("~/Themes/mobSocial/Content/ie7.css");
+    }
+
+    //add main CSS file
+    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
+    if (supportRtl)
+    {
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.rtl.css"));
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.rtl.css"));
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/styles.rtl.css"));
+    }
+    else
+    {
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.css"));
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.css"));
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/styles.css"));
+        Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/mobSocial-custom.css");
+        Html.AddScriptParts("~/Themes/mobSocial/Content/mobSocial/common.js");       
+    }
+}

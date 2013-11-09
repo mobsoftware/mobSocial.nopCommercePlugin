@@ -1,0 +1,106 @@
+﻿@model ProfileIndexModel
+@using Nop.Web.Models.Profile;
+@using Web.Framework.UI
+@{    
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AddTitleParts(T("PageTitle.Profile").Text);
+
+    Html.AddScriptParts("~/Themes/Digital/Content/mobSocial/mobSocial.js");
+    Html.AddCssFileParts("~/Themes/Digital/Content/mobSocial/mobSocial.css");
+    
+    
+}
+
+
+
+<div class="page profile-page">
+    
+    <div class="clear">
+    </div>
+    <div class="profile-left" >
+    
+        @Html.Action("ProfilePicture", "MobSocial", new { customerId = Model.CustomerProfileId })
+        
+        @Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })
+        <br/>
+        <br/>
+        <div class="profile-stat">
+            
+            <div class="send-pm-box">
+                <span class="ui-icon ui-icon-mail-closed"></span>
+                @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })
+            </div>
+        </div>
+        <br />  
+        <br/>
+
+        
+        @Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
+        
+        @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
+        *@
+        <br/>
+@*        <div><b>Skate Moves</b></div>*@
+
+    </div>
+
+    <div class="profile-center-content">
+        
+        <h2>@Model.ProfileTitle</h2>
+         
+        <div class="page-body">
+            @{
+                var selectPostsTab = String.Empty;
+                /*if (Model.ForumsEnabled && Model.PagingPosts)
+                {
+                    selectPostsTab = ".tabs('select', 1)";
+                }*/
+            }
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#tabs").tabs();
+                    $("#tabs").tabs("option", "active", 0);
+                });
+            </script>
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">@T("Profile.PersonalInfo")</a></li>
+                    <li><a href="#tabs-2">Friends</a></li>
+                    @if (Model.ForumsEnabled)
+                    {
+                        <li><a href="#tabs-3">@T("Profile.LatestPosts")</a></li>
+                    }
+                    
+                </ul>
+                <div id="tabs-1">
+                    @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })
+                </div>
+                <div id="tabs-2">
+                    @Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )
+                </div>
+                @if (Model.ForumsEnabled)
+                {
+                    <div id="tabs-3">
+                        @Html.Action("posts", new { customerProfileId = Model.CustomerProfileId, page = Model.PostsPage })
+                    </div>
+                }
+                 
+                
+
+            </div>
+        </div>
+    
+    </div>
+    
+    @*<div class="profile-right">
+        $1$ &nbsp;<br/>
+        <div>
+            This is where events will go!
+        </div>
+        <div>
+            And ads!
+        </div>#1#
+    </div>*@
+
+</div>

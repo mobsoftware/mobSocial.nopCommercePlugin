@@ -1,0 +1,73 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.TeamPage.TeamPageModel
+
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    Html.AppendTitleParts(Model.TeamName);
+
+    Html.AddScriptParts("~/Themes/Digital/Content/mobSocial/social-network.js");
+    Html.AddCssFileParts("~/Themes/Digital/Content/mobSocial/mobSocial.css");
+    
+}
+
+<style type="text/css">
+    
+    
+</style>
+
+@section left
+{
+    
+    <div class="team-picture">
+        <img class="team-picture" src="@Model.TeamPictureUrl" alt="@Model.TeamName" title="@Model.TeamName" />
+    </div>
+
+}
+
+<div class="page team-page">
+    <div class="page-body">
+      
+        <div class="team-container">
+    
+            
+    
+            <h1>@Model.TeamName</h1>
+
+            <p class="team-description">@Model.TeamDescription</p>
+            
+            
+            
+            @foreach (var group in Model.Groups)
+            {
+                <div class="group-container">
+                    <h2>@group.Name</h2>
+                    
+                    
+                    <div class="group-members-container">
+                        
+                    
+
+                        @foreach (var member in group.Members)
+                        {
+                            <div class="team-member-picture">
+                                <a href="@member.ProfileUrl">
+                                    <img src="@member.ThumbnailUrl" alt="@member.DisplayName" title="@member.DisplayName" />
+                                    <div class="team-member-name">@member.DisplayName</div>
+
+                                </a>
+                                
+                            </div>
+                        }
+        
+                        <p class="team-group-description">@group.Description</p>
+                    </div>
+                            
+                </div>
+            }
+    
+
+
+        </div>
+    </div>
+</div>
+
