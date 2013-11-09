@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Presentation\Nop.Web\Plugins\mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.10_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,20 +34,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\Libraries\Nop.Core\bin\Debug\Autofac.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.10_Source\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc">
-      <HintPath>..\..\Libraries\Nop.Core\bin\Debug\Autofac.Integration.Mvc.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.10_Source\packages\Autofac.Mvc4.3.1.0\lib\net40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Nop.Core">
-      <HintPath>..\..\Presentation\Nop.Web\Administration\Bin\Nop.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Nop.Data">
-      <HintPath>..\..\Presentation\Nop.Web\Administration\Bin\Nop.Data.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.10_Source\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -62,9 +56,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.Web.Mvc">
-      <HintPath>..\..\Presentation\Nop.Web\bin\Telerik.Web.Mvc.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\MobSocialMessageService.cs" />
@@ -112,53 +103,121 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
-    <EmbeddedResource Include="Views\mobSocial\Configure.cshtml" />
-    <EmbeddedResource Include="Views\mobSocial\ProductCarouselAddPopup.cshtml" />
-    <EmbeddedResource Include="Views\mobSocial\PublicInfo.cshtml" />
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="README.md" />
-    <Content Include="Views\mobSocial\_CustomerFriendBlock.cshtml" />
-    <Content Include="Views\mobSocial\TeamPage.cshtml" />
+    <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.css" />
+    <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.old2.css" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\add-friend-button.js" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\common.js" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\customer-friend-block.js" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial-custom.css" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.css" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\search-box-custom.css" />
+    <Content Include="Themes\mobSocial\Installation.txt" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\Info.cshtml" />
+    <Content Include="Views\mobSocial\_AddFriendButton.cshtml" />
     <Content Include="Views\mobSocial\_ColumnsThree.cshtml" />
+    <Content Include="Views\mobSocial\_CustomerFriendBlock.cshtml" />
+    <Content Include="Views\mobSocial\_CustomerFriends.cshtml" />
+    <Content Include="Views\mobSocial\_ProfilePicture.cshtml" />
+    <Content Include="Views\mobSocial\_SocialNetworkNavigation.cshtml" />
+    <Content Include="Views\mobSocial\_TeamPageInfo.cshtml" />
+    <Content Include="Views\mobSocial\FriendRequests.cshtml" />
+    <Content Include="Views\mobSocial\TeamPage.cshtml" />
+    <Content Include="Views\mobSocial\TeamPage_old.cshtml" />
+    <None Include="Themes\mobSocial\theme.config" />
+    <None Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
+    <None Include="Themes\mobSocial\Views\Common\Menu.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\TeamPage_old.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_AddFriendButton.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_ColumnsThree.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_CustomerFriendBlock.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_CustomerFriends.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_ProfilePicture.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_SocialNetworkNavigation.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_TeamPageInfo.cshtml" />
+    <None Include="Themes\mobSocial\Views\Profile\Index.cshtml" />
+    <None Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
+    <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
     <None Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\images\buttons.png" />
-    <Content Include="Content\jquery.simplyscroll.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\jquery.simplyscroll.old2.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Description.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Nop.Services\Nop.Services.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\300source\Libraries\Nop.Services\Nop.Services.csproj">
       <Project>{210541AD-F659-47DA-8763-16F36C5CD2F4}</Project>
       <Name>Nop.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\300source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75FD4163-333C-4DD5-854D-2EF294E45D94}</Project>
       <Name>Nop.Web.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\300source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152C761A-DD2E-4C1F-AF89-DFB2547A3BCA}</Project>
       <Name>Nop.Admin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\300source\Presentation\Nop.Web\Nop.Web.csproj">
       <Project>{4F1F649C-1020-45BE-A487-F416D9297FF3}</Project>
       <Name>Nop.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SkateMob.Core\SkateMob.Core.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.10_Source\Libraries\Nop.Core\Nop.Core.csproj">
+      <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
+      <Name>Nop.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.10_Source\Libraries\Nop.Data\Nop.Data.csproj">
+      <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
+      <Name>Nop.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
-      <Name>SkateMob.Core</Name>
+      <Name>Mob.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Scripts\" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.bg-BG.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.da-DK.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.de-DE.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.en-US.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.fr-FR.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.nl-NL.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.pl-PL.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.pt-BR.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.pt-PT.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.ru-RU.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.uk-UA.resx" />
+    <EmbeddedResource Include="App_GlobalResources\EditorLocalization.zh-CN.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.bg-BG.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.da-DK.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.de-DE.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.en-US.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.es-ES.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.fr-FR.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.nl-NL.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.pl-PL.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.pt-BR.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.pt-PT.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.ru-RU.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.uk-UA.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GridLocalization.zh-CN.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.bg-BG.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.da-DK.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.en-US.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.fr-FR.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.nl-NL.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.pl-PL.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.pt-BR.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.pt-PT.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.ru-RU.resx" />
+    <EmbeddedResource Include="App_GlobalResources\UploadLocalization.zh-CN.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

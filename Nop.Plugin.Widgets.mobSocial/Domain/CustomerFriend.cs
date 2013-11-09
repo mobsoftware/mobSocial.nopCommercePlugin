@@ -13,6 +13,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public int NotificationCount { get; set; }
         public DateTime? LastNotificationDate { get; set; }
 
+        public CustomerFriend()
+        {
+            NotificationCount = 0;
+        }
+
     }
 
 

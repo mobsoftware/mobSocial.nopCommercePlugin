@@ -67,15 +67,31 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="routeValues">Route values</param>
         public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-            actionName = "PublicInfo";
-            controllerName = "SocialNetwork";
-
-            routeValues = new RouteValueDictionary()
+            if (widgetZone == "footer")
             {
-                {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
-                {"area", null},
-                {"widgetZone", widgetZone}
-            };
+                actionName = "SocialNetworkByMobSocial";
+                controllerName = "mobSocial";
+
+                routeValues = new RouteValueDictionary()
+                    {
+                        {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers"},
+                        {"area", null},
+                        {"widgetZone", widgetZone}
+                    };
+            }
+            else
+            {
+                actionName = "PublicInfo";
+                controllerName = "mobSocial";
+
+                routeValues = new RouteValueDictionary()
+                {
+                    {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
+                    {"area", null},
+                    {"widgetZone", widgetZone}
+                };
+            }
+            
         }
 
 

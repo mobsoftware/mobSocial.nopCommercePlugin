@@ -22,7 +22,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(m => m.DateRequested).HasColumnType("datetime2");
             Property(m => m.DateConfirmed).HasColumnType("datetime2").IsOptional();
 
-
+            Property(m => m.NotificationCount);
+            Property(m => m.LastNotificationDate).HasColumnType("datetime2").IsOptional();
 
         }
 

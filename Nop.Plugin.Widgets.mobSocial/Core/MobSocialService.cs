@@ -20,8 +20,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     public class MobSocialService : IMobSocialService
     {
 
-
-        
         #region Fields
 
         /// <summary>

@@ -2,7 +2,7 @@
 FriendlyName: mobSocial
 SystemName: Widgets.mobSocial
 Version: 1.10
-SupportedVersions: 3.00
+SupportedVersions: 3.10
 Author: Mob Software Team
 DisplayOrder: 1
 FileName: Nop.Plugin.Widgets.mobSocial.dll

@@ -22,7 +22,7 @@ using Nop.Services.Security;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Customer;
-using SkateMob.Core;
+using Mob.Core;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -77,6 +77,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Content(string.Empty);
         }
 
+        [ChildActionOnly]
+        public ActionResult SocialNetworkByMobSocial(string widgetZone)
+        {
+            return Content("social network by mobSocial");
+        }
+
+        
+
         
         public ActionResult Configure()
         {
@@ -91,7 +99,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.AvailableZones.Add(new SelectListItem() { Text = "Before right side column", Value = "right_side_column_before" });
             model.AvailableZones.Add(new SelectListItem() { Text = "After right side column", Value = "right_side_column_after" });
            
-            return View("Nop.Plugin.Widgets.mobSocial.Views.SocialNetwork.Configure", model);
+            return View("Nop.Plugin.Widgets.mobSocial.Views.mobSocial.Configure", model);
 
         }
 

@@ -57,11 +57,12 @@ namespace Nop.Plugin.Widgets.MobSocial
                      .InstancePerHttpRequest();
 
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerHttpRequest();
+            builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerHttpRequest();
 
 
             
         }
-
+        
         /// <summary>
         /// Registers the I db context.
         /// </summary>

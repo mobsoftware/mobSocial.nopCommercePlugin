@@ -15,7 +15,7 @@ using Nop.Services.Events;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Stores;
-using SkateMob.Core;
+using Mob.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
