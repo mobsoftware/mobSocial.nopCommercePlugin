@@ -4,6 +4,6 @@ Quick Source Code Setup:
 3. If references are missing to nopCommerce projects then add them to the mobSocial references
 	a. Reference the Entity Framework from the packages folder of nopCommerce
 4. Change the mobSocial plugin's Build > Output Path within the project properties to the nopCommerce solution's "Presentation\Nop.Web\Plugins\Widgets.mobSocial" directory.
-5. Copy the mobSocial theme folder to the nopCommerce themes folder and set mobSocial as the active theme within the nopCommerce administration.
+5. Copy the mobSocial theme folder to the nopCommerce themes folder and set mobSocial as the active theme within the nopCommerce administration. You may also choose to manually merge the mobSocial theme with the theme you have installed.
 
 
