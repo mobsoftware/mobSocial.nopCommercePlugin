@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Routing;
+using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.Tasks;
 using Nop.Core.Plugins;
@@ -106,7 +107,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             //otherwise, you'll get something like "The model backing the 'your context name' context has changed since the database was created. Consider using Code First Migrations to update the database"
 
             //settings
-            var settings = new mobSocialSettings()
+            var mobSocialSettings = new mobSocialSettings()
             {
                 ProfilePictureSize = 100,
                 WidgetZone = "after_header_links",
@@ -116,13 +117,20 @@ namespace Nop.Plugin.Widgets.MobSocial
                 ShowProfileImagesInSearchAutoComplete = true,
             };
 
+
+            var mediaSettings = new MediaSettings()
+                {
+                    AvatarPictureSize = 200
+                };
+
             
-            this.AddOrUpdatePluginLocaleResource("SocialNetwork.MessageButtonText", "Send Message");
-            this.AddOrUpdatePluginLocaleResource("SocialNetwork.AddFriendButtonText", "Add Friend");
-            this.AddOrUpdatePluginLocaleResource("SocialNetwork.FriendsLabelText", "Friends");
-            this.AddOrUpdatePluginLocaleResource("SocialNetwork.FriendRequestSentLabel", "Friend Request Sent!");
-            this.AddOrUpdatePluginLocaleResource("SocialNetwork.ConfirmFriendButtonText", "Confirm");
-            this.AddOrUpdatePluginLocaleResource("SocialNetwork.ConfirmedButtonText", "Confirmed!");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.MessageButtonText", "Send Message");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.AddFriendButtonText", "Add Friend");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendsLabelText", "Friends");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendRequestSentLabel", "Friend Request Sent!");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmFriendButtonText", "Confirm");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmedButtonText", "Confirmed!");
+            this.AddOrUpdatePluginLocaleResource("SearchDropdown.PeopleSearchText", "People");
 
             // Update core locales. do not remove core locales during uninstall
             this.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}"); 
@@ -131,17 +139,14 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.AddOrUpdatePluginLocaleResource("Account.Avatar.RemoveAvatar", "Remove Profile Picture");
             this.AddOrUpdatePluginLocaleResource("Account.Avatar.UploadRules", "Profile Picture must be in GIF or JPEG format with the maximum size of 20 KB");
 
+
+            _settingService.SaveSetting(mediaSettings);
+            _settingService.SaveSetting(mobSocialSettings);
             
-
-            
-
-            _settingService.SaveSetting(settings);
-
-
 
             var friendRequestNotification = new MessageTemplate()
                 {
-                    Name = "SocialNetwork.FriendRequestNotification",
+                    Name = "MobSocial.FriendRequestNotification",
                     Subject = "%Store.Name%. You have a new friend request from %FromFriend.FullName%.",
                     Body = "You have a new friend request from %FromFriend.FullName%!<br/><br/>" +
                            "<a href=\"%Store.URL%\">Log in</a> to confirm your friend request.",
@@ -187,11 +192,12 @@ namespace Nop.Plugin.Widgets.MobSocial
         public override void Uninstall()
         {
             //locales
-            this.DeletePluginLocaleResource("SocialNetwork.MessageButtonText");
-            this.DeletePluginLocaleResource("SocialNetwork.AddFriendButtonText");
-            this.DeletePluginLocaleResource("SocialNetwork.FriendsLabelText");
-            this.DeletePluginLocaleResource("SocialNetwork.FriendRequestSentLabel");
-            this.DeletePluginLocaleResource("SocialNetwork.ConfirmFriendButtonText");
+            this.DeletePluginLocaleResource("MobSocial.MessageButtonText");
+            this.DeletePluginLocaleResource("MobSocial.AddFriendButtonText");
+            this.DeletePluginLocaleResource("MobSocial.FriendsLabelText");
+            this.DeletePluginLocaleResource("MobSocial.FriendRequestSentLabel");
+            this.DeletePluginLocaleResource("MobSocial.ConfirmFriendButtonText");
+            this.DeletePluginLocaleResource("SearchDropdown.PeopleSearchText");
             // do not remove core locales
 
 

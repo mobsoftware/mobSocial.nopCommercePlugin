@@ -2,7 +2,7 @@
 @using Nop.Web.Models.Catalog;
 
 @{
-    Html.AddCssFileParts("~/Themes/Digital/Content/mobSocial/search-box-custom.css");
+    Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/search-box-custom.css");
 }
 
     
@@ -19,7 +19,7 @@
                                                <span class="arrow-s search-dropdown-arrow"></span>
                                            </span><ul class="search-dropdown">
                                                       <li>Store</li>
-                                                      <li>Skaters</li>
+                                                      <li>@T("SearchDropdown.PeopleSearchText")</li>
                                                   </ul><input type="text" class="search-box-text" id="small-searchterms" @(Model.AutoCompleteEnabled ? Html.Raw(" autocomplete=\"off\"") : null) value="" name="q" /><input type="submit" class="button-1 search-box-button" value="Go" /></div><script type="text/javascript">
 
                                                                                                                                                                                                                                                                                                     function check_small_search_form() {
@@ -80,15 +80,15 @@
                                                                                                                                                                                                                                                                                                     function setupSearchType(searchType) {
                                                                                                                                                                                                                                                                                                         if (searchType == "Store") {
 
-                                                                                                                                                                                                                                                                                                            $('.search-box-text').removeClass('skaters');
+                                                                                                                                                                                                                                                                                                            $('.search-box-text').removeClass('people');
                                                                                                                                                                                                                                                                                                             $('.search-box-text').addClass('store');
 
                                                                                                                                                                                                                                                                                                             $('#small-searchterms').autocomplete(productSearchOptions)
                                                                                                                                                                                                                                                                                                                 .data("ui-autocomplete")._renderItem = RenderProductItem;
-                                                                                                                                                                                                                                                                                                        } else if (searchType == "Skaters") {
+                                                                                                                                                                                                                                                                                                        } else if (searchType == "@T("SearchDropdown.PeopleSearchText")") {
 
                                                                                                                                                                                                                                                                                                             $('.search-box-text').removeClass('store');
-                                                                                                                                                                                                                                                                                                            $('.search-box-text').addClass('skaters');
+                                                                                                                                                                                                                                                                                                            $('.search-box-text').addClass('people');
 
                                                                                                                                                                                                                                                                                                             $('#small-searchterms').autocomplete(peopleSearchOptions)
                                                                                                                                                                                                                                                                                                                 .data("ui-autocomplete")._renderItem = renderPeopleItem;

@@ -17,16 +17,18 @@
     var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
     if (supportRtl)
     {
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.rtl.css"));
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.rtl.css"));
+        @*Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.rtl.css"));
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.rtl.css"));*@
         Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/styles.rtl.css"));
     }
     else
     {
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.css"));
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.css"));
+        @*Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.css"));
+        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.css"));*@
         Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/styles.css"));
-        Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/mobSocial-custom.css");
-        Html.AddScriptParts("~/Themes/mobSocial/Content/mobSocial/common.js");       
     }
+    
+    Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/mobSocial-custom.css");
+    Html.AddScriptParts("~/Themes/mobSocial/Content/mobSocial/common.js");       
+	
 }
