@@ -4,11 +4,13 @@ using System.Web.Mvc;
 using Nop.Admin.Controllers;
 using System.Linq;
 using Nop.Core;
+using Nop.Core.Data;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Orders;
+using Nop.Core.Domain.Seo;
 using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Models;
@@ -19,6 +21,7 @@ using Nop.Services.Localization;
 using Nop.Services.Media;
 using Nop.Services.Orders;
 using Nop.Services.Security;
+using Nop.Services.Seo;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Customer;
@@ -45,14 +48,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IStoreContext _storeContext;
         private readonly IMobSocialService _socialNetworkService;
         private readonly ICustomerService _customerService;
-        private WebHelper _webHelper;
+        private IWebHelper _webHelper;
+        private readonly IUrlRecordService _urlRecordService;
+        private readonly IRepository<UrlRecord> _urlRecordRepository;
 
         public mobSocialController(IPermissionService permissionService,
             IWorkContext workContext, AdminAreaSettings adminAreaSettings, ILocalizationService localizationService,
             IPictureService pictureService, IMobSocialService socialNetworkService, ICustomerService customerService,
             mobSocialSettings socialNetworkSettings, MediaSettings mediaSettings, CustomerSettings customerSettings, 
             ForumSettings forumSettings, RewardPointsSettings rewardPointsSettings, OrderSettings orderSettings,
-             IStoreContext storeContext)
+             IStoreContext storeContext, IWebHelper webHelper, IUrlRecordService urlRecordService, IRepository<UrlRecord> urlRecordRepository)
         {
             _permissionService = permissionService;
             _workContext = workContext;
@@ -68,13 +73,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _rewardPointsSettings = rewardPointsSettings;
             _orderSettings = orderSettings;
             _storeContext = storeContext;
+            _webHelper = webHelper;
+            _urlRecordService = urlRecordService;
+            _urlRecordRepository = urlRecordRepository;
         }
 
 
-        [ChildActionOnly]
-        public ActionResult PublicInfo(string widgetZone)
+        public ActionResult ProfileInformation()
         {
-            return Content(string.Empty);
+
+
+            var model = new ProfileInformationModel();
+
+            model.NavigationModel = SessionState.Instance.CustomerNavigationModel;
+
+            return View("ProfileInformation", model);
+
         }
 
         [ChildActionOnly]
@@ -157,17 +171,80 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             foreach (var c in customers)
             {
+
                 models.Add(new
                     {
                         DisplayName = c.GetFullName(),
                         PictureUrl = _pictureService.GetPictureUrl(
                             c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 50),
-                        ProfileUrl = Url.RouteUrl("CustomerProfile", new { id = c.Id }),
+
+                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = c.GetSeName(0) }),
 
                     });
+
+
             }
 
             return Json(models, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
+        public ActionResult PopulateUrlSlugs()
+        {
+
+
+            var customers = _customerService.GetAllCustomers();
+
+            foreach (var customer in customers)
+            {
+                if(customer.IsGuest())
+                    continue;
+
+                string firstName = customer.GetAttribute<string>(SystemCustomerAttributeNames.FirstName);
+                string lastName = customer.GetAttribute<string>(SystemCustomerAttributeNames.LastName);
+
+                if (firstName == null || lastName == null)
+                    continue;
+
+
+                // todo: pull line below out into a service method
+                 bool customerAlreadyHasCustomUrl = _urlRecordRepository.Table
+                                    .Any(urlRecord => urlRecord.EntityId == customer.Id && 
+                                                    urlRecord.EntityName == "Customer");
+
+                if (!customerAlreadyHasCustomUrl)
+                {
+
+                   
+                    var customersWithSameName = _customerService.GetAllCustomers(default(DateTime?), default(DateTime?),
+                            0, 0, null, null, null, firstName, lastName);
+
+                    int numberSameNameWithSlugs = customersWithSameName.Count(c => _urlRecordRepository.Table
+                                     .Any(urlRecord => urlRecord.EntityId == c.Id && urlRecord.EntityName == "Customer"));
+                   
+
+                    string slug = firstName + "-" + lastName + 
+                       ( (numberSameNameWithSlugs > 0)
+                                      ? "-" + (numberSameNameWithSlugs + 1).ToString()
+                                      : string.Empty );
+
+                    
+                   _urlRecordService.InsertUrlRecord(new UrlRecord() {
+                       EntityId = customer.Id,
+                       EntityName = "Customer",
+                       LanguageId = 0,
+                       Slug = slug.ToLowerInvariant(),
+                       IsActive = true
+                   });
+                   
+                }
+            }
+
+
+            return Content("Done");
+
 
         }
 
@@ -244,8 +321,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.FriendRequestsLinkText = "Friend Requests(" + friendRequestCount + ")";
 
 
-            return View("_SocialNetworkNavigation", model);
+            model.ProfileInformationLinkText = "Profile Info";
 
+
+            return View("_SocialNetworkNavigation", model);
+            
         }
 
 
@@ -273,7 +353,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     {
                         FriendId = friendId,
                         CustomerDisplayName = friendCustomer.GetFullName(),
-                        ProfileUrl = Url.RouteUrl("CustomerProfile", new { id = friendCustomer.Id }),
+                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
                         ProfileThumbnailUrl = friendThumbnailUrl
                     });
 
@@ -315,7 +395,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.Add(new CustomerFriendsModel()
                 {
                     CustomerDisplayName = friendCustomer.GetFullName().ToTitleCase(),
-                    ProfileUrl = Url.RouteUrl("CustomerProfile", new { id = friendCustomer.Id }),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
                     ProfileThumbnailUrl = friendThumbnailUrl
                 });
 
@@ -396,7 +476,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     groupModel.Members.Add(new TeamPageGroupMemberModel()
                         {
                             DisplayName = memberCustomer.GetFullName(),
-                            ProfileUrl =  Url.RouteUrl("CustomerProfile", new { id = memberCustomer.Id }),
+                            ProfileUrl =  Url.RouteUrl("CustomerProfileUrl", new { SeName = memberCustomer.GetSeName(0) }),
                             ThumbnailUrl = memberThumbnailUrl
                         });
                 }

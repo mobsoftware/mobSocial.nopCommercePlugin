@@ -24,10 +24,15 @@
                                                                  {<text>inactive</text>}">@T("Account.Avatar")</a></li> 
 
 
-           <li><a href="@Url.Action("FriendRequests", "MobSocial", new { navigationModel = Model.NavigationModel } )" class="@if (Model.SelectedTab == SocialNetworkNavigationEnum.FriendRequests)
+            <li><a href="@Url.Action("FriendRequests", "MobSocial", new { navigationModel = Model.NavigationModel } )" class="@if (Model.SelectedTab == SocialNetworkNavigationEnum.FriendRequests)
+                                                                                                                              {<text>active</text>}
+                                                                                                                              else
+                                                                                                                              {<text>inactive</text>}">@Model.FriendRequestsLinkText</a></li>
+
+            <li><a href="@Url.Action("ProfileInformation", "MobSocial", new { navigationModel = Model.NavigationModel } )" class="@if (Model.SelectedTab == SocialNetworkNavigationEnum.ProfileInformation)
                                                                    {<text>active</text>}
                                                                    else
-                                                                   {<text>inactive</text>}">@Model.FriendRequestsLinkText</a></li>
+                                                                   {<text>inactive</text>}">@Model.ProfileInformationLinkText</a></li>
            
         </ul>
     </div>

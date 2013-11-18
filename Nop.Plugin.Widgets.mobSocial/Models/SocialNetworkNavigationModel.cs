@@ -11,6 +11,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public SocialNetworkNavigationEnum SelectedTab { get; set; }
 
         public CustomerNavigationModel NavigationModel { get; set; }
+
+        public string ProfileInformationLinkText { get; set; }
     }
 
     public enum SocialNetworkNavigationEnum
@@ -20,5 +22,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         FriendRequests,
         Games, // todo sooner
         Events, // todo #1 priority 
+        ProfileInformation
     }
 }

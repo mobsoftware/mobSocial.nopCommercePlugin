@@ -65,3 +65,6 @@
 /Nop.Plugin.Widgets.mobSocial/$(SolutionDir)/Presentation/Nop.Web/Plugins/mobSocial/System.Web.Optimization.dll
 /Nop.Plugin.Widgets.mobSocial/$(SolutionDir)/Presentation/Nop.Web/Plugins/mobSocial/Telerik.Web.Mvc.dll
 /Nop.Plugin.Widgets.mobSocial/obj/Debug
+/Nop.Plugin.Widgets.mobSocial/App_GlobalResources
+/Nop.Plugin.Widgets.mobSocial/Nop.Plugin.Widgets.MobSocial.csproj.DotSettings.user
+/Nop.Plugin.Widgets.mobSocial/mobSocial.v11.suo
