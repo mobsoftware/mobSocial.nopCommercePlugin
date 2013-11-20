@@ -223,9 +223,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     int numberSameNameWithSlugs = customersWithSameName.Count(c => _urlRecordRepository.Table
                                      .Any(urlRecord => urlRecord.EntityId == c.Id && urlRecord.EntityName == "Customer"));
-                   
 
-                    string slug = firstName + "-" + lastName + 
+
+                    string slug = firstName.Trim() + "-" + lastName.Trim() + 
                        ( (numberSameNameWithSlugs > 0)
                                       ? "-" + (numberSameNameWithSlugs + 1).ToString()
                                       : string.Empty );
@@ -286,7 +286,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.Add(new CustomerFriendModel()
                     {
                         CustomerDisplayName = friendCustomer.GetFullName().ToTitleCase(),
-                        ProfileUrl = Url.RouteUrl("CustomerProfile", new { id = friendCustomer.Id }),
+                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
                         ProfileThumbnailUrl = friendThumbnailUrl
                     });
 

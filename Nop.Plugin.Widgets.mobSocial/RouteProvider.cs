@@ -59,19 +59,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" });
 
 
-            // override the nopCommerce customer profile route 
-            routes.MapGenericPathRoute("CustomerProfileSlug",
-                           "{generic_se_name}",
-                           new { controller = "Common", action = "GenericUrl" },
-                           new[] { "Nop.Web.Controllers" });
-
-
-        
-            // for use in views
-            routes.MapLocalizedRoute("CustomerProfileUrl",
-                           "{SeName}",
-                           new { controller = "Profile", action = "Index" },
-                           new[] { "Nop.Web.Controllers" });
+           
             
 
 

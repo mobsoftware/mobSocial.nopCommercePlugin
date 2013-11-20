@@ -57,7 +57,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                              .Any(urlRecord => urlRecord.EntityId == c.Id && urlRecord.EntityName == "Customer"));
 
 
-            string slug = firstName + "-" + lastName +
+            string slug = firstName.Trim() + "-" + lastName.Trim() +
                ((numberSameNameWithSlugs > 0)
                               ? "-" + (numberSameNameWithSlugs + 1).ToString()
                               : string.Empty);
