@@ -26,6 +26,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             modelBuilder.Configurations.Add(new TeamPageMap());
 
+            modelBuilder.Configurations.Add(new CustomerAlbumMap());
+            modelBuilder.Configurations.Add(new CustomerAlbumPictureMap());
+            
+
+
 
             base.OnModelCreating(modelBuilder);
         }
@@ -51,6 +56,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             {
                 // uninstall regardless of errors
                 var dbScript = "DROP TABLE GroupPageMember; " +
+                               "DROP TABLE CustomerAlbumPicture; " +
+                               "DROP TABLE CustomerAlbum; " +
                                "DROP TABLE GroupPage; " +
                                "DROP TABLE TeamPage; " +
                                "DROP TABLE CustomerSkateMove; " +

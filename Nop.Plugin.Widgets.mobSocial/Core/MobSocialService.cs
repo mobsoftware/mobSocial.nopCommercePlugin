@@ -29,6 +29,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private readonly IRepository<GroupPageMember> _groupPageMemberRepository;
         private readonly IRepository<CustomerFriend> _customerFriendRepository;
         private readonly IRepository<TeamPage> _teamPageRepository;
+        private readonly IRepository<CustomerAlbum> _customerAlbumRepository;
 
 
         private ICacheManager _cacheManager;
@@ -69,7 +70,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         /// <param name="context">Object context</param>
         public MobSocialService(IProductService productService, IRepository<GroupPage> groupPageRepository, 
             IRepository<GroupPageMember> groupPageMemberRepository, IRepository<CustomerFriend> customerFriendRepository,
-            IRepository<TeamPage> teamPageRepository, ICacheManager cacheManager, IWorkContext workContext,
+            IRepository<TeamPage> teamPageRepository, IRepository<CustomerAlbum> customerAlbumRepository, ICacheManager cacheManager, IWorkContext workContext,
             IWorkflowMessageService workflowMessageService, ICustomerService customerService,
             IMobSocialMessageService mobSocialMessageService)
         {
@@ -78,6 +79,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _groupPageMemberRepository = groupPageMemberRepository;
             _customerFriendRepository = customerFriendRepository;
             _teamPageRepository = teamPageRepository;
+            _customerAlbumRepository = customerAlbumRepository;
 
 
             _cacheManager = cacheManager;
@@ -154,9 +156,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         public TeamPage GetTeam(int teamId)
         {
-            
             return _teamPageRepository.GetById(teamId);
+        }
 
+
+        public CustomerAlbum GetCustomerAlbum(int customerId)
+        {
+            return _customerAlbumRepository.Table
+                .FirstOrDefault(x => x.CustomerId == customerId && x.IsMainAlbum);
         }
 
       
@@ -164,7 +171,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public void InsertTeamPage(TeamPage teamPage)
         {
             _teamPageRepository.Insert(teamPage);
-
+            
             
 
         }

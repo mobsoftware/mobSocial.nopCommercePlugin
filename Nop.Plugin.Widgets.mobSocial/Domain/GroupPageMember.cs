@@ -8,6 +8,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public virtual int CustomerId { get; set; }
 
+        public virtual int DisplayOrder { get; set; }
+
+
         public virtual GroupPage GroupPage { get; set; }
 
     }

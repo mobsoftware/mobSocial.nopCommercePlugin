@@ -451,8 +451,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     TeamPictureUrl = team.TeamPictureUrl
                 };
 
+            var groupPages = team.GroupPages.OrderBy(x => x.DisplayOrder);
+
             // team groups
-            foreach (var group in team.GroupPages)
+            foreach (var group in groupPages)
             {
 
                 var groupModel = new TeamPageGroupModel()
@@ -462,8 +464,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     };
 
+
+                var groupMembers = group.Members.OrderBy(x => x.DisplayOrder);
+
                 // team group members 
-                foreach (var member in group.Members)
+                foreach (var member in groupMembers)
                 {
 
                     var memberCustomer = _customerService.GetCustomerById(member.CustomerId);
@@ -491,7 +496,44 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
-       
+
+
+        /// <summary>
+        /// Gets the main customer album
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CustomerAlbumMain(int customerId)
+        {
+            
+            var mainAlbum = _socialNetworkService.GetCustomerAlbum(customerId);
+
+            var albumModel = new CustomerAlbumModel();
+
+            if (mainAlbum != null)
+            {
+
+                albumModel.AlbumName = mainAlbum.Name;
+
+                var mainAlbumPictures = mainAlbum.Pictures.OrderBy(x => x.DisplayOrder);
+
+                foreach (var picture in mainAlbumPictures)
+                {
+                    var albumPictureModel = new CustomerAlbumPictureModel()
+                        {
+                            Caption = picture.Caption,
+                            Url = picture.Url,
+                            DateCreated = picture.DateCreated,
+                            DateUpdated = picture.DateUpdated
+                        };
+
+                    albumModel.Pictures.Add(albumPictureModel);
+
+                }
+            }
+
+            return View("_CustomerAlbumPictures", albumModel);
+
+        }
 
 
         public ActionResult ProfilePicture(int customerId)

@@ -3,7 +3,7 @@ using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    
+
     public class GroupPage : BaseEntity
     {
 
@@ -13,7 +13,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         }
 
         public virtual string Name { get; set; }
-        
+
         public virtual string Description { get; set; }
 
         public virtual string PayPalDonateUrl { get; set; }
@@ -21,11 +21,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public virtual List<GroupPageMember> Members { get; set; }
 
         public virtual TeamPage Team { get; set; }
-    
-    
+
+        /// <summary>
+        /// Display order of this group on the Team Page
+        /// </summary>
+        public virtual int DisplayOrder { get; set; }
+
     }
-
-
 
 }
 

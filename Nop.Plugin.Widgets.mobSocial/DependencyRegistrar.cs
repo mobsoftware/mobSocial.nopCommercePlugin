@@ -56,6 +56,14 @@ namespace Nop.Plugin.Widgets.MobSocial
                      .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
                      .InstancePerHttpRequest();
 
+            builder.RegisterType<EfRepository<CustomerAlbum>>().As<IRepository<CustomerAlbum>>()
+                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+                   .InstancePerHttpRequest();
+
+            builder.RegisterType<EfRepository<CustomerAlbumPicture>>().As<IRepository<CustomerAlbumPicture>>()
+                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+                   .InstancePerHttpRequest();
+
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerHttpRequest();
             builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerHttpRequest();
 

@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.10_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -59,9 +59,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Data\CustomerAlbumPictureMap.cs" />
+    <Compile Include="Data\CustomerAlbumMap.cs" />
+    <Compile Include="Domain\CustomerAlbumPicture.cs" />
+    <Compile Include="Domain\CustomerAlbum.cs" />
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="Core\CustomerUpdatedEventHandler.cs" />
     <Compile Include="Core\GenericUrlEventHandler.cs" />
+    <Compile Include="Models\CustomerAlbumPictureModel.cs" />
+    <Compile Include="Models\CustomerAlbumModel.cs" />
     <Compile Include="Models\ProfileInformationModel.cs" />
     <Compile Include="Extensions\SeoExtensions.cs" />
     <Compile Include="Core\MobSocialMessageService.cs" />
@@ -124,6 +130,7 @@
     <None Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
     <None Include="Themes\mobSocial\Views\Common\Menu.cshtml" />
     <None Include="Themes\mobSocial\Views\Customer\Info.cshtml" />
+    <None Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />

@@ -53,6 +53,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                 new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
             );
 
+
             routes.MapLocalizedRoute("PeopleSearchAutoComplete",
                             "MobSocial/SearchTermAutoComplete",
                             new { controller = "mobSocial", action = "SearchTermAutoComplete" },

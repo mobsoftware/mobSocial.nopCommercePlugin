@@ -66,10 +66,12 @@
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1">@T("Profile.PersonalInfo")</a></li>
-                    <li><a href="#tabs-2">Friends</a></li>
+                    <li><a href="#tabs-2">Pictures</a></li>
+                    <li><a href="#tabs-3">Videos</a></li>
+                    <li><a href="#tabs-4">Friends</a></li>
                     @if (Model.ForumsEnabled)
                     {
-                        <li><a href="#tabs-3">@T("Profile.LatestPosts")</a></li>
+                        <li><a href="#tabs-5">@T("Profile.LatestPosts")</a></li>
                     }
                     
                 </ul>
@@ -77,11 +79,17 @@
                     @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })
                 </div>
                 <div id="tabs-2">
+                    @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId } )
+                </div>
+                <div id="tabs-3">
+                    
+                </div>
+                <div id="tabs-4">
                     @Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )
                 </div>
                 @if (Model.ForumsEnabled)
                 {
-                    <div id="tabs-3">
+                    <div id="tabs-5">
                         @Html.Action("posts", new { customerProfileId = Model.CustomerProfileId, page = Model.PostsPage })
                     </div>
                 }

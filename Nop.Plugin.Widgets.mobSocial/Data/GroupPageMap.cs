@@ -23,12 +23,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             HasOptional(m => m.Team);
 
-
-
-
-
-
-
+            Property(m => m.DisplayOrder);
 
         }
 

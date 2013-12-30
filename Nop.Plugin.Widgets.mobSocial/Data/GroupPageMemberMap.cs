@@ -19,6 +19,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             Property(m => m.CustomerId);
 
+
+            Property(m => m.DisplayOrder);
+
             
            
 
