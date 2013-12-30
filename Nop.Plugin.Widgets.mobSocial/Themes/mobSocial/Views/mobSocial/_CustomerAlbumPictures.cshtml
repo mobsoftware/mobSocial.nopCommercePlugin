@@ -1,0 +1,19 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerAlbumModel
+
+
+<div class="customer-album-container">
+    @foreach (var picture in Model.Pictures)
+    {
+        <div class="customer-album-picture-block">
+            <a href="@picture.Url">
+                <img src="@picture.Url" alt="@picture.AltText" title="@picture.AltText" />
+            </a><br/>
+            <span class="customer-album-picture-caption">@picture.Caption</span>
+            
+        </div>
+    }
+</div>
+
+
+
+
