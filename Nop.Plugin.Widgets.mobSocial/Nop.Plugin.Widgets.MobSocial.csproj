@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Core\ICustomerAlbumPictureService.cs" />
+    <Compile Include="Core\CustomerAlbumPictureService.cs" />
     <Compile Include="Data\CustomerAlbumPictureMap.cs" />
     <Compile Include="Data\CustomerAlbumMap.cs" />
     <Compile Include="Domain\CustomerAlbumPicture.cs" />
@@ -121,7 +123,9 @@
     <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.old2.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\add-friend-button.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\common.js" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\customer-albums.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\customer-friend-block.js" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\font-awesome.min.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial-custom.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\search-box-custom.css" />
@@ -130,20 +134,20 @@
     <None Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
     <None Include="Themes\mobSocial\Views\Common\Menu.cshtml" />
     <None Include="Themes\mobSocial\Views\Customer\Info.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\TeamPage_old.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_AddFriendButton.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_ColumnsThree.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_CustomerFriendBlock.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_CustomerFriends.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_ProfilePicture.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_SocialNetworkNavigation.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\_TeamPageInfo.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage_old.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_AddFriendButton.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_ColumnsThree.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerFriendBlock.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerFriends.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_ProfilePicture.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_SocialNetworkNavigation.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_TeamPageInfo.cshtml" />
     <None Include="Themes\mobSocial\Views\Profile\Index.cshtml" />
-    <None Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
+    <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
     <None Include="web.config">
       <SubType>Designer</SubType>

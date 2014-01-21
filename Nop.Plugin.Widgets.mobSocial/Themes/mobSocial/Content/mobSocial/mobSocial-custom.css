@@ -1,9 +1,9 @@
 a.logo {
-    background: url("../images/logo.gif") repeat scroll 0px 0px transparent;
+    background: url("../images/logo.png") repeat scroll 0px 0px transparent;
     display: block;
-    height: 62px;
+    height: 75px;
     text-decoration: none;
-    width: 303px;
+    width: 315px;
 }
 
 li a:hover {

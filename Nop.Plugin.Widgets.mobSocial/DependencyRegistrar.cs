@@ -67,6 +67,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerHttpRequest();
             builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerHttpRequest();
 
+            builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerHttpRequest();
 
             
         }

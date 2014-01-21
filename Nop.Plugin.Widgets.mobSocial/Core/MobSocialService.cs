@@ -160,13 +160,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-        public CustomerAlbum GetCustomerAlbum(int customerId)
-        {
-            return _customerAlbumRepository.Table
-                .FirstOrDefault(x => x.CustomerId == customerId && x.IsMainAlbum);
-        }
+       
 
-      
 
         public void InsertTeamPage(TeamPage teamPage)
         {

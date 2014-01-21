@@ -16,14 +16,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             //Map the additional properties
             Property(m => m.CustomerAlbumId);
+            Property(m => m.Url);
+            Property(m => m.ThumbnailUrl);
             Property(m => m.Caption);
             Property(m => m.DisplayOrder);
+            Property(m => m.LikeCount);
 
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();
 
-           
-            
         }
 
     }

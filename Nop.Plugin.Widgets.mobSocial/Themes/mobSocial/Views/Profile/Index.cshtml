@@ -6,8 +6,8 @@
 
     Html.AddTitleParts(T("PageTitle.Profile").Text);
 
-    Html.AddScriptParts("~/Themes/mobSocial/Content/mobSocial/mobSocial.js");
-    Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/mobSocial.css");
+    Html.AddScriptParts("~/Themes/Digital/Content/mobSocial/mobSocial.js");
+    Html.AddCssFileParts("~/Themes/Digital/Content/mobSocial/mobSocial.css");
     
     
 }
@@ -65,13 +65,13 @@
             </script>
             <div id="tabs">
                 <ul>
-                    <li><a href="#tabs-1">@T("Profile.PersonalInfo")</a></li>
-                    <li><a href="#tabs-2">Pictures</a></li>
-                    <li><a href="#tabs-3">Videos</a></li>
-                    <li><a href="#tabs-4">Friends</a></li>
+                    <li><a href="#tabs-1"><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</a></li>
+                    <li><a href="#tabs-2"><i class="fa fa-picture-o"></i> Pictures</a></li>
+                    <li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>
+                    <li><a href="#tabs-4"><i class="fa fa-group"></i> Friends</a></li>
                     @if (Model.ForumsEnabled)
                     {
-                        <li><a href="#tabs-5">@T("Profile.LatestPosts")</a></li>
+                        <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
                     }
                     
                 </ul>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 using Nop.Admin.Controllers;
 using System.Linq;
@@ -26,6 +27,8 @@ using Nop.Web.Framework;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Customer;
 using Mob.Core;
+using System.Web;
+
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -38,7 +41,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private AdminAreaSettings _adminAreaSettings;
         private ILocalizationService _localizationService;
         private readonly IPictureService _pictureService;
-        private readonly mobSocialSettings _socialNetworkSettings;
+        private readonly mobSocialSettings _mobSocialSettings;
         private readonly MediaSettings _mediaSettings;
         private readonly CustomerSettings _customerSettings;
         private readonly OrderService _orderService;
@@ -48,6 +51,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IStoreContext _storeContext;
         private readonly IMobSocialService _socialNetworkService;
         private readonly ICustomerService _customerService;
+        private readonly ICustomerAlbumPictureService _customerAlbumPictureService;
         private IWebHelper _webHelper;
         private readonly IUrlRecordService _urlRecordService;
         private readonly IRepository<UrlRecord> _urlRecordRepository;
@@ -55,7 +59,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public mobSocialController(IPermissionService permissionService,
             IWorkContext workContext, AdminAreaSettings adminAreaSettings, ILocalizationService localizationService,
             IPictureService pictureService, IMobSocialService socialNetworkService, ICustomerService customerService,
-            mobSocialSettings socialNetworkSettings, MediaSettings mediaSettings, CustomerSettings customerSettings, 
+            ICustomerAlbumPictureService customerAlbumPictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, CustomerSettings customerSettings, 
             ForumSettings forumSettings, RewardPointsSettings rewardPointsSettings, OrderSettings orderSettings,
              IStoreContext storeContext, IWebHelper webHelper, IUrlRecordService urlRecordService, IRepository<UrlRecord> urlRecordRepository)
         {
@@ -66,7 +70,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _pictureService = pictureService;
             _socialNetworkService = socialNetworkService;
             _customerService = customerService;
-            _socialNetworkSettings = socialNetworkSettings;
+            _customerAlbumPictureService = customerAlbumPictureService;
+            _mobSocialSettings = mobSocialSettings;
             _mediaSettings = mediaSettings;
             _customerSettings = customerSettings;
             _forumSettings = forumSettings;
@@ -105,7 +110,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             var model = new ConfigurationModel
                 {
-                    ZoneId = _socialNetworkSettings.WidgetZone
+                    ZoneId = _mobSocialSettings.WidgetZone
                 };
 
             model.AvailableZones.Add(new SelectListItem() { Text = "Before left side column", Value = "left_side_column_before" });
@@ -158,13 +163,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         
         public ActionResult SearchTermAutoComplete(string term)
         {
-            if (String.IsNullOrWhiteSpace(term) || term.Length < _socialNetworkSettings.PeopleSearchTermMinimumLength)
+            if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.PeopleSearchTermMinimumLength)
                 return Json(new object());
 
-            _socialNetworkSettings.PeopleSearchAutoCompleteNumberOfPeople = 10;
+            _mobSocialSettings.PeopleSearchAutoCompleteNumberOfPeople = 10;
 
             var customers = _customerService.GetAllCustomers(null, null, 0, 0, null, null, null, term, null, 0, 0,
-                                                            null, null, null, false, null, 0, _socialNetworkSettings.PeopleSearchAutoCompleteNumberOfPeople);
+                                                            null, null, null, false, null, 0, _mobSocialSettings.PeopleSearchAutoCompleteNumberOfPeople);
             
             
             var models = new List<object>();
@@ -505,13 +510,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public ActionResult CustomerAlbumMain(int customerId)
         {
             
-            var mainAlbum = _socialNetworkService.GetCustomerAlbum(customerId);
+            var mainAlbum = _customerAlbumPictureService.GetCustomerAlbum(customerId);
 
             var albumModel = new CustomerAlbumModel();
 
             if (mainAlbum != null)
             {
-
+                albumModel.AlbumId = mainAlbum.Id;
                 albumModel.AlbumName = mainAlbum.Name;
 
                 var mainAlbumPictures = mainAlbum.Pictures.OrderBy(x => x.DisplayOrder);
@@ -520,8 +525,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     var albumPictureModel = new CustomerAlbumPictureModel()
                         {
+                            Id = picture.Id,
                             Caption = picture.Caption,
                             Url = picture.Url,
+                            ThumbnailUrl = picture.ThumbnailUrl,
                             DateCreated = picture.DateCreated,
                             DateUpdated = picture.DateUpdated
                         };
@@ -533,6 +540,90 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             return View("_CustomerAlbumPictures", albumModel);
 
+        }
+
+        /// <summary>
+        /// Uploads picture to the specified album
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public void UploadAlbumPicture(int albumId, HttpPostedFileBase pictureFile)
+        {
+
+            var album = _customerAlbumPictureService.GetCustomerAlbumById(albumId);
+
+
+            if (album.Pictures.Count >= _mobSocialSettings.MaximumMainAlbumPictures)
+                throw new ApplicationException("You may only upload up to " + _mobSocialSettings.MaximumMainAlbumPictures + " pictures at this time.");
+
+            // Verify that the user selected a file
+            if (pictureFile != null && pictureFile.ContentLength > 0)
+            {
+                // extract only the fielname
+                var fileName = Path.GetFileName(pictureFile.FileName);
+
+
+                string albumFolder = string.Format("~/Content/Images/Albums/{0}/{1}", 
+                    album.CustomerId, albumId);
+
+
+
+                var albumPath = Path.Combine(Server.MapPath(albumFolder), fileName);
+                pictureFile.SaveAs(albumPath);
+
+                var thumbnailFileName = Path.GetFileNameWithoutExtension(albumPath) + "-thumbnail" + Path.GetExtension(albumPath);
+                var thumbnailPath = Path.Combine(Server.MapPath(albumFolder), thumbnailFileName);
+                var thumbnailWidth = _mobSocialSettings.CustomerAlbumPictureThumbnailWidth;
+                var resizedPicture = _customerAlbumPictureService.CreateThumbnailPicture(pictureFile.GetPictureBits(), thumbnailWidth, pictureFile.ContentType);
+
+                System.IO.File.WriteAllBytes(thumbnailPath, resizedPicture);
+
+                var albumPicture = new CustomerAlbumPicture()
+                    {
+                        Album = album,
+                        CustomerAlbumId = albumId,
+                        DateCreated = DateTime.Now,
+                        DisplayOrder = 0,
+                        ThumbnailUrl = thumbnailPath.Replace(Request.ServerVariables["APPL_PHYSICAL_PATH"], String.Empty),
+                        Url = albumPath.Replace(Request.ServerVariables["APPL_PHYSICAL_PATH"], String.Empty)
+                    };
+
+                _customerAlbumPictureService.Insert(albumPicture);
+
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// Deletes the customer album picture matching the given id.
+        /// </summary>
+        /// <param name="customerAlbumPictureId">Id of customer album picture to delete</param>
+        [HttpPost]
+        public void DeleteCustomerAlbumPicture(int customerAlbumPictureId)
+        {
+            var picture = _customerAlbumPictureService.GetCustomerAlbumPictureById(customerAlbumPictureId);
+
+
+            var picturePath = Server.MapPath("~/" + picture.Url);
+            var pictureFileName = Path.GetFileName(picturePath);
+
+            var thumbPath = Server.MapPath("~/" + picture.ThumbnailUrl);
+            var thumbFileName = Path.GetFileName(thumbPath);
+
+            string deletedAlbumFolder = string.Format("~/Content/Images/Albums/{0}/{1}/Deleted",
+                                                      picture.Album.CustomerId, picture.CustomerAlbumId);
+
+            deletedAlbumFolder = Server.MapPath(deletedAlbumFolder);
+
+            var deletedDirectory = new DirectoryInfo(deletedAlbumFolder);
+            deletedDirectory.Create(); // If the directory already exists, nothing will happen here.
+
+            System.IO.File.Move(picturePath, Path.Combine(deletedAlbumFolder, pictureFileName));
+            System.IO.File.Move(thumbPath, Path.Combine(deletedAlbumFolder, thumbFileName));
+
+            _customerAlbumPictureService.Delete(picture);
         }
 
 
@@ -570,6 +661,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         }
+/*
+
+
+        public void AddPicture(alb )
+        {
+            
+        }*/
 
         
 

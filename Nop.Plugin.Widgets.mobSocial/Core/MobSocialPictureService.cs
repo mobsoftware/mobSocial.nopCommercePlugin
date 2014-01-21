@@ -63,6 +63,45 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             }
         }
 
+        protected byte[] CreateThumbnailPicture(byte[] pictureBinary, int maxWidth, string mimeType)
+        {
+            using (var stream1 = new MemoryStream(pictureBinary))
+            {
+                using (var b = new Bitmap(stream1))
+                {
+                    var maxSize = _nopMediaSettings.MaximumImageSize;
+                    if (b.Width <= maxSize)
+                        return pictureBinary;
+
+                    var newSize = CalculateDimensions(b.Size, maxSize, ResizeTypes.Width);
+
+                    using (var newBitMap = new Bitmap(newSize.Width, newSize.Height))
+                    {
+                        using (var g = Graphics.FromImage(newBitMap))
+                        {
+                            g.SmoothingMode = SmoothingMode.HighQuality;
+                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                            g.CompositingQuality = CompositingQuality.HighQuality;
+                            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                            g.DrawImage(b, 0, 0, newSize.Width, newSize.Height);
+
+                            using (var stream2 = new MemoryStream())
+                            {
+                                var ep = new EncoderParameters();
+                                ep.Param[0] = new EncoderParameter(Encoder.Quality, _nopMediaSettings.DefaultImageQuality);
+
+                                ImageCodecInfo ici = GetImageCodecInfoFromMimeType(mimeType) ??
+                                                     GetImageCodecInfoFromMimeType("image/jpeg");
+
+                                newBitMap.Save(stream2, ici, ep);
+                                return stream2.GetBuffer();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
        
         

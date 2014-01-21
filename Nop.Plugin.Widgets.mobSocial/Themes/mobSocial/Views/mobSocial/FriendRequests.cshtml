@@ -1,4 +1,5 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.FriendRequestsModel
+﻿@using System.Web.Mvc
+@model Nop.Plugin.Widgets.MobSocial.Models.FriendRequestsModel
 @{
     Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
@@ -43,6 +44,9 @@
                 <span class="no-friend-requests-message">You have no friend requests.</span>
             }
         </div>
+        
+        
+        <a href="@Url.HttpRouteUrl("PopulateUrlSlugs", "MobSocial")">Populate Url Slugs</a>
 
     </div>
 </div>

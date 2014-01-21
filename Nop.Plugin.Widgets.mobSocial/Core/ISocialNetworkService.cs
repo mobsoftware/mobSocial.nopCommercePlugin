@@ -33,8 +33,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         void SendFriendRequestNotifications();
         
-        CustomerAlbum GetCustomerAlbum(int customerId);
-
     }
 
 }

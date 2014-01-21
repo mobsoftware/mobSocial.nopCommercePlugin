@@ -15,5 +15,10 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int PeopleSearchAutoCompleteNumberOfPeople { get; set; }
 
         public bool PeopleSearchAutoCompleteEnabled { get; set; }
+
+        public int CustomerAlbumPictureThumbnailWidth { get; set; }
+
+        public int MaximumMainAlbumPictures { get; set; }
+
     }
 }
