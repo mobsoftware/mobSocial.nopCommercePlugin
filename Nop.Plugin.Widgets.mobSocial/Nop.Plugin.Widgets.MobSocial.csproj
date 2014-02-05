@@ -49,6 +49,7 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -59,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Core\HandleJsonErrorAttribute.cs" />
     <Compile Include="Core\ICustomerAlbumPictureService.cs" />
     <Compile Include="Core\CustomerAlbumPictureService.cs" />
     <Compile Include="Data\CustomerAlbumPictureMap.cs" />
@@ -119,6 +121,7 @@
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
     <None Include="App.config" />
     <None Include="packages.config" />
+    <Content Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.css" />
     <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.old2.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\add-friend-button.js" />
@@ -126,10 +129,15 @@
     <Content Include="Themes\mobSocial\Content\mobSocial\customer-albums.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\customer-friend-block.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\font-awesome.min.css" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\jquery.form.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial-custom.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\search-box-custom.css" />
     <Content Include="Themes\mobSocial\Installation.txt" />
+    <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.eot" />
+    <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.ttf" />
+    <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.woff" />
+    <None Include="Themes\mobSocial\Content\fonts\FontAwesome.otf" />
     <None Include="Themes\mobSocial\theme.config" />
     <None Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
     <None Include="Themes\mobSocial\Views\Common\Menu.cshtml" />

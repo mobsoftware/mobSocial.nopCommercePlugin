@@ -511,13 +511,21 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             
             var mainAlbum = _customerAlbumPictureService.GetCustomerAlbum(customerId);
+            
 
             var albumModel = new CustomerAlbumModel();
+
+            albumModel.CustomerFullName = _customerService.GetCustomerById(customerId).GetFullName();
 
             if (mainAlbum != null)
             {
                 albumModel.AlbumId = mainAlbum.Id;
                 albumModel.AlbumName = mainAlbum.Name;
+
+                
+
+                albumModel.IsCurrentUsersProfile = _workContext.CurrentCustomer.Id == customerId;
+
 
                 var mainAlbumPictures = mainAlbum.Pictures.OrderBy(x => x.DisplayOrder);
 
@@ -547,7 +555,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public void UploadAlbumPicture(int albumId, HttpPostedFileBase pictureFile)
+        [HandleJsonError]
+        public JsonResult UploadAlbumPicture(int albumId, HttpPostedFileBase pictureFile)
         {
 
             var album = _customerAlbumPictureService.GetCustomerAlbumById(albumId);
@@ -568,10 +577,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-                var albumPath = Path.Combine(Server.MapPath(albumFolder), fileName);
-                pictureFile.SaveAs(albumPath);
+                var albumPicturePath = Path.Combine(Server.MapPath(albumFolder), fileName);
+                albumPicturePath = FileUtility.FilePathAddNumberIfExists(albumPicturePath, Server.MapPath(albumFolder));
 
-                var thumbnailFileName = Path.GetFileNameWithoutExtension(albumPath) + "-thumbnail" + Path.GetExtension(albumPath);
+
+
+                pictureFile.SaveAs(albumPicturePath);
+
+                var thumbnailFileName = Path.GetFileNameWithoutExtension(albumPicturePath) + "-thumbnail" + Path.GetExtension(albumPicturePath);
                 var thumbnailPath = Path.Combine(Server.MapPath(albumFolder), thumbnailFileName);
                 var thumbnailWidth = _mobSocialSettings.CustomerAlbumPictureThumbnailWidth;
                 var resizedPicture = _customerAlbumPictureService.CreateThumbnailPicture(pictureFile.GetPictureBits(), thumbnailWidth, pictureFile.ContentType);
@@ -585,13 +598,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         DateCreated = DateTime.Now,
                         DisplayOrder = 0,
                         ThumbnailUrl = thumbnailPath.Replace(Request.ServerVariables["APPL_PHYSICAL_PATH"], String.Empty),
-                        Url = albumPath.Replace(Request.ServerVariables["APPL_PHYSICAL_PATH"], String.Empty)
+                        Url = albumPicturePath.Replace(Request.ServerVariables["APPL_PHYSICAL_PATH"], String.Empty)
                     };
 
                 _customerAlbumPictureService.Insert(albumPicture);
 
+                return Json(albumPicture);
+
+                
             }
 
+
+            return Json(null);
 
         }
 
@@ -604,7 +622,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public void DeleteCustomerAlbumPicture(int customerAlbumPictureId)
         {
             var picture = _customerAlbumPictureService.GetCustomerAlbumPictureById(customerAlbumPictureId);
-
 
             var picturePath = Server.MapPath("~/" + picture.Url);
             var pictureFileName = Path.GetFileName(picturePath);
@@ -620,10 +637,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var deletedDirectory = new DirectoryInfo(deletedAlbumFolder);
             deletedDirectory.Create(); // If the directory already exists, nothing will happen here.
 
-            System.IO.File.Move(picturePath, Path.Combine(deletedAlbumFolder, pictureFileName));
-            System.IO.File.Move(thumbPath, Path.Combine(deletedAlbumFolder, thumbFileName));
+            
+            // copy picture and thumb to deleted folder for archiving and historical reasons.
+            FileUtility.MoveAndAddNumberIfExists(picturePath, deletedAlbumFolder);
+            FileUtility.MoveAndAddNumberIfExists(thumbPath, deletedAlbumFolder);
 
             _customerAlbumPictureService.Delete(picture);
+
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Spatial;
+using System.Web.Script.Serialization;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
@@ -16,6 +17,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime? DateUpdated { get; set; }
 
+        [ScriptIgnore]
         public virtual CustomerAlbum Album { get; set; }
 
         

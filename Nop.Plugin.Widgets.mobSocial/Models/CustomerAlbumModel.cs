@@ -11,12 +11,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         {
             Pictures = new List<CustomerAlbumPictureModel>();
         }
-
+        public bool IsCurrentUsersProfile { get; set; }
         public int AlbumId { get; set; } 
         public string AlbumName { get; set; }
 
+        public string CustomerFullName { get; set; }
+
         public List<CustomerAlbumPictureModel> Pictures { get; set; }
 
+        
     }
 }
 
