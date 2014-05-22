@@ -60,16 +60,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Core\ICustomerVideoAlbumService.cs" />
+    <Compile Include="Core\CustomerVideoAlbumService.cs" />
     <Compile Include="Core\HandleJsonErrorAttribute.cs" />
     <Compile Include="Core\ICustomerAlbumPictureService.cs" />
     <Compile Include="Core\CustomerAlbumPictureService.cs" />
+    <Compile Include="Data\CustomerVideoLikeMap.cs" />
+    <Compile Include="Data\CustomerVideoAlbumMap.cs" />
+    <Compile Include="Data\CustomerVideoMap.cs" />
     <Compile Include="Data\CustomerAlbumPictureMap.cs" />
     <Compile Include="Data\CustomerAlbumMap.cs" />
+    <Compile Include="Domain\CustomerVideoLike.cs" />
     <Compile Include="Domain\CustomerAlbumPicture.cs" />
+    <Compile Include="Domain\CustomerVideoAlbum.cs" />
+    <Compile Include="Domain\CustomerVideo.cs" />
     <Compile Include="Domain\CustomerAlbum.cs" />
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="Core\CustomerUpdatedEventHandler.cs" />
     <Compile Include="Core\GenericUrlEventHandler.cs" />
+    <Compile Include="Models\FeaturedVideosModel.cs" />
+    <Compile Include="Models\CustomerVideoAlbum.cs" />
+    <Compile Include="Models\CustomerVideoModel.cs" />
     <Compile Include="Models\CustomerAlbumPictureModel.cs" />
     <Compile Include="Models\CustomerAlbumModel.cs" />
     <Compile Include="Models\ProfileInformationModel.cs" />

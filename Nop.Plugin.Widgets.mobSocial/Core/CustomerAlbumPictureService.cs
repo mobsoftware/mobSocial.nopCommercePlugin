@@ -86,6 +86,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return _customerAlbumPictureRepository.GetById(customerAlbumPictureId);
         }
 
+        public CustomerAlbum CreateCustomerMainAlbum(int customerId)
+        {
+
+            var mainAlbum = new CustomerAlbum()
+            {
+                CustomerId = customerId,
+                Name = "CustomerMainAlbum",
+                DisplayOrder = 1,
+                IsMainAlbum = true,
+                DateCreated = DateTime.Now
+            };
+
+            _customerAlbumRepository.Insert(mainAlbum);
+
+            return GetCustomerAlbum(customerId);
+
+
+        }
+
         /// <summary>
         /// Calculates picture dimensions whilst maintaining aspect
         /// </summary>

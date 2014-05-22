@@ -55,13 +55,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private IWebHelper _webHelper;
         private readonly IUrlRecordService _urlRecordService;
         private readonly IRepository<UrlRecord> _urlRecordRepository;
+        private readonly ICustomerVideoAlbumService _customerVideoAlbumService;
 
         public mobSocialController(IPermissionService permissionService,
             IWorkContext workContext, AdminAreaSettings adminAreaSettings, ILocalizationService localizationService,
             IPictureService pictureService, IMobSocialService socialNetworkService, ICustomerService customerService,
             ICustomerAlbumPictureService customerAlbumPictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, CustomerSettings customerSettings, 
             ForumSettings forumSettings, RewardPointsSettings rewardPointsSettings, OrderSettings orderSettings,
-             IStoreContext storeContext, IWebHelper webHelper, IUrlRecordService urlRecordService, IRepository<UrlRecord> urlRecordRepository)
+             IStoreContext storeContext, IWebHelper webHelper, IUrlRecordService urlRecordService, IRepository<UrlRecord> urlRecordRepository,
+            ICustomerVideoAlbumService customerVideoAlbumService)
         {
             _permissionService = permissionService;
             _workContext = workContext;
@@ -81,6 +83,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _webHelper = webHelper;
             _urlRecordService = urlRecordService;
             _urlRecordRepository = urlRecordRepository;
+            _customerVideoAlbumService = customerVideoAlbumService;
         }
 
 
@@ -501,17 +504,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
-
-
         /// <summary>
         /// Gets the main customer album
         /// </summary>
         /// <returns></returns>
         public ActionResult CustomerAlbumMain(int customerId)
         {
-            
+
             var mainAlbum = _customerAlbumPictureService.GetCustomerAlbum(customerId);
-            
+            if (mainAlbum == null) _customerAlbumPictureService.CreateCustomerMainAlbum(customerId);
+
 
             var albumModel = new CustomerAlbumModel();
 
@@ -522,7 +524,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 albumModel.AlbumId = mainAlbum.Id;
                 albumModel.AlbumName = mainAlbum.Name;
 
-                
+
 
                 albumModel.IsCurrentUsersProfile = _workContext.CurrentCustomer.Id == customerId;
 
@@ -532,14 +534,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 foreach (var picture in mainAlbumPictures)
                 {
                     var albumPictureModel = new CustomerAlbumPictureModel()
-                        {
-                            Id = picture.Id,
-                            Caption = picture.Caption,
-                            Url = picture.Url,
-                            ThumbnailUrl = picture.ThumbnailUrl,
-                            DateCreated = picture.DateCreated,
-                            DateUpdated = picture.DateUpdated
-                        };
+                    {
+                        Id = picture.Id,
+                        Caption = picture.Caption,
+                        Url = picture.Url,
+                        ThumbnailUrl = picture.ThumbnailUrl,
+                        DateCreated = picture.DateCreated,
+                        DateUpdated = picture.DateUpdated
+                    };
 
                     albumModel.Pictures.Add(albumPictureModel);
 
@@ -547,6 +549,96 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             return View("_CustomerAlbumPictures", albumModel);
+
+        }
+
+
+
+        public ActionResult FeaturedVideos()
+        {
+
+            var model = new FeaturedVideosModel();
+
+            var featuredVideos = _customerVideoAlbumService.GetFeaturedVideos();
+
+            /*foreach (var video in featuredVideos)
+            {*/
+
+            if (featuredVideos != null)
+            {
+                var videoCustomer = _customerService.GetCustomerById(featuredVideos.VideoAlbum.CustomerId);
+
+
+                var featuredVideoUrlParts = featuredVideos.VideoUrl.Split('/');
+
+                var embedId = featuredVideoUrlParts.LastOrDefault();
+                
+                var featuredVideoModel = new FeaturedVideoModel()
+                    {
+
+                        ThumbnailUrl = "//img.youtube.com/vi/" + embedId + "/1.jpg",
+                        CustomerProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = videoCustomer.GetSeName(0) })
+                    };
+
+                model.FeaturedVideos.Add(featuredVideoModel);
+
+            }
+
+
+            return View("_FeaturedVideosBlock", model);
+
+
+        }
+
+        /// <summary>
+        /// Gets the main customer video album 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CustomerVideoAlbumMain(int customerId)
+        {
+            
+            var mainVideoAlbum = _customerVideoAlbumService.GetCustomerMainVideoAlbum(customerId);
+            if (mainVideoAlbum == null) _customerVideoAlbumService.CreateCustomerMainVideoAlbum(customerId);
+
+
+            var videoAlbumModel = new CustomerVideoAlbumModel();
+
+            videoAlbumModel.CustomerFullName = _customerService.GetCustomerById(customerId).GetFullName();
+
+            if (mainVideoAlbum != null)
+            {
+                videoAlbumModel.VideoAlbumId = mainVideoAlbum.Id;
+                videoAlbumModel.Name = mainVideoAlbum.Name;
+
+                int currentCustomerId = _workContext.CurrentCustomer.Id;
+
+                videoAlbumModel.IsCurrentUsersProfile = currentCustomerId == customerId;
+                
+
+                var mainAlbumVideos = mainVideoAlbum.Videos.OrderBy(x => x.DisplayOrder);
+
+                foreach (var video in mainAlbumVideos)
+                {
+
+                    bool alreadyLiked = _customerVideoAlbumService.VideoAlreadyLiked(video.Id, currentCustomerId);
+
+                    var customerVideoModel = new CustomerVideoModel()
+                        {
+                            Id = video.Id,
+                            Caption = video.Caption,
+                            Url = video.VideoUrl,
+                            LikeCount = video.LikeCount,
+                            AlreadyLiked = alreadyLiked,
+                            DateCreated = video.DateCreated,
+                            DateUpdated = video.DateUpdated
+                        };
+
+                    videoAlbumModel.Videos.Add(customerVideoModel);
+
+                }
+            }
+
+            return View("_CustomerVideoAlbums", videoAlbumModel);
 
         }
 
@@ -575,17 +667,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 string albumFolder = string.Format("~/Content/Images/Albums/{0}/{1}", 
                     album.CustomerId, albumId);
 
-
-
-                var albumPicturePath = Path.Combine(Server.MapPath(albumFolder), fileName);
-                albumPicturePath = FileUtility.FilePathAddNumberIfExists(albumPicturePath, Server.MapPath(albumFolder));
+                var albumPicturePath = Path.Combine(_webHelper.MapPath(albumFolder), fileName);
+                albumPicturePath = FileUtility.FilePathAddNumberIfExists(albumPicturePath, _webHelper.MapPath(albumFolder));
 
 
 
                 pictureFile.SaveAs(albumPicturePath);
 
                 var thumbnailFileName = Path.GetFileNameWithoutExtension(albumPicturePath) + "-thumbnail" + Path.GetExtension(albumPicturePath);
-                var thumbnailPath = Path.Combine(Server.MapPath(albumFolder), thumbnailFileName);
+                var thumbnailPath = Path.Combine(_webHelper.MapPath(albumFolder), thumbnailFileName);
                 var thumbnailWidth = _mobSocialSettings.CustomerAlbumPictureThumbnailWidth;
                 var resizedPicture = _customerAlbumPictureService.CreateThumbnailPicture(pictureFile.GetPictureBits(), thumbnailWidth, pictureFile.ContentType);
 
@@ -614,6 +704,101 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
 
+
+        /// <summary>
+        /// Saves a customer's video to the specified album
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [HandleJsonError]
+        public void SaveVideo(int videoAlbumId, string videoUrl)
+        {
+
+            var videoAlbum = _customerVideoAlbumService.GetCustomerVideoAlbumById(videoAlbumId);
+
+
+            if (videoAlbum.Videos.Count >= _mobSocialSettings.MaximumMainAlbumVideos)
+                throw new ApplicationException("You may only upload up to " + _mobSocialSettings.MaximumMainAlbumVideos +
+                                               " videos at this time.");
+
+
+            var video = new CustomerVideo()
+                {
+                    VideoAlbum = videoAlbum,
+                    CustomerVideoAlbumId = videoAlbumId,
+                    DateCreated = DateTime.Now,
+                    DisplayOrder = 0,
+                    VideoUrl = videoUrl
+                };
+
+            _customerVideoAlbumService.Insert(video);
+
+
+        }
+
+
+
+        /// <summary>
+        /// Adds a like to a customer's video
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [HandleJsonError]
+        public ActionResult AddVideoLike(int customerVideoId)
+        {
+
+
+            if (_workContext.CurrentCustomer.IsGuest())
+                return Json(new {redirect = Url.RouteUrl("Login")}, JsonRequestBehavior.AllowGet);
+
+            
+            _customerVideoAlbumService.AddVideoLike(customerVideoId, _workContext.CurrentCustomer.Id);
+
+
+
+            return Json(null);
+
+        }
+
+
+
+        /*
+         * NOTE: We are not providing the ablity to dislike a video already liked, unless
+         * there is good psychology or other justification. Accidental like is not frequent
+         * enough to justify unliking a video. Furthermore, unliking videos can artificially
+         * demote customer videos and we need to prevent malicious demotions. - Bruce Leggett
+         * /// <summary>
+        /// Removes a like from a customer's video
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [HandleJsonError]
+        public void RemoveVideoLike(int customerVideoId)
+        {
+            var video = _customerVideoAlbumService.GetCustomerVideoById(customerVideoId);
+            video.LikeCount--;
+            _customerVideoAlbumService.Update(video);
+        }*/
+
+
+        /// <summary>
+        /// Deletes the customer album video matching the given id.
+        /// </summary>
+        /// <param name="customerVideoId">Id of customer video to delete</param>
+        [HttpPost]
+        public void DeleteCustomerVideo(int customerVideoId)
+        {
+
+            _customerVideoAlbumService.DeleteCustomerVideo(customerVideoId);
+
+            //TODO: Later add ability to upload videos to server (Enabled by default but can be disabled in the mobSocial Admin) 
+
+
+        }
+
+
+
+
         /// <summary>
         /// Deletes the customer album picture matching the given id.
         /// </summary>
@@ -623,16 +808,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             var picture = _customerAlbumPictureService.GetCustomerAlbumPictureById(customerAlbumPictureId);
 
-            var picturePath = Server.MapPath("~/" + picture.Url);
+            var picturePath = _webHelper.MapPath("~/" + picture.Url);
             var pictureFileName = Path.GetFileName(picturePath);
 
-            var thumbPath = Server.MapPath("~/" + picture.ThumbnailUrl);
+            var thumbPath = _webHelper.MapPath("~/" + picture.ThumbnailUrl);
             var thumbFileName = Path.GetFileName(thumbPath);
 
             string deletedAlbumFolder = string.Format("~/Content/Images/Albums/{0}/{1}/Deleted",
                                                       picture.Album.CustomerId, picture.CustomerAlbumId);
 
-            deletedAlbumFolder = Server.MapPath(deletedAlbumFolder);
+            deletedAlbumFolder = _webHelper.MapPath(deletedAlbumFolder);
 
             var deletedDirectory = new DirectoryInfo(deletedAlbumFolder);
             deletedDirectory.Create(); // If the directory already exists, nothing will happen here.

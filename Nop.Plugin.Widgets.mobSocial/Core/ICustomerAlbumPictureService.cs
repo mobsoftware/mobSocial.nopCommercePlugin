@@ -21,6 +21,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         CustomerAlbumPicture GetCustomerAlbumPictureById(int customerAlbumPictureId);
 
+        CustomerAlbum CreateCustomerMainAlbum(int customerId);
+
+
     }
 
 }

@@ -115,7 +115,9 @@ namespace Nop.Plugin.Widgets.MobSocial
                 PeopleSearchAutoCompleteNumberOfPeople = 10,
                 PeopleSearchTermMinimumLength = 3,
                 ShowProfileImagesInSearchAutoComplete = true,
-                CustomerAlbumPictureThumbnailWidth = 290
+                CustomerAlbumPictureThumbnailWidth = 290,
+                MaximumMainAlbumPictures = 10,
+                MaximumMainAlbumVideos = 10
             };
 
 

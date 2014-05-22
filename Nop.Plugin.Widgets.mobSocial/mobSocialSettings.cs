@@ -20,5 +20,6 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public int MaximumMainAlbumPictures { get; set; }
 
+        public int MaximumMainAlbumVideos { get; set; }
     }
 }

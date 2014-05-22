@@ -28,6 +28,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             modelBuilder.Configurations.Add(new CustomerAlbumMap());
             modelBuilder.Configurations.Add(new CustomerAlbumPictureMap());
+
+
+            modelBuilder.Configurations.Add(new CustomerVideoAlbumMap());
+            modelBuilder.Configurations.Add(new CustomerVideoMap());
+            modelBuilder.Configurations.Add(new CustomerVideoLikeMap());
             
 
 
@@ -58,6 +63,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 var dbScript = "DROP TABLE GroupPageMember; " +
                                "DROP TABLE CustomerAlbumPicture; " +
                                "DROP TABLE CustomerAlbum; " +
+                               "DROP TABLE CustomerVideoLike; " +
+                               "DROP TABLE CustomerVideo; " +
+                               "DROP TABLE CustomerVideoAlbum; " +
                                "DROP TABLE GroupPage; " +
                                "DROP TABLE TeamPage; " +
                                "DROP TABLE CustomerSkateMove; " +

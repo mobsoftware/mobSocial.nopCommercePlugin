@@ -156,6 +156,7 @@
 .customer-album-container {
     width: 655px;
 }
+
 .customer-album-picture-block {
     width: 325px;
     display: inline-block;
@@ -164,7 +165,9 @@
 
 
 
-.customer-album-container .add-picture-button {
+.customer-album-container .add-picture-button,
+.customer-album-container .add-video-button
+{
     border: 1px solid #aaaaaa;
     border-radius: 3px;
     width: 97px;
@@ -174,6 +177,23 @@
     margin-bottom: 10px;
     
 }
+
+
+
+.like-button
+{
+    border: 1px solid #aaaaaa;
+    border-radius: 3px;
+    width: 97px;
+    cursor: pointer;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-bottom: 10px;
+    
+}
+
+
+
 
 .customer-album-picture-block .delete-picture-button {
     position: relative;
