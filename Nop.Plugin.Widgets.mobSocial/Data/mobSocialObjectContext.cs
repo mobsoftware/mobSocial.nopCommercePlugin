@@ -102,7 +102,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             throw new System.NotImplementedException();
         }
 
-        public int ExecuteSqlCommand(string sql, int? timeout = null, params object[] parameters)
+        public int ExecuteSqlCommand(string sql, bool ensureTransaction,  int? timeout = null, params object[] parameters)
         {
             throw new System.NotImplementedException();
         }

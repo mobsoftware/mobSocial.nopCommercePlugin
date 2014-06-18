@@ -3,7 +3,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public partial class CommonController : BaseNopController
+    public partial class CommonController : BasePublicController
     {
         #region Fields
 

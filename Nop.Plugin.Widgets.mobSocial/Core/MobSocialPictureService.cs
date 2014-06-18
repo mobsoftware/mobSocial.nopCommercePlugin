@@ -10,6 +10,7 @@ using Nop.Services.Events;
 using Nop.Services.Logging;
 using Nop.Services.Media;
 using System.Drawing;
+using System;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
@@ -34,7 +35,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                     if (b.Width <= maxSize)
                         return pictureBinary;
 
-                    var newSize = CalculateDimensions(b.Size, maxSize, ResizeTypes.LongestSide);
+                    var newSize = CalculateDimensions(b.Size, maxSize, ResizeType.LongestSide);
 
                     using (var newBitMap = new Bitmap(newSize.Width, newSize.Height))
                     {
@@ -73,7 +74,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                     if (b.Width <= maxSize)
                         return pictureBinary;
 
-                    var newSize = CalculateDimensions(b.Size, maxSize, ResizeTypes.Width);
+                    var newSize = CalculateDimensions(b.Size, maxSize, ResizeType.Width);
 
                     using (var newBitMap = new Bitmap(newSize.Width, newSize.Height))
                     {
@@ -99,6 +100,46 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                         }
                     }
                 }
+            
+            
+            }
+        }
+
+        /// <summary>
+        /// Returns the first ImageCodecInfo instance with the specified mime type.
+        /// </summary>
+        /// <param name="mimeType">Mime type</param>
+        /// <returns>ImageCodecInfo</returns>
+        protected virtual ImageCodecInfo GetImageCodecInfoFromMimeType(string mimeType)
+        {
+            var info = ImageCodecInfo.GetImageEncoders();
+            foreach (var ici in info)
+                if (ici.MimeType.Equals(mimeType, StringComparison.OrdinalIgnoreCase))
+                    return ici;
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the first ImageCodecInfo instance with the specified extension.
+        /// </summary>
+        /// <param name="fileExt">File extension</param>
+        /// <returns>ImageCodecInfo</returns>
+        protected virtual ImageCodecInfo GetImageCodecInfoFromExtension(string fileExt)
+        {
+            fileExt = fileExt.TrimStart(".".ToCharArray()).ToLower().Trim();
+            switch (fileExt)
+            {
+                case "jpg":
+                case "jpeg":
+                    return GetImageCodecInfoFromMimeType("image/jpeg");
+                case "png":
+                    return GetImageCodecInfoFromMimeType("image/png");
+                case "gif":
+                    //use png codec for gif to preserve transparency
+                    //return GetImageCodecInfoFromMimeType("image/gif");
+                    return GetImageCodecInfoFromMimeType("image/png");
+                default:
+                    return GetImageCodecInfoFromMimeType("image/jpeg");
             }
         }
 

@@ -28,12 +28,13 @@ using Nop.Web.Framework.Security;
 using Nop.Web.Models.Customer;
 using Mob.Core;
 using System.Web;
+using Nop.Web.Controllers;
 
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class mobSocialController : Nop.Web.Controllers.BaseNopController
+    public class mobSocialController : BasePublicController
     {
 
         private IPermissionService _permissionService;

@@ -42,7 +42,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                     if (b.Width <= maxSize)
                         return pictureBinary;
 
-                    var newSize = CalculateDimensions(b.Size, maxSize, ResizeTypes.Width);
+                    var newSize = CalculateDimensions(b.Size, maxSize, ResizeType.Width);
 
                     using (var newBitMap = new Bitmap(newSize.Width, newSize.Height))
                     {
@@ -112,13 +112,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         /// <param name="targetSize">The target picture size (longest side)</param>
         /// <param name="resizeType"></param>
         /// <returns></returns>
-        protected virtual Size CalculateDimensions(Size originalSize, int targetSize, ResizeTypes resizeType)
+        protected virtual Size CalculateDimensions(Size originalSize, int targetSize, ResizeType resizeType)
         {
             var newSize = new Size();
 
             switch (resizeType)
             {
-                case ResizeTypes.LongestSide:
+                case ResizeType.LongestSide:
                     if (originalSize.Height > originalSize.Width) // portrait 
                     {
                         newSize.Width = (int)(originalSize.Width * (float)(targetSize / (float)originalSize.Height));
@@ -130,11 +130,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                         newSize.Width = targetSize;
                     }    
                     break;
-                case ResizeTypes.Width:
+                case ResizeType.Width:
                     newSize.Height = (int)(originalSize.Height * (float)(targetSize / (float)originalSize.Width));
                     newSize.Width = targetSize;
                     break;
-                case ResizeTypes.Height:
+                case ResizeType.Height:
                     newSize.Width = (int)(originalSize.Width * (float)(targetSize / (float)originalSize.Height));
                     newSize.Height = targetSize;
                     break;

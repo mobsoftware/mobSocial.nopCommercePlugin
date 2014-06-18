@@ -11,10 +11,11 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Services.Localization;
 using Nop.Services.Media;
 using Nop.Services.Security;
+using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class SkateMoveController : BaseNopController
+    public class SkateMoveController : BasePublicController
     {
         private readonly IMobSocialService _socialNetworkService;
         private readonly mobSocialSettings _socialNetworkSettings;
