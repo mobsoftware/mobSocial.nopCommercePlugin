@@ -1,35 +1,55 @@
 ﻿@using Nop.Core;
+@using Nop.Core.Domain
 @using Nop.Core.Infrastructure;
 @using Nop.Web.Framework.UI
 @{
+    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
+    var supportResponsive = EngineContext.Current.Resolve<StoreInformationSettings>().ResponsiveDesignSupported;
+    //we do not support responsive for RTL yet
+    if (supportRtl)
+    {
+        supportResponsive = false;
+    }
     //add browser specific CSS files
     var browser = Request.Browser;
     if (browser.Browser == "IE" && browser.MajorVersion == 6)
     {
-        Html.AppendCssFileParts("~/Themes/mobSocial/Content/ie6.css");
+        Html.AppendCssFileParts("~/Themes/DefaultClean/Content/ie6.css");
     }
     else if (browser.Browser == "IE" && browser.MajorVersion == 7)
     {
-        Html.AppendCssFileParts("~/Themes/mobSocial/Content/ie7.css");
+        Html.AppendCssFileParts("~/Themes/DefaultClean/Content/ie7.css");
     }
-
+    //responsive design
+    if (supportResponsive)
+    {
+        Html.AppendCssFileParts("~/Themes/DefaultClean/Content/responsive.css");
+    }
     //add main CSS file
-    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
     if (supportRtl)
     {
-        @*Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.rtl.css"));
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.rtl.css"));*@
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/styles.rtl.css"));
+        Html.AppendCssFileParts("~/Themes/DefaultClean/Content/styles.rtl.css");
+        @*Html.AppendCssFileParts(Url.Content("~/Themes/DefaultClean/Content/menu.rtl.css"));
+            Html.AppendCssFileParts(Url.Content("~/Themes/DefaultClean/Content/custom.rtl.css"));*@
+        Html.AppendCssFileParts(Url.Content("~/Themes/DefaultClean/Content/styles.rtl.css"));
     }
     else
     {
-        @*Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/menu.css"));
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/custom.css"));*@
-        Html.AppendCssFileParts(Url.Content("~/Themes/mobSocial/Content/styles.css"));
+        Html.AppendCssFileParts("~/Themes/DefaultClean/Content/styles.css");
+        @*Html.AppendCssFileParts(Url.Content("~/Themes/DefaultClean/Content/menu.css"));
+            Html.AppendCssFileParts(Url.Content("~/Themes/DefaultClean/Content/custom.css"));*@
+        Html.AppendCssFileParts(Url.Content("~/Themes/DefaultClean/Content/styles.css"));
+    }
+    //responsive design
+    if (supportResponsive)
+    {
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     }
 
-    Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/font-awesome.min.css");
-    Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/mobSocial-custom.css");
-    Html.AddScriptParts("~/Themes/mobSocial/Content/mobSocial/common.js");       
-	
+    Html.AddCssFileParts("~/Themes/DefaultClean/Content/mobSocial/font-awesome.min.css");
+    Html.AddCssFileParts("~/Themes/DefaultClean/Content/mobSocial/mobSocial.css");
+    // Put all your custom styles here to keep them separate from the core styles and so they
+    // will not get overwritten when you upgrade to a new version of mobSocial.
+    Html.AddCssFileParts("~/Themes/DefaultClean/Content/mobSocial/mobSocial-custom.css");
+    Html.AddScriptParts("~/Themes/DefaultClean/Content/mobSocial/common.js");
 }

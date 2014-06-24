@@ -1,3 +1,6 @@
+/* Put all your custom styles here to keep them separate from the core styles and so they will not get overwritten when you upgrade to a 
+    new version of mobSocial. */
+
 a.logo {
     background: url("../images/logo.png") repeat scroll 0px 0px transparent;
     display: block;
@@ -9,6 +12,7 @@ a.logo {
 li a:hover {
     text-decoration: underline;    
 }
+
 
 
 
