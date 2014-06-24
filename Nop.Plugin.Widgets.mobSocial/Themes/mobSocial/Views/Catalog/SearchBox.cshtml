@@ -1,154 +1,140 @@
 ﻿@model SearchBoxModel
 @using Nop.Web.Models.Catalog;
 
-@{
-    Html.AddCssFileParts("~/Themes/mobSocial/Content/mobSocial/search-box-custom.css");
-}
 
-    
-    
-    
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { onsubmit = "return check_small_search_form()" }))
+{
+    <div class="search-box">
+        <span class="search-box-label">Search</span>
 
-    @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {onsubmit = "return check_small_search_form()"}))
-    {
-        <div class="search-box">
-            <span class="search-box-label">Search</span>
-  
-            <div class="search-box-border"><span class="search-type-button button-1">
-                                               <span class="search-type-selection">Store</span>
-                                               <span class="arrow-s search-dropdown-arrow"></span>
-                                           </span><ul class="search-dropdown">
-                                                      <li>Store</li>
-                                                      <li>@T("SearchDropdown.PeopleSearchText")</li>
-                                                  </ul><input type="text" class="search-box-text" id="small-searchterms" @(Model.AutoCompleteEnabled ? Html.Raw(" autocomplete=\"off\"") : null) value="" name="q" /><input type="submit" class="button-1 search-box-button" value="Go" /></div><script type="text/javascript">
+        <div class="search-box-border">
 
-                                                                                                                                                                                                                                                                                                    function check_small_search_form() {
-                                                                                                                                                                                                                                                                                                        var search_terms = $("#small-searchterms");
-                                                                                                                                                                                                                                                                                                        if (search_terms.val() == "") {
-                                                                                                                                                                                                                                                                                                            alert('@T("Search.EnterSearchTerms")');
-                                                                                                                                                                                                                                                                                                            search_terms.focus();
-                                                                                                                                                                                                                                                                                                            return false;
-                                                                                                                                                                                                                                                                                                        }
+            <div class="search-type-button button-1">
+                <select>
+                    <option>Store</option>
+                    <option>@T("SearchDropdown.PeopleSearchText")</option>
+                </select>
+                <span class="arrow-s search-dropdown-arrow"></span>
+            </div>
 
-                                                                                                                                                                                                                                                                                                        return true;
-                                                                                                                                                                                                                                                                                                    }
+            <input type="text" class="search-box-text" id="small-searchterms" @(Model.AutoCompleteEnabled ? Html.Raw(" autocomplete=\"off\"") : null) value="" name="q" />
+            <input type="submit" class="button-1 search-box-button" value="Go" />
+        </div>
 
-                                                                                                                                                                                                                                                                                                    function RenderProductItem(ul, item) {
-                                                                                                                                                                                                                                                                                                        var t = item.label;
-                                                                                                                                                                                                                                                                                                        //html encode
-                                                                                                                                                                                                                                                                                                        t = htmlEncode(t);
-                                                                                                                                                                                                                                                                                                        return $("<li></li>")
-                                                                                                                                                                                                                                                                                                            .data("item.autocomplete", item)
-                                                                                                                                                                                                                                                                                                            .append("<a>@(Model.ShowProductImagesInSearchAutoComplete ? Html.Raw("<img src='\" + item.productpictureurl + \"'>") : null )" + t + "</a>")
-                                                                                                                                                                                                                                                                                                            .appendTo(ul);
-                                                                                                                                                                                                                                                                                                    }
+        <script type="text/javascript">
 
-                                                                                                                                                                                                                                                                                                    @if (Model.AutoCompleteEnabled)
+            function check_small_search_form() {
+                var search_terms = $("#small-searchterms");
+                if (search_terms.val() == "") {
+                    alert('@T("Search.EnterSearchTerms")');
+                    search_terms.focus();
+                    return false;
+                }
+
+                return true;
+            }
+
+            function RenderProductItem(ul, item) {
+                var t = item.label;
+                //html encode
+                t = htmlEncode(t);
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>@(Model.ShowProductImagesInSearchAutoComplete ? Html.Raw("<img src='\" + item.productpictureurl + \"'>") : null )" + t + "</a>")
+                    .appendTo(ul);
+            }
+
+            @if (Model.AutoCompleteEnabled)
                                                                                                                                                                                                                                                                                                     {
                                                                                                                                                                                                                                                                                                         <text>
-                $(function () {
+            $(function () {
+                $('#small-searchterms').autocomplete(productSearchOptions)
+                .data("ui-autocomplete")._renderItem = RenderProductItem
+            });
+
+            </text>
+                                                                                                                                                                                                                                                                                                    }
+
+
+            $('.search-type-button, .arrow-s .search-dropdown-arrow').click(function() {
+                $('.search-dropdown').toggle();
+            });
+            //alert($('.search-type-selection').text());
+
+            setupSearchType($('.search-type-selection').text());
+
+            $('.search-type-button select').change(function() {
+                var searchType = $(this).val();
+                setupSearchType(searchType);
+                $('.search-box-text').focus();
+            });
+
+
+            function setupSearchType(searchType) {
+                if (searchType == "Store") {
                     $('#small-searchterms').autocomplete(productSearchOptions)
-                    .data("ui-autocomplete")._renderItem = RenderProductItem
-                });
+                        .data("ui-autocomplete")._renderItem = RenderProductItem;
+                } else if (searchType == "@T("SearchDropdown.PeopleSearchText")") {
+                    $('#small-searchterms').autocomplete(peopleSearchOptions)
+                        .data("ui-autocomplete")._renderItem = renderPeopleItem;
+                }
+            }
 
-                </text>
-                                                                                                                                                                                                                                                                                                    }
-
-
-                                                                                                                                                                                                                                                                                                    $('.search-type-button, .arrow-s .search-dropdown-arrow').click(function() {
-                                                                                                                                                                                                                                                                                                        $('.search-dropdown').toggle();
-                                                                                                                                                                                                                                                                                                    });
-                                                                                                                                                                                                                                                                                                    //alert($('.search-type-selection').text());
-
-                                                                                                                                                                                                                                                                                                    setupSearchType($('.search-type-selection').text());
-
-                                                                                                                                                                                                                                                                                                    $('.search-dropdown li').click(function() {
-
-                                                                                                                                                                                                                                                                                                        var searchType = $(this).text();
-                                                                                                                                                                                                                                                                                                        $('.search-type-selection').text(searchType);
+            ;
 
 
-                                                                                                                                                                                                                                                                                                        setupSearchType(searchType);
-
-                                                                                                                                                                                                                                                                                                        $('.search-dropdown').toggle();
-                                                                                                                                                                                                                                                                                                        $('.search-box-text').focus();
-
-
-                                                                                                                                                                                                                                                                                                    });
+            $('.search-type-button').mouseover(function() {
+                $('.search-dropdown-arrow').addClass('search-dropdown-arrow-hover');
+            }).mouseout(function() {
+                $('.search-dropdown-arrow').removeClass('search-dropdown-arrow-hover');
+            });
 
 
-                                                                                                                                                                                                                                                                                                    function setupSearchType(searchType) {
-                                                                                                                                                                                                                                                                                                        if (searchType == "Store") {
-
-                                                                                                                                                                                                                                                                                                            $('.search-box-text').removeClass('people');
-                                                                                                                                                                                                                                                                                                            $('.search-box-text').addClass('store');
-
-                                                                                                                                                                                                                                                                                                            $('#small-searchterms').autocomplete(productSearchOptions)
-                                                                                                                                                                                                                                                                                                                .data("ui-autocomplete")._renderItem = RenderProductItem;
-                                                                                                                                                                                                                                                                                                        } else if (searchType == "@T("SearchDropdown.PeopleSearchText")") {
-
-                                                                                                                                                                                                                                                                                                            $('.search-box-text').removeClass('store');
-                                                                                                                                                                                                                                                                                                            $('.search-box-text').addClass('people');
-
-                                                                                                                                                                                                                                                                                                            $('#small-searchterms').autocomplete(peopleSearchOptions)
-                                                                                                                                                                                                                                                                                                                .data("ui-autocomplete")._renderItem = renderPeopleItem;
-                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                    }
-
-                                                                                                                                                                                                                                                                                                    ;
+            var productSearchOptions = {
+                delay: 500,
+                minLength: @(Model.SearchTermMinimumLength.ToString()),
+                source: '@(Url.RouteUrl("ProductSearchAutoComplete"))',
+                select: function(event, ui) {
+                    $("#small-searchterms").val(ui.item.label);
+                    setLocation(ui.item.producturl);
+                    return false;
+                }
+            };
 
 
-                                                                                                                                                                                                                                                                                                    $('.search-type-button').mouseover(function() {
-                                                                                                                                                                                                                                                                                                        $('.search-dropdown-arrow').addClass('search-dropdown-arrow-hover');
-                                                                                                                                                                                                                                                                                                    }).mouseout(function() {
-                                                                                                                                                                                                                                                                                                        $('.search-dropdown-arrow').removeClass('search-dropdown-arrow-hover');
-                                                                                                                                                                                                                                                                                                    });
+            var peopleSearchOptions = {
+                delay: 500,
+                minLength: @(Model.SearchTermMinimumLength.ToString()),
+                source: '@(Url.RouteUrl("PeopleSearchAutoComplete"))',
+                select: function(event, ui) {
+                    $("#small-searchterms").val(ui.item.label);
+                    setLocation(ui.item.ProfileUrl);
+                    return false;
+                },
+                open: function() {
+                    $('.ui-menu').css({
+                        border: '1px solid #333333',
+                        'border-radius': '0px',
+                        width: 300
+                    });
+                }
+            };
 
 
-                                                                                                                                                                                                                                                                                                    var productSearchOptions = {
-                                                                                                                                                                                                                                                                                                        delay: 500,
-                                                                                                                                                                                                                                                                                                        minLength: @(Model.SearchTermMinimumLength.ToString()),
-                                                                                                                                                                                                                                                                                                        source: '@(Url.RouteUrl("ProductSearchAutoComplete"))',
-                                                                                                                                                                                                                                                                                                        select: function(event, ui) {
-                                                                                                                                                                                                                                                                                                            $("#small-searchterms").val(ui.item.label);
-                                                                                                                                                                                                                                                                                                            setLocation(ui.item.producturl);
-                                                                                                                                                                                                                                                                                                            return false;
-                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                    };
+            function renderPeopleItem(ul, item) {
+                var t = item.DisplayName;
+                //html encode
+                t = htmlEncode(t);
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append('<a href="' + item.ProfileUrl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
+                        '"></div><span class="title">' + t + '</span></a>')
+                    .appendTo(ul);
+            }
 
+            ;
 
-                                                                                                                                                                                                                                                                                                    var peopleSearchOptions = {
-                                                                                                                                                                                                                                                                                                        delay: 500,
-                                                                                                                                                                                                                                                                                                        minLength: @(Model.SearchTermMinimumLength.ToString()),
-                                                                                                                                                                                                                                                                                                        source: '@(Url.RouteUrl("PeopleSearchAutoComplete"))',
-                                                                                                                                                                                                                                                                                                        select: function(event, ui) {
-                                                                                                                                                                                                                                                                                                            $("#small-searchterms").val(ui.item.label);
-                                                                                                                                                                                                                                                                                                            setLocation(ui.item.ProfileUrl);
-                                                                                                                                                                                                                                                                                                            return false;
-                                                                                                                                                                                                                                                                                                        },
-                                                                                                                                                                                                                                                                                                        open: function() {
-                                                                                                                                                                                                                                                                                                            $('.ui-menu').css({
-                                                                                                                                                                                                                                                                                                                border: '1px solid #333333',
-                                                                                                                                                                                                                                                                                                                'border-radius': '0px',
-                                                                                                                                                                                                                                                                                                                width: 300
-                                                                                                                                                                                                                                                                                                            });
-                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                    };
-
-
-                                                                                                                                                                                                                                                                                                    function renderPeopleItem(ul, item) {
-                                                                                                                                                                                                                                                                                                        var t = item.DisplayName;
-                                                                                                                                                                                                                                                                                                        //html encode
-                                                                                                                                                                                                                                                                                                        t = htmlEncode(t);
-                                                                                                                                                                                                                                                                                                        return $("<li></li>")
-                                                                                                                                                                                                                                                                                                            .data("item.autocomplete", item)
-                                                                                                                                                                                                                                                                                                            .append('<a href="' + item.ProfileUrl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
-                                                                                                                                                                                                                                                                                                                '"></div><span class="title">' + t + '</span></a>')
-                                                                                                                                                                                                                                                                                                            .appendTo(ul);
-                                                                                                                                                                                                                                                                                                    }
-
-                                                                                                                                                                                                                                                                                                    ;
-
-                                                                                                                                                                                                                                                                                                </script></div>
-    }
+        </script>
+    </div>
+}
 
