@@ -1,7 +1,6 @@
 ﻿@model SearchBoxModel
 @using Nop.Web.Models.Catalog;
 
-
 @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { onsubmit = "return check_small_search_form()" }))
 {
     <div class="search-box">
@@ -9,13 +8,11 @@
 
         <div class="search-box-border">
 
-            <div class="search-type-button button-1">
-                <select>
-                    <option>Store</option>
-                    <option>@T("SearchDropdown.PeopleSearchText")</option>
-                </select>
-                <span class="arrow-s search-dropdown-arrow"></span>
-            </div>
+
+            <select id="searchTypeDropDown">
+                <option>Store</option>
+                <option>@T("SearchDropdown.PeopleSearchText")</option>
+            </select>
 
             <input type="text" class="search-box-text" id="small-searchterms" @(Model.AutoCompleteEnabled ? Html.Raw(" autocomplete=\"off\"") : null) value="" name="q" />
             <input type="submit" class="button-1 search-box-button" value="Go" />
@@ -49,25 +46,27 @@
                                                                                                                                                                                                                                                                                                         <text>
             $(function () {
                 $('#small-searchterms').autocomplete(productSearchOptions)
-                .data("ui-autocomplete")._renderItem = RenderProductItem
+                .data("ui-autocomplete")._renderItem = RenderProductItem;
+
+
+                //TODO: Find workaround when running in IE Compatibility mode and calling selectmenu or wait for jQuery UI or IE team to fix this.
+                $('#searchTypeDropDown').selectmenu({
+                    change: function(event, ui) {
+                        var searchType = $(this).val();
+                        setupSearchType(searchType);
+                        $('.search-box-text').focus();
+                    }
+                });
+
+
+
             });
 
             </text>
                                                                                                                                                                                                                                                                                                     }
 
-
-            $('.search-type-button, .arrow-s .search-dropdown-arrow').click(function() {
-                $('.search-dropdown').toggle();
-            });
-            //alert($('.search-type-selection').text());
-
             setupSearchType($('.search-type-selection').text());
 
-            $('.search-type-button select').change(function() {
-                var searchType = $(this).val();
-                setupSearchType(searchType);
-                $('.search-box-text').focus();
-            });
 
 
             function setupSearchType(searchType) {
@@ -78,9 +77,7 @@
                     $('#small-searchterms').autocomplete(peopleSearchOptions)
                         .data("ui-autocomplete")._renderItem = renderPeopleItem;
                 }
-            }
-
-            ;
+            };
 
 
             $('.search-type-button').mouseover(function() {
@@ -121,6 +118,15 @@
             };
 
 
+            function renderSearchItem(ul, item) {
+                t = htmlEncode(t);
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append('<a href="' + item.ProfileUrl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
+                        '"></div><span class="title">' + t + '</span></a>')
+                    .appendTo(ul);
+            }
+
             function renderPeopleItem(ul, item) {
                 var t = item.DisplayName;
                 //html encode
@@ -130,9 +136,7 @@
                     .append('<a href="' + item.ProfileUrl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
                         '"></div><span class="title">' + t + '</span></a>')
                     .appendTo(ul);
-            }
-
-            ;
+            };
 
         </script>
     </div>

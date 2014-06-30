@@ -171,6 +171,8 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Themes\mobSocial\Content\scripts\jquery-1.11.min.js" />
+    <Content Include="Themes\mobSocial\Content\scripts\jquery-ui-1.11.min.js" />
     <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.css" />
     <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.old2.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\add-friend-button.js" />
@@ -206,6 +208,7 @@
     <None Include="Themes\mobSocial\Views\Profile\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
+    <Content Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml" />
     <None Include="web.config">
       <SubType>Designer</SubType>
     </None>
