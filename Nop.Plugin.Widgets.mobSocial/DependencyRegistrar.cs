@@ -77,12 +77,17 @@ namespace Nop.Plugin.Widgets.MobSocial
                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
                   .InstancePerHttpRequest();
 
+            builder.RegisterType<EfRepository<EventPage>>().As<IRepository<EventPage>>()
+                .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+                .InstancePerHttpRequest();
+
+
+            // Service Injection
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerHttpRequest();
             builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerHttpRequest();
-
             builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerHttpRequest();
-
             builder.RegisterType<CustomerVideoAlbumService>().As<ICustomerVideoAlbumService>().InstancePerHttpRequest();
+            builder.RegisterType<EventPageService>().As<IEventPageService>().InstancePerHttpRequest();
 
             
         }

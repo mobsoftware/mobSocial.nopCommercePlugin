@@ -23,6 +23,13 @@ namespace Nop.Plugin.Widgets.MobSocial
                            "{SeName}",
                            new { controller = "Profile", action = "Index" },
                            new[] { "Nop.Web.Controllers" });
+
+
+            // for use in views
+            routes.MapLocalizedRoute("EventPageUrl",
+                           "{SeName}",
+                           new { controller = "EventPage", action = "Index" },
+                           new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" });
             
 
 

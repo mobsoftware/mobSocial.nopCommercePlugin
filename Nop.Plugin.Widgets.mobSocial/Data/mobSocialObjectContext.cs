@@ -16,6 +16,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
+            modelBuilder.Configurations.Add(new EventPageMap());
+
             modelBuilder.Configurations.Add(new GroupPageMap());
             modelBuilder.Configurations.Add(new GroupPageMemberMap());
 
@@ -60,7 +62,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             try
             {
                 // uninstall regardless of errors
-                var dbScript = "DROP TABLE GroupPageMember; " +
+
+                // Remove Url Records
+                var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage'; ";
+
+                // DROP Tables
+                dbScript = dbScript + "DROP TABLE EventPage; " +
+                               "DROP TABLE GroupPageMember; " +
                                "DROP TABLE CustomerAlbumPicture; " +
                                "DROP TABLE CustomerAlbum; " +
                                "DROP TABLE CustomerVideoLike; " +
@@ -70,9 +78,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                                "DROP TABLE TeamPage; " +
                                "DROP TABLE CustomerSkateMove; " +
                                "DROP TABLE SkateMove; " +
-                               "DROP TABLE CustomerFriend;"
-                    ;
-
+                               "DROP TABLE CustomerFriend; ";
 
                 Database.ExecuteSqlCommand(dbScript);
                 SaveChanges();

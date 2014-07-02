@@ -94,11 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\EventPageController.cs" />
+    <Compile Include="Core\EventPageService.cs" />
+    <Compile Include="Core\IGenericService.cs" />
+    <Compile Include="Core\IEventPageService.cs" />
     <Compile Include="Core\ICustomerVideoAlbumService.cs" />
     <Compile Include="Core\CustomerVideoAlbumService.cs" />
     <Compile Include="Core\HandleJsonErrorAttribute.cs" />
     <Compile Include="Core\ICustomerAlbumPictureService.cs" />
     <Compile Include="Core\CustomerAlbumPictureService.cs" />
+    <Compile Include="Data\EventPageMap.cs" />
     <Compile Include="Data\CustomerVideoLikeMap.cs" />
     <Compile Include="Data\CustomerVideoAlbumMap.cs" />
     <Compile Include="Data\CustomerVideoMap.cs" />
@@ -109,6 +114,7 @@
     <Compile Include="Domain\CustomerVideoAlbum.cs" />
     <Compile Include="Domain\CustomerVideo.cs" />
     <Compile Include="Domain\CustomerAlbum.cs" />
+    <Compile Include="Domain\EventPage.cs" />
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="Core\CustomerUpdatedEventHandler.cs" />
     <Compile Include="Core\GenericUrlEventHandler.cs" />
@@ -194,6 +200,7 @@
     <None Include="Themes\mobSocial\Views\Common\Menu.cshtml" />
     <None Include="Themes\mobSocial\Views\Customer\Info.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
+    <None Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />
