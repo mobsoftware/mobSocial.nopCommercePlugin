@@ -12,7 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public int PeopleSearchTermMinimumLength { get; set; }
 
-        public int PeopleSearchAutoCompleteNumberOfPeople { get; set; }
+        public int PeopleSearchAutoCompleteNumberOfResults { get; set; }
 
         public bool PeopleSearchAutoCompleteEnabled { get; set; }
 
@@ -21,5 +21,9 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int MaximumMainAlbumPictures { get; set; }
 
         public int MaximumMainAlbumVideos { get; set; }
+
+        public int EventPageSearchTermMinimumLength { get; set; }
+
+        public int EventPageSearchAutoCompleteNumberOfResults { get; set; }
     }
 }

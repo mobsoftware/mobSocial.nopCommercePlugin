@@ -170,10 +170,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.PeopleSearchTermMinimumLength)
                 return Json(new object());
 
-            _mobSocialSettings.PeopleSearchAutoCompleteNumberOfPeople = 10;
+            _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults = 10;
 
             var customers = _customerService.GetAllCustomers(null, null, 0, 0, null, null, null, term, null, 0, 0,
-                                                            null, null, null, false, null, 0, _mobSocialSettings.PeopleSearchAutoCompleteNumberOfPeople);
+                                                            null, null, null, false, null, 0, _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults);
             
             
             var models = new List<object>();

@@ -201,6 +201,7 @@
     <None Include="Themes\mobSocial\Views\Customer\Info.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
     <None Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
+    <Content Include="Themes\mobSocial\Views\EventPage\Search.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />

@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using Nop.Services.Seo;
 using Nop.Core.Domain.Seo;
+using System.Collections.Generic;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
@@ -112,6 +113,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public EventPage GetById(int id)
         {
             return _eventPageRepository.GetById(id);
+        }
+
+        public List<EventPage> GetAll(string term, int count)
+        {
+            // TODO: Later make a stored procedure.
+            return _eventPageRepository.Table
+                .Where(x => x.Name.ToLower().Contains(term))
+                .Take(count)
+                .ToList();
+
         }
 
 

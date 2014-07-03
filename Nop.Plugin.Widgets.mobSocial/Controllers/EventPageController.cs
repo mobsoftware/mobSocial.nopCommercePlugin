@@ -18,6 +18,7 @@ using Nop.Web.Models.Common;
 using Nop.Web.Models.Profile;
 using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial;
 
 namespace Nop.Web.Controllers
 {
@@ -34,12 +35,14 @@ namespace Nop.Web.Controllers
         private readonly CustomerSettings _customerSettings;
         private readonly MediaSettings _mediaSettings;
         private readonly IEventPageService _eventPageService;
+        private readonly mobSocialSettings _mobSocialSettings;
 
         public EventPageController(IForumService forumService, ILocalizationService localizationService,
             IPictureService pictureService, ICountryService countryService,
             ICustomerService customerService, IDateTimeHelper dateTimeHelper,
             ForumSettings forumSettings, CustomerSettings customerSettings,
-            MediaSettings mediaSettings, IEventPageService eventPageService)
+            MediaSettings mediaSettings, IEventPageService eventPageService,
+            mobSocialSettings mobSocialSettings)
         {
             _forumService = forumService;
             _localizationService = localizationService;
@@ -51,6 +54,7 @@ namespace Nop.Web.Controllers
             _customerSettings = customerSettings;
             _mediaSettings = mediaSettings;
             _eventPageService = eventPageService;
+            _mobSocialSettings = mobSocialSettings;
         }
 
         public ActionResult Index(int? id, int? page)
@@ -259,5 +263,40 @@ namespace Nop.Web.Controllers
 
             return PartialView(model);
         }
+
+
+        public ActionResult SearchTermAutoComplete(string term)
+        {
+            //if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.EventPageSearchTermMinimumLength)
+            //    return Json(new object());
+
+            //var customers = _eventPageService.GetAll(term, _mobSocialSettings.EventPageSearchAutoCompleteNumberOfResults);
+
+
+            //var models = new List<object>();
+
+            //foreach (var c in customers)
+            //{
+
+            //    models.Add(new
+            //    {
+            //        DisplayName = c.GetFullName(),
+            //        PictureUrl = _pictureService.GetPictureUrl(
+            //            c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 50),
+
+            //        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = c.GetSeName(0) }),
+
+            //    });
+
+
+            //}
+
+            //return Json(models, JsonRequestBehavior.AllowGet);
+
+            return Json(null);
+
+        }
+
+
     }
 }

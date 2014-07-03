@@ -17,6 +17,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         void Update(T entity);
 
         T GetById(int id);
+        List<T> GetAll(string term, int count);
 
 
     }
