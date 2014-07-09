@@ -119,7 +119,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         {
             // TODO: Later make a stored procedure.
             return _eventPageRepository.Table
-                .Where(x => x.Name.ToLower().Contains(term))
+                .Where(x => x.Name.ToLower().Contains(term.ToLower()))
                 .Take(count)
                 .ToList();
 

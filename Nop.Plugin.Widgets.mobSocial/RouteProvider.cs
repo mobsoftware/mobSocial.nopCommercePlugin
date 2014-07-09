@@ -61,8 +61,8 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             routes.MapLocalizedRoute("EventPageSearchAutoComplete",
-                            "EventPage/SearchTermAutoComplete",
-                            new { controller = "EventPage", action = "SearchTermAutoComplete" },
+                            "EventPage/EventPageSearchAutoComplete",
+                            new { controller = "EventPage", action = "EventPageSearchAutoComplete" },
                             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" });
 
 

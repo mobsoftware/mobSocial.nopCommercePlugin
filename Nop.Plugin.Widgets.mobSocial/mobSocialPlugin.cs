@@ -136,6 +136,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmFriendButtonText", "Confirm");
             this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmedButtonText", "Confirmed!");
             this.AddOrUpdatePluginLocaleResource("SearchDropdown.PeopleSearchText", "People");
+            this.AddOrUpdatePluginLocaleResource("SearchDropdown.EventPageSearchText", "Events");
 
             // Update core locales. do not remove core locales during uninstall
             this.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}"); 

@@ -265,36 +265,30 @@ namespace Nop.Web.Controllers
         }
 
 
-        public ActionResult SearchTermAutoComplete(string term)
+        public ActionResult EventPageSearchAutoComplete(string term)
         {
-            //if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.EventPageSearchTermMinimumLength)
-            //    return Json(new object());
+            if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.EventPageSearchTermMinimumLength)
+                return Json(new object());
 
-            //var customers = _eventPageService.GetAll(term, _mobSocialSettings.EventPageSearchAutoCompleteNumberOfResults);
-
-
-            //var models = new List<object>();
-
-            //foreach (var c in customers)
-            //{
-
-            //    models.Add(new
-            //    {
-            //        DisplayName = c.GetFullName(),
-            //        PictureUrl = _pictureService.GetPictureUrl(
-            //            c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 50),
-
-            //        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = c.GetSeName(0) }),
-
-            //    });
+            var items = _eventPageService.GetAll(term, _mobSocialSettings.EventPageSearchAutoCompleteNumberOfResults);
 
 
-            //}
+            var models = new List<object>();
 
-            //return Json(models, JsonRequestBehavior.AllowGet);
+            foreach (var item in items)
+            {
 
-            return Json(null);
+                models.Add(new
+                {
+                    DisplayName = item.Name,
+                    Url = Url.RouteUrl("EventPageUrl", new { SeName = item.GetSeName() }),
 
+                });
+
+
+            }
+
+            return Json(models, JsonRequestBehavior.AllowGet);
         }
 
 

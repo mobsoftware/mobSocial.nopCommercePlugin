@@ -199,6 +199,7 @@
     <None Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
     <None Include="Themes\mobSocial\Views\Common\Menu.cshtml" />
     <None Include="Themes\mobSocial\Views\Customer\Info.cshtml" />
+    <Content Include="Themes\mobSocial\Views\EventPage\Search.js" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
     <None Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\EventPage\Search.cshtml" />

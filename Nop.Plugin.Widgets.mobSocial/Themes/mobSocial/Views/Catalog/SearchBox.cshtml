@@ -12,6 +12,7 @@
             <select id="searchTypeDropDown">
                 <option>Store</option>
                 <option>@T("SearchDropdown.PeopleSearchText")</option>
+                <option>@T("SearchDropdown.EventPageSearchText")</option>
             </select>
 
             <input type="text" class="search-box-text" id="small-searchterms" @(Model.AutoCompleteEnabled ? Html.Raw(" autocomplete=\"off\"") : null) value="" name="q" />
@@ -31,22 +32,23 @@
                 return true;
             }
 
-            function RenderProductItem(ul, item) {
-                var t = item.label;
-                //html encode
-                t = htmlEncode(t);
-                return $("<li></li>")
-                    .data("item.autocomplete", item)
-                    .append("<a>@(Model.ShowProductImagesInSearchAutoComplete ? Html.Raw("<img src='\" + item.productpictureurl + \"'>") : null )" + t + "</a>")
-                    .appendTo(ul);
-            }
+            @*function RenderProductItem(ul, item) {
+        var t = item.label;
+        //html encode
+        t = htmlEncode(t);
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a>@(Model.ShowProductImagesInSearchAutoComplete ? Html.Raw("<img src='\" + item.productpictureurl + \"'>") : null )" + t + "</a>")
+            .appendTo(ul);
+    }*@
 
             @if (Model.AutoCompleteEnabled)
                                                                                                                                                                                                                                                                                                     {
                                                                                                                                                                                                                                                                                                         <text>
             $(function () {
                 $('#small-searchterms').autocomplete(productSearchOptions)
-                .data("ui-autocomplete")._renderItem = RenderProductItem;
+                .data("ui-autocomplete")
+                    ._renderItem = renderProductItem;
 
 
                 //TODO: Find workaround when running in IE Compatibility mode and calling selectmenu or wait for jQuery UI or IE team to fix this.
@@ -65,17 +67,28 @@
             </text>
                                                                                                                                                                                                                                                                                                     }
 
+
+            $('.search-type-button, .arrow-s .search-dropdown-arrow').click(function() {
+
+
+            });
+            //alert($('.search-type-selection').text());
+
             setupSearchType($('.search-type-selection').text());
+
 
 
 
             function setupSearchType(searchType) {
                 if (searchType == "Store") {
                     $('#small-searchterms').autocomplete(productSearchOptions)
-                        .data("ui-autocomplete")._renderItem = RenderProductItem;
+                        .data("ui-autocomplete")._renderItem = renderProductItem;
                 } else if (searchType == "@T("SearchDropdown.PeopleSearchText")") {
                     $('#small-searchterms').autocomplete(peopleSearchOptions)
                         .data("ui-autocomplete")._renderItem = renderPeopleItem;
+                } else if (searchType == "@T("SearchDropdown.EventPageSearchText")") {
+                    $('#small-searchterms').autocomplete(eventSearchOptions)
+                        .data("ui-autocomplete")._renderItem = renderEventItem;
                 }
             };
 
@@ -86,7 +99,6 @@
                 $('.search-dropdown-arrow').removeClass('search-dropdown-arrow-hover');
             });
 
-
             var productSearchOptions = {
                 delay: 500,
                 minLength: @(Model.SearchTermMinimumLength.ToString()),
@@ -95,6 +107,24 @@
                     $("#small-searchterms").val(ui.item.label);
                     setLocation(ui.item.producturl);
                     return false;
+                }
+            };
+
+            var eventSearchOptions = {
+                delay: 500,
+                minLength: @(Model.SearchTermMinimumLength.ToString()),
+                source: '@(Url.RouteUrl("EventPageSearchAutoComplete"))',
+                select: function(event, ui) {
+                    $("#small-searchterms").val(ui.item.Name);
+                    setLocation(ui.item.Name);
+                    return false;
+                },
+                open: function() {
+                    $('.ui-menu').css({
+                        border: '1px solid #333333',
+                        'border-radius': '0px',
+                        width: 300
+                    });
                 }
             };
 
@@ -117,15 +147,14 @@
                 }
             };
 
-
-            function renderSearchItem(ul, item) {
+            function renderProductItem(ul, item) {
                 t = htmlEncode(t);
                 return $("<li></li>")
                     .data("item.autocomplete", item)
                     .append('<a href="' + item.ProfileUrl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
                         '"></div><span class="title">' + t + '</span></a>')
                     .appendTo(ul);
-            }
+            };
 
             function renderPeopleItem(ul, item) {
                 var t = item.DisplayName;
@@ -134,6 +163,18 @@
                 return $("<li></li>")
                     .data("item.autocomplete", item)
                     .append('<a href="' + item.ProfileUrl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
+                        '"></div><span class="title">' + t + '</span></a>')
+                    .appendTo(ul);
+            };
+
+            function renderEventItem(ul, item) {
+                var t = item.DisplayName;
+
+                //html encode
+                t = htmlEncode(t);
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append('<a href="' + item.Url + '"><div class="people-search-box-thumbnail-container"><img src="' + item.Name +
                         '"></div><span class="title">' + t + '</span></a>')
                     .appendTo(ul);
             };

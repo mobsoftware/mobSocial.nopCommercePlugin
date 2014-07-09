@@ -11,7 +11,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     /// </summary>
     public interface IEventPageService : IGenericService<EventPage>
     {
-
     }
 
 }
