@@ -30,11 +30,13 @@ namespace Nop.Plugin.Widgets.MobSocial
             );
 
 
-            routes.MapRoute("AdminTeam",
-                  "Team",
-                  new { controller = "Team", action = "Index" },
+            routes.MapRoute("ManageTeamPage",
+                  "ManageTeamPage/{action}",
+                  new { controller = "TeamPage", action = "Index" },
                   new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
             );
+
+
 
             routes.MapLocalizedRoute("TeamPage",
                   "Team/{teamId}",
