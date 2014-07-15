@@ -29,6 +29,13 @@ namespace Nop.Plugin.Widgets.MobSocial
                  new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
             );
 
+
+            routes.MapRoute("AdminTeam",
+                  "Team",
+                  new { controller = "Team", action = "Index" },
+                  new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
+            );
+
             routes.MapLocalizedRoute("TeamPage",
                   "Team/{teamId}",
                   new { controller = "mobSocial", action = "Team" },

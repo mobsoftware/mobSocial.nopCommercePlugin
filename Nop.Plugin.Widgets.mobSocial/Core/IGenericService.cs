@@ -7,7 +7,7 @@ using Nop.Plugin.Widgets.MobSocial.Controllers;
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
     /// <summary>
-    /// Product service
+    /// Generic service to standardize Service APIs
     /// </summary>
     public interface IGenericService<T>
     {
@@ -17,8 +17,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         void Update(T entity);
 
         T GetById(int id);
-        List<T> GetAll(string term, int count);
-
+        
+        List<T> GetAll();
+        List<T> GetAll(string term, int count); // for use in autocomplete
 
     }
 

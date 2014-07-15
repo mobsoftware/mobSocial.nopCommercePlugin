@@ -85,8 +85,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         {
             _eventPageRepository.Insert(entity);
 
-            
-            
             UrlRecord urlRecord = new UrlRecord() {
                 EntityId = entity.Id,
                 EntityName = "EntityPage",
@@ -115,6 +113,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return _eventPageRepository.GetById(id);
         }
 
+
+        public List<EventPage> GetAll()
+        {
+            return _eventPageRepository.Table.ToList();
+
+        }
         public List<EventPage> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.

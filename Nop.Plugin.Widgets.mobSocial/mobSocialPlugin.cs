@@ -11,10 +11,12 @@ using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Tasks;
+using Nop.Web.Framework.Web;
+using Nop.Web.Framework.Menu;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
-    public class mobSocialPlugin : BasePlugin, IWidgetPlugin
+    public class mobSocialPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
 
     {
         private readonly MobSocialObjectContext _context;
@@ -23,10 +25,13 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly IMessageTemplateService _messageTemplateService;
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly IMobSocialService _socialNetworkService;
+        private readonly ILocalizationService _localizationService;
 
         public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings socialNetworkSettings, 
-            ISettingService settingService, IMessageTemplateService messageTemplateService, IScheduleTaskService scheduleTaskService,
-            IMobSocialService socialNetworkService)
+            ISettingService settingService, IMessageTemplateService messageTemplateService, 
+            IScheduleTaskService scheduleTaskService,
+            IMobSocialService socialNetworkService,
+            ILocalizationService localizationService)
         {
             _context = context;
             _socialNetworkSettings = socialNetworkSettings;
@@ -34,6 +39,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             _messageTemplateService = messageTemplateService;
             _scheduleTaskService = scheduleTaskService;
             _socialNetworkService = socialNetworkService;
+            _localizationService = localizationService;
         }
 
 
@@ -137,6 +143,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmedButtonText", "Confirmed!");
             this.AddOrUpdatePluginLocaleResource("SearchDropdown.PeopleSearchText", "People");
             this.AddOrUpdatePluginLocaleResource("SearchDropdown.EventPageSearchText", "Events");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.Text", "Social Network");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeams", "Manage Teams");
 
             // Update core locales. do not remove core locales during uninstall
             this.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}"); 
@@ -225,7 +233,35 @@ namespace Nop.Plugin.Widgets.MobSocial
         }
         #endregion
 
+        public bool Authenticate()
+        {
+            return true;
+        }
+
+        public SiteMapNode BuildMenuItem()
+        {
 
 
+            var menuItem = new SiteMapNode()
+            {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
+                ControllerName = "Team",
+                ActionName = "Index",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+            };
+
+            var SubMenuItem = new SiteMapNode()
+            {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeams"),
+                ControllerName = "Team",
+                ActionName = "Index",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+            };
+            menuItem.ChildNodes.Add(SubMenuItem);
+
+            return menuItem;
+        }
     }
 }
