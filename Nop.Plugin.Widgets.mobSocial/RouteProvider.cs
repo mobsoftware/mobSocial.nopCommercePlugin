@@ -30,11 +30,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             );
 
 
-            routes.MapRoute("ManageTeamPage",
-                  "ManageTeamPage/{action}",
-                  new { controller = "TeamPage", action = "Index" },
-                  new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
-            );
+            
 
 
 
@@ -75,8 +71,18 @@ namespace Nop.Plugin.Widgets.MobSocial
                             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" });
 
 
-           
-            
+            // admin routes
+            routes.MapRoute("ManageTeamPage",
+                  "ManageTeamPage/{action}",
+                  new { controller = "TeamPage", action = "Index" },
+                  new[] { "Nop.Plugin.Widgets.MobSocial.Admin.Controllers" }
+            );
+
+            routes.MapRoute("ManageEventPage",
+                  "ManageEventPage/{action}",
+                  new { controller = "ManageEventPage", action = "Index" },
+                  new[] { "Nop.Plugin.Widgets.MobSocial.Admin.Controllers" }
+            );
 
 
         }

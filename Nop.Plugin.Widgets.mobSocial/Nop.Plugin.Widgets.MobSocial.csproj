@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
@@ -174,6 +175,9 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
     <Content Include="Admin\Views\TeamPage\Index.cshtml" />
+    <Content Include="Admin\Views\ManageEventPage\Edit.cshtml" />
+    <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Pictures.cshtml" />
+    <Content Include="Admin\Views\ManageEventPage\Index.cshtml" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

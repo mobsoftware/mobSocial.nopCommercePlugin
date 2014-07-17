@@ -10,20 +10,20 @@ using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 {
-    public partial class TeamPageController : BaseAdminController
+    public partial class ManageEventPageController : BaseAdminController
     {
         
         #region Fields
-        private readonly ITeamPageService _teamPageService;
+        private readonly IEventPageService _eventPageService;
         private readonly IPermissionService _permissionService;
         #endregion
 
         #region Constructors
 
-        public TeamPageController(IPermissionService permissionService, ITeamPageService teamPageService)
+        public ManageEventPageController(IPermissionService permissionService, IEventPageService eventPageService)
         {
             _permissionService = permissionService;
-            _teamPageService = teamPageService;
+            _eventPageService = eventPageService;
         }
 
         #endregion
@@ -49,16 +49,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         public ActionResult GetAll(DataSourceRequest command)
         {
 
-            var teams = _teamPageService.GetAll();
+            var items = _eventPageService.GetAll();
 
             var models = new List<object>();
 
-            foreach(var team in teams)
+            foreach(var item in items)
             {
                 var model = new {
-                    FriendlyName = team.Name,
-                    SystemName = team.Description,
-                    IsPrimaryTaxProvider = team.CreatedBy
+                    FriendlyName = item.Name,
+                    SystemName = item.Name,
+                    IsPrimaryTaxProvider = false
                 };
 
                 models.Add(model);
@@ -68,7 +68,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             var gridModel = new DataSourceResult
             {
                 Data = models,
-                Total = teams.Count()
+                Total = items.Count()
             };
 
             return Json(gridModel);

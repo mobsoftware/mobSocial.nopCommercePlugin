@@ -145,6 +145,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.AddOrUpdatePluginLocaleResource("SearchDropdown.EventPageSearchText", "Events");
             this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.Text", "Social Network");
             this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage", "Manage Team Pages");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage", "Manage Event Pages");
 
             // Update core locales. do not remove core locales during uninstall
             this.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}"); 
@@ -251,7 +252,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                 RouteValues = new RouteValueDictionary() { { "area", null } },
             };
 
-            var SubMenuItem = new SiteMapNode()
+            var manageTeamSubMenu = new SiteMapNode()
             {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
                 ControllerName = "TeamPage",
@@ -259,7 +260,23 @@ namespace Nop.Plugin.Widgets.MobSocial
                 Visible = true,
                 RouteValues = new RouteValueDictionary() { { "area", null } },
             };
-            menuItem.ChildNodes.Add(SubMenuItem);
+
+
+
+
+            var manageEventsSubMenu = new SiteMapNode()
+            {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
+                ControllerName = "ManageEventPage",
+                ActionName = "Index",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+                
+            };
+
+            menuItem.ChildNodes.Add(manageTeamSubMenu);
+            menuItem.ChildNodes.Add(manageEventsSubMenu);
+
 
             return menuItem;
         }
