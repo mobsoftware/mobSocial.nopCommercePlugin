@@ -1,14 +1,14 @@
-﻿@model ProductModel
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
 @{
     //page title
-    ViewBag.Title = T("Admin.Catalog.Products.EditProductDetails").Text;
+    ViewBag.Title = T("Admin.EventPage.EditDetails").Text;
 }
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "product-form" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "eventpage-form" }))
 {
     <div class="section-header">
         <div class="title">
             <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
-            @T("Admin.Catalog.Products.EditProductDetails") - @Model.Name @Html.ActionLink("(" + T("Admin.Catalog.Products.BackToList") + ")", "List")
+            @T("Admin.EventPage.EditDetails") - @Model.Name @Html.ActionLink("(" + T("Admin.EventPage.BackToList") + ")", "Index")
         </div>
         <div class="options">
             <input type="submit" value="@T("Admin.Common.Preview")" onclick="javascript:OpenWindow('@Url.RouteUrl("Product", new { SeName = Model.SeName })', 800, 600, true); return false;" class="k-button" />
@@ -26,30 +26,30 @@
 <div id="copyproduct-window" style="display:none;">
     @using (Html.BeginForm("CopyProduct", "Product"))
     {
-        @Html.HiddenFor(model => model.CopyProductModel.Id)
+        @Html.HiddenFor(model => model.Id)
         <table style="text-align: left;">
             <tr>
                 <td>
-                    @Html.NopLabelFor(model => model.CopyProductModel.Name):
+                    @Html.NopLabelFor(model => model.Name):
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.CopyProductModel.Name)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.NopLabelFor(model => model.CopyProductModel.Published):
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.CopyProductModel.Published)
+                    @Html.EditorFor(model => model.Name)
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.NopLabelFor(model => model.CopyProductModel.CopyImages):
+                    @Html.NopLabelFor(model => model.Address1):
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.CopyProductModel.CopyImages)
+                    @Html.EditorFor(model => model.Address1)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.NopLabelFor(model => model.Address2):
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Address2)
                 </td>
             </tr>
             <tr>

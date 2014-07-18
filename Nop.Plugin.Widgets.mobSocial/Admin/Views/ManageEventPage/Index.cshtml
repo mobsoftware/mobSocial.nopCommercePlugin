@@ -1,13 +1,12 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.Admin.EventPageModel
-
+﻿
 @{    
-    ViewBag.Title = "Manage Teams";
+    ViewBag.Title = "Manage Events";
 }
 
 <div class="section-header">
     <div class="title">
         <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
-        Manage Teams
+        Manage Events
 
     </div>
 </div>
@@ -23,7 +22,7 @@
                             type: "json",
                             transport: {
                                 read: {
-                                    url: "@Html.Raw(Url.Action("GetAll", "EventPage"))",
+                                    url: "@Html.Raw(Url.Action("GetAll", "ManageEventPage"))",
                                     type: "POST",
                                     dataType: "json"
                                 }
@@ -53,7 +52,15 @@
                             mode: "inline"
                         },
                         scrollable: false,
-                        columns: [{
+                        columns: [
+                             {
+
+                                 field: "PictureThumbnailUrl",
+                                 title: "@T("Admin.Catalog.Products.Fields.PictureThumbnailUrl")",
+                                 template: '<img src="#=PictureThumbnailUrl#" />',
+                                 width: 200
+                             },
+                            {
                             field: "FriendlyName",
                             title: "@T("Admin.Configuration.Tax.Providers.Fields.FriendlyName")",
                             width: 250
@@ -78,6 +85,12 @@
                             title: "@T("Admin.Configuration.Tax.Providers.Configure")",
                             width: 150,
                             template: '<a href="ConfigureProvider?systemName=#=SystemName#">@T("Admin.Configuration.Tax.Providers.Configure")</a>'
+                        },
+                         {
+                             field: "Id",
+                             title: "Edit",
+                             width: 150,
+                             template: '<a href="ManageEventPage/Edit/#=Id#">Edit</a>'
                         }]
                     });
                 });
