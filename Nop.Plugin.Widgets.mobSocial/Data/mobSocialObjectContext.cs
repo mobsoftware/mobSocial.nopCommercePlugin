@@ -17,6 +17,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         {
 
             modelBuilder.Configurations.Add(new EventPageMap());
+            modelBuilder.Configurations.Add(new EventPageHotelMap());
 
             modelBuilder.Configurations.Add(new GroupPageMap());
             modelBuilder.Configurations.Add(new GroupPageMemberMap());
@@ -67,7 +68,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage'; ";
 
                 // DROP Tables
-                dbScript = dbScript + 
+                dbScript = dbScript +
+                               "DROP TABLE EventPageHotel; " +
                                "DROP TABLE EventPage; " +
                                "DROP TABLE GroupPageMember; " +
                                "DROP TABLE CustomerAlbumPictureLike; " +

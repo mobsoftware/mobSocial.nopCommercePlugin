@@ -20,52 +20,67 @@ using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
-    public class EventPageService : BaseService<EventPage>
+    public class EventPageHotelService : IEventPageHotelService
     {
+        private readonly IRepository<EventPageHotel> _eventPageRepository;
         private MediaSettings _nopMediaSettings;
         private IUrlRecordService _urlRecordService;
         private IWorkContext _workContext;
-        
 
-        public EventPageService(ISettingService settingService, IWebHelper webHelper,
+
+
+        public EventPageHotelService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger, IEventPublisher eventPublisher,
-            IRepository<EventPage> eventPageRepository,
+            IRepository<EventPageHotel> eventPageHotelRepository,
             MediaSettings mediaSettings,
             IUrlRecordService urlRecordService,
-            IWorkContext workContext) : base(eventPageRepository)
+            IWorkContext workContext)
         {
+            _eventPageRepository = eventPageHotelRepository;
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
             _workContext = workContext;
         }
 
-    
-        public new void Insert(EventPage entity)
+        public void Insert(EventPageHotel entity)
         {
-            base.Repository.Insert(entity);
-
-            UrlRecord urlRecord = new UrlRecord() {
-                EntityId = entity.Id,
-                EntityName = "EntityPage",
-                IsActive = true,
-                LanguageId = _workContext.WorkingLanguage.Id,
-                Slug = entity.GetSeName()
-            };
-
-            _urlRecordService.InsertUrlRecord(urlRecord);
-
-
+            _eventPageRepository.Insert(entity);
         }
 
-        public new List<EventPage> GetAll(string term, int count)
+        public void Update(EventPageHotel entity)
+        {
+            _eventPageRepository.Update(entity);
+        }
+
+        public void Delete(EventPageHotel entity)
+        {
+            _eventPageRepository.Delete(entity);
+        }
+
+        public EventPageHotel GetById(int id)
+        {
+            return _eventPageRepository.GetById(id);
+        }
+
+
+        public List<EventPageHotel> GetAll()
+        {
+            return _eventPageRepository.Table.ToList();
+
+        }
+        public List<EventPageHotel> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.
-            return base.Repository.Table
+            return _eventPageRepository.Table
                 .Where(x => x.Name.ToLower().Contains(term.ToLower()))
                 .Take(count)
                 .ToList();
 
         }
+
+
+        
+
 
     }
 

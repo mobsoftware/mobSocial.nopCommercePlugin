@@ -24,8 +24,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             DataSettings dataSettings = dataSettingsManager.LoadSettings();
 
             //Register custom object context
-            builder.Register<IDbContext>(c => RegisterIDbContext(c, dataSettings)).Named<IDbContext>(CONTEXT_NAME).InstancePerHttpRequest();
-            builder.Register(c => RegisterIDbContext(c, dataSettings)).InstancePerHttpRequest();
+            builder.Register<IDbContext>(c => RegisterIDbContext(c, dataSettings)).Named<IDbContext>(CONTEXT_NAME).InstancePerRequest();
+            builder.Register(c => RegisterIDbContext(c, dataSettings)).InstancePerRequest();
 
             //Register services
             builder.RegisterType<MobSocialService>().As<IMobSocialService>();
@@ -33,62 +33,69 @@ namespace Nop.Plugin.Widgets.MobSocial
             //Override the repository injection
             builder.RegisterType<EfRepository<GroupPage>>().As<IRepository<GroupPage>>()
                         .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                        .InstancePerHttpRequest();
+                        .InstancePerRequest();
 
             builder.RegisterType<EfRepository<GroupPageMember>>().As<IRepository<GroupPageMember>>()
                         .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                        .InstancePerHttpRequest();
+                        .InstancePerRequest();
 
             builder.RegisterType<EfRepository<SkateMove>>().As<IRepository<SkateMove>>()
                       .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                      .InstancePerHttpRequest();
+                      .InstancePerRequest();
 
             builder.RegisterType<EfRepository<CustomerSkateMove>>().As<IRepository<CustomerSkateMove>>()
                       .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                      .InstancePerHttpRequest();
+                      .InstancePerRequest();
 
 
             builder.RegisterType<EfRepository<CustomerFriend>>().As<IRepository<CustomerFriend>>()
                       .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                      .InstancePerHttpRequest();
+                      .InstancePerRequest();
 
             builder.RegisterType<EfRepository<TeamPage>>().As<IRepository<TeamPage>>()
                      .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                     .InstancePerHttpRequest();
+                     .InstancePerRequest();
 
             builder.RegisterType<EfRepository<CustomerAlbum>>().As<IRepository<CustomerAlbum>>()
                    .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerHttpRequest();
+                   .InstancePerRequest();
 
             builder.RegisterType<EfRepository<CustomerAlbumPicture>>().As<IRepository<CustomerAlbumPicture>>()
                    .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerHttpRequest();
+                   .InstancePerRequest();
 
 
             builder.RegisterType<EfRepository<CustomerVideoAlbum>>().As<IRepository<CustomerVideoAlbum>>()
                    .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerHttpRequest();
+                   .InstancePerRequest();
 
             builder.RegisterType<EfRepository<CustomerVideo>>().As<IRepository<CustomerVideo>>()
                    .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerHttpRequest();
+                   .InstancePerRequest();
 
             builder.RegisterType<EfRepository<CustomerVideoLike>>().As<IRepository<CustomerVideoLike>>()
                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                  .InstancePerHttpRequest();
+                  .InstancePerRequest();
 
             builder.RegisterType<EfRepository<EventPage>>().As<IRepository<EventPage>>()
                 .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                .InstancePerHttpRequest();
+                .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<EventPageHotel>>().As<IRepository<EventPageHotel>>()
+               .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+               .InstancePerRequest();
 
 
             // Service Injection
-            builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerHttpRequest();
-            builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerHttpRequest();
-            builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerHttpRequest();
-            builder.RegisterType<CustomerVideoAlbumService>().As<ICustomerVideoAlbumService>().InstancePerHttpRequest();
-            builder.RegisterType<EventPageService>().As<IEventPageService>().InstancePerHttpRequest();
-            builder.RegisterType<TeamPageService>().As<ITeamPageService>().InstancePerHttpRequest();
+            builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
+            builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerRequest();
+            builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerRequest();
+            builder.RegisterType<CustomerVideoAlbumService>().As<ICustomerVideoAlbumService>().InstancePerRequest();
+            builder.RegisterType<EventPageService>().As<BaseService<EventPage>>().InstancePerRequest();
+            builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
+            builder.RegisterType<TeamPageService>().As<ITeamPageService>().InstancePerRequest();
+
+
 
             
         }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Controllers;
+using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
     /// <summary>
     /// Generic service to standardize Service APIs
     /// </summary>
-    public interface IGenericService<T>
+    public interface IGenericService<T> where T : BaseEntity
     {
 
         void Insert(T entity);
@@ -19,7 +20,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         T GetById(int id);
         
         List<T> GetAll();
-        List<T> GetAll(string term, int count); // for use in autocomplete
+        
 
     }
 

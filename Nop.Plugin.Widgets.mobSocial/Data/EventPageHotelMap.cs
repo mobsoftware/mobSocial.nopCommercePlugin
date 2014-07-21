@@ -4,18 +4,21 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class EventPageMap : EntityTypeConfiguration<EventPage>
+    public class EventPageHotelMap : EntityTypeConfiguration<EventPageHotel>
     {
 
-        public EventPageMap()
+        public EventPageHotelMap()
         {
-            ToTable("EventPage");
+            ToTable("EventPageHotel");
 
             //Map the primary key
             HasKey(m => m.Id);
 
             //Map the additional properties
             Property(m => m.Name);
+            Property(m => m.Title);
+            Property(m => m.Address1);
+            Property(m => m.Address2);
             Property(m => m.City);
             Property(m => m.State);
             Property(m => m.ZipPostalCode);
@@ -24,6 +27,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();
 
+           
+            
         }
 
     }

@@ -34,14 +34,14 @@ namespace Nop.Web.Controllers
         private readonly ForumSettings _forumSettings;
         private readonly CustomerSettings _customerSettings;
         private readonly MediaSettings _mediaSettings;
-        private readonly IEventPageService _eventPageService;
+        private readonly BaseService<EventPage> _eventPageService;
         private readonly mobSocialSettings _mobSocialSettings;
 
         public EventPageController(IForumService forumService, ILocalizationService localizationService,
             IPictureService pictureService, ICountryService countryService,
             ICustomerService customerService, IDateTimeHelper dateTimeHelper,
             ForumSettings forumSettings, CustomerSettings customerSettings,
-            MediaSettings mediaSettings, IEventPageService eventPageService,
+            MediaSettings mediaSettings, BaseService<EventPage> eventPageService,
             mobSocialSettings mobSocialSettings)
         {
             _forumService = forumService;

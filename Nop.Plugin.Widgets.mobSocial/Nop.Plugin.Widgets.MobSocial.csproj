@@ -42,7 +42,10 @@
     <Compile Include="Controllers\EventPageController.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
     <Compile Include="Controllers\HeaderMenuController.cs" />
+    <Compile Include="Core\EventPageHotelService.cs" />
     <Compile Include="Core\EventPageService.cs" />
+    <Compile Include="Core\IEventPageHotelService.cs" />
+    <Compile Include="Core\BaseService.cs" />
     <Compile Include="Core\ITeamPageService.cs" />
     <Compile Include="Core\IGenericService.cs" />
     <Compile Include="Core\IEventPageService.cs" />
@@ -52,6 +55,8 @@
     <Compile Include="Core\ICustomerAlbumPictureService.cs" />
     <Compile Include="Core\CustomerAlbumPictureService.cs" />
     <Compile Include="Core\TeamPageService.cs" />
+    <Compile Include="Data\EventPagePictureMap.cs" />
+    <Compile Include="Data\EventPageHotelMap.cs" />
     <Compile Include="Data\EventPageMap.cs" />
     <Compile Include="Data\CustomerVideoLikeMap.cs" />
     <Compile Include="Data\CustomerVideoAlbumMap.cs" />
@@ -63,6 +68,8 @@
     <Compile Include="Domain\CustomerVideoAlbum.cs" />
     <Compile Include="Domain\CustomerVideo.cs" />
     <Compile Include="Domain\CustomerAlbum.cs" />
+    <Compile Include="Domain\EventPagePicture.cs" />
+    <Compile Include="Domain\EventPageHotel.cs" />
     <Compile Include="Domain\EventPage.cs" />
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="Core\CustomerUpdatedEventHandler.cs" />
@@ -308,6 +315,13 @@
     if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
     xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
   </PropertyGroup>
+  <!--<Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
