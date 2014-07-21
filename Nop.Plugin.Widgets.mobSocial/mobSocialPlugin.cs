@@ -48,7 +48,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public IList<string> GetWidgetZones()
         {
             return !string.IsNullOrWhiteSpace(_socialNetworkSettings.WidgetZone)
-                      ? new List<string>() { _socialNetworkSettings.WidgetZone }
+                      ? new List<string>() { _socialNetworkSettings.WidgetZone, "header_menu_after", "account_navigation_after" }
                       : new List<string>() { "after_header_links" };   
         }
 
@@ -74,31 +74,60 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="routeValues">Route values</param>
         public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-            if (widgetZone == "footer")
-            {
-                actionName = "SocialNetworkByMobSocial";
-                controllerName = "mobSocial";
+           
 
-                routeValues = new RouteValueDictionary()
+            switch(widgetZone)
+            {
+                case "footer": {
+                    actionName = "SocialNetworkByMobSocial";
+                    controllerName = "mobSocial";
+
+                    routeValues = new RouteValueDictionary()
+                        {
+                            {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers"},
+                            {"area", null},
+                            {"widgetZone", widgetZone}
+                        };
+
+                    break;
+                }
+                case "header_menu_after" : {
+                    actionName = "PublicInfo";
+                    controllerName = "HeaderMenu";
+
+                    routeValues = new RouteValueDictionary()
                     {
-                        {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers"},
+                        {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
                         {"area", null},
                         {"widgetZone", widgetZone}
                     };
-            }
-            else
-            {
-                actionName = "PublicInfo";
-                controllerName = "mobSocial";
+                    break;
+                }
+                case "account_navigation_after" : {
+                     actionName = "PublicInfo";
+                    controllerName = "SocialNetworkNavigation";
 
-                routeValues = new RouteValueDictionary()
-                {
-                    {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
-                    {"area", null},
-                    {"widgetZone", widgetZone}
-                };
+                    routeValues = new RouteValueDictionary()
+                    {
+                        {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
+                        {"area", null},
+                        {"widgetZone", widgetZone}
+                    };
+                    break;
+                }
+                default:  {
+                        actionName = "PublicInfo";
+                        controllerName = "mobSocial";
+
+                        routeValues = new RouteValueDictionary()
+                        {
+                            {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
+                            {"area", null},
+                            {"widgetZone", widgetZone}
+                        };
+                        break;
+                }
             }
-            
         }
 
 

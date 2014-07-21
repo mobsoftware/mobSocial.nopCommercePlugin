@@ -12,14 +12,15 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Downloads\nopCommerce_3.30_Source\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Downloads\nopCommerce_3.40_Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <WebGreaseLibPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,75 +29,19 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Autofac.3.3.1\lib\net40\Autofac.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Autofac.Integration.Mvc">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Autofac.Mvc5.3.2.1\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
+    <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
+    <Compile Include="Controllers\HeaderMenuController.cs" />
     <Compile Include="Core\EventPageService.cs" />
     <Compile Include="Core\ITeamPageService.cs" />
     <Compile Include="Core\IGenericService.cs" />
@@ -184,10 +129,11 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Themes\mobSocial\Content\jquery-ui.min.css" />
+    <Content Include="Themes\mobSocial\Content\jquery-ui.structure.min.css" />
+    <Content Include="Themes\mobSocial\Content\jquery-ui.theme.min.css" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.js" />
     <Content Include="Themes\mobSocial\Content\scripts\jquery-1.11.min.js" />
     <Content Include="Themes\mobSocial\Content\scripts\jquery-ui-1.11.min.js" />
     <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.css" />
@@ -202,18 +148,19 @@
     <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.css" />
     <Content Include="Themes\mobSocial\Content\mobSocial\search-box-custom.css" />
     <Content Include="Themes\mobSocial\Installation.txt" />
+    <None Include="packages.config" />
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.eot" />
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.ttf" />
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.woff" />
     <None Include="Themes\mobSocial\Content\fonts\FontAwesome.otf" />
     <None Include="Themes\mobSocial\theme.config" />
     <None Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
-    <None Include="Themes\mobSocial\Views\Common\Menu.cshtml" />
-    <None Include="Themes\mobSocial\Views\Customer\Info.cshtml" />
     <Content Include="Themes\mobSocial\Views\EventPage\Search.js" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
+    <Content Include="Themes\mobSocial\Views\SocialNetworkNavigation\PublicInfo.cshtml" />
     <None Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\EventPage\Search.cshtml" />
+    <None Include="Themes\mobSocial\Views\HeaderMenu\PublicInfo.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />
@@ -223,7 +170,6 @@
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerFriendBlock.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerFriends.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_ProfilePicture.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_SocialNetworkNavigation.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_TeamPageInfo.cshtml" />
     <None Include="Themes\mobSocial\Views\Profile\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
@@ -239,55 +185,129 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.30_Source\Libraries\Nop.Services\Nop.Services.csproj">
-      <Project>{210541AD-F659-47DA-8763-16F36C5CD2F4}</Project>
-      <Name>Nop.Services</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.30_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
-      <Project>{152C761A-DD2E-4C1F-AF89-DFB2547A3BCA}</Project>
-      <Name>Nop.Admin</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.30_Source\Presentation\Nop.Web\Nop.Web.csproj">
-      <Project>{4F1F649C-1020-45BE-A487-F416D9297FF3}</Project>
-      <Name>Nop.Web</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.30_Source\Libraries\Nop.Core\Nop.Core.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Libraries\Nop.Core\Nop.Core.csproj">
       <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
       <Name>Nop.Core</Name>
-      <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.30_Source\Libraries\Nop.Data\Nop.Data.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Libraries\Nop.Data\Nop.Data.csproj">
       <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
       <Name>Nop.Data</Name>
-      <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.30_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Libraries\Nop.Services\Nop.Services.csproj">
+      <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
+      <Name>Nop.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>Nop.Web.Framework</Name>
-      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+      <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
+      <Name>Nop.Admin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Nop.Web.csproj">
+      <Project>{4f1f649c-1020-45be-a487-f416d9297ff3}</Project>
+      <Name>Nop.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Autofac.Mvc5.3.3.1\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.ComponentModel.DataAnnotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe.Entity">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.Entity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="WebGrease">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- <Import Project="..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\..\Downloads\nopCommerce_3.10_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
+  <!-- <Import Project="..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\..\Downloads\nopCommerce_3.10_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\..\..\..\Downloads\nopCommerce_3.30_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+    <Error Condition="!Exists('..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target> -->
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

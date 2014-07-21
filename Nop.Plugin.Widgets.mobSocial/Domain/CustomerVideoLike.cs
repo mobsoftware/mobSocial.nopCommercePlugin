@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Spatial;
-using System.Web.Script.Serialization;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 

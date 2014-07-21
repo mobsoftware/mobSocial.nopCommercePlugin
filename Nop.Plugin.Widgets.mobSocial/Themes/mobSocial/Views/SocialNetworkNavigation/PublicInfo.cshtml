@@ -1,0 +1,18 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.SocialNetworkNavigationModel           
+<div class="block block-account-navigation">
+    <div class="title">
+        <strong>Social Network</strong>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="listbox">
+        <ul>
+            
+            <li><a href="@Url.RouteUrl("CustomerAvatar")">@T("Account.Avatar")</a></li> 
+
+
+           <li><a href="@Url.Action("FriendRequests", "MobSocial")">@Model.FriendRequestsLinkText</a></li>
+           
+        </ul>
+    </div>
+</div>

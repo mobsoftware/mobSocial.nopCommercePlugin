@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Spatial;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain

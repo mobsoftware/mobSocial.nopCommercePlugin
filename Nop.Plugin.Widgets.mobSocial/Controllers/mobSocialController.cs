@@ -308,37 +308,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
 
-        // todo add security to pertinent actions
-        public ActionResult SocialNetworkNavigation(CustomerNavigationModel navigationModel)
-        {
-
-            var currentCustomerId = _workContext.CurrentCustomer.Id;
-
-            int friendRequestCount = _socialNetworkService.GetFriendRequestCount(currentCustomerId);
-
-            var model = new SocialNetworkNavigationModel();
-
-            SessionState.Instance.CustomerNavigationModel = navigationModel;
-
-            model.NavigationModel = navigationModel;
-
-            StatefulStorage.PerSession.GetOrAdd("CustomerNavigationModel", () => navigationModel);
-
-            if (friendRequestCount == 0)
-                model.FriendRequestsLinkText = "Friend Requests";
-            else
-                model.FriendRequestsLinkText = "Friend Requests(" + friendRequestCount + ")";
-
-
-            model.ProfileInformationLinkText = "Profile Info";
-
-
-            return View("_SocialNetworkNavigation", model);
-            
-        }
-
-
-
         public ActionResult FriendRequests()
         {
 
@@ -671,7 +640,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var albumPicturePath = Path.Combine(_webHelper.MapPath(albumFolder), fileName);
                 albumPicturePath = FileUtility.FilePathAddNumberIfExists(albumPicturePath, _webHelper.MapPath(albumFolder));
 
-
+                var directoryPath = Path.GetDirectoryName(albumPicturePath);
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
 
                 pictureFile.SaveAs(albumPicturePath);
 

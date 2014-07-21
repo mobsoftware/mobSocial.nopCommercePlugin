@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Data.Spatial;
-using System.Web.Script.Serialization;
 using Nop.Core;
+using System.Web.Script.Serialization;
+
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {

@@ -72,40 +72,30 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("HomePage");
             }
 
-            var customerId = 0;
+            var entityId = 0;
             if (id.HasValue)
             {
-                customerId = id.Value;
+                entityId = id.Value;
             }
 
-            var customer = _customerService.GetCustomerById(customerId);
-            if (customer == null || customer.IsGuest())
+            var entity = _eventPageService.GetById(entityId);
+            if (entity == null)
             {
                 return RedirectToRoute("HomePage");
             }
 
-            bool pagingPosts = false;
-            int postsPage = 0;
+           // var title = string.Format(_localizationService.GetResource("Profile.ProfileOf"), name);
 
-            if (page.HasValue)
-            {
-                postsPage = page.Value;
-                pagingPosts = true;
-            }
-
-            var name = customer.FormatUserName();
-            var title = string.Format(_localizationService.GetResource("Profile.ProfileOf"), name);
-
-            var model = new ProfileIndexModel()
-            {
-                ProfileTitle = title,
-                PostsPage = postsPage,
-                PagingPosts = pagingPosts,
-                CustomerProfileId = customer.Id,
-                ForumsEnabled = _forumSettings.ForumsEnabled
-            };
-
-            return View(model);
+            //var model = new ProfileIndexModel()
+            //{
+            //    ProfileTitle = title,
+            //    PostsPage = postsPage,
+            //    PagingPosts = pagingPosts,
+            //    CustomerProfileId = customer.Id,
+            //    ForumsEnabled = _forumSettings.ForumsEnabled
+            //};
+            return View();
+            //return View(model);
         }
 
         //profile info tab
@@ -280,6 +270,7 @@ namespace Nop.Web.Controllers
 
                 models.Add(new
                 {
+
                     DisplayName = item.Name,
                     Url = Url.RouteUrl("EventPageUrl", new { SeName = item.GetSeName() }),
 

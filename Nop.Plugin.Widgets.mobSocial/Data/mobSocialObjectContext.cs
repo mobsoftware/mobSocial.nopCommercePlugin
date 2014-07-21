@@ -67,8 +67,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage'; ";
 
                 // DROP Tables
-                dbScript = dbScript + "DROP TABLE EventPage; " +
+                dbScript = dbScript + 
+                               "DROP TABLE EventPage; " +
                                "DROP TABLE GroupPageMember; " +
+                               "DROP TABLE CustomerAlbumPictureLike; " +
                                "DROP TABLE CustomerAlbumPicture; " +
                                "DROP TABLE CustomerAlbum; " +
                                "DROP TABLE CustomerVideoLike; " +
