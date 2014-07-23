@@ -297,7 +297,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
                 ControllerName = "ManageEventPage",
-                ActionName = "Index",
+                ActionName = "List",
                 Visible = true,
                 RouteValues = new RouteValueDictionary() { { "area", null } },
                 

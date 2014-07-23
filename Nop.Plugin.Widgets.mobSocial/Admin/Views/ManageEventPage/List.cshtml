@@ -1,20 +1,20 @@
-﻿
-@{    
+﻿@{    
     ViewBag.Title = "Manage Events";
 }
-
 <div class="section-header">
     <div class="title">
         <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
         Manage Events
-
+    </div>
+    <div class="options">
+        <a href="@Url.Action("Create", "ManageEventPage")" class="k-button">@T("Admin.Common.AddNew")</a>
+        <input type="button" id="delete-selected" class="k-button" value="@T("Admin.Common.Delete.Selected")" />
     </div>
 </div>
 <table class="adminContent">
     <tr>
         <td>
             <div id="grid"></div>
-
             <script>
                 $(document).ready(function () {
                     $("#grid").kendoGrid({
@@ -80,17 +80,12 @@
                             title: "@T("Admin.Configuration.Tax.Providers.Fields.MarkAsPrimaryProvider")",
                             width: 200,
                             template: '<a href="@Url.Content("~/Admin/Tax/MarkAsPrimaryProvider/")?systemName=#=SystemName#" class="k-button">@T("Admin.Configuration.Tax.Providers.Fields.MarkAsPrimaryProvider")</a>'
-                        }, {
-                            field: "SystemName",
-                            title: "@T("Admin.Configuration.Tax.Providers.Configure")",
-                            width: 150,
-                            template: '<a href="ConfigureProvider?systemName=#=SystemName#">@T("Admin.Configuration.Tax.Providers.Configure")</a>'
                         },
                          {
                              field: "Id",
                              title: "Edit",
                              width: 150,
-                             template: '<a href="ManageEventPage/Edit/#=Id#">Edit</a>'
+                             template: '<a href="Edit/#=Id#">Edit</a>'
                         }]
                     });
                 });

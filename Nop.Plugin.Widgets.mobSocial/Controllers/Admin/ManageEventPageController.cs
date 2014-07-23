@@ -97,10 +97,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         }
 
         [AdminAuthorize]
-        public ActionResult Index()
+        public ActionResult List()
         {
-            return View("Index");
+            return View("List");
         }
+
+        [AdminAuthorize]
+        public ActionResult Create()
+        {
+            // todo add permissions later
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            var model = new EventPageModel();
+            return View(model);
+        }
+
 
         [AdminAuthorize]
         public ActionResult Edit(int id)
@@ -122,12 +134,56 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 SeName = item.GetSeName(0),
                 Address1 = item.Address1,
                 Address2 = item.Address2,
+                City = item.City,
+                State = item.State,
                 ZipPostalCode = item.ZipPostalCode,
+                Country = item.Country,
                 DateCreated = item.DateCreated,
                 DateUpdated = item.DateUpdated,
             };
 
             return View("Edit", model);
+
+        }
+
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
+        public ActionResult Create(EventPageModel model, bool continueEditing)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            if (ModelState.IsValid)
+            {
+                var entity = new EventPage()
+                {
+                    Name = model.Name,
+                    Address1 = model.Address1,
+                    Address2 = model.Address2,
+                    City = model.City,
+                    State = model.State,
+                    ZipPostalCode = model.ZipPostalCode,
+                    Country = model.Country,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                };
+
+                // todo: add event hosts
+                _eventPageService.Insert(entity);
+
+                //save hotels
+                //SaveEventHotels(product, ParseProductTags(model.ProductTags));
+                
+                //activity log
+                //_customerActivityService.InsertActivity("AddNewProduct", _localizationService.GetResource("ActivityLog.AddNewProduct"), product.Name);
+                _customerActivityService.InsertActivity("AddNewEventPage", _localizationService.GetResource("ActivityLog.AddNewEventPage"), entity.Name);
+
+
+                SuccessNotification(_localizationService.GetResource("Admin.MobSocial.EventPage.Added"));
+
+                return continueEditing ? RedirectToAction("Edit", new { id = entity.Id }) : RedirectToAction("List");
+            }
+            
+            return View(model);
 
         }
 
@@ -153,7 +209,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 item.Name = model.Name;
                 item.Address1 = model.Address1;
                 item.Address2 = model.Address2;
+                item.City = model.City;
+                item.State = model.State;
                 item.ZipPostalCode = model.ZipPostalCode;
+                item.Country = model.Country;
                 item.DateUpdated = DateTime.Now;
 
                 _eventPageService.Update(item);
@@ -166,7 +225,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 //picture seo names
                 //UpdatePictureSeoNames(product);
 
-                SuccessNotification(_localizationService.GetResource("Admin.EventPage.Updated"));
+                SuccessNotification(_localizationService.GetResource("Admin.MobSocial.EventPage.Updated"));
 
                 if (continueEditing)
                 {
@@ -203,7 +262,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             //activity log
             _customerActivityService.InsertActivity("DeleteEventPage", _localizationService.GetResource("ActivityLog.DeleteEventPage"), item.Name);
 
-            SuccessNotification(_localizationService.GetResource("Admin.EventPage.Deleted"));
+            SuccessNotification(_localizationService.GetResource("Admin.MobSocial.EventPage.Deleted"));
             return RedirectToAction("Index");
         }
 

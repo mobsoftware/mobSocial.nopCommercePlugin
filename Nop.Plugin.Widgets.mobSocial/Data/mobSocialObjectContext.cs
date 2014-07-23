@@ -69,6 +69,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
                 // DROP Tables
                 dbScript = dbScript +
+                               "DROP TABLE EventPagePicture; " +
                                "DROP TABLE EventPageHotel; " +
                                "DROP TABLE EventPage; " +
                                "DROP TABLE GroupPageMember; " +

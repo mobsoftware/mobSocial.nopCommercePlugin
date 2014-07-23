@@ -36,6 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Admin\Models\EventPageListModel.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -132,9 +133,10 @@
     <Content Include="Admin\Views\TeamPage\Index.cshtml" />
     <Content Include="Admin\Views\ManageEventPage\Edit.cshtml" />
     <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Pictures.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\Index.cshtml" />
+    <Content Include="Admin\Views\ManageEventPage\List.cshtml" />
     <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.cshtml" />
     <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Info.cshtml" />
+    <Content Include="Admin\Views\ManageEventPage\Create.cshtml" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
