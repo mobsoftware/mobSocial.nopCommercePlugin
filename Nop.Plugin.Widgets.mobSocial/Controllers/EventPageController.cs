@@ -38,14 +38,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly ForumSettings _forumSettings;
         private readonly CustomerSettings _customerSettings;
         private readonly MediaSettings _mediaSettings;
-        private readonly BaseService<EventPage> _eventPageService;
+        private readonly BaseService<EventPage, EventPagePicture> _eventPageService;
         private readonly mobSocialSettings _mobSocialSettings;
 
         public EventPageController(IForumService forumService, ILocalizationService localizationService,
             IPictureService pictureService, ICountryService countryService,
             ICustomerService customerService, IDateTimeHelper dateTimeHelper,
             ForumSettings forumSettings, CustomerSettings customerSettings,
-            MediaSettings mediaSettings, BaseService<EventPage> eventPageService,
+            MediaSettings mediaSettings, BaseService<EventPage, EventPagePicture> eventPageService,
             mobSocialSettings mobSocialSettings)
         {
             _forumService = forumService;

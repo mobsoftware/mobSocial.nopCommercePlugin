@@ -16,5 +16,9 @@ namespace Nop.Plugin.Widgets.mobSocial.Models
         public DateTime DateCreated { get; set; }
 
         public DateTime DateUpdated { get; set; }
+
+        public int EventPageId { get; set; }
+
+        public string PictureUrl { get; set; }
     }
 }

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
-    public class EventPageService : BaseService<EventPage>
+    public class EventPageService : BaseService<EventPage, EventPagePicture>
     {
         private MediaSettings _nopMediaSettings;
         private IUrlRecordService _urlRecordService;
@@ -57,6 +57,24 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         }
 
+        public void InsertPicture(EventPage entity)
+        {
+            base.Repository.Insert(entity);
+
+            UrlRecord urlRecord = new UrlRecord()
+            {
+                EntityId = entity.Id,
+                EntityName = "EntityPage",
+                IsActive = true,
+                LanguageId = _workContext.WorkingLanguage.Id,
+                Slug = entity.GetSeName()
+            };
+
+            _urlRecordService.InsertUrlRecord(urlRecord);
+
+
+        }
+
         public override List<EventPage> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.
@@ -65,6 +83,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 .Take(count)
                 .ToList();
 
+        }
+
+
+
+        public override List<EventPagePicture> GetAllPictures(int entityId)
+        {
+            return base.PictureRepository.Table
+                .Where(x => x.EventPageId == entityId)
+                .ToList();
         }
 
     }

@@ -14,6 +14,9 @@ using Nop.Services.Seo;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
 using System;
+using Nop.Services.Media;
+using Nop.Plugin.Widgets.mobSocial.Models;
+using Nop.Web.Framework.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 {
@@ -21,22 +24,24 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
     {
         
         #region Fields
-        private readonly BaseService<EventPage> _eventPageService;
+        private readonly BaseService<EventPage, EventPagePicture> _eventPageService;
         private readonly IPermissionService _permissionService;
         private readonly IWorkContext _workContext;
         private readonly IUrlRecordService _urlRecordService;
         private readonly ILocalizationService _localizationService;
         private readonly ICustomerActivityService _customerActivityService;
+        private readonly IPictureService _pictureService;
         #endregion
 
         #region Constructors
 
         public ManageEventPageController(IPermissionService permissionService,
-            BaseService<EventPage> eventPageService,
+            BaseService<EventPage, EventPagePicture> eventPageService,
             IWorkContext workContext,
             IUrlRecordService urlRecordService,
             ILocalizationService localizationService,
-            ICustomerActivityService customerActivityService)
+            ICustomerActivityService customerActivityService,
+            IPictureService pictureService)
         {
             _permissionService = permissionService;
             _eventPageService = eventPageService;
@@ -44,6 +49,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             _urlRecordService = urlRecordService;
             _localizationService = localizationService;
             _customerActivityService = customerActivityService;
+            _pictureService = pictureService;
         }
 
         #endregion
@@ -272,6 +278,109 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 
        
         #endregion
+
+
+        #region Pictures
+        #region Product pictures
+
+        public ActionResult PictureAdd(int pictureId, int displayOrder, int entityId)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            if (pictureId == 0)
+                throw new ArgumentException();
+
+            var entity = _eventPageService.GetById(entityId);
+            if (entity == null)
+                throw new ArgumentException("No event page found with the specified id");
+
+            // ...
+
+            _eventPageService.InsertPicture(new EventPagePicture()
+            {
+                PictureId = pictureId,
+                EventPageId = entityId,
+                DisplayOrder = displayOrder,
+            });
+
+            _pictureService.SetSeoFilename(pictureId, _pictureService.GetPictureSeName(entity.Name));
+
+            return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult PictureList(DataSourceRequest command, int entityId)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            // TODO: We may want to support vendors and multiple stores in the future
+
+            var pictures = _eventPageService.GetAllPictures(entityId);
+
+            var picturesModel = pictures
+                .Select(x =>
+                {
+                    return new EventPagePictureModel()
+                    {
+                        Id = x.Id,
+                        EventPageId = x.EventPageId,
+                        PictureId = x.PictureId,
+                        PictureUrl = _pictureService.GetPictureUrl(x.PictureId),
+                        DisplayOrder = x.DisplayOrder
+                    };
+                })
+                .ToList();
+
+            var gridModel = new DataSourceResult
+            {
+                Data = picturesModel,
+                Total = picturesModel.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public ActionResult PictureUpdate(EventPagePictureModel model)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            var picture = _eventPageService.GetPictureById(model.Id);
+            if (picture == null)
+                throw new ArgumentException("No picture found with the specified id");
+
+            picture.DisplayOrder = model.DisplayOrder;
+
+            _eventPageService.UpdatePicture(picture);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public ActionResult PictureDelete(int id)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            var entityPicture = _eventPageService.GetPictureById(id);
+            if (entityPicture == null)
+                throw new ArgumentException("No picture found with the specified id");
+
+            var pictureId = entityPicture.PictureId;
+
+            _eventPageService.DeletePicture(entityPicture);
+            var picture = _pictureService.GetPictureById(pictureId);
+            _pictureService.DeletePicture(picture);
+
+            return new NullJsonResult();
+        }
+
+        #endregion
+        #endregion
+
 
 
     }
