@@ -57,7 +57,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         }
 
-        public new List<EventPage> GetAll(string term, int count)
+        public override List<EventPage> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.
             return base.Repository.Table

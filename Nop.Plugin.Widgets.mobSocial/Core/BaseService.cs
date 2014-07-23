@@ -18,7 +18,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         private readonly IRepository<T> _repository;
 
-        protected IRepository<T> Repository { get; set; }
+        protected IRepository<T> Repository { get { return _repository; } }
 
         public BaseService(IRepository<T> repository)
         {
@@ -50,10 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return _repository.Table.ToList();
         }
 
-        public List<T> GetAll(string term, int count)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract List<T> GetAll(string term, int count);
        
 
     }

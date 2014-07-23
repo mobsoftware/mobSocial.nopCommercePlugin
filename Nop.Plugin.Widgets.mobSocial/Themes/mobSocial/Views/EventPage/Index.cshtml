@@ -1,45 +1,36 @@
-﻿@*@model ProfileIndexModel*@
-@using Nop.Web.Models.Profile;
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
+
 @using Nop.Web.Framework.UI
 @{
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
-
     Html.AddTitleParts(T("PageTitle.Profile").Text);
-
-
 }
 
 @section left {
-    <div class="hotel-information-block">
-        <span class="title">Location</span>
-        <br /><br />
-        <div class="hotel-information">
-            <span class="label">Fun Skate Center</span><br />
-            <span class="value">789 Fun St.</span><br />
-            <span class="value">Pensacola, FL 32526</span><br />
-            <span class="value">850-HAV-FUNN</span><br />
-        </div>
 
-    </div><br /><br />
-
-    <div class="hotel-information-block">
-        <span class="title">Hotel Information</span>
-        <br /><br />
-        <div class="hotel-information">
-            <span class="label">Loud Hotel</span><br />
-            <span class="value">123 Main St Suite 2</span><br />
-            <span class="value">Pensacola, FL 32526</span><br />
-            <span class="value">850-555-1212</span><br />
-        </div><br />
-        <div class="hotel-information">
-            <span class="label">Quite Hotel</span><br />
-            <span class="value">777 Quite St</span><br />
-            <span class="value">Pensacola, FL 32526</span><br />
-            <span class="value">850-555-7777</span><br />
-        </div>
-
-    </div>
+   
+        @foreach(var hotel in Model.Hotels)
+        { 
+            
+            <div class="hotel-information-block">
+                <span class="title">hotel.Title</span>
+                <br /><br />
+                <div class="hotel-information">
+                    <span class="label">hotel.Name</span><br />
+                    <span class="value">hotel.Address1</span>
+                    if(string.IsNullOrEmpty(hotel.Address2))
+                    {
+                        <span class="value"> hotel.Address2</span>
+                    }
+                    <br />
+                    <span class="value">hotel.City, hotel.State hotel.ZipPostalCode</span><br />
+                    <span class="value">hotel.PhoneNumber</span><br />
+                </div>
+            </div>
+            <br /><br />        
+        }
 }
+
 
 <div class="page profile-page">
 
@@ -78,7 +69,7 @@
 
     <div class="profile-center-content">
 
-        <h2>Vanilla SummerJam @*@Model.ProfileTitle*@</h2>
+        <h2>@Model.Name</h2>
 
         <div class="page-body">
             @{
@@ -100,7 +91,7 @@
                     <li><a href="#tabs-2"><i class="fa fa-picture-o"></i> Pictures</a></li>
                     <li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>
                     <li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>
-                    <li><a href="#tabs-4"><i class="fa fa-group"></i> Results</a></li>
+                    <li><a href="#tabs-5"><i class="fa fa-group"></i> Results</a></li>
                     @if (Model.ForumsEnabled)
                     {
                         <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
@@ -118,6 +109,9 @@
 
                 </div>
                 <div id="tabs-4">
+                    @Model.Address1 @Model.Address2<br />
+                    @Model.City, @Model.State @Model.ZipPostalCode
+                    @Model.Country
                     @*@Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
                 </div>
 

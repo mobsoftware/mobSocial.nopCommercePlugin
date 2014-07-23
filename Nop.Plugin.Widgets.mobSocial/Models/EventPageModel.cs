@@ -17,5 +17,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
 
         public string SeName { get; set; }
+
+        public string State { get; set; }
+
+        public string City { get; set; }
+
+        public List<mobSocial.Models.EventPageHotelModel> Hotels { get; set; }
+
+        public List<mobSocial.Models.EventPagePictureModel> Pictures { get; set; }
+
+        public string Country { get; set; }
     }
 }

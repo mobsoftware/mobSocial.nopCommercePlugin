@@ -14,11 +14,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             //Map the primary key
             HasKey(m => m.Id);
 
-            //Map the additional properties
-            this.HasRequired(m => m.EventPage)
-                .WithMany(m => m.Pictures)
-                .HasForeignKey(m => m.PictureId);
-
+            Property(m => m.PictureId);
             Property(m => m.DisplayOrder);
             
             Property(m => m.DateCreated).HasColumnType("datetime2");

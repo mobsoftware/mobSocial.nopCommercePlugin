@@ -19,9 +19,13 @@ using Nop.Web.Models.Profile;
 using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial;
+using Nop.Plugin.Widgets.MobSocial.Models;
+using Nop.Web.Controllers;
+using Nop.Plugin.Widgets.mobSocial.Models;
 
-namespace Nop.Web.Controllers
+namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
+
     [NopHttpsRequirement(SslRequirement.No)]
     public partial class EventPageController : BasePublicController
     {
@@ -60,13 +64,6 @@ namespace Nop.Web.Controllers
         public ActionResult Index(int? id, int? page)
         {
 
-            EventPage ep = new EventPage();
-            ep.Name = "Vanilla Summer Jam";
-            ep.DateCreated = DateTime.Now;
-            _eventPageService.Insert(ep);
-
-
-
             if (!_customerSettings.AllowViewingProfiles)
             {
                 return RedirectToRoute("HomePage");
@@ -84,18 +81,50 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("HomePage");
             }
 
-           // var title = string.Format(_localizationService.GetResource("Profile.ProfileOf"), name);
+            var model = new EventPageModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Address1 = entity.Address1,
+                Address2 = entity.Address2,
+                City = entity.City,
+                State = entity.State,
+                ZipPostalCode = entity.ZipPostalCode,
+                Country = entity.Country,
+                DateCreated = entity.DateCreated,
+                DateUpdated = entity.DateUpdated,
+            };
 
-            //var model = new ProfileIndexModel()
-            //{
-            //    ProfileTitle = title,
-            //    PostsPage = postsPage,
-            //    PagingPosts = pagingPosts,
-            //    CustomerProfileId = customer.Id,
-            //    ForumsEnabled = _forumSettings.ForumsEnabled
-            //};
-            return View();
-            //return View(model);
+            // Event Page Hotels
+            foreach(var hotel in entity.Hotels)
+            {
+                model.Hotels.Add(new EventPageHotelModel
+                {
+                    Id = hotel.Id,
+                    Name = hotel.Name,
+                    Title = hotel.Title,
+                    Address1 = hotel.Address1,
+                    Address2 = hotel.Address2,
+                    City = hotel.City,
+                    State = hotel.State,
+                    ZipPostalCode = hotel.ZipPostalCode,
+                });                                          
+            }
+
+            // Event Page Pictures
+            foreach(var picture in entity.Pictures)
+            {
+                model.Pictures.Add(new EventPagePictureModel
+                {
+                    Id = picture.Id,
+                    PictureId = picture.PictureId,
+                    DisplayOrder = picture.DisplayOrder,
+                    DateCreated = picture.DateCreated,
+                    DateUpdated = picture.DateUpdated
+                });  
+            }
+
+            return View(model);
         }
 
         //profile info tab
