@@ -87,9 +87,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 var model = new {
                     Id = entity.Id,
                     PictureThumbnailUrl = _pictureService.GetPictureUrl(defaultPicture, 75, true),
-                    FriendlyName = entity.Name,
-                    SystemName = entity.Name,
-                    IsPrimaryTaxProvider = false
+                    Name = entity.Name,
+                    Address = entity.Address1 + " " + entity.Address2 + " " + 
+                              entity.City + ", " + entity.State + " " + 
+                              entity.ZipPostalCode + " " + entity.Country,
+                    DateCreated = entity.DateCreated.ToString(),
+                    DateUpdated = entity.DateUpdated.ToString(),
                 };
 
                 models.Add(model);
