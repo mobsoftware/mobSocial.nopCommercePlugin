@@ -75,17 +75,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         public ActionResult GetAll(DataSourceRequest command)
         {
 
-            var items = _eventPageService.GetAll();
+            var entities = _eventPageService.GetAll();
 
             var models = new List<object>();
 
-            foreach(var item in items)
+            foreach(var entity in entities)
             {
+                var entityPicture = _eventPageService.GetFirstPicture(entity.Id);
+                var defaultPicture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
+
                 var model = new {
-                    Id = item.Id,
-                    PictureThumbnailUrl = "",
-                    FriendlyName = item.Name,
-                    SystemName = item.Name,
+                    Id = entity.Id,
+                    PictureThumbnailUrl = _pictureService.GetPictureUrl(defaultPicture, 75, true),
+                    FriendlyName = entity.Name,
+                    SystemName = entity.Name,
                     IsPrimaryTaxProvider = false
                 };
 
@@ -96,7 +99,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             var gridModel = new DataSourceResult
             {
                 Data = models,
-                Total = items.Count()
+                Total = entities.Count()
             };
 
             return Json(gridModel);
@@ -302,6 +305,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 PictureId = pictureId,
                 EventPageId = entityId,
                 DisplayOrder = displayOrder,
+                DateCreated = DateTime.Now,
+                DateUpdated = DateTime.Now
             });
 
             _pictureService.SetSeoFilename(pictureId, _pictureService.GetPictureSeName(entity.Name));
@@ -353,6 +358,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 throw new ArgumentException("No picture found with the specified id");
 
             picture.DisplayOrder = model.DisplayOrder;
+            picture.DateUpdated = DateTime.Now;
 
             _eventPageService.UpdatePicture(picture);
 

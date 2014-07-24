@@ -73,7 +73,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                                "DROP TABLE EventPageHotel; " +
                                "DROP TABLE EventPage; " +
                                "DROP TABLE GroupPageMember; " +
-                               "DROP TABLE CustomerAlbumPictureLike; " +
+                               //"DROP TABLE CustomerAlbumPictureLike; " +
                                "DROP TABLE CustomerAlbumPicture; " +
                                "DROP TABLE CustomerAlbum; " +
                                "DROP TABLE CustomerVideoLike; " +

@@ -70,11 +70,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
         public void UpdatePicture(P entity)
         {
-            _pictureRepository.Insert(entity);
+            _pictureRepository.Update(entity);
         }
         public void DeletePicture(P entity)
         {
-            _pictureRepository.Insert(entity);
+            _pictureRepository.Delete(entity);
         }
         /// <summary>
         /// Gets the Entity Picture record for the given id.
@@ -89,6 +89,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         /// </summary>
         /// <returns></returns>
         public abstract List<P> GetAllPictures(int entityId);
+
+        /// <summary>
+        /// Gets the first picture for the specified entity
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        public abstract P GetFirstPicture(int entityId);
 
         #endregion
 

@@ -81,6 +81,10 @@ namespace Nop.Plugin.Widgets.MobSocial
                 .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
                 .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<EventPagePicture>>().As<IRepository<EventPagePicture>>()
+                .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+                .InstancePerRequest();
+
             builder.RegisterType<EfRepository<EventPageHotel>>().As<IRepository<EventPageHotel>>()
                .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
                .InstancePerRequest();

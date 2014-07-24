@@ -30,9 +30,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public EventPageService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger, IEventPublisher eventPublisher,
             IRepository<EventPage> eventPageRepository,
+            IRepository<EventPagePicture> eventPagePictureRepository,
             MediaSettings mediaSettings,
             IUrlRecordService urlRecordService,
-            IWorkContext workContext) : base(eventPageRepository)
+            IWorkContext workContext) : base(eventPageRepository, eventPagePictureRepository)
         {
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
@@ -92,6 +93,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return base.PictureRepository.Table
                 .Where(x => x.EventPageId == entityId)
                 .ToList();
+        }
+
+        public override EventPagePicture GetFirstPicture(int entityId)
+        {
+            return base.PictureRepository.Table
+                .Where(x => x.EventPageId == entityId)
+                .FirstOrDefault();
+                
         }
 
     }

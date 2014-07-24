@@ -296,12 +296,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             foreach (var item in items)
             {
+                var entityPicture = _eventPageService.GetFirstPicture(item.Id);
+                var defaultPicture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
 
                 models.Add(new
                 {
 
                     DisplayName = item.Name,
                     Url = Url.RouteUrl("EventPageUrl", new { SeName = item.GetSeName() }),
+                    PictureUrl = _pictureService.GetPictureUrl(defaultPicture, 50, true),
 
                 });
 
