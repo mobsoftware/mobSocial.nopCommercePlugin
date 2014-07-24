@@ -12,17 +12,17 @@
                         type: "json",
                         transport: {
                             read: {
-                                url: "@Html.Raw(Url.Action("ProductPictureList", "Product", new { productId = Model.Id }))",
+                                url: "@Html.Raw(Url.Action("PictureList", "ManageEventPage", new { entityId = Model.Id }))",
                                 type: "POST",
                                 dataType: "json"
                             },
                             update: {
-                                url:"@Html.Raw(Url.Action("ProductPictureUpdate", "Product"))",
+                                url:"@Html.Raw(Url.Action("PictureUpdate", "ManageEventPage"))",
                                 type: "POST",
                                 dataType: "json"
                             },
                             destroy: {
-                                url: "@Html.Raw(Url.Action("ProductPictureDelete", "Product"))",
+                                url: "@Html.Raw(Url.Action("PictureDelete", "ManageEventPage"))",
                                 type: "POST",
                                 dataType: "json"
                             }
@@ -95,7 +95,7 @@
     <script type="text/javascript">
      
         $(document).ready(function () {
-            $('#addProductPicture').click(function () {
+            $('#addPicture').click(function () {
                 var pictureId = $("#@Html.FieldIdFor(model => model.AddPictureModel.PictureId)").val();
                 var displayOrder = $("#@Html.FieldIdFor(model => model.AddPictureModel.DisplayOrder)").val();
                 
@@ -104,20 +104,20 @@
                     return;
                 }
 
-                $('#addProductPicture').attr('disabled', true);
+                $('#addPicture').attr('disabled', true);
                 $.ajax({
                     cache:false,
                     type: "POST",
-                    url: "@(Url.Action("ProductPictureAdd", "Product"))",
-                    data: { "pictureId": pictureId, "displayOrder": displayOrder, "productId": @Model.Id },
+                    url: "@(Url.Action("PictureAdd", "ManageEventPage"))",
+                    data: { "pictureId": pictureId, "displayOrder": displayOrder, "entityId": @Model.Id },
                     success: function (data) {
-                        var productpicturesGrid = $("#productpictures-grid");
-                        productpicturesGrid.data('kendoGrid').dataSource.read();
-                        $('#addProductPicture').attr('disabled', false);
+                        var picturesGrid = $("#pictures-grid");
+                        picturesGrid.data('kendoGrid').dataSource.read();
+                        $('#addPicture').attr('disabled', false);
                     },
                     error:function (xhr, ajaxOptions, thrownError){
-                        alert('Failed to add product picture.');
-                        $('#addProductPicture').attr('disabled', false);
+                        alert('Failed to add picture.');
+                        $('#addPicture').attr('disabled', false);
                     }  
                 });
             });
@@ -144,7 +144,7 @@
         </tr>
         <tr>
             <td colspan="2" align="left">
-                <input type="button" id="addProductPicture" class="k-button" value="@T("Admin.Catalog.Products.Pictures.AddButton")" />
+                <input type="button" id="addPicture" class="k-button" value="@T("Admin.Catalog.Products.Pictures.AddButton")" />
             </td>
         </tr>
     </table>

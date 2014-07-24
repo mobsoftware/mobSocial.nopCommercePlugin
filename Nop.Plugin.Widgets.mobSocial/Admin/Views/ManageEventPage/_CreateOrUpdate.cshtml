@@ -4,54 +4,110 @@
 <div id="product-edit">
     <ul>
         <li @Html.RenderSelectedTabIndex(0, GetSelectedTabIndex())>
-            @T("Admin.MobSocial.EventPage.Info")
+            @T("Admin.Catalog.Products.Info")
         </li>
         <li @Html.RenderSelectedTabIndex(1, GetSelectedTabIndex())>
-            @T("Admin.MobSocial.EventPage.Pictures")
+            @T("Admin.Common.SEO")
         </li>
         <li @Html.RenderSelectedTabIndex(2, GetSelectedTabIndex())>
-            @T("Admin.MobSocial.EventPage.Hotels")
+            @T("Admin.Catalog.Products.Pictures")
         </li>
         <li @Html.RenderSelectedTabIndex(3, GetSelectedTabIndex())>
-            @T("Admin.MobSocial.EventPage.Hosts")
+            @T("Admin.Catalog.Products.Categories")
         </li>
         <li @Html.RenderSelectedTabIndex(4, GetSelectedTabIndex())>
-            @T("Admin.MobSocial.EventPage.Attendance")
+            @T("Admin.Catalog.Products.Manufacturers")
         </li>
-        @*
-            TODO: Support for multiple stores later
-            <li @Html.RenderSelectedTabIndex(10, GetSelectedTabIndex())>
+        <li @Html.RenderSelectedTabIndex(5, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.SpecificationAttributes")
+        </li>
+        <li @Html.RenderSelectedTabIndex(6, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.ProductVariantAttributes")
+        </li>
+        <li @Html.RenderSelectedTabIndex(7, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.TierPrices")
+        </li>
+        <li @Html.RenderSelectedTabIndex(8, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.Discounts")
+        </li>
+        <li @Html.RenderSelectedTabIndex(9, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.Acl")
+        </li>
+        <li @Html.RenderSelectedTabIndex(10, GetSelectedTabIndex())>
             @T("Admin.Catalog.Products.Stores")
-        </li>*@
-        @Html.Widget("admin-event-page-tab")
-
-        
+        </li>
+        <li @Html.RenderSelectedTabIndex(11, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.RelatedProducts")
+        </li>
+        <li @Html.RenderSelectedTabIndex(12, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.CrossSells")
+        </li>
+        <li @Html.RenderSelectedTabIndex(13, GetSelectedTabIndex())>
+            @T("Admin.Catalog.Products.AssociatedProducts")
+        </li>
+        @if (Model.Id > 0)
+        {
+            <li @Html.RenderSelectedTabIndex(14, GetSelectedTabIndex())>
+                @T("Admin.Catalog.Products.PurchasedWithOrders")
+            </li>
+        }
     </ul>
     <div>
         @TabInfo()
     </div>
-    
+    <div>
+        SEO for event pages
+        @*@TabSeo()*@
+    </div>
     <div>
         Pictures
-        @*@TabPictures()*@
+        @TabPictures()
     </div>
-    <div>
-        Hotels
-        
-    </div>
-    <div>
-        Hosts
-        
-    </div>
-    
-    <div>
-        Attendance<br />
-        Going<br />
-        Maybe<br />
-        Declined<br />
-    </div>
-     
-        
+        @*
+
+        <div>
+            @TabHotels()
+        </div>
+
+            <div>
+            @TabCategories()
+        </div>
+        <div>
+            @TabManufacturers()
+        </div>
+        <div>
+            @TabSpecificationAttributes()
+        </div>
+        <div>
+            @TabProductAttributes()
+        </div>
+        <div>
+            @TabTierPrices()
+        </div>
+        <div>
+            @TabDiscounts()
+        </div>
+        <div>
+            @TabAcl()
+        </div>
+        <div>
+            @TabStores()
+        </div>
+        <div>
+            @TabRelatedProducts()
+        </div>
+        <div>
+            @TabCrossSells()
+        </div>
+        <div>
+            @TabAssociatedProducts()
+        </div>
+        @if (Model.Id > 0)
+        {
+            <div>
+                @TabPurchasedWithOrders()
+            </div>
+        }*@
 </div>
 <script>
     $(document).ready(function () {
@@ -96,11 +152,12 @@
 {
     @Html.Partial("_CreateOrUpdate.Manufacturers", Model)
 }
-    *@
-@*@helper TabPictures()
+*@
+
+@helper TabPictures()
 {
     @Html.Partial("_CreateOrUpdate.Pictures", Model)
-}*@
+}
 @*@helper TabSpecificationAttributes()
 {
     @Html.Partial("_CreateOrUpdate.SpecificationAttributes", Model)
