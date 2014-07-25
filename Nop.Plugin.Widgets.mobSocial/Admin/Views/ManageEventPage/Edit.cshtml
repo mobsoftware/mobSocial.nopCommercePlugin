@@ -22,44 +22,7 @@
 }
 @Html.DeleteConfirmation("product-delete")
 
-@*copy product form*@
-<div id="copyproduct-window" style="display:none;">
-    @using (Html.BeginForm("CopyProduct", "Product"))
-    {
-        @Html.HiddenFor(model => model.Id)
-        <table style="text-align: left;">
-            <tr>
-                <td>
-                    @Html.NopLabelFor(model => model.Name):
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Name)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.NopLabelFor(model => model.Address1):
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Address1)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.NopLabelFor(model => model.Address2):
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Address2)
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" class="k-button" value="@T("Admin.Catalog.Products.Copy")" />
-                </td>
-            </tr>
-        </table>
-    }
-</div>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#copyproduct").click(function (e) {

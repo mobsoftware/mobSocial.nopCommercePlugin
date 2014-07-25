@@ -13,27 +13,30 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public EventPageModel()
         {
             AddPictureModel = new EventPageAddPictureModel();
+            Pictures = new List<EventPagePictureModel>();
+            Hotels = new List<EventPageHotelModel>();
+
         }
 
         public string Name { get; set; }
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-        public string ZipPostalCode { get; set; }
+        public string LocationName { get; set; }
+        public string LocationAddress1 { get; set; }
+        public string LocationAddress2 { get; set; }
+        public string LocationState { get; set; }
+        public string LocationCity { get; set; }
+        public string LocationZipPostalCode { get; set; }
+        public string LocationCountry { get; set; }
+        public string LocationPhone { get; set; }
+        public string LocationWebsite { get; set; }
+        public string LocationEmail { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
-
-
         public string SeName { get; set; }
 
-        public string State { get; set; }
 
-        public string City { get; set; }
+        public List<EventPageHotelModel> Hotels { get; set; }
 
-        public List<mobSocial.Models.EventPageHotelModel> Hotels { get; set; }
-
-        public List<mobSocial.Models.EventPagePictureModel> Pictures { get; set; }
-
-        public string Country { get; set; }
+        public List<EventPagePictureModel> Pictures { get; set; }
 
         public EventPageAddPictureModel AddPictureModel { get; set; }
 
@@ -50,6 +53,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
             public int DisplayOrder { get; set; }
 
         }
+
 
 
     }

@@ -22,7 +22,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(m => m.City);
             Property(m => m.State);
             Property(m => m.ZipPostalCode);
+            Property(m => m.PhoneNumber);
             Property(m => m.Country);
+            Property(m => m.AdditionalInformation);
 
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();

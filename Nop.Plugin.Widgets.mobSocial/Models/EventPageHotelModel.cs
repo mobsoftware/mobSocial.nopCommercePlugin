@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nop.Plugin.Widgets.mobSocial.Models
+namespace Nop.Plugin.Widgets.MobSocial.Models
 {
     public class EventPageHotelModel : BaseNopEntityModel
     {
@@ -23,5 +23,11 @@ namespace Nop.Plugin.Widgets.mobSocial.Models
         public string State { get; set; }
 
         public string ZipPostalCode { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public string AdditionalInformation { get; set; }
+
+
     }
 }

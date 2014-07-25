@@ -16,10 +16,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             //Map the additional properties
             Property(m => m.Name);
-            Property(m => m.City);
-            Property(m => m.State);
-            Property(m => m.ZipPostalCode);
-            Property(m => m.Country);
+            Property(m => m.LocationAddress1);
+            Property(m => m.LocationAddress2);
+            Property(m => m.LocationCity);
+            Property(m => m.LocationState);
+            Property(m => m.LocationZipPostalCode);
+            Property(m => m.LocationCountry);
+            Property(m => m.LocationPhone);
+            Property(m => m.LocationWebsite);
+            Property(m => m.LocationEmail);
 
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();

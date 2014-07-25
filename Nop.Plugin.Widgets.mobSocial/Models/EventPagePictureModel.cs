@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nop.Plugin.Widgets.mobSocial.Models
+namespace Nop.Plugin.Widgets.MobSocial.Models
 {
     public class EventPagePictureModel
     {

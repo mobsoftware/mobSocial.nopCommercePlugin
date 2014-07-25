@@ -21,7 +21,7 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
-using Nop.Plugin.Widgets.mobSocial.Models;
+using Nop.Plugin.Widgets.MobSocial.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -85,12 +85,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Address1 = entity.Address1,
-                Address2 = entity.Address2,
-                City = entity.City,
-                State = entity.State,
-                ZipPostalCode = entity.ZipPostalCode,
-                Country = entity.Country,
+                LocationAddress1 = entity.LocationAddress1,
+                LocationAddress2 = entity.LocationAddress2,
+                LocationCity = entity.LocationCity,
+                LocationState = entity.LocationState,
+                LocationZipPostalCode = entity.LocationZipPostalCode,
+                LocationCountry = entity.LocationCountry,
                 DateCreated = entity.DateCreated,
                 DateUpdated = entity.DateUpdated,
             };

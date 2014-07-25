@@ -15,7 +15,7 @@ using Nop.Services.Localization;
 using Nop.Services.Logging;
 using System;
 using Nop.Services.Media;
-using Nop.Plugin.Widgets.mobSocial.Models;
+using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Framework.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
@@ -88,9 +88,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                     Id = entity.Id,
                     PictureThumbnailUrl = _pictureService.GetPictureUrl(defaultPicture, 75, true),
                     Name = entity.Name,
-                    Address = entity.Address1 + " " + entity.Address2 + " " + 
-                              entity.City + ", " + entity.State + " " + 
-                              entity.ZipPostalCode + " " + entity.Country,
+                    Address = entity.LocationName + " " + entity.LocationAddress1 + " " + entity.LocationAddress2 + " " + 
+                              entity.LocationCity + ", " + entity.LocationState + " " + 
+                              entity.LocationZipPostalCode + " " + entity.LocationCountry,
+                    LocationContactInfo = entity.LocationPhone + " " + entity.LocationEmail + " " + entity.LocationWebsite,
                     DateCreated = entity.DateCreated.ToString(),
                     DateUpdated = entity.DateUpdated.ToString(),
                 };
@@ -144,12 +145,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 Id = item.Id,
                 Name = item.Name,
                 SeName = item.GetSeName(0),
-                Address1 = item.Address1,
-                Address2 = item.Address2,
-                City = item.City,
-                State = item.State,
-                ZipPostalCode = item.ZipPostalCode,
-                Country = item.Country,
+                LocationName = item.LocationName,
+                LocationAddress1 = item.LocationAddress1,
+                LocationAddress2 = item.LocationAddress2,
+                LocationCity = item.LocationCity,
+                LocationState = item.LocationState,
+                LocationZipPostalCode = item.LocationZipPostalCode,
+                LocationCountry = item.LocationCountry,
+                LocationPhone = item.LocationPhone,
+                LocationWebsite = item.LocationWebsite,
+                LocationEmail = item.LocationEmail,
                 DateCreated = item.DateCreated,
                 DateUpdated = item.DateUpdated,
             };
@@ -169,12 +174,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 var entity = new EventPage()
                 {
                     Name = model.Name,
-                    Address1 = model.Address1,
-                    Address2 = model.Address2,
-                    City = model.City,
-                    State = model.State,
-                    ZipPostalCode = model.ZipPostalCode,
-                    Country = model.Country,
+                    LocationName = model.LocationName,
+                    LocationAddress1 = model.LocationAddress1,
+                    LocationAddress2 = model.LocationAddress2,
+                    LocationCity = model.LocationCity,
+                    LocationState = model.LocationState,
+                    LocationZipPostalCode = model.LocationZipPostalCode,
+                    LocationPhone = model.LocationPhone,
+                    LocationWebsite = model.LocationWebsite,
+                    LocationEmail = model.LocationEmail,
+                    LocationCountry = model.LocationCountry,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                 };
@@ -219,12 +228,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 
 
                 item.Name = model.Name;
-                item.Address1 = model.Address1;
-                item.Address2 = model.Address2;
-                item.City = model.City;
-                item.State = model.State;
-                item.ZipPostalCode = model.ZipPostalCode;
-                item.Country = model.Country;
+                item.LocationName = model.LocationName;
+                item.LocationAddress1 = model.LocationAddress1;
+                item.LocationAddress2 = model.LocationAddress2;
+                item.LocationCity = model.LocationCity;
+                item.LocationState = model.LocationState;
+                item.LocationZipPostalCode = model.LocationZipPostalCode;
+                item.LocationCountry = model.LocationCountry;
+                item.LocationPhone = model.LocationPhone;
+                item.LocationWebsite = model.LocationWebsite;
+                item.LocationEmail = model.LocationEmail;
                 item.DateUpdated = DateTime.Now;
 
                 _eventPageService.Update(item);
@@ -248,7 +261,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("List");
                 }
             }
 
@@ -268,14 +281,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             if (item == null)
                 return RedirectToAction("List");
 
-        
             _eventPageService.Delete(item);
 
             //activity log
             _customerActivityService.InsertActivity("DeleteEventPage", _localizationService.GetResource("ActivityLog.DeleteEventPage"), item.Name);
 
             SuccessNotification(_localizationService.GetResource("Admin.MobSocial.EventPage.Deleted"));
-            return RedirectToAction("Index");
+            return RedirectToAction("List");
         }
 
 

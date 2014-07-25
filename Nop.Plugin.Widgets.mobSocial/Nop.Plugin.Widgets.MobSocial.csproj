@@ -168,7 +168,7 @@
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.woff" />
     <None Include="Themes\mobSocial\Content\fonts\FontAwesome.otf" />
     <None Include="Themes\mobSocial\theme.config" />
-    <None Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
+    <Content Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
     <Content Include="Themes\mobSocial\Views\EventPage\Search.js" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
     <Content Include="Themes\mobSocial\Views\SocialNetworkNavigation\PublicInfo.cshtml" />
