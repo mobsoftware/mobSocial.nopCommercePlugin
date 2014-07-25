@@ -31,6 +31,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IPictureService _pictureService;
+        private readonly IEventPageHotelService _eventPageHotelService;
         #endregion
 
         #region Constructors
@@ -41,7 +42,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             IUrlRecordService urlRecordService,
             ILocalizationService localizationService,
             ICustomerActivityService customerActivityService,
-            IPictureService pictureService)
+            IPictureService pictureService,
+            IEventPageHotelService eventPageHotelService)
         {
             _permissionService = permissionService;
             _eventPageService = eventPageService;
@@ -50,6 +52,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             _localizationService = localizationService;
             _customerActivityService = customerActivityService;
             _pictureService = pictureService;
+            _eventPageHotelService = eventPageHotelService;
         }
 
         #endregion
@@ -299,8 +302,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 
 
         #region Pictures
-        #region Product pictures
-
         public ActionResult PictureAdd(int pictureId, int displayOrder, int entityId)
         {
             //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
@@ -398,8 +399,114 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 
             return new NullJsonResult();
         }
-
         #endregion
+
+
+
+        #region Hotels
+        public ActionResult HotelAdd(EventPageHotelModel model)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            if (model == null)
+                throw new ArgumentException();
+
+
+            var entity = new EventPageHotel()
+            {
+                EventPageId = model.EventPageId,
+                Title = model.Title,
+                Name = model.Name,
+                Address1 = model.Address1,
+                Address2 = model.Address2,
+                City = model.City,
+                State = model.State,
+                ZipPostalCode = model.ZipPostalCode,
+                Country = model.Country,
+                PhoneNumber = model.PhoneNumber,
+                AdditionalInformation = model.AdditionalInformation,
+            };
+
+
+            _eventPageHotelService.Insert(entity);
+
+            return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public ActionResult HotelList(DataSourceRequest command, int eventPageId)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            var hotels = _eventPageService.GetById(eventPageId).Hotels;
+
+            var model = hotels
+                .Select(x =>
+                {
+                    return new EventPageHotelModel()
+                    {
+                        Id = x.Id,
+                        EventPageId = x.EventPageId,
+                        Title = x.Title,
+                        Name = x.Name,
+                        Address1 = x.Address1,
+                        Address2 = x.Address2,
+                        City = x.City,
+                        State = x.State,
+                        ZipPostalCode = x.ZipPostalCode,
+                        Country = x.Country,
+                        PhoneNumber = x.PhoneNumber,
+                        AdditionalInformation = x.AdditionalInformation
+                    };
+                })
+                .ToList();
+
+            var gridModel = new DataSourceResult
+            {
+                Data = model,
+                Total = model.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public ActionResult HotelUpdate(EventPageHotelModel model)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            var hotel = _eventPageHotelService.GetById(model.Id);
+
+            if (hotel == null)
+                throw new ArgumentException("No hotel found with the specified id");
+
+            hotel.DisplayOrder = model.DisplayOrder;
+            hotel.DateUpdated = DateTime.Now;
+
+            _eventPageHotelService.Update(hotel);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public ActionResult HotelDelete(int id)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            //    return AccessDeniedView();
+
+            var hotel = _eventPageHotelService.GetById(id);
+
+            if (hotel == null)
+                throw new ArgumentException("No hotel found with the specified id");
+
+            _eventPageHotelService.Delete(hotel);
+
+            return new NullJsonResult();
+        }
         #endregion
 
 

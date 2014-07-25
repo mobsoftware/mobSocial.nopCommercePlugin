@@ -1,0 +1,154 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
+
+
+@if (Model.Id > 0)
+{   
+<table class="adminContent">
+    <tr>
+        <td>
+            <div id="hotels-grid"></div>
+
+            <div id="edit-hotel">
+
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#hotels-grid").kendoGrid({
+                        dataSource: {
+                            type: "json",
+                            transport: {
+                                read: {
+                                    url: "@Html.Raw(Url.Action("HotelList", "ManageEventPage", new { eventPageId = Model.Id }))",
+                                    type: "POST",
+                                    dataType: "json"
+                                },
+                                update: {
+                                    url:"@Html.Raw(Url.Action("HotelUpdate", "ManageEventPage"))",
+                                    type: "POST",
+                                    dataType: "json"
+                                },
+                                destroy: {
+                                    url: "@Html.Raw(Url.Action("HotelDelete", "ManageEventPage"))",
+                                    type: "POST",
+                                    dataType: "json"
+                                }
+                            },
+                            schema: {
+                                data: "Data",
+                                total: "Total",
+                                errors: "Errors",
+                                model: {
+                                    id: "Id",
+                                    fields: {
+                                        Id: { editable: false, type: "string" },
+                                        DisplayOrder: {editable: true, type: "number" },
+                                    }
+                                }
+                            },
+                            requestEnd: function(e) {
+                                if(e.type=="update") {
+                                    this.read();
+                                }
+                            },
+                            error: function(e) {
+                                display_kendoui_grid_error(e);
+                                // Cancel the changes
+                                this.cancelChanges();
+                            },
+                            serverPaging: true,
+                            serverFiltering: true,
+                            serverSorting: true
+                        },
+                        pageable: {
+                            refresh: true,
+                            numeric: false,
+                            previousNext: false,
+                            info: false
+                        },
+                        editable: {
+                            confirmation: false,
+                            mode: "inline"
+                        },
+                        scrollable: false,
+                        columns: [{
+                            field: "Name",
+                            title: "Name"
+                        }, {
+                            field: "DisplayOrder",
+                            title: "DisplayOrder",
+                            width: 150
+                        }, {
+                            field: "Id",
+                            title: "@T("Admin.Common.View")",
+                            width: 100,
+                            @*//template: '<a href="@Url.Content("~/Admin/Product/Edit/")#=ProductId2#">@T("Admin.Common.View")</a>'*@
+                        }, {
+                            command: [{
+                                name: "edit",
+                                text: "@T("Admin.Common.Edit")"
+                            }, {
+                                name: "destroy",
+                                text: "@T("Admin.Common.Delete")"
+                            }],
+                            width: 200
+                        }]
+                    });
+                });
+            </script>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="100%">
+
+            <table class="adminContent">
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Name):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Name)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.DisplayOrder):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.DisplayOrder)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.DisplayOrder)
+                    </td>
+                </tr>
+               
+            </table>
+
+        </td>
+    </tr>
+
+
+    <tr>
+        <td width="100%">
+            <input type="submit" id="btnAddNew" name="btnAddNew" value="Add" class="k-button" />
+            <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnRefresh').click(function () {
+                        //refresh grid
+                        var optionsGrid = $("#hotels-grid").data('kendoGrid');
+                        optionsGrid.dataSource.read();
+
+                        //return false to don't reload a page
+                        return false;
+                    });
+                });
+            </script>
+        </td>
+    </tr>
+</table>
+}
+else
+{
+    @T("Admin.MobSocial.Common.SaveBeforeEdit")
+}

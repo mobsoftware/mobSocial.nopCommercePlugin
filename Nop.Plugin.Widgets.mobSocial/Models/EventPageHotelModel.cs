@@ -8,7 +8,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 {
     public class EventPageHotelModel : BaseNopEntityModel
     {
-        public int Id { get; set; }
 
         public string Name { get; set; }
 
@@ -28,6 +27,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public string AdditionalInformation { get; set; }
 
+        public string Country { get; set; }
+
+        public int DisplayOrder { get; set; }
+
+        public int EventPageId { get; set; }
 
     }
 }

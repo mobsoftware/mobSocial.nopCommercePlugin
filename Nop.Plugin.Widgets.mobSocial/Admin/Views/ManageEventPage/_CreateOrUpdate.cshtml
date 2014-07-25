@@ -13,44 +13,9 @@
             @T("Admin.Catalog.Products.Pictures")
         </li>
         <li @Html.RenderSelectedTabIndex(3, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.Categories")
+            @T("Admin.MobSocial.EventPage.Hotels")
         </li>
-        <li @Html.RenderSelectedTabIndex(4, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.Manufacturers")
-        </li>
-        <li @Html.RenderSelectedTabIndex(5, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.SpecificationAttributes")
-        </li>
-        <li @Html.RenderSelectedTabIndex(6, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.ProductVariantAttributes")
-        </li>
-        <li @Html.RenderSelectedTabIndex(7, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.TierPrices")
-        </li>
-        <li @Html.RenderSelectedTabIndex(8, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.Discounts")
-        </li>
-        <li @Html.RenderSelectedTabIndex(9, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.Acl")
-        </li>
-        <li @Html.RenderSelectedTabIndex(10, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.Stores")
-        </li>
-        <li @Html.RenderSelectedTabIndex(11, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.RelatedProducts")
-        </li>
-        <li @Html.RenderSelectedTabIndex(12, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.CrossSells")
-        </li>
-        <li @Html.RenderSelectedTabIndex(13, GetSelectedTabIndex())>
-            @T("Admin.Catalog.Products.AssociatedProducts")
-        </li>
-        @if (Model.Id > 0)
-        {
-            <li @Html.RenderSelectedTabIndex(14, GetSelectedTabIndex())>
-                @T("Admin.Catalog.Products.PurchasedWithOrders")
-            </li>
-        }
+       
     </ul>
     <div>
         @TabInfo()
@@ -63,51 +28,9 @@
         Pictures
         @TabPictures()
     </div>
-        @*
-
         <div>
             @TabHotels()
         </div>
-
-            <div>
-            @TabCategories()
-        </div>
-        <div>
-            @TabManufacturers()
-        </div>
-        <div>
-            @TabSpecificationAttributes()
-        </div>
-        <div>
-            @TabProductAttributes()
-        </div>
-        <div>
-            @TabTierPrices()
-        </div>
-        <div>
-            @TabDiscounts()
-        </div>
-        <div>
-            @TabAcl()
-        </div>
-        <div>
-            @TabStores()
-        </div>
-        <div>
-            @TabRelatedProducts()
-        </div>
-        <div>
-            @TabCrossSells()
-        </div>
-        <div>
-            @TabAssociatedProducts()
-        </div>
-        @if (Model.Id > 0)
-        {
-            <div>
-                @TabPurchasedWithOrders()
-            </div>
-        }*@
 </div>
 <script>
     $(document).ready(function () {
@@ -139,24 +62,13 @@
 { 
     @Html.Partial("_CreateOrUpdate.Info", Model)
 }
-@* 
-@helper TabSeo()
-{
-    @Html.Partial("_CreateOrUpdate.SEO", Model)
-}
-@helper TabCategories()
-{
-    @Html.Partial("_CreateOrUpdate.Categories", Model)
-}
-@helper TabManufacturers()
-{
-    @Html.Partial("_CreateOrUpdate.Manufacturers", Model)
-}
-*@
-
 @helper TabPictures()
 {
     @Html.Partial("_CreateOrUpdate.Pictures", Model)
+}
+@helper TabHotels()
+{
+    @Html.Partial("_CreateOrUpdate.Hotels", Model)
 }
 @*@helper TabSpecificationAttributes()
 {

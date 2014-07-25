@@ -22,7 +22,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 {
     public class EventPageHotelService : IEventPageHotelService
     {
-        private readonly IRepository<EventPageHotel> _eventPageRepository;
+        private readonly IRepository<EventPageHotel> _eventPageHotelRepository;
         private MediaSettings _nopMediaSettings;
         private IUrlRecordService _urlRecordService;
         private IWorkContext _workContext;
@@ -36,7 +36,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             IUrlRecordService urlRecordService,
             IWorkContext workContext)
         {
-            _eventPageRepository = eventPageHotelRepository;
+            _eventPageHotelRepository = eventPageHotelRepository;
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
             _workContext = workContext;
@@ -44,34 +44,42 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         public void Insert(EventPageHotel entity)
         {
-            _eventPageRepository.Insert(entity);
+            _eventPageHotelRepository.Insert(entity);
         }
 
         public void Update(EventPageHotel entity)
         {
-            _eventPageRepository.Update(entity);
+            _eventPageHotelRepository.Update(entity);
         }
 
         public void Delete(EventPageHotel entity)
         {
-            _eventPageRepository.Delete(entity);
+            _eventPageHotelRepository.Delete(entity);
         }
 
         public EventPageHotel GetById(int id)
         {
-            return _eventPageRepository.GetById(id);
+            return _eventPageHotelRepository.GetById(id);
         }
 
 
         public List<EventPageHotel> GetAll()
         {
-            return _eventPageRepository.Table.ToList();
+            return _eventPageHotelRepository.Table.ToList();
 
         }
+
+        public List<EventPageHotel> GetAll(int eventPageId)
+        {
+            return _eventPageHotelRepository.Table
+                .Where(x => x.EventPageId == eventPageId)
+                .ToList();
+        }
+
         public List<EventPageHotel> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.
-            return _eventPageRepository.Table
+            return _eventPageHotelRepository.Table
                 .Where(x => x.Name.ToLower().Contains(term.ToLower()))
                 .Take(count)
                 .ToList();

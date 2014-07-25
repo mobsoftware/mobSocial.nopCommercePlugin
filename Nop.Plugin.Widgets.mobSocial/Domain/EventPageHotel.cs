@@ -7,6 +7,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
     public class EventPageHotel : BaseEntity
     {
 
+        public int EventPageId { get; set; }
         public string Title { get; set; }
         public string Name { get; set; }
         public string Address1 { get; set; }
@@ -21,6 +22,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         /// 'Mention group code "SummerJam" to get the special event rate.'
         /// </summary>
         public string AdditionalInformation { get; set; }
+        public int DisplayOrder { get; set; }
 
 
         public DateTime DateCreated { get; set; }
@@ -28,7 +30,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
 
         public virtual EventPage EventPage { get; set; }
-
 
     }
 }

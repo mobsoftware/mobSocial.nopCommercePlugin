@@ -12,6 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public EventPageModel()
         {
+            AddHotelModel = new EventPageHotelModel();
             AddPictureModel = new EventPageAddPictureModel();
             Pictures = new List<EventPagePictureModel>();
             Hotels = new List<EventPageHotelModel>();
@@ -39,6 +40,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public List<EventPagePictureModel> Pictures { get; set; }
 
         public EventPageAddPictureModel AddPictureModel { get; set; }
+
+        public EventPageHotelModel AddHotelModel { get; set; }
 
 
         public class EventPageAddPictureModel : BaseNopModel

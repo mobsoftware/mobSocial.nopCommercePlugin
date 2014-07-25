@@ -137,6 +137,7 @@
     <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.cshtml" />
     <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Info.cshtml" />
     <Content Include="Admin\Views\ManageEventPage\Create.cshtml" />
+    <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Hotels.cshtml" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
