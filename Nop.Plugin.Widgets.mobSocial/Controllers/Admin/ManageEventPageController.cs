@@ -95,6 +95,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                               entity.LocationCity + ", " + entity.LocationState + " " + 
                               entity.LocationZipPostalCode + " " + entity.LocationCountry,
                     LocationContactInfo = entity.LocationPhone + " " + entity.LocationEmail + " " + entity.LocationWebsite,
+                    StartDate = entity.StartDate,
+                    EndDate = entity.EndDate,
                     DateCreated = entity.DateCreated.ToString(),
                     DateUpdated = entity.DateUpdated.ToString(),
                 };
@@ -158,6 +160,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 LocationPhone = item.LocationPhone,
                 LocationWebsite = item.LocationWebsite,
                 LocationEmail = item.LocationEmail,
+                StartDate = item.StartDate,
+                EndDate = item.EndDate,
                 DateCreated = item.DateCreated,
                 DateUpdated = item.DateUpdated,
             };
@@ -187,6 +191,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                     LocationWebsite = model.LocationWebsite,
                     LocationEmail = model.LocationEmail,
                     LocationCountry = model.LocationCountry,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                 };
@@ -241,6 +247,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 item.LocationPhone = model.LocationPhone;
                 item.LocationWebsite = model.LocationWebsite;
                 item.LocationEmail = model.LocationEmail;
+                item.StartDate = model.StartDate;
+                item.EndDate = model.EndDate;
                 item.DateUpdated = DateTime.Now;
 
                 _eventPageService.Update(item);
@@ -426,6 +434,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 Country = model.Country,
                 PhoneNumber = model.PhoneNumber,
                 AdditionalInformation = model.AdditionalInformation,
+                DisplayOrder = model.DisplayOrder,
+                DateCreated = DateTime.Now,
+                DateUpdated = DateTime.Now,
             };
 
 
@@ -459,6 +470,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                         ZipPostalCode = x.ZipPostalCode,
                         Country = x.Country,
                         PhoneNumber = x.PhoneNumber,
+                        DisplayOrder = x.DisplayOrder,
                         AdditionalInformation = x.AdditionalInformation
                     };
                 })
@@ -484,6 +496,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             if (hotel == null)
                 throw new ArgumentException("No hotel found with the specified id");
 
+            hotel.Name = model.Name;
             hotel.DisplayOrder = model.DisplayOrder;
             hotel.DateUpdated = DateTime.Now;
 

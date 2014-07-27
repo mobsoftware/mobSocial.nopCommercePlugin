@@ -8,10 +8,6 @@
         <td>
             <div id="hotels-grid"></div>
 
-            <div id="edit-hotel">
-
-            </div>
-
             <script>
                 $(document).ready(function () {
                     $("#hotels-grid").kendoGrid({
@@ -79,11 +75,6 @@
                             title: "DisplayOrder",
                             width: 150
                         }, {
-                            field: "Id",
-                            title: "@T("Admin.Common.View")",
-                            width: 100,
-                            @*//template: '<a href="@Url.Content("~/Admin/Product/Edit/")#=ProductId2#">@T("Admin.Common.View")</a>'*@
-                        }, {
                             command: [{
                                 name: "edit",
                                 text: "@T("Admin.Common.Edit")"
@@ -102,7 +93,78 @@
     <tr>
         <td width="100%">
 
+            <p>
+                <strong>@T("Admin.MobSocial.EventPage.Hotels.AddNew")</strong>
+            </p>
+
+            <script type="text/javascript">
+
+                $(document).ready(function () {
+                    $('#btnAddNew').click(function () {
+
+                        var eventPageId = $("#@Html.FieldIdFor(model => model.Id)").val();
+                        var title = $("#@Html.FieldIdFor(model => model.AddHotelModel.Title)").val();
+                        var name = $("#@Html.FieldIdFor(model => model.AddHotelModel.Name)").val();
+                        var address1 = $("#@Html.FieldIdFor(model => model.AddHotelModel.Address1)").val();
+                        var address2 = $("#@Html.FieldIdFor(model => model.AddHotelModel.Address2)").val();
+                        var city = $("#@Html.FieldIdFor(model => model.AddHotelModel.City)").val();
+                        var state = $("#@Html.FieldIdFor(model => model.AddHotelModel.State)").val();
+                        var zipPostalCode = $("#@Html.FieldIdFor(model => model.AddHotelModel.ZipPostalCode)").val();
+                        var country = $("#@Html.FieldIdFor(model => model.AddHotelModel.Country)").val();
+                        var phoneNumber = $("#@Html.FieldIdFor(model => model.AddHotelModel.PhoneNumber)").val();
+                        var additionalInformation = tinyMCE.get('@Html.FieldIdFor(model => model.AddHotelModel.AdditionalInformation)').getContent();
+                        var displayOrder = $("#@Html.FieldIdFor(model => model.AddHotelModel.DisplayOrder)").val();
+
+
+                        var data = {
+                            EventPageId: eventPageId,
+                            Title: title,
+                            Name: name,
+                            Address1: address1,
+                            Address2:  address2,
+                            City:  city,
+                            State:   state,
+                            ZipPostalCode: zipPostalCode,
+                            Country: country,
+                            PhoneNumber: phoneNumber,
+                            AdditionalInformation:   additionalInformation,
+                            DisplayOrder:    displayOrder
+                        };
+
+                        $('#addNew').attr('disabled', true);
+
+                        $.ajax({
+                            cache:false,
+                            type: "GET",
+                            url: "@(Url.Action("HotelAdd", "ManageEventPage"))",
+                            data: data,
+                            success: function (data) {
+                                var grid = $("#hotels-grid");
+                                grid.data('kendoGrid').dataSource.read();
+                                $('#addNew').attr('disabled', false);
+                                return false;
+                            },
+                            error:function (xhr, ajaxOptions, thrownError){
+                                alert('Failed to add hotel.');
+                                $('#addNew').attr('disabled', false);
+                                return false;
+                            }
+                        });
+                    });
+                });
+
+            </script>
+
             <table class="adminContent">
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Title):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Title)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Title)
+                    </td>
+                </tr>
                 <tr>
                     <td class="adminTitle">
                         @Html.NopLabelFor(model => model.AddHotelModel.Name):
@@ -114,6 +176,78 @@
                 </tr>
                 <tr>
                     <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Address1):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Address1)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Address1)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Address2):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Address2)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Address2)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.City):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.City)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.City)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.State):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.State)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.State)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.ZipPostalCode):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.ZipPostalCode)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.ZipPostalCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Country):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Country)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Country)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.PhoneNumber):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.PhoneNumber)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.PhoneNumber)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.AdditionalInformation):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.AdditionalInformation, "RichEditor")
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.AdditionalInformation)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
                         @Html.NopLabelFor(model => model.AddHotelModel.DisplayOrder):
                     </td>
                     <td class="adminData">
@@ -121,7 +255,7 @@
                         @Html.ValidationMessageFor(model => model.AddHotelModel.DisplayOrder)
                     </td>
                 </tr>
-               
+
             </table>
 
         </td>
@@ -130,7 +264,7 @@
 
     <tr>
         <td width="100%">
-            <input type="submit" id="btnAddNew" name="btnAddNew" value="Add" class="k-button" />
+            <input type="button" id="btnAddNew" name="btnAddNew" value="Add" class="k-button" />
             <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
             <script type="text/javascript">
                 $(document).ready(function () {

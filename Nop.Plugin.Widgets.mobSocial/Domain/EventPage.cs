@@ -21,6 +21,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string LocationWebsite { get; set; }
         public string LocationEmail { get; set; }
 
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {
@@ -25,6 +26,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public string PhoneNumber { get; set; }
 
+        [AllowHtml]
         public string AdditionalInformation { get; set; }
 
         public string Country { get; set; }

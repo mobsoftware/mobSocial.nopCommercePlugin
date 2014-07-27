@@ -3,7 +3,7 @@
 @{
     var searchTooltip = T("Search.SearchBox.Tooltip");
 }
-@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { onsubmit = "return check_small_search_form()" }))
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id="searchForm" }))
 {
     <div class="search-box">
         <span class="search-box-label">Search</span>
@@ -31,28 +31,29 @@
                 <script type="text/javascript">
                     $(function() {
 
-                        $(document).ready(function() {
-                            $("#small-searchterms").focus(function() {
-                                if (this.value == '@T("Search.SearchBox.Tooltip")') {
-                                    this.value = '';
-                                }
-                            });
-
-                            $("#small-searchterms").blur(function() {
-                                if (this.value == '') {
-                                    this.value = '@searchTooltip';
-                                }
-                            });
-
-                            //TODO: Find workaround when running in IE Compatibility mode and calling selectmenu or wait for jQuery UI or IE team to fix this.
-                            $('#searchTypeDropDown').selectmenu({
-                                change: function(event, ui) {
-                                    var searchType = $(this).val();
-                                    setupSearchType(searchType);
-                                    $('.search-box-text').focus();
-                                }
-                            });
+                       
+                        $("#small-searchterms").focus(function() {
+                            if (this.value == '@T("Search.SearchBox.Tooltip")') {
+                                this.value = '';
+                            }
                         });
+
+                        $("#small-searchterms").blur(function() {
+                            if (this.value == '') {
+                                this.value = '@searchTooltip';
+                            }
+                        });
+
+                        //TODO: Find workaround when running in IE Compatibility mode and calling selectmenu or wait for jQuery UI or IE team to fix this.
+                        $('#searchTypeDropDown').selectmenu({
+                            change: function(event, ui) {
+                                var searchType = $(this).val();
+                                setupSearchType(searchType);
+                                $('.search-box-text').focus();
+                            }
+                        });
+
+                        $('#searchForm').submit(check_small_search_form);
 
                         function check_small_search_form() {
                             var search_terms = $("#small-searchterms");
@@ -63,8 +64,6 @@
                             }
                             return true;
                         };
-
-                        
 
                         function setupSearchType(searchType) {
                             if (searchType == "Store") {
@@ -80,9 +79,7 @@
                         };
 
 
-                        $('#small-searchterms').autocomplete(productSearchOptions)
-                            .data("ui-autocomplete")._renderItem = renderProductItem;
-
+                      
 
 
                         $('.search-type-button, .arrow-s .search-dropdown-arrow').click(function() {
@@ -92,11 +89,6 @@
                         //alert($('.search-type-selection').text());
 
                         setupSearchType($('#searchTypeDropDown').text());
-
-
-
-
-
 
 
                         $('.search-type-button').mouseover(function() {
@@ -119,7 +111,7 @@
                         var eventSearchOptions = {
                             delay: 500,
                             minLength: @(Model.SearchTermMinimumLength.ToString()),
-                            source: '@(RouteTable.Routes["PeopleSearchAutoComplete"] == null ? "" : Url.RouteUrl("EventPageSearchAutoComplete"))',
+                            source: '@(RouteTable.Routes["EventPageSearchAutoComplete"] == null ? "" : Url.RouteUrl("EventPageSearchAutoComplete"))',
                             select: function(event, ui) {
                                 $("#small-searchterms").val(ui.item.Name);
                                 setLocation(ui.item.Name);
@@ -157,10 +149,11 @@
                         };
 
                         function renderProductItem(ul, item) {
+                            var t = item.label;
                             t = htmlEncode(t);
                             return $("<li></li>")
                                 .data("item.autocomplete", item)
-                                .append('<a href="' + item.ProfileUrl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
+                                .append('<a href="' + item.producturl + '"><div class="people-search-box-thumbnail-container"><img src="' + item.productpictureurl +
                                     '"></div><span class="title">' + t + '</span></a>')
                                 .appendTo(ul);
                         };
@@ -187,6 +180,14 @@
                                     '"></div><span class="title">' + t + '</span></a>')
                                 .appendTo(ul);
                         };
+
+
+                        // set up initial search autocomplete
+                        $('#small-searchterms')
+                            .autocomplete(productSearchOptions)
+                            .data("ui-autocomplete")
+                            ._renderItem = renderProductItem;
+
 
 
                     });
