@@ -1,15 +1,15 @@
-﻿using Nop.Core;
+﻿using Mob.Core;
+using Nop.Core;
 using Nop.Core.Domain.Seo;
 using System;
 using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class EventPage : BaseEntity, ISlugSupported
+    public class EventPage : BaseEntity, ISlugSupported, INameSupported
     {
 
         public string Name { get; set; }
-
         public string LocationName { get; set; }
         public string LocationAddress1 { get; set; }
         public string LocationAddress2 { get; set; }

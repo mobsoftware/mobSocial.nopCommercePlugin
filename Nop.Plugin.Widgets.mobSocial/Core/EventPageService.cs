@@ -33,29 +33,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             IRepository<EventPagePicture> eventPagePictureRepository,
             MediaSettings mediaSettings,
             IUrlRecordService urlRecordService,
-            IWorkContext workContext) : base(eventPageRepository, eventPagePictureRepository)
+            IWorkContext workContext) : base(eventPageRepository, eventPagePictureRepository, workContext, urlRecordService)
         {
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
             _workContext = workContext;
-        }
-
-    
-        public new void Insert(EventPage entity)
-        {
-            base.Repository.Insert(entity);
-
-            UrlRecord urlRecord = new UrlRecord() {
-                EntityId = entity.Id,
-                EntityName = "EntityPage",
-                IsActive = true,
-                LanguageId = _workContext.WorkingLanguage.Id,
-                Slug = entity.GetSeName()
-            };
-
-            _urlRecordService.InsertUrlRecord(urlRecord);
-
-
         }
 
         public void InsertPicture(EventPage entity)

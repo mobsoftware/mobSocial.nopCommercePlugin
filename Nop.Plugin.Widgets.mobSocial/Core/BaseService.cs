@@ -7,6 +7,9 @@ using Nop.Core.Data;
 using System.Linq;
 using Nop.Core;
 using System;
+using Nop.Services.Seo;
+using Nop.Core.Domain.Seo;
+using Mob.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -18,21 +21,27 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         private readonly IRepository<T> _repository;
         private readonly IRepository<P> _pictureRepository;
+        private readonly IWorkContext _workContext;
+        private readonly IUrlRecordService _urlRecordService;
 
 
         protected IRepository<T> Repository { get { return _repository; } }
         protected IRepository<P> PictureRepository { get { return _pictureRepository; } }
 
-        public BaseService(IRepository<T> repository)
+        public BaseService(IRepository<T> repository, IWorkContext workContext, IUrlRecordService urlRecordService)
         {
             _repository = repository;
             _pictureRepository = null;
+            _workContext = workContext;
+            _urlRecordService = urlRecordService;
         }
 
-        public BaseService(IRepository<T> repository, IRepository<P> pictureRepository)
+        public BaseService(IRepository<T> repository, IRepository<P> pictureRepository, IWorkContext workContext, IUrlRecordService urlRecordService)
         {
             _repository = repository;
             _pictureRepository = pictureRepository;
+            _workContext = workContext;
+            _urlRecordService = urlRecordService;
         }
 
         #region Main Entity Operations
@@ -40,14 +49,43 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public void Insert(T entity)
         {
             _repository.Insert(entity);
+
+            if(entity is ISlugSupported && entity is INameSupported)
+                InsertUrlRecord(entity);
+
         }
         public void Update(T entity)
         {
+
             _repository.Update(entity);
+
+            if (entity is ISlugSupported && entity is INameSupported)
+            {
+                var currentSlug = _urlRecordService.GetActiveSlug(entity.Id, typeof(T).Name, _workContext.WorkingLanguage.Id);
+                
+                if(!string.IsNullOrEmpty(currentSlug))
+                    UpdateUrlRecord(entity, currentSlug);
+                else
+                    InsertUrlRecord(entity);
+            }
+
+
         }
         public void Delete(T entity)
         {
+            if (entity is ISlugSupported && entity is INameSupported)
+            {
+                // TODO: Need Nop UrlRecordService.GetByEntityId(entityId, entityName) method
+                var currentSlug = _urlRecordService.GetActiveSlug(entity.Id, typeof(T).Name, _workContext.WorkingLanguage.Id);
+                if (!string.IsNullOrEmpty(currentSlug))
+                {
+                    var urlRecord = _urlRecordService.GetBySlug(currentSlug);
+                    _urlRecordService.DeleteUrlRecord(urlRecord);
+                }
+            }  
+
             _repository.Delete(entity);
+
         }
         public T GetById(int id)
         {
@@ -100,12 +138,41 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         #endregion
 
 
-       
-        
 
 
-        
-       
+
+
+        #region Helper Methods
+
+        private void InsertUrlRecord(T entity)
+        {
+            var namedEntity = (INameSupported)entity;
+            var urlRecord = new UrlRecord()
+            {
+                EntityId = entity.Id,
+                EntityName = typeof(EventPage).Name,
+                IsActive = true,
+                LanguageId = _workContext.WorkingLanguage.Id,
+                Slug = Nop.Services.Seo.SeoExtensions.GetSeName(namedEntity.Name, true, false)
+            };
+
+            _urlRecordService.InsertUrlRecord(urlRecord);
+        }
+
+        private void UpdateUrlRecord(T entity, string currentSlug)
+        {
+            var urlRecord = _urlRecordService.GetBySlug(currentSlug);
+            var namedEntity = (INameSupported)entity;
+            var newSlug = Nop.Services.Seo.SeoExtensions.GetSeName(namedEntity.Name, true, false);
+
+            urlRecord.EntityName = typeof(EventPage).Name;
+            urlRecord.LanguageId = _workContext.WorkingLanguage.Id;
+            urlRecord.Slug = newSlug;
+
+            _urlRecordService.UpdateUrlRecord(urlRecord);
+        }
+        #endregion
+
 
     }
 

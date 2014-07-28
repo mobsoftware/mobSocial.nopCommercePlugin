@@ -251,6 +251,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 item.EndDate = model.EndDate;
                 item.DateUpdated = DateTime.Now;
 
+
+                
+
                 _eventPageService.Update(item);
 
                 //search engine name
