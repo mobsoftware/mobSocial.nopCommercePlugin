@@ -150,7 +150,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             var urlRecord = new UrlRecord()
             {
                 EntityId = entity.Id,
-                EntityName = typeof(EventPage).Name,
+                EntityName = typeof(T).Name,
                 IsActive = true,
                 LanguageId = _workContext.WorkingLanguage.Id,
                 Slug = Nop.Services.Seo.SeoExtensions.GetSeName(namedEntity.Name, true, false)
@@ -165,7 +165,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             var namedEntity = (INameSupported)entity;
             var newSlug = Nop.Services.Seo.SeoExtensions.GetSeName(namedEntity.Name, true, false);
 
-            urlRecord.EntityName = typeof(EventPage).Name;
+            urlRecord.EntityName = typeof(T).Name;
             urlRecord.LanguageId = _workContext.WorkingLanguage.Id;
             urlRecord.Slug = newSlug;
 
