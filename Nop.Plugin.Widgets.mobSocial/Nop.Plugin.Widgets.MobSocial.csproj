@@ -173,7 +173,7 @@
     <Content Include="Themes\mobSocial\Views\EventPage\Search.js" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
     <Content Include="Themes\mobSocial\Views\SocialNetworkNavigation\PublicInfo.cshtml" />
-    <None Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
+    <Content Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\EventPage\Search.cshtml" />
     <None Include="Themes\mobSocial\Views\HeaderMenu\PublicInfo.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />

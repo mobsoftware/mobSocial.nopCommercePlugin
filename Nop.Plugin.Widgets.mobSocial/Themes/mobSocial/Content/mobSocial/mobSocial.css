@@ -225,3 +225,28 @@
 
 
 
+
+
+
+/*** EVENT PAGE STYLES ***/
+.hotel-information-block .title {
+    font-weight: bold;
+    margin-bottom: 7px;
+    display:inline-block;
+}
+
+.event-center-content {
+    margin-top: -5px;
+}
+
+.event-center-content h1 {
+    font-size: 14pt;
+    margin-bottom: 10px;
+}
+
+.event-picture {
+    margin-bottom: 5px;
+}
+
+/*** END EVENT PAGE STYLES ***/
+

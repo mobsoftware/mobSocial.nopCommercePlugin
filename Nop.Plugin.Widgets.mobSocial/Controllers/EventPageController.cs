@@ -22,6 +22,7 @@ using Nop.Plugin.Widgets.MobSocial;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
 using Nop.Plugin.Widgets.MobSocial.Models;
+using System.Linq;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -119,12 +120,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.Pictures.Add(new EventPagePictureModel
                 {
                     Id = picture.Id,
+                    EventPageId = entity.Id,
                     PictureId = picture.PictureId,
                     DisplayOrder = picture.DisplayOrder,
                     DateCreated = picture.DateCreated,
-                    DateUpdated = picture.DateUpdated
+                    DateUpdated = picture.DateUpdated,
+                    PictureUrl = _pictureService.GetPictureUrl(picture.PictureId, 200)
                 });  
             }
+
+
+            if(entity.Pictures.Count > 0)
+                model.MainPictureUrl = model.Pictures.First().PictureUrl;
+            else
+                model.MainPictureUrl = _pictureService.GetDefaultPictureUrl(200);
+
+            
 
             return View(model);
         }

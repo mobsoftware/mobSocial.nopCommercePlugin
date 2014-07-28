@@ -37,6 +37,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public DateTime DateUpdated { get; set; }
 
         public string SeName { get; set; }
+        public string MainPictureUrl { get; set; }
 
 
         public List<EventPageHotelModel> Hotels { get; set; }
@@ -63,5 +64,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
 
 
+
+       
     }
 }

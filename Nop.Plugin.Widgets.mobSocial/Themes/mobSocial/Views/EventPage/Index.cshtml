@@ -1,75 +1,81 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
 
+@using Nop.Web.Models.Profile;
 @using Nop.Web.Framework.UI
 @{
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
+
     Html.AddTitleParts(T("PageTitle.Profile").Text);
+
+
 }
 
 @section left {
 
    
-        @foreach(var hotel in Model.Hotels)
-        { 
-            
+    <img id="event-picture" class="event-picture" src="@Model.MainPictureUrl" />
+    @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
+
+    <button>Going</button>
+
+    @*@Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })*@
+
+    <br />
+    <br />
+    <div class="profile-stat">
+
+        <div class="send-pm-box">
+            <span class="ui-icon ui-icon-mail-closed"></span>
+            @*@Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })*@
+        </div>
+    </div>
+    <br />
+    <br />
+
+
+    @*@Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })*@
+
+    @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
+    *@
+    <br />
+    @*        <div><b>Skate Moves</b></div>*@
+
+    @foreach (var hotel in Model.Hotels)
+    {
+        <text>
             <div class="hotel-information-block">
-                <span class="title">hotel.Title</span>
-                <br /><br />
+                <span class="title">@(hotel.Title):</span><br />
                 <div class="hotel-information">
-                    <span class="label">hotel.Name</span><br />
-                    <span class="value">hotel.Address1</span>
-                    if(string.IsNullOrEmpty(hotel.Address2))
+                    <span class="label">@hotel.Name</span><br />
+                    <span class="value">@hotel.Address1 @hotel.Address2</span><br />
+                    <span class="value">@(hotel.City), @hotel.State @hotel.ZipPostalCode</span><br />
+                    @if (!string.IsNullOrEmpty(hotel.Country))
                     {
-                        <span class="value"> hotel.Address2</span>
+                        <span class="value">@hotel.Country</span><br />
                     }
-                    <br />
-                    <span class="value">hotel.City, hotel.State hotel.ZipPostalCode</span><br />
-                    <span class="value">hotel.PhoneNumber</span><br />
+                    <span class="value">@hotel.PhoneNumber</span><br />
                 </div>
             </div>
-            <br /><br />        
-        }
+            
+        </text>
+    }
+
+
+
+
+
 }
 
 
-<div class="page profile-page">
-
-    <div class="clear">
-    </div>
-    <div class="profile-left">
-
-        @Html.Action("ProfilePicture", "MobSocial", new { customerId = Model.CustomerProfileId })
-
-        <button>Going</button>
-
-        <button>Get Tickets</button>
-
-        @Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })
-        <br />
-        <br />
-        <div class="profile-stat">
-
-            <div class="send-pm-box">
-                <span class="ui-icon ui-icon-mail-closed"></span>
-                @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })
-            </div>
-        </div>
-        <br />
-        <br />
+@section right {
+    <div>third column@*This is where related events, adverts, and other widgets will go!*@</div>
+}
 
 
-        @Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
 
-        @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
-        *@
-        <br />
-        @*        <div><b>Skate Moves</b></div>*@
+<div class="event-center-content">
 
-    </div>
-
-    <div class="profile-center-content">
-
-        <h2>@Model.Name</h2>
+        <h1>@Model.Name</h1>
 
         <div class="page-body">
             @{
@@ -87,15 +93,15 @@
             </script>
             <div id="tabs">
                 <ul>
-                    <li><a href="#tabs-1"><i class="fa fa-user"></i> Info</a></li>
+                    <li><a href="#tabs-1"><i class="fa fa-info"></i> About</a></li>
                     <li><a href="#tabs-2"><i class="fa fa-picture-o"></i> Pictures</a></li>
-                    <li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>
-                    <li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>
-                    <li><a href="#tabs-5"><i class="fa fa-group"></i> Results</a></li>
-                    @if (Model.ForumsEnabled)
-                    {
-                        <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
-                    }
+                    @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
+                    @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
+                    <li><a href="#tabs-4"><i class="fa fa-group"></i> Results</a></li>
+                    @*@if (Model.ForumsEnabled)
+                        {
+                            <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
+                        }*@
 
                 </ul>
                 <div id="tabs-1">
@@ -109,9 +115,6 @@
 
                 </div>
                 <div id="tabs-4">
-                    @Model.Address1 @Model.Address2<br />
-                    @Model.City, @Model.State @Model.ZipPostalCode
-                    @Model.Country
                     @*@Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
                 </div>
 
@@ -123,20 +126,3 @@
 
     </div>
 
-    @*<div class="profile-right">
-            $1$ &nbsp;<br/>
-            <div>
-                This is where events will go!
-            </div>
-            <div>
-                And ads!
-            </div>#1#
-        </div>*@
-
-</div>
-
-
-
-@section right {
-    <div></div>
-}
