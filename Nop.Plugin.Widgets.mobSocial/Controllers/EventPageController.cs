@@ -86,6 +86,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 Id = entity.Id,
                 Name = entity.Name,
+                LocationName = entity.LocationName,
                 LocationAddress1 = entity.LocationAddress1,
                 LocationAddress2 = entity.LocationAddress2,
                 LocationCity = entity.LocationCity,
@@ -111,6 +112,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     City = hotel.City,
                     State = hotel.State,
                     ZipPostalCode = hotel.ZipPostalCode,
+                    Country = hotel.Country,
+                    PhoneNumber = hotel.PhoneNumber,
+                    AdditionalInformation = hotel.AdditionalInformation
                 });                                          
             }
 
@@ -162,7 +166,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     DisplayName = item.Name,
                     Url = Url.RouteUrl("EventPageUrl", new { SeName = item.GetSeName() }),
                     PictureUrl = _pictureService.GetPictureUrl(defaultPicture, 50, true),
-
+                    //TODO: Add EventStartsFormat as locale resource string 
+                    EventStartsText = "Starts " + item.StartDate.ToString("MMMM d, yyyy") + " at " + item.StartDate.ToString("hh:mmtt"),
                 });
 
 

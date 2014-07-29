@@ -1,11 +1,10 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
 
-@using Nop.Web.Models.Profile;
 @using Nop.Web.Framework.UI
 @{
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
 
-    Html.AddTitleParts(T("PageTitle.Profile").Text);
+    Html.AddTitleParts(Model.Name);
 
 
 }
@@ -16,22 +15,10 @@
     <img id="event-picture" class="event-picture" src="@Model.MainPictureUrl" />
     @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
 
-    <button>Going</button>
+    <span>Starts @Model.StartDate.ToString("MMMM d, yyyy") at @Model.StartDate.ToString("hh:mmtt")</span><br />
 
+  
     @*@Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })*@
-
-    <br />
-    <br />
-    <div class="profile-stat">
-
-        <div class="send-pm-box">
-            <span class="ui-icon ui-icon-mail-closed"></span>
-            @*@Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })*@
-        </div>
-    </div>
-    <br />
-    <br />
-
 
     @*@Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })*@
 
@@ -40,9 +27,48 @@
     <br />
     @*        <div><b>Skate Moves</b></div>*@
 
+
+<span>Location</span><br /><br />
+<div class="hotel-information-block">
+    <span class="title">@(Model.LocationName)</span><br />
+    <div class="hotel-information">
+        <span class="value">@Model.LocationAddress1 @Model.LocationAddress2</span><br />
+        <span class="value">@(Model.LocationCity), @Model.LocationState @Model.LocationZipPostalCode</span><br />
+        @if (!string.IsNullOrEmpty(Model.LocationCountry))
+        {
+            <span class="value">@Model.LocationCountry</span><br />
+        }
+        @if (!string.IsNullOrEmpty(Model.LocationPhone))
+        {
+            <span class="value">@Model.LocationPhone</span><br />
+        }
+        @if (!string.IsNullOrEmpty(Model.LocationWebsite))
+        {
+            <span class="value">@Model.LocationWebsite</span><br />
+        }
+        @if (!string.IsNullOrEmpty(Model.LocationEmail))
+        {
+            <span class="value">@Model.LocationEmail</span><br />
+        }
+    </div>
+</div><br />
+
+<button>Going</button>
+<div class="profile-stat">
+
+    <div class="send-pm-box">
+        <span class="ui-icon ui-icon-mail-closed"></span>
+        @*@Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })*@
+    </div>
+</div><br /><br />
+
+
+
+<span>Hotels</span><br /><br />
     @foreach (var hotel in Model.Hotels)
     {
         <text>
+
             <div class="hotel-information-block">
                 <span class="title">@(hotel.Title):</span><br />
                 <div class="hotel-information">
@@ -53,10 +79,16 @@
                     {
                         <span class="value">@hotel.Country</span><br />
                     }
-                    <span class="value">@hotel.PhoneNumber</span><br />
+                    @if (!string.IsNullOrEmpty(hotel.PhoneNumber))
+                    {
+                        <span class="value">@hotel.PhoneNumber</span><br />
+                    }
+                    @if (!string.IsNullOrEmpty(hotel.AdditionalInformation))
+                    {
+                        <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
+                    }
                 </div>
             </div>
-            
         </text>
     }
 

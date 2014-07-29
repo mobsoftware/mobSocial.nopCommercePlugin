@@ -214,8 +214,25 @@ li a:hover {
     vertical-align: top;
 }
 
-.ui-menu-item a .title {
+.ui-menu-item a .details {
     margin-left: 7px;
+    display: inline-block;
+}
+
+.ui-menu-item a .title {
+    
+}
+
+
+.ui-menu-item a .subtitle {
+    color: gray;
+}
+
+
+.people-search-box-thumbnail-container {
+    display: inline-block;
+    min-width: 50px;
+    float:left;
 }
 
 
@@ -265,13 +282,6 @@ li a:hover {
     -webkit-appearance: none;
 }
 
-
-
-
-.people-search-box-thumbnail-container {
-    display: inline-block;
-    min-width: 50px;
-}
 
 .ui-autocomplete {
     text-align: left;
