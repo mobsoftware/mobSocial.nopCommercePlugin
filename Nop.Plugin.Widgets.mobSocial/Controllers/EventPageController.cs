@@ -23,6 +23,7 @@ using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using System.Linq;
+using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -41,13 +42,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly MediaSettings _mediaSettings;
         private readonly BaseService<EventPage, EventPagePicture> _eventPageService;
         private readonly mobSocialSettings _mobSocialSettings;
+        private readonly BaseService<EventPageAttendance, EventPageAttendance> _eventPageAttendanceService;
+        private readonly IWorkContext _workContext;
 
         public EventPageController(IForumService forumService, ILocalizationService localizationService,
             IPictureService pictureService, ICountryService countryService,
             ICustomerService customerService, IDateTimeHelper dateTimeHelper,
             ForumSettings forumSettings, CustomerSettings customerSettings,
             MediaSettings mediaSettings, BaseService<EventPage, EventPagePicture> eventPageService,
-            mobSocialSettings mobSocialSettings)
+            mobSocialSettings mobSocialSettings, BaseService<EventPageAttendance, EventPageAttendance> eventPageAttendanceService,
+            IWorkContext workContext)
         {
             _forumService = forumService;
             _localizationService = localizationService;
@@ -59,7 +63,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _customerSettings = customerSettings;
             _mediaSettings = mediaSettings;
             _eventPageService = eventPageService;
+            _eventPageAttendanceService = eventPageAttendanceService;
             _mobSocialSettings = mobSocialSettings;
+            _workContext = workContext;
         }
 
         public ActionResult Index(int? id, int? page)
@@ -143,6 +149,46 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             return View(model);
         }
+
+
+        [HttpPost]
+        public ActionResult UpdateAttendanceStatus(int eventPageId, int attendanceStatusId, int eventPageAttendanceId)
+        {
+
+            try
+            {
+
+                if (!Enum.IsDefined(typeof(AttendanceStatus), eventPageAttendanceId))
+                    return Json(false);
+
+                if(eventPageAttendanceId == 0) // new attendance
+                {
+                    var attendance = new EventPageAttendance()
+                    {
+                        EventPageId = eventPageId,
+                        CustomerId = _workContext.CurrentCustomer.Id,
+                        AttendanceStatusId = attendanceStatusId,
+                        DateUpdated = DateTime.Now
+                    };
+                    _eventPageAttendanceService.Insert(attendance);
+                }
+                else // update existing attendance
+                {
+                    var attendance = _eventPageAttendanceService.GetById(eventPageAttendanceId);
+                    attendance.AttendanceStatusId = attendanceStatusId;
+                    _eventPageAttendanceService.Update(attendance);
+                }
+
+                return Json(true);
+            }
+            catch
+            {
+                return Json(false);
+            }
+
+        }
+
+       
 
 
         public ActionResult EventPageSearchAutoComplete(string term)

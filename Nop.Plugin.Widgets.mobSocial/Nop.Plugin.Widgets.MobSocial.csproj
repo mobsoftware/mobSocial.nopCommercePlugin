@@ -41,6 +41,10 @@
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
+    <Compile Include="Core\AttendanceStatus.cs" />
+    <Compile Include="Core\EventPageAttendanceService.cs" />
+    <Compile Include="Data\EventPageAttendanceMap.cs" />
+    <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\EventPagePictureModel.cs" />
     <Compile Include="Models\EventPageHotelModel.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
@@ -169,12 +173,15 @@
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.woff" />
     <None Include="Themes\mobSocial\Content\fonts\FontAwesome.otf" />
     <None Include="Themes\mobSocial\theme.config" />
-    <Content Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml" />
+    <Content Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml">
+      <SubType>
+      </SubType>
+    </Content>
     <Content Include="Themes\mobSocial\Views\EventPage\Search.js" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
     <Content Include="Themes\mobSocial\Views\SocialNetworkNavigation\PublicInfo.cshtml" />
-    <Content Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\EventPage\Search.cshtml" />
+    <Content Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
     <None Include="Themes\mobSocial\Views\HeaderMenu\PublicInfo.cshtml" />
     <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />

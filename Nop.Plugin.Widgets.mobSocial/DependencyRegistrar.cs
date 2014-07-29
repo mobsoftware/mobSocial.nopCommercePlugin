@@ -96,6 +96,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerRequest();
             builder.RegisterType<CustomerVideoAlbumService>().As<ICustomerVideoAlbumService>().InstancePerRequest();
             builder.RegisterType<EventPageService>().As<BaseService<EventPage, EventPagePicture>>().InstancePerRequest();
+            builder.RegisterType<EventPageAttendanceService>().As<BaseService<EventPageAttendance, EventPageAttendance>>().InstancePerRequest();
             builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
             builder.RegisterType<TeamPageService>().As<ITeamPageService>().InstancePerRequest();
 

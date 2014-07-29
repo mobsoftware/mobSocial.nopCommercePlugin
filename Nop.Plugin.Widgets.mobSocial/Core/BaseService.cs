@@ -28,6 +28,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         protected IRepository<T> Repository { get { return _repository; } }
         protected IRepository<P> PictureRepository { get { return _pictureRepository; } }
 
+        public BaseService(IRepository<T> repository)
+        {
+            _repository = repository;
+            _pictureRepository = null;
+        }
+
         public BaseService(IRepository<T> repository, IWorkContext workContext, IUrlRecordService urlRecordService)
         {
             _repository = repository;

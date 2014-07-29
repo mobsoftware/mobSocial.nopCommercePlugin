@@ -19,6 +19,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new EventPageMap());
             modelBuilder.Configurations.Add(new EventPagePictureMap());
             modelBuilder.Configurations.Add(new EventPageHotelMap());
+            modelBuilder.Configurations.Add(new EventPageAttendanceMap());
 
             modelBuilder.Configurations.Add(new GroupPageMap());
             modelBuilder.Configurations.Add(new GroupPageMemberMap());
@@ -70,6 +71,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
                 // DROP Tables
                 dbScript = dbScript +
+                    "IF OBJECT_ID('EventPageAttendance', 'U') IS NOT NULL DROP TABLE EventPageAttendance; " +
                     "IF OBJECT_ID('EventPagePicture', 'U') IS NOT NULL DROP TABLE EventPagePicture; " +
                     "IF OBJECT_ID('EventPageHotel', 'U') IS NOT NULL DROP TABLE EventPageHotel; " +
                     "IF OBJECT_ID('EventPage', 'U') IS NOT NULL DROP TABLE EventPage; " +

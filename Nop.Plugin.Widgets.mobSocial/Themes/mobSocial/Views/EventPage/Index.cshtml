@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
 
     Html.AddTitleParts(Model.Name);
-
+    
 
 }
 
@@ -53,7 +53,8 @@
     </div>
 </div><br />
 
-<button>Going</button>
+<button id="goingButton">Going</button>
+
 <div class="profile-stat">
 
     <div class="send-pm-box">
@@ -101,6 +102,64 @@
 
 @section right {
     <div>third column@*This is where related events, adverts, and other widgets will go!*@</div>
+
+@*<div>
+    <span class="title">Invited (count)</span>
+
+    <div class="event-page-going-block">
+        @foreach(var going in Model.Going)
+            {
+            <img src="going.PictureUrl" title="going.FullName" />
+            }
+
+        <button id="showMoreGoingButton"></button>
+    </div>
+
+</div>
+
+    <div>
+        <span class="title">Going (count)</span>
+
+        <div class="event-page-going-block">
+            @foreach (var going in Model.Going)
+            {
+                <img src="going.PictureUrl" title="going.FullName" />
+            }
+
+            <button id="showMoreGoingButton"></button>
+        </div>
+
+    </div>
+
+<div>
+    <span class="title">Maybe (count)</span>
+
+    <div class="event-page-going-block">
+        @foreach (var going in Model.Going)
+            {
+            <img src="going.PictureUrl" title="going.FullName" />
+            }
+
+        <button id="showMoreGoingButton"></button>
+    </div>
+
+</div>
+
+<div>
+    <span class="title">Not Going (count)</span>
+
+    <div class="event-page-going-block">
+        @foreach (var going in Model.Going)
+            {
+            <img src="going.PictureUrl" title="going.FullName" />
+            }
+
+        <button id="showMoreGoingButton"></button>
+    </div>
+
+</div>*@
+
+
 }
 
 
