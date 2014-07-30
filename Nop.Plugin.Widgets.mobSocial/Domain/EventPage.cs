@@ -3,6 +3,7 @@ using Nop.Core;
 using Nop.Core.Domain.Seo;
 using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
@@ -20,6 +21,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string LocationPhone { get; set; }
         public string LocationWebsite { get; set; }
         public string LocationEmail { get; set; }
+        public string Description { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }

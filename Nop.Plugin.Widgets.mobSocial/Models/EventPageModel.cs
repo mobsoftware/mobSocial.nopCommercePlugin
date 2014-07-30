@@ -35,6 +35,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public DateTime? EndDate { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
+        [AllowHtml]
+        public string Description { get; set; }
 
         public string SeName { get; set; }
         public string MainPictureUrl { get; set; }

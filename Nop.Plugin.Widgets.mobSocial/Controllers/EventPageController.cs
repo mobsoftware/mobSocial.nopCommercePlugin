@@ -101,6 +101,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 LocationCountry = entity.LocationCountry,
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
+                Description = entity.Description,
                 DateCreated = entity.DateCreated,
                 DateUpdated = entity.DateUpdated,
             };

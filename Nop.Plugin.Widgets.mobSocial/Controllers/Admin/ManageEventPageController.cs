@@ -162,6 +162,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 LocationEmail = item.LocationEmail,
                 StartDate = item.StartDate,
                 EndDate = item.EndDate,
+                Description = item.Description,
                 DateCreated = item.DateCreated,
                 DateUpdated = item.DateUpdated,
             };
@@ -193,6 +194,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                     LocationCountry = model.LocationCountry,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
+                    Description = model.Description,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                 };
@@ -249,6 +251,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 item.LocationEmail = model.LocationEmail;
                 item.StartDate = model.StartDate;
                 item.EndDate = model.EndDate;
+                item.Description = model.Description;
                 item.DateUpdated = DateTime.Now;
 
 
@@ -303,11 +306,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             SuccessNotification(_localizationService.GetResource("Admin.MobSocial.EventPage.Deleted"));
             return RedirectToAction("List");
         }
-
-
-
-
-
        
         #endregion
 

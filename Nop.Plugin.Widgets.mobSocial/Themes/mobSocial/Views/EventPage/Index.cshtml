@@ -14,7 +14,7 @@
 @section left {
 
    
-    <img id="event-picture" class="event-picture" src="@Model.MainPictureUrl" />
+    <img id="event-picture" class="event-picture" src="@Model.MainPictureUrl" title="@(Model.Name) Picture" />
     @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
 
     <span>Starts @Model.StartDate.ToString("MMMM d, yyyy") at @Model.StartDate.ToString("hh:mmtt")</span><br />
@@ -57,17 +57,18 @@
 
 <button id="goingButton">Going</button>
 
-<div class="profile-stat">
-
-    <div class="send-pm-box">
-        <span class="ui-icon ui-icon-mail-closed"></span>
-        @*@Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })*@
-    </div>
-</div><br /><br />
+<br /><br />
 
 
 
 <span>Hotels</span><br /><br />
+
+@if (Model.Hotels.Count == 0) 
+{ 
+    <span>No hotels listed</span><br /><br />
+}
+
+
     @foreach (var hotel in Model.Hotels)
     {
         <text>
@@ -104,79 +105,17 @@
 
 @section right {
     <div ng-app="EventPagesApp">
-        @Model.Id
         <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
-            <div ng-repeat="attendanceType in eventPageAttendances">
-                <span class="title">{{attendanceType.AttendanceStatusName}}</span>
-                <div class="evene-page-going-block" ng-repeat="customer in attendanceType.Customers">
+            <div class="event-page-attendance-block" ng-repeat="attendanceType in eventPageAttendances">
+                <span class="title">{{attendanceType.AttendanceStatusName}}</span><br />
+                <span class="evene-page-going-block" ng-repeat="customer in attendanceType.Customers">
                     <a href="{{customer.ProfileUrl}}">
                         <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
                     </a>
-                </div>
-                <button id="showMoreGoingButton"></button>
+                </span>
             </div>
-
         </div>
-</div>
-
-
-
-@*<div>
-    <span class="title">Invited (count)</span>
-
-    <div class="event-page-going-block">
-        @foreach(var going in Model.Going)
-            {
-            <img src="going.PictureUrl" title="going.FullName" />
-            }
-
-        <button id="showMoreGoingButton"></button>
     </div>
-
-</div>
-
-    <div>
-        <span class="title">Going (count)</span>
-
-        <div class="event-page-going-block">
-            @foreach (var going in Model.Going)
-            {
-                <img src="going.PictureUrl" title="going.FullName" />
-            }
-
-            <button id="showMoreGoingButton"></button>
-        </div>
-
-    </div>
-
-<div>
-    <span class="title">Maybe (count)</span>
-
-    <div class="event-page-going-block">
-        @foreach (var going in Model.Going)
-            {
-            <img src="going.PictureUrl" title="going.FullName" />
-            }
-
-        <button id="showMoreGoingButton"></button>
-    </div>
-
-</div>
-
-<div>
-    <span class="title">Not Going (count)</span>
-
-    <div class="event-page-going-block">
-        @foreach (var going in Model.Going)
-            {
-            <img src="going.PictureUrl" title="going.FullName" />
-            }
-
-        <button id="showMoreGoingButton"></button>
-    </div>
-
-</div>*@
-
 
 }
 
@@ -214,8 +153,7 @@
 
                 </ul>
                 <div id="tabs-1">
-                    info here
-                    @*@Html.Action("info", new { customerProfileId = Model.CustomerProfileId })*@
+                    @Html.Raw(Model.Description)
                 </div>
                 <div id="tabs-2">
                     @*@Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId } )*@

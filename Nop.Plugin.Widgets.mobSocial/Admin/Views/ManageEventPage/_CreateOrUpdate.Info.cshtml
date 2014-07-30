@@ -11,31 +11,9 @@
     $(document).ready(function () {
         
         @*$("#@Html.FieldIdFor(model => model.ProductTypeId)").change(toggleProductType);
-        $("#@Html.FieldIdFor(model => model.RequireOtherProducts)").click(toggleRequireOtherProducts);
-        $("#@Html.FieldIdFor(model => model.AvailableForPreOrder)").click(togglePreOrder);
-        $("#@Html.FieldIdFor(model => model.IsGiftCard)").click(toggleGiftCard);
-        $("#@Html.FieldIdFor(model => model.CustomerEntersPrice)").click(toggleCustomerEntersPrice);
-        $("#@Html.FieldIdFor(model => model.IsDownload)").click(toggleDownloadableProduct);
-        $("#@Html.FieldIdFor(model => model.UnlimitedDownloads)").click(toggleDownloadableProduct);
-        $("#@Html.FieldIdFor(model => model.HasSampleDownload)").click(toggleDownloadableProduct);
-        $("#@Html.FieldIdFor(model => model.HasUserAgreement)").click(toggleDownloadableProduct);
-        $("#@Html.FieldIdFor(model => model.IsRecurring)").click(toggleRecurring);
-        $("#@Html.FieldIdFor(model => model.IsShipEnabled)").click(toggleShipping);
-        $("#@Html.FieldIdFor(model => model.IsTaxExempt)").click(toggleTax);
-        $("#@Html.FieldIdFor(model => model.ManageInventoryMethodId)").change(toggleManageStock);
-        $("#@Html.FieldIdFor(model => model.BackorderModeId)").change(toggleManageStock);
-        $("#@Html.FieldIdFor(model => model.DisplayStockAvailability)").click(toggleManageStock);
-        
+      
         toggleProductType();
-        togglePreOrder();
-        toggleRequireOtherProducts();
-        toggleGiftCard();
-        toggleCustomerEntersPrice();
-        toggleDownloadableProduct();
-        toggleRecurring();
-        toggleShipping();
-        toggleTax();
-        toggleManageStock();*@
+     *@
     });
 
     @*function toggleProductType() {
@@ -59,213 +37,7 @@
                 $('#group-tax').hide();
                 $('#group-inventory').hide();
             }
-    };
-    
-    function togglePreOrder() {
-        if ($('#@Html.FieldIdFor(model => model.AvailableForPreOrder)').is(':checked')) {
-            $('#pnlPreOrderAvailabilityStartDateTimeUtc').show();
-        }
-        else {
-            $('#pnlPreOrderAvailabilityStartDateTimeUtc').hide();
-        }
-    }
-    
-    function toggleRequireOtherProducts() {
-        if ($('#@Html.FieldIdFor(model => model.RequireOtherProducts)').is(':checked')) {
-            $('#pnlRequiredProductIds').show();
-            $('#pnlAutomaticallyAddRequiredProducts').show();
-        }
-        else {
-            $('#pnlRequiredProductIds').hide();
-            $('#pnlAutomaticallyAddRequiredProducts').hide();
-        }
-    }
-
-    function toggleGiftCard() {
-        if ($('#@Html.FieldIdFor(model => model.IsGiftCard)').is(':checked')) {
-            $('#pnlGiftCardType').show();
-        }
-        else {
-            $('#pnlGiftCardType').hide();
-        }
-    }
-
-    function toggleCustomerEntersPrice() {
-        if ($('#@Html.FieldIdFor(model => model.CustomerEntersPrice)').is(':checked')) {
-            $('#pnlMinimumCustomerEnteredPrice').show();
-            $('#pnlMaximumCustomerEnteredPrice').show();
-        }
-        else {
-            $('#pnlMinimumCustomerEnteredPrice').hide();
-            $('#pnlMaximumCustomerEnteredPrice').hide();
-        }
-    }
-
-    function toggleDownloadableProduct() {
-        if ($('#@Html.FieldIdFor(model => model.IsDownload)').is(':checked')) {
-
-                $('#pnlDownloadFile').show();
-                $('#pnlUnlimitedDownloads').show();
-                if ($('#@Html.FieldIdFor(model => model.UnlimitedDownloads)').is(':checked')) {
-                    $('#pnlMaxNumberOfDownloads').hide();
-                }
-                else {
-                    $('#pnlMaxNumberOfDownloads').show();
-                }
-                $('#pnlDownloadExpirationDays').show();
-                $('#pnlDownloadActivationType').show();
-
-                $('#pnlHasUserAgreement').show();
-                if ($('#@Html.FieldIdFor(model => model.HasUserAgreement)').is(':checked')) {
-                    $('#pnlUserAgreementText').show();
-                }
-                else {
-                    $('#pnlUserAgreementText').hide();
-                }
-
-                $('#pnlHasSampleDownload').show();
-
-                if ($('#@Html.FieldIdFor(model => model.HasSampleDownload)').is(':checked')) {
-                    $('#pnlSampleDownloadFile').show();
-                }
-                else {
-                    $('#pnlSampleDownloadFile').hide();
-                }
-            }
-            else {
-                $('#pnlDownloadFile').hide();
-                $('#pnlUnlimitedDownloads').hide();
-                $('#pnlMaxNumberOfDownloads').hide();
-                $('#pnlDownloadExpirationDays').hide();
-                $('#pnlDownloadActivationType').hide();
-                $('#pnlHasUserAgreement').hide();
-                $('#pnlUserAgreementText').hide();
-                $('#pnlHasSampleDownload').hide();
-                $('#pnlSampleDownloadFile').hide();
-            }
-        }
-
-        function toggleShipping() {
-            if ($('#@Html.FieldIdFor(model => model.IsShipEnabled)').is(':checked')) {
-                $('#pnlFreeShipping').show();
-                $('#pnlAdditionalShippingCharge').show();
-                $('#pnlWeight').show();
-                $('#pnlLength').show();
-                $('#pnlWidth').show();
-                $('#pnlHeight').show();
-                $('#pnlDeliveryDate').show();
-                $('#pnlWarehouse').show();
-            }
-            else {
-                $('#pnlFreeShipping').hide();
-                $('#pnlAdditionalShippingCharge').hide();
-                $('#pnlWeight').hide();
-                $('#pnlLength').hide();
-                $('#pnlWidth').hide();
-                $('#pnlHeight').hide();
-                $('#pnlDeliveryDate').hide();
-                $('#pnlWarehouse').hide();
-            }
-        }
-
-        function toggleRecurring() {
-            if ($('#@Html.FieldIdFor(model => model.IsRecurring)').is(':checked')) {
-                $('#pnlCycleLength').show();
-                $('#pnlCyclePeriod').show();
-                $('#pnlTotalCycles').show();
-            }
-            else {
-                $('#pnlCycleLength').hide();
-                $('#pnlCyclePeriod').hide();
-                $('#pnlTotalCycles').hide();
-            }
-        }
-
-        function toggleTax() {
-            if ($('#@Html.FieldIdFor(model => model.IsTaxExempt)').is(':checked')) {
-                $('#pnlTaxCategory').hide();
-            }
-            else {
-                $('#pnlTaxCategory').show();
-            }
-        }
-
-        function toggleManageStock() {
-            var selectedManageInventoryMethodId = $("#@Html.FieldIdFor(model => model.ManageInventoryMethodId)").val();
-            if (selectedManageInventoryMethodId == @(((int)ManageInventoryMethod.DontManageStock).ToString())) {
-                $('#pnlStockQuantity').hide();
-                $('#pnlDisplayStockAvailability').hide();
-                $('#pnlDisplayStockQuantity').hide();
-                $('#pnlMinStockQuantity').hide();
-                $('#pnlLowStockActivity').hide();
-                $('#pnlNotifyForQuantityBelow').hide();
-                $('#pnlAllowBackInStockSubscriptions').hide();            
-                $('#pnlBackorders').hide();
-                $('#pnlAllowAddingOnlyExistingAttributeCombinations').hide();
-        } else if (selectedManageInventoryMethodId == @(((int)ManageInventoryMethod.ManageStock).ToString())) {
-            $('#pnlStockQuantity').show();
-            $('#pnlDisplayStockAvailability').show();
-
-            if ($('#@Html.FieldIdFor(model => model.DisplayStockAvailability)').is(':checked')) {
-                $('#pnlDisplayStockQuantity').show();
-            } 
-            else {
-                $('#pnlDisplayStockQuantity').hide();
-            }
-
-            $('#pnlMinStockQuantity').show();
-            $('#pnlLowStockActivity').show();
-            $('#pnlNotifyForQuantityBelow').show();
-            $('#pnlBackorders').show();
-            var selectedBackorderModeId = $("#@Html.FieldIdFor(model => model.BackorderModeId)").val();
-            if (selectedBackorderModeId == @(((int)BackorderMode.NoBackorders).ToString())) {
-                //no backorders
-                $('#pnlAllowBackInStockSubscriptions').show();
-            } else {
-                //backorders are enabled
-                $('#pnlAllowBackInStockSubscriptions').hide();
-            }
-            $('#pnlAllowAddingOnlyExistingAttributeCombinations').hide();
-        }
-        else {
-            $('#pnlStockQuantity').hide();
-            $('#pnlDisplayStockAvailability').hide();
-            $('#pnlDisplayStockQuantity').hide();
-            $('#pnlMinStockQuantity').hide();
-            $('#pnlLowStockActivity').hide();
-            $('#pnlNotifyForQuantityBelow').hide();
-            $('#pnlAllowBackInStockSubscriptions').hide();
-            $('#pnlBackorders').hide();
-            $('#pnlAllowAddingOnlyExistingAttributeCombinations').show();
-        }
-        }*@
-        
-    @*@{
-        //TODO move to Model
-        var productTags = EngineContext.Current.Resolve<IProductTagService>().GetAllProductTags();
-        var productTagsSb = new StringBuilder();
-        productTagsSb.Append("var sampleTags = [");
-        for (int i = 0; i < productTags.Count; i++)
-        {
-            var tag = productTags[i];
-            productTagsSb.Append("'");
-            productTagsSb.Append(HttpUtility.JavaScriptStringEncode(tag.Name));
-            productTagsSb.Append("'");
-            if (i != productTags.Count - 1)
-            {
-                productTagsSb.Append(",");
-            }
-        }
-        productTagsSb.Append("]");
-    }
-    //product tags
-    $(document).ready(function () {          
-        @Html.Raw(productTagsSb.ToString())
-        $("#@Html.FieldIdFor(model => model.ProductTags)").tagit({
-            availableTags: sampleTags,
-            allowSpaces: true
-        });
-    });*@
+    };*@
 </script>
 <table class="adminContent">
     @if (Model.Id > 0)
@@ -368,6 +140,15 @@
         <td class="adminData">
             @Html.EditorFor(model => model.LocationEmail)
             @Html.ValidationMessageFor(model => model.LocationEmail)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Description):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Description, "RichEditor")
+            @Html.ValidationMessageFor(model => model.Description)
         </td>
     </tr>
     <tr>

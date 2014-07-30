@@ -27,6 +27,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(m => m.LocationEmail);
             Property(m => m.StartDate);
             Property(m => m.EndDate);
+            Property(m => m.Description);
 
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();
