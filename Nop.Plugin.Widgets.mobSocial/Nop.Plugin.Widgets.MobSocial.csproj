@@ -149,11 +149,11 @@
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Themes\mobSocial\Content\mobSocial\event-pages.js" />
     <Content Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Themes\mobSocial\Content\jquery-ui.min.css" />
     <Content Include="Themes\mobSocial\Content\jquery-ui.structure.min.css" />
     <Content Include="Themes\mobSocial\Content\jquery-ui.theme.min.css" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\event-pages.js" />
     <Content Include="Themes\mobSocial\Content\scripts\angular.min.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.js" />
     <Content Include="Themes\mobSocial\Content\scripts\jquery-1.11.min.js" />

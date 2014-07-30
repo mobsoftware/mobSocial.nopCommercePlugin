@@ -105,18 +105,18 @@
 @section right {
     <div ng-app="EventPagesApp">
         @Model.Id
-    <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
-        <div ng-model="eventPageAttendances" ng-repeat="attendanceType in eventPageAttendances">
-            
-            <span class="title">{{attendanceType.AttendanceStatusName}}</span>
+        <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
+            <div ng-repeat="attendanceType in eventPageAttendances">
+                <span class="title">{{attendanceType.AttendanceStatusName}}</span>
                 <div class="evene-page-going-block" ng-repeat="customer in attendanceType.Customers">
-                    <img src="{{customer.PictureUrl}}" title="{{cAustomer.FullName}}" />
-
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
                 </div>
-            <button id="showMoreGoingButton"></button>
-        </div>
+                <button id="showMoreGoingButton"></button>
+            </div>
 
-    </div>
+        </div>
 </div>
 
 
