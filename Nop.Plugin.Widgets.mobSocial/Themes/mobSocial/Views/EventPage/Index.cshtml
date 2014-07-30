@@ -7,19 +7,19 @@
     Html.AddTitleParts(Model.Name);
 
     Html.AddScriptParts("~/Themes/DefaultClean/Content/mobSocial/event-pages.js");
-    
+
 
 }
 
 @section left {
 
-   
+
     <img id="event-picture" class="event-picture" src="@Model.MainPictureUrl" title="@(Model.Name) Picture" />
     @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
 
     <span>Starts @Model.StartDate.ToString("MMMM d, yyyy") at @Model.StartDate.ToString("hh:mmtt")</span><br />
 
-  
+
     @*@Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })*@
 
     @*@Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })*@
@@ -30,49 +30,50 @@
     @*        <div><b>Skate Moves</b></div>*@
 
 
-<span>Location</span><br /><br />
-<div class="hotel-information-block">
-    <span class="title">@(Model.LocationName)</span><br />
-    <div class="hotel-information">
-        <span class="value">@Model.LocationAddress1 @Model.LocationAddress2</span><br />
-        <span class="value">@(Model.LocationCity), @Model.LocationState @Model.LocationZipPostalCode</span><br />
-        @if (!string.IsNullOrEmpty(Model.LocationCountry))
-        {
-            <span class="value">@Model.LocationCountry</span><br />
-        }
-        @if (!string.IsNullOrEmpty(Model.LocationPhone))
-        {
-            <span class="value">@Model.LocationPhone</span><br />
-        }
-        @if (!string.IsNullOrEmpty(Model.LocationWebsite))
-        {
-            <span class="value">@Model.LocationWebsite</span><br />
-        }
-        @if (!string.IsNullOrEmpty(Model.LocationEmail))
-        {
-            <span class="value">@Model.LocationEmail</span><br />
-        }
+    <span>Location</span><br /><br />
+    <div class="hotel-information-block">
+        <span class="title">@(Model.LocationName)</span><br />
+        <div class="hotel-information">
+            <span class="value">@Model.LocationAddress1 @Model.LocationAddress2</span><br />
+            <span class="value">@(Model.LocationCity), @Model.LocationState @Model.LocationZipPostalCode</span><br />
+            @if (!string.IsNullOrEmpty(Model.LocationCountry))
+            {
+                <span class="value">@Model.LocationCountry</span><br />
+            }
+            @if (!string.IsNullOrEmpty(Model.LocationPhone))
+            {
+                <span class="value">@Model.LocationPhone</span><br />
+            }
+            @if (!string.IsNullOrEmpty(Model.LocationWebsite))
+            {
+                <span class="value">@Model.LocationWebsite</span><br />
+            }
+            @if (!string.IsNullOrEmpty(Model.LocationEmail))
+            {
+                <span class="value">@Model.LocationEmail</span><br />
+            }
+        </div>
+    </div><br />
+
+    <div ng-controller="EventPageButtonsController" model='{ "eventPageId":"@Model.Id" }'>
+        <button id="goingButton" ng-click="setGoing()">Going</button>
     </div>
-</div><br />
 
-<button id="goingButton">Going</button>
-
-<br /><br />
+    <br /><br />
 
 
 
-<span>Hotels</span><br /><br />
+    <span>Hotels</span><br /><br />
 
-@if (Model.Hotels.Count == 0) 
-{ 
-    <span>No hotels listed</span><br /><br />
-}
+    @if (Model.Hotels.Count == 0)
+    {
+        <span>No hotels listed</span><br /><br />
+    }
 
 
     @foreach (var hotel in Model.Hotels)
     {
         <text>
-
             <div class="hotel-information-block">
                 <span class="title">@(hotel.Title):</span><br />
                 <div class="hotel-information">
@@ -96,80 +97,71 @@
         </text>
     }
 
-
-
-
-
 }
 
 
 @section right {
-    <div ng-app="EventPagesApp">
-        <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
-            <div class="event-page-attendance-block" ng-repeat="attendanceType in eventPageAttendances">
-                <span class="title">{{attendanceType.AttendanceStatusName}}</span><br />
-                <span class="evene-page-going-block" ng-repeat="customer in attendanceType.Customers">
-                    <a href="{{customer.ProfileUrl}}">
-                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                    </a>
-                </span>
-            </div>
+    <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
+        <div class="event-page-attendance-block" ng-repeat="attendanceType in eventPageAttendances">
+            <span class="title">{{attendanceType.AttendanceStatusName}}</span> ({{attendanceType.Customers.length}}) <br />
+            <span class="evene-page-going-block" ng-repeat="customer in attendanceType.Customers">
+                <a href="{{customer.ProfileUrl}}">
+                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                </a>
+            </span>
         </div>
     </div>
 
 }
 
-
-
 <div class="event-center-content">
 
-        <h1>@Model.Name</h1>
+    <h1>@Model.Name</h1>
 
-        <div class="page-body">
-            @{
-                var selectPostsTab = String.Empty;
+    <div class="page-body">
+        @{
+            var selectPostsTab = String.Empty;
     /*if (Model.ForumsEnabled && Model.PagingPosts)
     {
         selectPostsTab = ".tabs('select', 1)";
     }*/
-            }
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $("#tabs").tabs();
-                    $("#tabs").tabs("option", "active", 0);
-                });
-            </script>
-            <div id="tabs">
-                <ul>
-                    <li><a href="#tabs-1"><i class="fa fa-info"></i> About</a></li>
-                    <li><a href="#tabs-2"><i class="fa fa-picture-o"></i> Pictures</a></li>
-                    @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
-                    @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
-                    <li><a href="#tabs-4"><i class="fa fa-group"></i> Results</a></li>
-                    @*@if (Model.ForumsEnabled)
-                        {
-                            <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
-                        }*@
+        }
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#tabs").tabs();
+                $("#tabs").tabs("option", "active", 0);
+            });
+        </script>
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1"><i class="fa fa-info"></i> About</a></li>
+                <li><a href="#tabs-2"><i class="fa fa-picture-o"></i> Pictures</a></li>
+                @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
+                @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
+                <li><a href="#tabs-4"><i class="fa fa-group"></i> Results</a></li>
+                @*@if (Model.ForumsEnabled)
+                    {
+                        <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
+                    }*@
 
-                </ul>
-                <div id="tabs-1">
-                    @Html.Raw(Model.Description)
-                </div>
-                <div id="tabs-2">
-                    @*@Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
-                </div>
-                <div id="tabs-3">
-
-                </div>
-                <div id="tabs-4">
-                    @*@Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
-                </div>
-
-
-
+            </ul>
+            <div id="tabs-1">
+                @Html.Raw(Model.Description)
+            </div>
+            <div id="tabs-2">
+                @*@Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
+            </div>
+            <div id="tabs-3">
 
             </div>
-        </div>
+            <div id="tabs-4">
+                @*@Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
+            </div>
 
+
+
+
+        </div>
     </div>
 
+</div>

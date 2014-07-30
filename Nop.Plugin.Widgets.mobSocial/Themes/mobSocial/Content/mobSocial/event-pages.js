@@ -1,4 +1,4 @@
-﻿var app = angular.module('EventPagesApp', []);
+﻿var app = angular.module('mobSocialApp', []);
 
 app.controller('EventPageController', function ($scope, $http, $attrs) {
     if (!$attrs.model) throw new Error("No model for EventPageController");
@@ -9,8 +9,6 @@ app.controller('EventPageController', function ($scope, $http, $attrs) {
     $scope.eventPageId = model.eventPageId;
     $scope.eventPageAttendances = [];
 
-
-    //todo: make angularjs eventpageservice to put http calls in
     $http({
         url: '/EventPage/GetAllAttendances',
         method: 'POST',
@@ -23,4 +21,11 @@ app.controller('EventPageController', function ($scope, $http, $attrs) {
 
 
 
+});
+
+
+app.controller('EventPageButtonsController', function ($scope, $http, $attrs) {
+    $scope.setGoing = function () {
+        alert('set going');
+    }
 });
