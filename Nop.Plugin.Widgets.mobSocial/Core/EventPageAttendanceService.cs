@@ -20,14 +20,10 @@ using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
-    public class EventPageAttendanceService : BaseService<EventPageAttendance, EventPageAttendance>
+    public class EventPageAttendanceService : BaseService<EventPageAttendance, EventPageAttendance>,
+        IEventPageAttendanceService
     {
-        private readonly IRepository<EventPageHotel> _eventPageHotelRepository;
-        private MediaSettings _nopMediaSettings;
-        private IUrlRecordService _urlRecordService;
-        private IWorkContext _workContext;
-
-
+       
 
         public EventPageAttendanceService(IRepository<EventPageAttendance> entityRepository,
             IUrlRecordService urlRecordService,
@@ -37,29 +33,38 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-        public List<EventPageAttendance> GetGoing()
+        public List<EventPageAttendance> GetGoing(int start, int count)
         {
-            return Repository.Table.Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Going).ToList();
+            return Repository.Table.Skip(start).Take(count)
+                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Going).ToList();
         }
 
-        public List<EventPageAttendance> GetNotGoing()
+        public List<EventPageAttendance> GetNotGoing(int start, int count)
         {
-            return Repository.Table.Where(x => x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
+            return Repository.Table.Skip(start).Take(count)
+                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
         }
 
-        public List<EventPageAttendance> GetInvited()
+        public List<EventPageAttendance> GetInvited(int start, int count)
         {
-            return Repository.Table.Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited).ToList();
+            return Repository.Table.Skip(start).Take(count)
+                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited).ToList();
         }
 
-        public List<EventPageAttendance> GetMaybies()
+        public List<EventPageAttendance> GetMaybies(int start, int count)
         {
-            return Repository.Table.Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
+            return Repository.Table.Skip(start).Take(count)
+                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
         }
 
         public int GetInvitedCount()
         {
             return Repository.Table.Count(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited);
+        }
+
+        public List<EventPageAttendance> GetAllAttendances(int eventPageId)
+        {
+            return Repository.Table.Where(x => x.EventPageId == eventPageId).ToList();
         }
 
         public override List<EventPageAttendance> GetAllPictures(int entityId)
@@ -78,6 +83,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
+
+        
     }
 
 

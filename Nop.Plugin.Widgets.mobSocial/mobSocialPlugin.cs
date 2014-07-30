@@ -154,7 +154,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 ShowProfileImagesInSearchAutoComplete = true,
                 CustomerAlbumPictureThumbnailWidth = 290,
                 MaximumMainAlbumPictures = 10,
-                MaximumMainAlbumVideos = 10
+                MaximumMainAlbumVideos = 10,
+                EventPageAttendanceThumbnailSize = 25
             };
 
 

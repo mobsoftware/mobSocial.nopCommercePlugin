@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
 
     Html.AddTitleParts(Model.Name);
+
+    Html.AddScriptParts("~/Themes/DefaultClean/Content/mobSocial/event-pages.js");
     
 
 }
@@ -101,7 +103,23 @@
 
 
 @section right {
-    <div>third column@*This is where related events, adverts, and other widgets will go!*@</div>
+    <div ng-app="EventPagesApp">
+        @Model.Id
+    <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
+        <div ng-model="eventPageAttendances" ng-repeat="attendanceType in eventPageAttendances">
+            
+            <span class="title">{{attendanceType.AttendanceStatusName}}</span>
+                <div class="evene-page-going-block" ng-repeat="customer in attendanceType.Customers">
+                    <img src="{{customer.PictureUrl}}" title="{{cAustomer.FullName}}" />
+
+                </div>
+            <button id="showMoreGoingButton"></button>
+        </div>
+
+    </div>
+</div>
+
+
 
 @*<div>
     <span class="title">Invited (count)</span>

@@ -7,8 +7,8 @@
     <ProjectGuid>{C225665C-D310-4FB9-B59A-77AD88A752C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nop.Plugin.Widgets.mobSocial</RootNamespace>
-    <AssemblyName>Nop.Plugin.Widgets.mobSocial</AssemblyName>
+    <RootNamespace>Nop.Plugin.Widgets.MobSocial</RootNamespace>
+    <AssemblyName>Nop.Plugin.Widgets.MobSocial</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -43,6 +43,7 @@
     <Compile Include="Controllers\EventPageController.cs" />
     <Compile Include="Core\AttendanceStatus.cs" />
     <Compile Include="Core\EventPageAttendanceService.cs" />
+    <Compile Include="Core\IEventPageAttendanceService.cs" />
     <Compile Include="Data\EventPageAttendanceMap.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\EventPagePictureModel.cs" />
@@ -152,6 +153,8 @@
     <Content Include="Themes\mobSocial\Content\jquery-ui.min.css" />
     <Content Include="Themes\mobSocial\Content\jquery-ui.structure.min.css" />
     <Content Include="Themes\mobSocial\Content\jquery-ui.theme.min.css" />
+    <Content Include="Themes\mobSocial\Content\mobSocial\event-pages.js" />
+    <Content Include="Themes\mobSocial\Content\scripts\angular.min.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.js" />
     <Content Include="Themes\mobSocial\Content\scripts\jquery-1.11.min.js" />
     <Content Include="Themes\mobSocial\Content\scripts\jquery-ui-1.11.min.js" />
@@ -196,7 +199,10 @@
     <None Include="Themes\mobSocial\Views\Profile\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
-    <Content Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml" />
+    <Content Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml">
+      <SubType>
+      </SubType>
+    </Content>
     <None Include="web.config">
       <SubType>Designer</SubType>
     </None>

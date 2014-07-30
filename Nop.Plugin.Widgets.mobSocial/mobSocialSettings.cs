@@ -25,5 +25,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int EventPageSearchTermMinimumLength { get; set; }
 
         public int EventPageSearchAutoCompleteNumberOfResults { get; set; }
+
+        public int EventPageAttendanceThumbnailSize { get; set; }
     }
 }

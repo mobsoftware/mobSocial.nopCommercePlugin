@@ -42,7 +42,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly MediaSettings _mediaSettings;
         private readonly BaseService<EventPage, EventPagePicture> _eventPageService;
         private readonly mobSocialSettings _mobSocialSettings;
-        private readonly BaseService<EventPageAttendance, EventPageAttendance> _eventPageAttendanceService;
+        private readonly EventPageAttendanceService _eventPageAttendanceService;
         private readonly IWorkContext _workContext;
 
         public EventPageController(IForumService forumService, ILocalizationService localizationService,
@@ -50,7 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             ICustomerService customerService, IDateTimeHelper dateTimeHelper,
             ForumSettings forumSettings, CustomerSettings customerSettings,
             MediaSettings mediaSettings, BaseService<EventPage, EventPagePicture> eventPageService,
-            mobSocialSettings mobSocialSettings, BaseService<EventPageAttendance, EventPageAttendance> eventPageAttendanceService,
+            mobSocialSettings mobSocialSettings, EventPageAttendanceService eventPageAttendanceService,
             IWorkContext workContext)
         {
             _forumService = forumService;
@@ -150,14 +150,117 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult GetAllAttendances(int eventPageId)
+        {
+
+            var attendances = _eventPageAttendanceService.GetAllAttendances(eventPageId);
+            var attendanceTypes = attendances.GroupBy(x=>x.AttendanceStatusId).ToList();
+
+            var attendanceTypeModels = new List<object>();
+
+            foreach (var attendanceType in attendanceTypes)
+            {
+                var attendanceTypeStatus = (AttendanceStatus)attendanceType.First().AttendanceStatusId;
+
+                var attendanceTypeCustomersIds = attendanceType.ToList().Select(x => x.CustomerId).ToArray();
+                var attendanceTypeCustomers = _customerService.GetCustomersByIds(attendanceTypeCustomersIds);
+
+
+                var attendanceCustomerModels = new List<object>();
+
+                foreach (var customer in attendanceTypeCustomers)
+                {
+                    attendanceCustomerModels.Add(new
+                    {
+                        FullName = customer.GetFullName(),
+                        PictureUrl = _pictureService.GetPictureUrl(
+                                customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                                _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+
+                    });
+                }
+
+
+                var attendanceTypeModel = new
+                {
+                    AttendanceStatusName = attendanceTypeStatus.ToString(),
+                    Customers = attendanceCustomerModels
+                };
+
+
+                attendanceTypeModels.Add(attendanceTypeModel);
+
+
+            }
+
+            return Json(attendanceTypeModels);
+        }
+
+        [HttpPost]
+        public ActionResult GetAttendance(int start, int count, int attendanceStatusId)
+        {
+
+            if (Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
+                return Json(null);
+
+
+            var attendances = new List<EventPageAttendance>();
+            var attendanceStatusName = string.Empty;
+
+
+            switch (attendanceStatusId)
+            {
+                case (int)AttendanceStatus.Invited:
+                    attendanceStatusName = AttendanceStatus.Invited.ToString();
+                    attendances = _eventPageAttendanceService.GetInvited(start, count);
+                    break;
+                case (int)AttendanceStatus.Going:
+                    attendanceStatusName = AttendanceStatus.Going.ToString();
+                    attendances = _eventPageAttendanceService.GetGoing(start, count);
+                    break;
+                case (int)AttendanceStatus.Maybe:
+                    attendanceStatusName = AttendanceStatus.Maybe.ToString();
+                    attendances = _eventPageAttendanceService.GetMaybies(start, count);
+                    break;
+                case (int)AttendanceStatus.NotGoing:
+                    attendanceStatusName = AttendanceStatus.NotGoing.ToString();
+                    attendances = _eventPageAttendanceService.GetNotGoing(start, count);
+                    break;
+            }
+
+            var customerIds = attendances.Select(x => x.CustomerId).ToArray();
+            var customers = _customerService.GetCustomersByIds(customerIds);
+
+            var models = new List<object>();
+
+            foreach(var customer in customers)
+            {
+                models.Add(new
+                {
+                    
+                    FullName = customer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+
+                });
+            }
+
+            return Json(new { 
+                AttendanceStatusName = attendanceStatusName,
+                Customers = models 
+            });
+        }
+
 
         [HttpPost]
         public ActionResult UpdateAttendanceStatus(int eventPageId, int attendanceStatusId, int eventPageAttendanceId)
         {
-
             try
             {
-
                 if (!Enum.IsDefined(typeof(AttendanceStatus), eventPageAttendanceId))
                     return Json(false);
 
@@ -178,19 +281,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     attendance.AttendanceStatusId = attendanceStatusId;
                     _eventPageAttendanceService.Update(attendance);
                 }
-
                 return Json(true);
             }
             catch
             {
                 return Json(false);
             }
-
         }
 
        
-
-
         public ActionResult EventPageSearchAutoComplete(string term)
         {
             if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.EventPageSearchTermMinimumLength)
