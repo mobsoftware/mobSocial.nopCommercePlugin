@@ -57,6 +57,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
         }
 
+        public EventPageAttendance GetCustomerAttendanceStatus(int customerId, int eventPageId)
+        {
+            return Repository.Table
+                .Where(x => x.CustomerId == customerId && x.EventPageId == eventPageId)
+                .FirstOrDefault();
+        }
+
         public int GetInvitedCount()
         {
             return Repository.Table.Count(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited);

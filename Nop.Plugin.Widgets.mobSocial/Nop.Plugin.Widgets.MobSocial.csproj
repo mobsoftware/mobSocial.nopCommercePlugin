@@ -40,6 +40,7 @@
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Models\EventPageAttendanceModel.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
     <Compile Include="Core\AttendanceStatus.cs" />
     <Compile Include="Core\EventPageAttendanceService.cs" />

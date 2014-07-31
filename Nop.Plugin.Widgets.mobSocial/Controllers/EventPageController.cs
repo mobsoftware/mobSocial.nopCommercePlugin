@@ -258,31 +258,73 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         [HttpPost]
-        public ActionResult UpdateAttendanceStatus(int eventPageId, int attendanceStatusId, int eventPageAttendanceId)
+        public ActionResult GetCustomerAttendanceStatus(int eventPageId)
         {
+
+            var customerId = _workContext.CurrentCustomer.Id;
+
+            var customerAttendanceStatus =
+                _eventPageAttendanceService.GetCustomerAttendanceStatus(eventPageId, customerId);
+
+            var attendanceStatusId = (customerAttendanceStatus == null) 
+                ? (int)AttendanceStatus.None : (int)customerAttendanceStatus.AttendanceStatusId;
+
+            return Json(new
+            {
+                CustomerId = customerId,
+                EventPageId = eventPageId,
+                AttendanceStatusId = attendanceStatusId
+            });
+
+        }
+
+
+        [HttpPost]
+        public ActionResult UpdateAttendanceStatus(int eventPageId, int attendanceStatusId)
+        {
+
             try
             {
-                if (!Enum.IsDefined(typeof(AttendanceStatus), eventPageAttendanceId))
-                    return Json(false);
+                if (!Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
+                    throw new ApplicationException("Invalid attendance status.");
 
-                if(eventPageAttendanceId == 0) // new attendance
+
+                var customerId = _workContext.CurrentCustomer.Id;
+                var customerAttendanceStatus =
+                      _eventPageAttendanceService.GetCustomerAttendanceStatus(eventPageId, customerId);
+
+
+                if (customerAttendanceStatus == null) // new attendance
                 {
-                    var attendance = new EventPageAttendance()
+                    customerAttendanceStatus = new EventPageAttendance()
                     {
                         EventPageId = eventPageId,
-                        CustomerId = _workContext.CurrentCustomer.Id,
+                        CustomerId = customerId,
                         AttendanceStatusId = attendanceStatusId,
+                        DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now
                     };
-                    _eventPageAttendanceService.Insert(attendance);
+                    _eventPageAttendanceService.Insert(customerAttendanceStatus);
                 }
                 else // update existing attendance
                 {
-                    var attendance = _eventPageAttendanceService.GetById(eventPageAttendanceId);
-                    attendance.AttendanceStatusId = attendanceStatusId;
-                    _eventPageAttendanceService.Update(attendance);
+                    customerAttendanceStatus.AttendanceStatusId = attendanceStatusId;
+                    customerAttendanceStatus.DateUpdated = DateTime.Now;
+                    _eventPageAttendanceService.Update(customerAttendanceStatus);
                 }
-                return Json(true);
+
+                return Json(new {
+                    EventPageAttendanceId = customerAttendanceStatus.Id,
+                    EventPageId = eventPageId,
+                    CustomerId = customerId,
+                    AttendanceStatusId = attendanceStatusId,
+                    FullName = _workContext.CurrentCustomer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                            _workContext.CurrentCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = _workContext.CurrentCustomer.GetSeName(0) }),
+                });
+
             }
             catch
             {

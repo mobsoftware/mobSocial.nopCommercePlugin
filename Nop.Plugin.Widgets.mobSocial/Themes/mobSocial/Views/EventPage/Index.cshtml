@@ -6,7 +6,7 @@
 
     Html.AddTitleParts(Model.Name);
 
-    Html.AddScriptParts("~/Themes/DefaultClean/Content/mobSocial/event-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, "~/Themes/DefaultClean/Content/mobSocial/event-pages.js");
 
 
 }
@@ -56,7 +56,12 @@
     </div><br />
 
     <div ng-controller="EventPageButtonsController" model='{ "eventPageId":"@Model.Id" }'>
+
+        {{CustomerAttendanceStatusText}}<br /><br />
+
         <button id="goingButton" ng-click="setGoing()">Going</button>
+        <button id="goingButton" ng-click="setMaybe()">Maybe</button>
+        <button id="goingButton" ng-click="setNotGoing()">Not Going</button>
     </div>
 
     <br /><br />
