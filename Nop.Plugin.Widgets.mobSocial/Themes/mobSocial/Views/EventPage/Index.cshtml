@@ -107,14 +107,45 @@
 
 @section right {
     <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
-        <div class="event-page-attendance-block" ng-repeat="attendanceType in eventPageAttendances">
-            <span class="title">{{attendanceType.AttendanceStatusName}}</span> ({{attendanceType.Customers.length}}) <br />
-            <span class="evene-page-going-block" ng-repeat="customer in attendanceType.Customers">
+
+
+        <span class="title" ng-show="InvitedCustomers.length > 0">Invited ({{InvitedCustomers.length}})</span><br />
+        <div class="event-page-attendance-block">
+            <span class="evene-page-attendance-customer-block" ng-repeat="customer in InvitedCustomers">
                 <a href="{{customer.ProfileUrl}}">
                     <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
                 </a>
             </span>
         </div>
+
+        <span class="title" ng-show="GoingCustomers.length > 0">Going ({{GoingCustomers.length}})</span><br />
+        <div class="event-page-attendance-block">
+            <span class="evene-page-attendance-customer-block" ng-repeat="customer in GoingCustomers">
+                <a href="{{customer.ProfileUrl}}">
+                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                </a>
+            </span>
+        </div>
+
+        <span class="title" ng-show="MaybeCustomers.length > 0">Maybe ({{MaybeCustomers.length}})</span><br />
+        <div class="event-page-attendance-block">
+            <span class="evene-page-attendance-customer-block" ng-repeat="customer in MaybeCustomers">
+                <a href="{{customer.ProfileUrl}}">
+                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                </a>
+            </span>
+        </div>
+
+        <span class="title" ng-show="NotGoingCustomers.length > 0">Not Going ({{NotGoingCustomers.length}})</span><br />
+        <div class="event-page-attendance-block">
+            <span class="evene-page-attendance-customer-block" ng-repeat="customer in NotGoingCustomers">
+                <a href="{{customer.ProfileUrl}}">
+                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                </a>
+            </span>
+        </div>
+
+
     </div>
 
 }

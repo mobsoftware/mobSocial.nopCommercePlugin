@@ -1,39 +1,110 @@
 ﻿
 
-app.controller('EventPageController', ['$scope', '$http',  '$attrs', function ($scope, $http, $attrs) {
+app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs', '$filter', function ($rootScope, $scope, $http, $attrs, $filter) {
     if (!$attrs.model) throw new Error("No model for EventPageController");
 
 
     var model = JSON.parse($attrs.model);
 
     $scope.eventPageId = model.eventPageId;
-    //$scope.eventPageAttendances = EventPageService.eventPageAttendances;
+    $scope.eventPageAttendances = [];
+
+    $scope.InvitedCustomers = [];
+    $scope.GoingCustomers = [];
+    $scope.MaybeCustomers = [];
+    $scope.NotGoingCustomers = [];
+
+    $rootScope.$on('attendanceUpdated', function (event, data) {
+
+
+        
+
+        if (data.PreviousCustomerAttendanceStatusId == AttendanceStatusEnum.Invited) {
+            var old = $filter('filter')($scope.InvitedCustomers, { CustomerId: data.CustomerId });
+            $scope.InvitedCustomers.splice(old, 1);
+        } else if (data.PreviousCustomerAttendanceStatusId == AttendanceStatusEnum.Going) {
+            var old = $filter('filter')($scope.GoingCustomers, { CustomerId: data.CustomerId });
+            $scope.GoingCustomers.splice(old, 1);
+        } else if (data.PreviousCustomerAttendanceStatusId == AttendanceStatusEnum.Maybe) {
+            var old = $filter('filter')($scope.MaybeCustomers, { CustomerId: data.CustomerId });
+            $scope.MaybeCustomers.splice(old, 1);
+        } else if (data.PreviousCustomerAttendanceStatusId == AttendanceStatusEnum.NotGoing) {
+            var old = $filter('filter')($scope.NotGoingCustomers, { CustomerId: data.CustomerId });
+            $scope.NotGoingCustomers.splice(old, 1);
+        }
+
+
+
+        if (data.AttendanceStatusId == AttendanceStatusEnum.Invited) {
+            $scope.InvitedCustomers.push(data);
+        } else if (data.AttendanceStatusId == AttendanceStatusEnum.Going) {
+            $scope.GoingCustomers.push(data);
+        } else if (data.AttendanceStatusId == AttendanceStatusEnum.Maybe) {
+            $scope.MaybeCustomers.push(data);
+        } else if (data.AttendanceStatusId == AttendanceStatusEnum.NotGoing) {
+            $scope.NotGoingCustomers.push(data);
+        }
+
+
+
+    });
+
     $http({
-        url: '/EventPage/GetAllAttendances',
+        url: '/EventPage/GetInvited',
         method: 'POST',
         data: { eventPageId: $scope.eventPageId },
     }).success(function (data, status, headers, config) {
-        $scope.eventPageAttendances = data;
+        $scope.InvitedCustomers = data;
+    }).error(function (data, status, headers, config) {
+        alert('error occured.');
+    });
+
+    $http({
+        url: '/EventPage/GetGoing',
+        method: 'POST',
+        data: { eventPageId: $scope.eventPageId },
+    }).success(function (data, status, headers, config) {
+        $scope.GoingCustomers = data;
     }).error(function (data, status, headers, config){
         alert('error occured.');
     });
 
+    $http({
+        url: '/EventPage/GetMaybe',
+        method: 'POST',
+        data: { eventPageId: $scope.eventPageId },
+    }).success(function (data, status, headers, config) {
+        $scope.MaybeCustomers = data;
+    }).error(function (data, status, headers, config) {
+        alert('error occured.');
+    });
+
+    $http({
+        url: '/EventPage/GetNotGoing',
+        method: 'POST',
+        data: { eventPageId: $scope.eventPageId },
+    }).success(function (data, status, headers, config) {
+        $scope.NotGoingCustomers = data;
+    }).error(function (data, status, headers, config) {
+        alert('error occured.');
+    });
+
+    
+
+    
 
 
 }]);
 
 
-app.controller('EventPageButtonsController', ['$scope', '$http', '$attrs', function ($scope, $http, $attrs) {
+app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '$attrs', function ($rootScope, $scope, $http, $attrs) {
         if (!$attrs.model) throw new Error("No model for EventPageController");
         var model = JSON.parse($attrs.model);
 
         $scope.eventPageId = model.eventPageId;
-
-        var noneId = 0;
-        var invitedId = 1;
-        var goingId = 2;
-        var maybeId = 3;
-        var notGoingId = 4;
+        $scope.CustomerAttendanceStatusId = AttendanceStatusEnum.None;
+        $scope.PreviousCustomerAttendanceStatusId = AttendanceStatusEnum.None;
+        
 
         $http({
             url: '/EventPage/GetCustomerAttendanceStatus',
@@ -41,6 +112,7 @@ app.controller('EventPageButtonsController', ['$scope', '$http', '$attrs', funct
             data: { eventPageId: $scope.eventPageId },
         }).success(function (data, status, headers, config) {
             $scope.CustomerAttendanceStatusId = data.AttendanceStatusId;
+            PreviousCustomerAttendanceStatusId = data.AttendanceStatusId;
             updateStatusText(data.AttendanceStatusId);
         }).error(function (data, status, headers, config) {
             alert('error occured.');
@@ -48,17 +120,16 @@ app.controller('EventPageButtonsController', ['$scope', '$http', '$attrs', funct
 
 
         $scope.setGoing = function () {
-            updateAttendanceStatus(goingId);
+            updateAttendanceStatus(AttendanceStatusEnum.Going);
         }
 
         $scope.setMaybe = function () {
-            updateAttendanceStatus(maybeId);
+            updateAttendanceStatus(AttendanceStatusEnum.Maybe);
         }
 
         $scope.setNotGoing = function () {
-            updateAttendanceStatus(notGoingId);
+            updateAttendanceStatus(AttendanceStatusEnum.NotGoing);
         }
-
 
         function updateAttendanceStatus(attendanceStatusId) {
             $http({
@@ -66,24 +137,28 @@ app.controller('EventPageButtonsController', ['$scope', '$http', '$attrs', funct
                 method: 'POST',
                 data: { eventPageId: $scope.eventPageId, attendanceStatusId: attendanceStatusId },
             }).success(function (data, status, headers, config) {
+                $scope.PreviousCustomerAttendanceStatusId = $scope.CustomerAttendanceStatusId;
                 $scope.CustomerAttendanceStatusId = data.AttendanceStatusId;
+                
                 updateStatusText(data.AttendanceStatusId);
-                //EventPageService.eventPageAttendances = []
+                data.PreviousCustomerAttendanceStatusId = $scope.PreviousCustomerAttendanceStatusId;
+                $rootScope.$emit('attendanceUpdated', data);
+
             }).error(function (data, status, headers, config) {
                 alert('error occured.');
             });
         }
 
         function updateStatusText(attendanceStatusId) {
-            if (attendanceStatusId == noneId) {
+            if (attendanceStatusId == AttendanceStatusEnum.None) {
                 $scope.CustomerAttendanceStatusText = "None";
-            } else if (attendanceStatusId == invitedId) {
+            } else if (attendanceStatusId == AttendanceStatusEnum.Invited) {
                 $scope.CustomerAttendanceStatusText = "Invited";
-            } else if (attendanceStatusId == goingId) {
+            } else if (attendanceStatusId == AttendanceStatusEnum.Going) {
                 $scope.CustomerAttendanceStatusText = "Going";
-            } else if (attendanceStatusId == maybeId) {
+            } else if (attendanceStatusId == AttendanceStatusEnum.Maybe) {
                 $scope.CustomerAttendanceStatusText = "Maybe";
-            } else if (attendanceStatusId == notGoingId) {
+            } else if (attendanceStatusId == AttendanceStatusEnum.NotGoing) {
                 $scope.CustomerAttendanceStatusText = "Not Going";
             }
         }
@@ -92,11 +167,10 @@ app.controller('EventPageButtonsController', ['$scope', '$http', '$attrs', funct
 }]);
 
 
-
-
-//app.service('EventPageService', function () {
-//    return {
-//        eventPageAttendances: []
-//    };
-
-//});
+var AttendanceStatusEnum =  {
+        None : 0,
+        Invited : 1,
+        Going : 2,
+        Maybe : 3,
+        NotGoing : 4,
+    };

@@ -33,29 +33,56 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-        public List<EventPageAttendance> GetGoing(int start, int count)
+        public List<EventPageAttendance> GetAllInvited(int eventPageId)
         {
-            return Repository.Table.Skip(start).Take(count)
-                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Going).ToList();
+            return Repository.Table
+                .Where(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.Invited).ToList();
         }
-
-        public List<EventPageAttendance> GetNotGoing(int start, int count)
-        {
-            return Repository.Table.Skip(start).Take(count)
-                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
-        }
-
         public List<EventPageAttendance> GetInvited(int start, int count)
         {
             return Repository.Table.Skip(start).Take(count)
                 .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited).ToList();
         }
 
+
+        public List<EventPageAttendance> GetAllGoing(int eventPageId)
+        {
+            return Repository.Table
+                .Where(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.Going).ToList();
+        }
+        public List<EventPageAttendance> GetGoing(int start, int count)
+        {
+            return Repository.Table.Skip(start).Take(count)
+                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Going).ToList();
+        }
+
+
+        public List<EventPageAttendance> GetAllMaybies(int eventPageId)
+        {
+            return Repository.Table
+                .Where(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
+        }
         public List<EventPageAttendance> GetMaybies(int start, int count)
         {
             return Repository.Table.Skip(start).Take(count)
                 .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
         }
+
+
+        public List<EventPageAttendance> GetAllNotGoing(int eventPageId)
+        {
+            return Repository.Table
+                .Where(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
+        }
+        public List<EventPageAttendance> GetNotGoing(int start, int count)
+        {
+            return Repository.Table.Skip(start).Take(count)
+                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
+        }
+
+       
+
+       
 
         public EventPageAttendance GetCustomerAttendanceStatus(int customerId, int eventPageId)
         {

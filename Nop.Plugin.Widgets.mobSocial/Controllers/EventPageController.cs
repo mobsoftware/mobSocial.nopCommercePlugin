@@ -152,28 +152,24 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetAllAttendances(int eventPageId)
+        public ActionResult GetGoing(int eventPageId)
         {
 
-            var attendances = _eventPageAttendanceService.GetAllAttendances(eventPageId);
-            var attendanceTypes = attendances.GroupBy(x=>x.AttendanceStatusId).ToList();
+            var going = _eventPageAttendanceService.GetAllGoing(eventPageId);
 
-            var attendanceTypeModels = new List<object>();
 
-            foreach (var attendanceType in attendanceTypes)
+            if(going.Count == 0)
+                return Json(null);
+
+            var goingCustomers = _customerService.GetCustomersByIds(going.Select(x=>x.CustomerId).ToArray());
+
+            var models = new List<object>();
+
+            foreach(var customer in goingCustomers)
             {
-                var attendanceTypeStatus = (AttendanceStatus)attendanceType.First().AttendanceStatusId;
-
-                var attendanceTypeCustomersIds = attendanceType.ToList().Select(x => x.CustomerId).ToArray();
-                var attendanceTypeCustomers = _customerService.GetCustomersByIds(attendanceTypeCustomersIds);
-
-
-                var attendanceCustomerModels = new List<object>();
-
-                foreach (var customer in attendanceTypeCustomers)
-                {
-                    attendanceCustomerModels.Add(new
+                 models.Add(new
                     {
+                        CustomerId = customer.Id,
                         FullName = customer.GetFullName(),
                         PictureUrl = _pictureService.GetPictureUrl(
                                 customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
@@ -181,23 +177,110 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
 
                     });
-                }
-
-
-                var attendanceTypeModel = new
-                {
-                    AttendanceStatusName = attendanceTypeStatus.ToString(),
-                    Customers = attendanceCustomerModels
-                };
-
-
-                attendanceTypeModels.Add(attendanceTypeModel);
-
-
             }
 
-            return Json(attendanceTypeModels);
+            return Json(models);
+           
         }
+
+        [HttpPost]
+        public ActionResult GetNotGoing(int eventPageId)
+        {
+
+            var notGoing = _eventPageAttendanceService.GetAllNotGoing(eventPageId);
+
+
+            if (notGoing.Count == 0)
+                return Json(null);
+
+            var notGoingCustomers = _customerService.GetCustomersByIds(notGoing.Select(x => x.CustomerId).ToArray());
+
+            var models = new List<object>();
+
+            foreach (var customer in notGoingCustomers)
+            {
+                models.Add(new
+                {
+                    CustomerId = customer.Id,
+                    FullName = customer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+
+                });
+            }
+
+            return Json(models);
+
+        }
+
+        [HttpPost]
+        public ActionResult GetMaybe(int eventPageId)
+        {
+
+            var maybe = _eventPageAttendanceService.GetAllMaybies(eventPageId);
+
+
+            if (maybe.Count == 0)
+                return Json(null);
+
+            var maybeCustomers = _customerService.GetCustomersByIds(maybe.Select(x => x.CustomerId).ToArray());
+
+            var models = new List<object>();
+
+            foreach (var customer in maybeCustomers)
+            {
+                models.Add(new
+                {
+                    CustomerId = customer.Id,
+                    FullName = customer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+
+                });
+            }
+
+            return Json(models);
+
+        }
+
+        [HttpPost]
+        public ActionResult GetInvited(int eventPageId)
+        {
+
+            var invited = _eventPageAttendanceService.GetAllInvited(eventPageId);
+
+
+            if (invited.Count == 0)
+                return Json(null);
+
+            var invitedCustomers = _customerService.GetCustomersByIds(invited.Select(x => x.CustomerId).ToArray());
+
+            var models = new List<object>();
+
+            foreach (var customer in invitedCustomers)
+            {
+                models.Add(new
+                {
+                    CustomerId = customer.Id,
+                    FullName = customer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+
+                });
+            }
+
+            return Json(models);
+
+        }
+
+
+        //todo: clean up unused methods
 
         [HttpPost]
         public ActionResult GetAttendance(int start, int count, int attendanceStatusId)
@@ -251,6 +334,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             return Json(new { 
+
                 AttendanceStatusName = attendanceStatusName,
                 Customers = models 
             });
@@ -292,7 +376,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var customerId = _workContext.CurrentCustomer.Id;
                 var customerAttendanceStatus =
                       _eventPageAttendanceService.GetCustomerAttendanceStatus(eventPageId, customerId);
-
+                var previousAttendanceStatusId = attendanceStatusId;
 
                 if (customerAttendanceStatus == null) // new attendance
                 {
@@ -308,12 +392,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
                 else // update existing attendance
                 {
+                    previousAttendanceStatusId = customerAttendanceStatus.AttendanceStatusId;
                     customerAttendanceStatus.AttendanceStatusId = attendanceStatusId;
                     customerAttendanceStatus.DateUpdated = DateTime.Now;
                     _eventPageAttendanceService.Update(customerAttendanceStatus);
                 }
 
                 return Json(new {
+                    PreviousAttendanceStatusId = previousAttendanceStatusId,
                     EventPageAttendanceId = customerAttendanceStatus.Id,
                     EventPageId = eventPageId,
                     CustomerId = customerId,
