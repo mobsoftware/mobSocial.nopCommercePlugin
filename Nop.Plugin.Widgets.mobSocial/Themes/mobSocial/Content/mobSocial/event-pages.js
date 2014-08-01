@@ -97,14 +97,45 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
 }]);
 
 
-app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '$attrs', function ($rootScope, $scope, $http, $attrs) {
+
+app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '$attrs', '$timeout', function ($rootScope, $scope, $http, $attrs, $timeout) {
         if (!$attrs.model) throw new Error("No model for EventPageController");
         var model = JSON.parse($attrs.model);
 
+        $scope.customerId = model.customerId;
         $scope.eventPageId = model.eventPageId;
         $scope.CustomerAttendanceStatusId = AttendanceStatusEnum.None;
         $scope.PreviousCustomerAttendanceStatusId = AttendanceStatusEnum.None;
         
+        $scope.customerFriends = [];
+        $scope.busyGettingFriends = false;
+        $scope.friendsLastCount = 0;
+
+        $scope.getFriends = function () {
+            if ($scope.busyGettingFriends) return;
+            $scope.busyGettingFriends = true;
+
+            $http({
+                url: '/EventPage/GetFriends',
+                method: 'POST',
+                data: { index: $scope.friendsLastCount },
+            }).success(function (data, status, headers, config) {
+
+                if ($scope.customerFriends.length == 0)
+                    $scope.customerFriends = data;
+                else {
+                    for (var i = 0; i < data.length; i++)
+                    $scope.customerFriends.push(data[i]);
+                }
+                $scope.friendsLastCount = $scope.customerFriends.length;
+                $scope.busyGettingFriends = false;
+            }).error(function (data, status, headers, config) {
+                alert('error occured.');
+                $scope.busyGettingFriends = false;
+            });
+        };
+        
+        $scope.getFriends();
 
         $http({
             url: '/EventPage/GetCustomerAttendanceStatus',
@@ -165,6 +196,20 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
 
 
 }]);
+
+
+
+app.directive('whenScrolled', function () {
+    return function (scope, elm, attr) {
+        var raw = elm[0];
+
+        elm.bind('scroll', function () {
+            if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+                scope.$apply(attr.whenScrolled);
+            }
+        });
+    };
+});
 
 
 var AttendanceStatusEnum =  {

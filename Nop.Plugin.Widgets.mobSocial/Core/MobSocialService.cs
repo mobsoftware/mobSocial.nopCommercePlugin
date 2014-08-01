@@ -217,6 +217,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return friends;
         }
 
+
+        public List<CustomerFriend> GetFriends(int customerId, int index, int count)
+        {
+
+            var friends = _customerFriendRepository.Table
+                                    .Where(x => x.FromCustomerId == customerId || x.ToCustomerId == customerId)
+                                    .Where(x => x.Confirmed)
+                                    .OrderBy(x => x.DateConfirmed)
+                                    .Skip(index).Take(count)
+                                    .ToList();
+
+            return friends;
+        }
+
         public int GetFriendRequestCount(int currentCustomerId)
         {
             var me = currentCustomerId;

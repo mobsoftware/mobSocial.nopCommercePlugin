@@ -44,6 +44,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly mobSocialSettings _mobSocialSettings;
         private readonly EventPageAttendanceService _eventPageAttendanceService;
         private readonly IWorkContext _workContext;
+        private readonly IMobSocialService _mobSocialService;
 
         public EventPageController(IForumService forumService, ILocalizationService localizationService,
             IPictureService pictureService, ICountryService countryService,
@@ -51,7 +52,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             ForumSettings forumSettings, CustomerSettings customerSettings,
             MediaSettings mediaSettings, BaseService<EventPage, EventPagePicture> eventPageService,
             mobSocialSettings mobSocialSettings, EventPageAttendanceService eventPageAttendanceService,
-            IWorkContext workContext)
+            IMobSocialService mobSocialService, IWorkContext workContext)
         {
             _forumService = forumService;
             _localizationService = localizationService;
@@ -65,6 +66,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _eventPageService = eventPageService;
             _eventPageAttendanceService = eventPageAttendanceService;
             _mobSocialSettings = mobSocialSettings;
+            _mobSocialService = mobSocialService;
             _workContext = workContext;
         }
 
@@ -247,6 +249,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
+
         [HttpPost]
         public ActionResult GetInvited(int eventPageId)
         {
@@ -262,6 +265,44 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var models = new List<object>();
 
             foreach (var customer in invitedCustomers)
+            {
+                models.Add(new
+                {
+                    CustomerId = customer.Id,
+                    FullName = customer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+
+                });
+            }
+
+            return Json(models);
+
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult GetFriends(int index)
+        {
+            var customerId = _workContext.CurrentCustomer.Id;
+            var friends = _mobSocialService.GetFriends(customerId, index, 10);
+
+            if (friends.Count == 0)
+                return Json(null);
+
+            var friendsAsCustomers = _customerService.GetCustomersByIds(
+                friends.Select(x => (x.ToCustomerId == customerId) 
+                    ? x.FromCustomerId 
+                    : x.ToCustomerId)
+                    .ToArray());
+
+            var models = new List<object>();
+
+            foreach (var customer in friendsAsCustomers)
             {
                 models.Add(new
                 {
@@ -348,7 +389,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var customerId = _workContext.CurrentCustomer.Id;
 
             var customerAttendanceStatus =
-                _eventPageAttendanceService.GetCustomerAttendanceStatus(eventPageId, customerId);
+                _eventPageAttendanceService.GetCustomerAttendanceStatus(customerId, eventPageId);
 
             var attendanceStatusId = (customerAttendanceStatus == null) 
                 ? (int)AttendanceStatus.None : (int)customerAttendanceStatus.AttendanceStatusId;

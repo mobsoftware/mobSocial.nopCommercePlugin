@@ -26,6 +26,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         FriendStatus GetFriendRequestStatus(int currentCustomerId, int friendCustomerId);
 
         List<CustomerFriend> GetFriends(int customerId);
+        List<CustomerFriend> GetFriends(int customerId, int index, int count);
         List<CustomerFriend> GetFriendRequests(int id);
 
 
