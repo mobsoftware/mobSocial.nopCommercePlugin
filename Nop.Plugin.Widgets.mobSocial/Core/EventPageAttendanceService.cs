@@ -16,6 +16,8 @@ using System.Linq;
 using Nop.Services.Seo;
 using Nop.Core.Domain.Seo;
 using System.Collections.Generic;
+using Nop.Services.Customers;
+using Nop.Core.Domain.Customers;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
@@ -23,13 +25,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     public class EventPageAttendanceService : BaseService<EventPageAttendance, EventPageAttendance>,
         IEventPageAttendanceService
     {
-       
+
+        private readonly ICustomerService _cutomerService;
+        private readonly IMobSocialMessageService _messageService;
+        private readonly IRepository<CustomerFriend> _customerFriendRepository;
 
         public EventPageAttendanceService(IRepository<EventPageAttendance> entityRepository,
-            IUrlRecordService urlRecordService,
-            IWorkContext workContext) : base(entityRepository, workContext, urlRecordService)
+            IUrlRecordService urlRecordService, ICustomerService customerService,
+            IMobSocialMessageService messageService, IWorkContext workContext,
+            IRepository<CustomerFriend> customerFriendRepository) : base(entityRepository, workContext, urlRecordService)
         {
-
+            _cutomerService = customerService;
+            _messageService = messageService;
+            _customerFriendRepository = customerFriendRepository;
         }
 
 
@@ -79,6 +87,59 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return Repository.Table.Skip(start).Take(count)
                 .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
         }
+
+        public List<CustomerFriend> GetUninvitedFriends(int eventPageId, int customerId, int index, int count)
+        {
+
+            var attendance = Repository.Table.Where(x=>x.EventPageId == eventPageId).Select(x=>x.CustomerId).ToList();
+            var uninvitedFriends = _customerFriendRepository.Table
+                .Where(x => x.Confirmed)
+                .Where(x => x.ToCustomerId == customerId || x.FromCustomerId == customerId);
+
+            // only univited friends
+            if(attendance.Count > 0)
+                uninvitedFriends = uninvitedFriends.Where(x => !attendance.Contains((x.FromCustomerId != customerId) ? x.FromCustomerId : x.ToCustomerId));
+
+            var uninvitedFriendsList = uninvitedFriends
+                    .OrderBy(x=>x.DateConfirmed)
+                    .Skip(index).Take(count)
+                    .ToList();
+
+            return uninvitedFriendsList;
+
+
+        }
+
+
+        public List<Customer> InviteFriends(int eventPageId, int[] invitedCustomerIds)
+        {
+
+            var invitedCustomers = new List<Customer>();
+
+            foreach (var customerId in invitedCustomerIds)
+            {
+                var eventPageAttendance = new EventPageAttendance()
+                {
+                    CustomerId = customerId,
+                    EventPageId = eventPageId,
+                    AttendanceStatusId = (int)AttendanceStatus.Invited,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                Repository.Insert(eventPageAttendance);
+
+                var customer = _cutomerService.GetCustomerById(customerId);
+                invitedCustomers.Add(customer);
+                _messageService.SendEventInvitationNotification(customer, WorkContext.WorkingLanguage.Id, 0);
+
+            }
+
+            return invitedCustomers;
+
+        }
+
+
 
        
 

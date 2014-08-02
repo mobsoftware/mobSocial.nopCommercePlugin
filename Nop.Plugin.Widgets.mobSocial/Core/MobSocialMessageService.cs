@@ -90,7 +90,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
 
 
-
+        #region Notifications
         public int SendFriendRequestNotification(Customer customer, int friendRequestCount, int languageId, int storeId)
         {
 
@@ -122,19 +122,52 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
 
+        public int SendBirthdayNotification(Customer customer, int languageId, int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int SendEventInvitationNotification(Customer customer, int languageId, int storeId)
+        {
 
 
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("SocialNetwork.EventInvitationNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, customer);
+            
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+            
+            var toEmail = customer.Email;
+            var toName = customer.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        }
+        #endregion
+
+
+
+        #region Helper Methods
         private MessageTemplate GetLocalizedActiveMessageTemplate(string messageTemplateName, int storeId)
         {
             var messageTemplate = _messageTemplateService.GetMessageTemplateByName(messageTemplateName, storeId);
 
-            //no template found
-            if (messageTemplate == null)
-                return null;
-
-            //ensure it's active
-            var isActive = messageTemplate.IsActive;
-            if (!isActive)
+            //no template found or not active
+            if (messageTemplate == null || !messageTemplate.IsActive)
                 return null;
 
             return messageTemplate;
@@ -175,19 +208,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             var bodyReplaced = _tokenizer.Replace(body, tokens, true);
 
             var email = new QueuedEmail()
-                {
-                    Priority = 5,
-                    From = emailAccount.Email,
-                    FromName = emailAccount.DisplayName,
-                    To = toEmailAddress,
-                    ToName = toName,
-                    CC = string.Empty,
-                    Bcc = bcc,
-                    Subject = subjectReplaced,
-                    Body = bodyReplaced,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    EmailAccountId = emailAccount.Id
-                };
+            {
+                Priority = 5,
+                From = emailAccount.Email,
+                FromName = emailAccount.DisplayName,
+                To = toEmailAddress,
+                ToName = toName,
+                CC = string.Empty,
+                Bcc = bcc,
+                Subject = subjectReplaced,
+                Body = bodyReplaced,
+                CreatedOnUtc = DateTime.UtcNow,
+                EmailAccountId = emailAccount.Id
+            };
 
             _queuedEmailService.InsertQueuedEmail(email);
             return email.Id;
@@ -206,6 +239,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
+        #endregion
+
+      
     }
 }
 

@@ -284,25 +284,51 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
+        [HttpPost]
+        public ActionResult InviteFriends(int eventPageId, int[] customerIds)
+        {
+            var invitedCustomers = _eventPageAttendanceService.InviteFriends(eventPageId, customerIds);
+
+            var models = new List<object>();
+
+            foreach (var customer in invitedCustomers)
+            {
+                models.Add(new
+                {
+                    CustomerId = customer.Id,
+                    FullName = customer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+
+                });
+            }
+
+            return Json(models);
+        }
 
         [HttpPost]
-        public ActionResult GetFriends(int index)
+        public ActionResult GetUninvitedFriends(int eventPageId, int index)
         {
             var customerId = _workContext.CurrentCustomer.Id;
-            var friends = _mobSocialService.GetFriends(customerId, index, 10);
 
-            if (friends.Count == 0)
+            var uninvitedFriends = _eventPageAttendanceService.GetUninvitedFriends(eventPageId, customerId,
+                index, 20);
+
+
+            if (uninvitedFriends.Count == 0)
                 return Json(null);
 
-            var friendsAsCustomers = _customerService.GetCustomersByIds(
-                friends.Select(x => (x.ToCustomerId == customerId) 
+            var uninvitedFriendsAsCustomers = _customerService.GetCustomersByIds(
+                uninvitedFriends.Select(x => (x.ToCustomerId == customerId) 
                     ? x.FromCustomerId 
                     : x.ToCustomerId)
                     .ToArray());
 
             var models = new List<object>();
 
-            foreach (var customer in friendsAsCustomers)
+            foreach (var customer in uninvitedFriendsAsCustomers)
             {
                 models.Add(new
                 {

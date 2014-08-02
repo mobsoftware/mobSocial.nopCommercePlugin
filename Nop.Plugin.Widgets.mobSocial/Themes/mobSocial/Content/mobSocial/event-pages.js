@@ -15,10 +15,6 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
     $scope.NotGoingCustomers = [];
 
     $rootScope.$on('attendanceUpdated', function (event, data) {
-
-
-        
-
         if (data.PreviousCustomerAttendanceStatusId == AttendanceStatusEnum.Invited) {
             var old = $filter('filter')($scope.InvitedCustomers, { CustomerId: data.CustomerId });
             $scope.InvitedCustomers.splice(old, 1);
@@ -33,8 +29,6 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
             $scope.NotGoingCustomers.splice(old, 1);
         }
 
-
-
         if (data.AttendanceStatusId == AttendanceStatusEnum.Invited) {
             $scope.InvitedCustomers.push(data);
         } else if (data.AttendanceStatusId == AttendanceStatusEnum.Going) {
@@ -44,9 +38,11 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
         } else if (data.AttendanceStatusId == AttendanceStatusEnum.NotGoing) {
             $scope.NotGoingCustomers.push(data);
         }
+    });
 
-
-
+    $rootScope.$on('updateInvited', function (event, data) {
+        for (var i = 0; i < data.length; i++)
+            $scope.InvitedCustomers.push(data[i]);
     });
 
     $http({
@@ -54,7 +50,7 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
         method: 'POST',
         data: { eventPageId: $scope.eventPageId },
     }).success(function (data, status, headers, config) {
-        $scope.InvitedCustomers = data;
+        if (data != "") $scope.InvitedCustomers = data;
     }).error(function (data, status, headers, config) {
         alert('error occured.');
     });
@@ -64,7 +60,7 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
         method: 'POST',
         data: { eventPageId: $scope.eventPageId },
     }).success(function (data, status, headers, config) {
-        $scope.GoingCustomers = data;
+        if (data != "") $scope.GoingCustomers = data;
     }).error(function (data, status, headers, config){
         alert('error occured.');
     });
@@ -74,7 +70,7 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
         method: 'POST',
         data: { eventPageId: $scope.eventPageId },
     }).success(function (data, status, headers, config) {
-        $scope.MaybeCustomers = data;
+        if (data != "") $scope.MaybeCustomers = data;
     }).error(function (data, status, headers, config) {
         alert('error occured.');
     });
@@ -84,7 +80,7 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
         method: 'POST',
         data: { eventPageId: $scope.eventPageId },
     }).success(function (data, status, headers, config) {
-        $scope.NotGoingCustomers = data;
+        if (data != "") $scope.NotGoingCustomers = data;
     }).error(function (data, status, headers, config) {
         alert('error occured.');
     });
@@ -98,7 +94,7 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
 
 
 
-app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '$attrs', '$timeout', function ($rootScope, $scope, $http, $attrs, $timeout) {
+app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '$attrs', '$filter', function ($rootScope, $scope, $http, $attrs, $filter) {
         if (!$attrs.model) throw new Error("No model for EventPageController");
         var model = JSON.parse($attrs.model);
 
@@ -107,27 +103,64 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
         $scope.CustomerAttendanceStatusId = AttendanceStatusEnum.None;
         $scope.PreviousCustomerAttendanceStatusId = AttendanceStatusEnum.None;
         
-        $scope.customerFriends = [];
+        $scope.uninvitedFriends = [];
         $scope.busyGettingFriends = false;
         $scope.friendsLastCount = 0;
+        $scope.invitingFriends = false;
 
-        $scope.getFriends = function () {
+
+        $scope.inviteFriends = function () {
+            if ($scope.invitingFriends) return;
+            $scope.invitingFriends = true;
+
+            var invitedCustomerIds = [];
+            for (var i = 0; i < $scope.uninvitedFriends.length; i++)
+            {
+                var customer = $scope.uninvitedFriends[i];
+                if (customer.IsInvited == true)
+                    invitedCustomerIds.push(customer.CustomerId);
+            }
+
+            $http({
+                url: '/EventPage/InviteFriends',
+                method: 'POST',
+                data: { eventPageId: $scope.eventPageId, customerIds: invitedCustomerIds },
+            }).success(function (data, status, headers, config) {
+                $rootScope.$emit('updateInvited', data);
+                $scope.invitingFriends = false;
+            }).error(function (data, status, headers, config) {
+                alert('error occured.');
+                $scope.invitingFriends = false;
+            });
+        };
+
+        $scope.updateInvitation = function (customer) {
+            customer.IsInvited = !customer.IsInvited;
+        };
+
+
+        $scope.getUninvitedFriends = function (clearUninvitedFriends) {
             if ($scope.busyGettingFriends) return;
             $scope.busyGettingFriends = true;
 
+            if (clearUninvitedFriends == true)
+                $scope.uninvitedFriends = [];
+
+
             $http({
-                url: '/EventPage/GetFriends',
+                url: '/EventPage/GetUninvitedFriends',
                 method: 'POST',
-                data: { index: $scope.friendsLastCount },
+                data: { eventPageId: $scope.eventPageId, index: $scope.friendsLastCount },
             }).success(function (data, status, headers, config) {
 
-                if ($scope.customerFriends.length == 0)
-                    $scope.customerFriends = data;
+                if ($scope.uninvitedFriends.length == 0) {
+                    $scope.uninvitedFriends = data;
+                }
                 else {
                     for (var i = 0; i < data.length; i++)
-                    $scope.customerFriends.push(data[i]);
+                        $scope.uninvitedFriends.push(data[i]);
                 }
-                $scope.friendsLastCount = $scope.customerFriends.length;
+                $scope.friendsLastCount = $scope.uninvitedFriends.length;
                 $scope.busyGettingFriends = false;
             }).error(function (data, status, headers, config) {
                 alert('error occured.');
@@ -135,7 +168,6 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
             });
         };
         
-        $scope.getFriends();
 
         $http({
             url: '/EventPage/GetCustomerAttendanceStatus',
@@ -196,7 +228,6 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
 
 
 }]);
-
 
 
 

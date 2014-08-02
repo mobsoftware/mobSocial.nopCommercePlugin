@@ -155,7 +155,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 CustomerAlbumPictureThumbnailWidth = 290,
                 MaximumMainAlbumPictures = 10,
                 MaximumMainAlbumVideos = 10,
-                EventPageAttendanceThumbnailSize = 25
+                EventPageAttendanceThumbnailSize = 25,
+                UninvitedFriendsNumberOfResults = 20
             };
 
 
@@ -187,21 +188,12 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             _settingService.SaveSetting(mediaSettings);
             _settingService.SaveSetting(mobSocialSettings);
+
+
+            InsertMessageTemplates();
             
-
-            var friendRequestNotification = new MessageTemplate()
-                {
-                    Name = "MobSocial.FriendRequestNotification",
-                    Subject = "%Store.Name%. You have a new friend request from %FromFriend.FullName%.",
-                    Body = "You have a new friend request from %FromFriend.FullName%!<br/><br/>" +
-                           "<a href=\"%Store.URL%\">Log in</a> to confirm your friend request.",
-                    EmailAccountId = 1,
-                    IsActive = true,
-                    LimitedToStores = false
-
-                };
-
-            _messageTemplateService.InsertMessageTemplate(friendRequestNotification);
+            
+           
 
 
             var task = _scheduleTaskService.GetTaskByType("Nop.Plugin.Widgets.mobSocial.FriendNotificationTask, Nop.Plugin.Widgets.mobSocial");
@@ -310,5 +302,47 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             return menuItem;
         }
+
+
+
+
+        private void InsertMessageTemplates()
+        {
+            // Require user to login in order to view who and confirm the request - Bruce Leggett
+            var friendRequestNotification = new MessageTemplate()
+                {
+                    Name = "MobSocial.FriendRequestNotification",
+                    Subject = "You have a new friend request at %Store.Name%",
+                    Body = "You have a new friend request!<br/><br/>" +
+                           "<a href=\"%Store.URL%\">Log in</a> to view and confirm your friend request.",
+                    EmailAccountId = 1,
+                    IsActive = true,
+                    LimitedToStores = false
+
+                };
+
+            _messageTemplateService.InsertMessageTemplate(friendRequestNotification);
+
+
+            // Require user to login in order to view who and confirm the request - Bruce Leggett
+            var eventInvitationNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.EventInvitationNotification",
+                Subject = "You have been invited to an event on %Store.Name%",
+                Body = "You have just been invited to an event!<br/><br/>" +
+                       "<a href=\"%Store.URL%\">Log in</a> to view the event invitation.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+
+            };
+
+            _messageTemplateService.InsertMessageTemplate(eventInvitationNotification);
+
+
+        }
+
+
+
     }
 }

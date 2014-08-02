@@ -30,7 +30,6 @@
     @*        <div><b>Skate Moves</b></div>*@
 
 
-    <span>Location</span><br /><br />
     <div class="hotel-information-block">
         <span class="title">@(Model.LocationName)</span><br />
         <div class="hotel-information">
@@ -59,18 +58,22 @@
 
         {{CustomerAttendanceStatusText}}<br /><br />
 
-        <button id="goingButton" ng-click="invite()" class="fa fa-envelope">Invite</button>
+        <button id="goingButton" open-dialog="inviteFriendsDialog" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
         <button id="goingButton" ng-click="setGoing()">Going</button>
         <button id="goingButton" ng-click="setMaybe()">Maybe</button>
         <button id="goingButton" ng-click="setNotGoing()">Not Going</button>
 
-            <div when-scrolled="getFriends()" style="height:100px; width:200px; overflow-x:auto; border: 1px solid black;">
-                <div ng-repeat="customer in customerFriends">
-                    <img src="{{customer.PictureUrl}}" title=" {{customer.FullName}}" />
-                    {{customer.FullName}} {{$index}}
+        <div id="inviteFriendsDialog" title="Invite Friends" style="display:none;">
+            <div when-scrolled="getUninvitedFriends(false)" style="height: 277px; overflow-x: auto; border: 1px solid black;">
+                <div ng-click="updateInvitation(customer)" class="friend-block"   ng-repeat="customer in uninvitedFriends">
+                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" /><br />
+                    <span style="font-size: 7pt; ">{{customer.FullName}}</span><br />
+                    <input type="checkbox" ng-model="customer.IsInvited" style="pointer-events: none" />
                 </div>
-               
             </div>
+            <button ng-click="inviteFriends()">Invite</button>
+        </div>
+
     </div>
         
 
@@ -79,39 +82,7 @@
 
 
 
-    <span>Hotels</span><br /><br />
-
-    @if (Model.Hotels.Count == 0)
-    {
-        <span>No hotels listed</span><br /><br />
-    }
-
-
-    @foreach (var hotel in Model.Hotels)
-    {
-        <text>
-            <div class="hotel-information-block">
-                <span class="title">@(hotel.Title):</span><br />
-                <div class="hotel-information">
-                    <span class="label">@hotel.Name</span><br />
-                    <span class="value">@hotel.Address1 @hotel.Address2</span><br />
-                    <span class="value">@(hotel.City), @hotel.State @hotel.ZipPostalCode</span><br />
-                    @if (!string.IsNullOrEmpty(hotel.Country))
-                    {
-                        <span class="value">@hotel.Country</span><br />
-                    }
-                    @if (!string.IsNullOrEmpty(hotel.PhoneNumber))
-                    {
-                        <span class="value">@hotel.PhoneNumber</span><br />
-                    }
-                    @if (!string.IsNullOrEmpty(hotel.AdditionalInformation))
-                    {
-                        <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
-                    }
-                </div>
-            </div>
-        </text>
-    }
+    
 
 }
 
@@ -120,44 +91,45 @@
     <div class="event-page-attendance" ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
 
 
-        <span class="title" ng-show="InvitedCustomers.length > 0">Invited</span> <span>({{InvitedCustomers.length}})</span><br />
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in InvitedCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
+        <span class="title">Invited ({{InvitedCustomers.length}})</span><br />
+
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in InvitedCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+            <span class="title" ng-show="GoingCustomers.length > 0">Going ({{GoingCustomers.length}})</span><br />
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in GoingCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+            <span class="title" ng-show="MaybeCustomers.length > 0">Maybe ({{MaybeCustomers.length}})</span><br />
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in MaybeCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+            <span class="title" ng-show="NotGoingCustomers.length > 0">Not Going ({{NotGoingCustomers.length}})</span><br />
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in NotGoingCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+
         </div>
-
-        <span class="title" ng-show="GoingCustomers.length > 0">Going ({{GoingCustomers.length}})</span><br />
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in GoingCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
-        </div>
-
-        <span class="title" ng-show="MaybeCustomers.length > 0">Maybe ({{MaybeCustomers.length}})</span><br />
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in MaybeCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
-        </div>
-
-        <span class="title" ng-show="NotGoingCustomers.length > 0">Not Going ({{NotGoingCustomers.length}})</span><br />
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in NotGoingCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
-        </div>
-
-
-    </div>
 
 }
 
@@ -181,8 +153,10 @@
         </script>
         <div id="tabs">
             <ul>
-                <li><a href="#tabs-1"><i class="fa fa-info"></i> About</a></li>
-                <li><a href="#tabs-2"><i class="fa fa-picture-o"></i> Pictures</a></li>
+                <li><a href="#tabs-1"><i class="fa fa-info"></i> About</a></li><li>
+                <a href="#tabs-2"><i class="fa fa-home"></i> Hotels</a></li>
+                <li><a href="#tabs-3"><i class="fa fa-picture-o"></i> Pictures</a></li>
+                
                 @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
                 @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
                 <li><a href="#tabs-4"><i class="fa fa-group"></i> Results</a></li>
@@ -196,13 +170,44 @@
                 @Html.Raw(Model.Description)
             </div>
             <div id="tabs-2">
-                @*@Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
+
+                @if (Model.Hotels.Count == 0)
+                {
+                    <span>No hotels listed</span><br /><br />
+                }
+
+
+                @foreach (var hotel in Model.Hotels)
+                {
+                    <text>
+                        <div class="hotel-information-block">
+                            <span class="title">@(hotel.Title):</span><br />
+                            <div class="hotel-information">
+                                <span class="label">@hotel.Name</span><br />
+                                <span class="value">@hotel.Address1 @hotel.Address2</span><br />
+                                <span class="value">@(hotel.City), @hotel.State @hotel.ZipPostalCode</span><br />
+                                @if (!string.IsNullOrEmpty(hotel.Country))
+                                {
+                                    <span class="value">@hotel.Country</span><br />
+                                }
+                                @if (!string.IsNullOrEmpty(hotel.PhoneNumber))
+                                {
+                                    <span class="value">@hotel.PhoneNumber</span><br />
+                                }
+                                @if (!string.IsNullOrEmpty(hotel.AdditionalInformation))
+                                {
+                                    <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
+                                }
+                            </div>
+                        </div>
+                    </text>
+                }
             </div>
             <div id="tabs-3">
-
+                @Model.Name Pictures
             </div>
             <div id="tabs-4">
-                @*@Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )*@
+                @Model.Name Results
             </div>
 
 
