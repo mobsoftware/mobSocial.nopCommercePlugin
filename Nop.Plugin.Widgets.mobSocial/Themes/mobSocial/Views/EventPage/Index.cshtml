@@ -59,10 +59,21 @@
 
         {{CustomerAttendanceStatusText}}<br /><br />
 
+        <button id="goingButton" ng-click="invite()" class="fa fa-envelope">Invite</button>
         <button id="goingButton" ng-click="setGoing()">Going</button>
         <button id="goingButton" ng-click="setMaybe()">Maybe</button>
         <button id="goingButton" ng-click="setNotGoing()">Not Going</button>
+
+            <div when-scrolled="getFriends()" style="height:100px; width:200px; overflow-x:auto; border: 1px solid black;">
+                <div ng-repeat="customer in customerFriends">
+                    <img src="{{customer.PictureUrl}}" title=" {{customer.FullName}}" />
+                    {{customer.FullName}} {{$index}}
+                </div>
+               
+            </div>
     </div>
+        
+
 
     <br /><br />
 
@@ -106,10 +117,10 @@
 
 
 @section right {
-    <div ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
+    <div class="event-page-attendance" ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
 
 
-        <span class="title" ng-show="InvitedCustomers.length > 0">Invited ({{InvitedCustomers.length}})</span><br />
+        <span class="title" ng-show="InvitedCustomers.length > 0">Invited</span> <span>({{InvitedCustomers.length}})</span><br />
         <div class="event-page-attendance-block">
             <span class="evene-page-attendance-customer-block" ng-repeat="customer in InvitedCustomers">
                 <a href="{{customer.ProfileUrl}}">
@@ -201,3 +212,5 @@
     </div>
 
 </div>
+
+
