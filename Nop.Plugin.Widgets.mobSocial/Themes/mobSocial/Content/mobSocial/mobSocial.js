@@ -1,9 +1,6 @@
 ﻿var app = angular.module('mobSocialApp', []);
 
 
-
-/* Angular Directives */
-
 app.directive('whenScrolled', function () {
     return function (scope, elm, attr) {
         var raw = elm[0];
@@ -17,18 +14,17 @@ app.directive('whenScrolled', function () {
 });
 
 
-app.directive('openDialog', function () {
+
+app.factory('dialogService', function () {
     return {
-        restrict: 'A',
-        link: function (scope, elem, attr, ctrl) {
-            var dialogId = '#' + attr.openDialog;
-            elem.bind('click', function (e) {
-                $(dialogId).dialog().dialog('open');
+        open: function (elementId, minWidth, dialogButtons) {
+            $('#' + elementId).dialog({
+                minWidth: minWidth,
+                buttons: dialogButtons
             });
+            $('#' + elementId).dialog('open');
         }
     };
 });
 
-
-/* End Angular Directives */
 

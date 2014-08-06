@@ -77,7 +77,7 @@
     <div ng-controller="EventPageButtonsController" model='{ "eventPageId":"@Model.Id" }'>
 
 
-        <button id="goingButton" open-dialog="inviteFriendsDialog" min-width="493" ok-button-text="Invite" ok-button-click="inviteFriends" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
+        <button ng-click="inviteFriendsDialog('inviteFriendsDialog', 493)" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
         <button id="goingButton" ng-click="setGoing()">Going</button>
         @*<button id="goingButton" ng-click="setMaybe()">Maybe</button>
         <button id="goingButton" ng-click="setNotGoing()">Not Going</button>*@

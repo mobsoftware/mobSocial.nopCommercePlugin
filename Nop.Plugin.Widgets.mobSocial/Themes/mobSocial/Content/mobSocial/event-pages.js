@@ -94,7 +94,7 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
 
 
 
-app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '$attrs', '$filter', function ($rootScope, $scope, $http, $attrs, $filter) {
+app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '$attrs', '$filter', 'dialogService', function ($rootScope, $scope, $http, $attrs, $filter, dialogService) {
         if (!$attrs.model) throw new Error("No model for EventPageController");
         var model = JSON.parse($attrs.model);
 
@@ -108,6 +108,15 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
         $scope.friendsLastCount = 0;
         $scope.invitingFriends = false;
 
+
+        $scope.inviteFriendsDialog = function (elementId, minWidth) {
+            $scope.getUninvitedFriends(true);
+            var dialogButtons = {
+                'Invite': function () { $scope.inviteFriends(); $(this).dialog("close"); },
+                'Cancel': function () { $(this).dialog("close"); },
+            }
+            dialogService.open(elementId, minWidth, dialogButtons)
+        }
 
         $scope.inviteFriends = function () {
             if ($scope.invitingFriends) return;
