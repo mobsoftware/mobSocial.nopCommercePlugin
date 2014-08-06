@@ -1,0 +1,90 @@
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Services.Localization
+@using Nop.Web.Framework.Themes
+
+@model Nop.Plugin.Widgets.MobSocial.Models.CustomerVideoAlbumModel
+
+@{
+    
+    var currentThemeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    
+    Html.AddScriptParts("~/Scripts/slimbox2.js");
+    Html.AddScriptParts("~/Themes/" + currentThemeName + "/Content/mobSocial/jquery.form.js");
+    Html.AddScriptParts("~/Themes/" + currentThemeName + "/Content/mobSocial/customer-video-albums.js");
+}
+
+
+
+<div id="dialog-ok"></div>
+
+<div id="dialog-modal" class="add-video-dialog" title="Add Video">
+    Enter the <i>embed url</i> of the video to add<br />
+    
+    (e.g. '//www.youtube.com/embed/abCDe1FghIj'):<br />
+    
+
+    <form id="addVideoForm" action="@Url.Action("SaveVideo", "MobSocial")" method="POST">
+        <br/><br/>
+        <input type="hidden" name="videoAlbumId" value="@Model.VideoAlbumId"/>
+        <input type="text" title="Video Embed Url" placeholder="Video's Embed Url" name="videoUrl" value="" size="50" maxlength="800"/>
+        
+        @*    TODO: Add video preview thumbnail    *@
+
+        <br/><br/>
+    </form>
+
+</div>
+
+<div id="dialog-confirm" title="Delete Video?">Are you sure you want to delete this video?</div>
+
+
+<div class="customer-album-container">
+    
+    @if (Model.IsCurrentUsersProfile)
+    {
+        <div class="add-video-button">
+            <i class="fa fa-video-camera"></i>
+            <span class="add-video-button-text" title="Add Video">Add Video</span>
+        </div>
+    }
+
+    <h3 class="customer-album-description">Videos of @Model.CustomerFullName skating:</h3>
+    <br/>
+
+    @foreach (var item in Model.Videos)
+    {
+        <div class="customer-video-block" data-customerVideoId="@item.Id">
+           
+            <iframe width="560" height="315" 
+                    src="@item.Url" frameborder="0" allowfullscreen>
+            </iframe>
+
+            <br/>
+            <span class="customer-video-caption">@item.Caption</span>
+            
+            
+            <div class="customer-video-tool-strip">
+                @if (item.AlreadyLiked)
+                {
+                    <span class="customer-video-like-button disabled"><i class="fa fa-thumbs-up"></i><span class="text"> Liked</span></span>
+                }
+                else
+                {
+                    <span class="customer-video-like-button"><i class="fa fa-thumbs-up"></i><span class="text"> Like</span></span>
+                }
+                
+                <span class="customer-video-likes @(!Model.IsCurrentUsersProfile ? "float-right-important" : "")"><i class="fa fa-thumbs-up"></i> <span class="customer-video-likecount" data-likeCount="@item.LikeCount">@item.LikeCount</span><span class="text"> Likes</span> </span>
+                @if (Model.IsCurrentUsersProfile)
+                {
+                    <span class="delete-video-button" data-customerVideoId="@item.Id" title="Delete Video"><i class="fa fa-trash-o"></i> <span class="text"> Delete</span></span>
+                }
+            </div>
+             
+        </div>
+    }
+</div>
+
+
+
+

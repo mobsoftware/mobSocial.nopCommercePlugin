@@ -101,6 +101,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 LocationState = entity.LocationState,
                 LocationZipPostalCode = entity.LocationZipPostalCode,
                 LocationCountry = entity.LocationCountry,
+                LocationPhone = entity.LocationPhone,
+                LocationEmail = entity.LocationEmail,
+                LocationWebsite = entity.LocationWebsite,
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
                 Description = entity.Description,
@@ -138,15 +141,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     DisplayOrder = picture.DisplayOrder,
                     DateCreated = picture.DateCreated,
                     DateUpdated = picture.DateUpdated,
-                    PictureUrl = _pictureService.GetPictureUrl(picture.PictureId, 200)
+                    PictureUrl = _pictureService.GetPictureUrl(picture.PictureId, 200),
                 });  
             }
 
 
-            if(entity.Pictures.Count > 0)
+            if (entity.Pictures.Count > 0)
+            {
                 model.MainPictureUrl = model.Pictures.First().PictureUrl;
+                model.FullSizeImageUrl = _pictureService.GetPictureUrl(model.Pictures.First().PictureId);
+            }
             else
+            {
                 model.MainPictureUrl = _pictureService.GetDefaultPictureUrl(200);
+                model.FullSizeImageUrl = _pictureService.GetDefaultPictureUrl();
+            }  
+
 
             
 

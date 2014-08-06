@@ -64,9 +64,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         }
 
-
-
-
-       
+        public string FullSizeImageUrl { get; set; }
     }
 }

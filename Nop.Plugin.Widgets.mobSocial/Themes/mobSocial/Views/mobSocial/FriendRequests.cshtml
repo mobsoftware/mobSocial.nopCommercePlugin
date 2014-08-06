@@ -10,9 +10,10 @@
 
 @section left
 {
-    @Html.Partial("~/Views/Customer/MyAccountNavigation.cshtml", Model.NavigationModel, new ViewDataDictionary())
+    @*todo Add account navigation back 
+        @Html.Partial("~/Views/Customer/MyAccountNavigation.cshtml", null, new ViewDataDictionary())*@
 
-    @Html.Action("SocialNetworkNavigation", "MobSocial", new { NavigationModel = Model.NavigationModel })
+    @Html.Action("PublicInfo", "SocialNetworkNavigation", new { widgetZone = "account_navigation_after" })
 
 }
 <div class="page account-page order-list-page">
@@ -46,7 +47,7 @@
         </div>
         
         
-        <a href="@Url.HttpRouteUrl("PopulateUrlSlugs", "MobSocial")">Populate Url Slugs</a>
+        @*<a href="@Url.HttpRouteUrl("PopulateUrlSlugs", "MobSocial")">Populate Url Slugs</a>*@
 
     </div>
 </div>

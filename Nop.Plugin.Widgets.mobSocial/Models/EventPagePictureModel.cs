@@ -20,5 +20,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public int EventPageId { get; set; }
 
         public string PictureUrl { get; set; }
+
+        public string FullSizeImageUrl { get; set; }
     }
 }

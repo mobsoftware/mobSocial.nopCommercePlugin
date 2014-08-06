@@ -1,0 +1,16 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.FeaturedVideosModel
+<div class="block block-info">
+    <div class="title">
+        <strong>Featured Video</strong>
+    </div>
+    <div class="listbox">
+        <ul class="list">
+            @foreach (var item in Model.FeaturedVideos)
+            {
+                <span class="featured-video-item" data-customerProfileUrl="@(item.CustomerProfileUrl)?selectedTab=2">
+                    <img src="@item.ThumbnailUrl" frameborder="0" allowfullscreen alt=""/>
+                </span>
+            }
+        </ul>
+    </div>
+</div>

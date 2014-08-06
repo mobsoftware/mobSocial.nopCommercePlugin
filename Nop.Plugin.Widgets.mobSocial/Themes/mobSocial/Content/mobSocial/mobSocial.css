@@ -1,11 +1,10 @@
-﻿
-.profile-page .page-body {
+﻿.profile-page .page-body {
     margin-top: 10px;
 }
 
 .profile-left {
     display: inline-block;
-    width: 205px;
+    max-width: 205px;
     vertical-align: top;
 }
 
@@ -58,6 +57,11 @@
 }
 
 
+
+
+
+
+
 .confirm-friend-button:hover, .add-friend-button:hover {
     cursor: pointer;
 }
@@ -96,6 +100,8 @@
     border-left: 1px solid #aaaaaa !important;
     border-right: 1px solid #aaaaaa !important;
     min-height: 500px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 
@@ -119,7 +125,7 @@
 .team-member-title { font-size: 1.1em;font-weight: bold;}
 
 
-.group-container { width: 705px; }
+.group-container { width: 880px; }
 .group-container h2 {
     margin-bottom: 15px !important;
     display: block;
@@ -163,22 +169,76 @@
     padding: 0 0 5px 0;
 }
 
+.customer-album-description {
+    font-weight: normal;
+    font-size: 1.1em;
+}
+
+.customer-video-block {
+    display: inline-block;
+}
+
+
+
+
+
+
 
 
 .customer-album-container .add-picture-button,
-.customer-album-container .add-video-button
+.customer-album-container .add-video-button,
+.customer-video-like-button,
+.delete-video-button
 {
     border: 1px solid #aaaaaa;
     border-radius: 3px;
-    width: 97px;
     cursor: pointer;
     padding: 5px;
     margin-bottom: 10px;
     margin-bottom: 10px;
+    display: inline-block;
     
 }
 
+.delete-video-button { float: right; }
+.customer-video-like-button { float: left; }
 
+.customer-album-picture-block .delete-picture-button {
+    position: relative;
+    top: 10px;
+    left: -5px;
+    float: right;
+    display: inline-block;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+
+
+.customer-album-picture-block .delete-picture-button:hover {
+    font-weight: bold;
+}
+
+
+.customer-video-tool-strip {
+    width: 100%;
+    display: inline-block;
+    margin-top: 3px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.add-video-dialog {
+    width: 400px;
+}
+
+.customer-video-likes {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 5px;
+    float: right;
+}
 
 .like-button
 {
@@ -202,6 +262,13 @@
     float: right;
     display: inline-block;
     font-size: 1em;
+}
+
+
+.featured-video-item {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 /*** END CUSTOMER ALBUM/PICTURE BLOCK ***/
@@ -251,7 +318,25 @@
 
 .event-page-attendance-block {
     width: 200px;
+    margin-bottom: 10px;
 }
 
+.event-page-attendance .title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+
+#inviteFriendsDialog .friend-block {
+    display: inline-block;
+    min-width: 75px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    margin: 3px;
+    padding: 3px;
+    text-align: center;
+    cursor: pointer;
+}
 /*** END EVENT PAGE STYLES ***/
 

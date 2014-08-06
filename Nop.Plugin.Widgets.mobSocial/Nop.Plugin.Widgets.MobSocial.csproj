@@ -186,7 +186,8 @@
     <Content Include="Themes\mobSocial\Views\EventPage\Search.cshtml" />
     <Content Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
     <None Include="Themes\mobSocial\Views\HeaderMenu\PublicInfo.cshtml" />
-    <None Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\AddCustomerAlbumPicture.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage_old.cshtml" />
@@ -196,6 +197,8 @@
     <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerFriends.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_ProfilePicture.cshtml" />
     <Content Include="Themes\mobSocial\Views\mobSocial\_TeamPageInfo.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerVideoAlbums.cshtml" />
+    <Content Include="Themes\mobSocial\Views\mobSocial\_FeaturedVideosBlock.cshtml" />
     <None Include="Themes\mobSocial\Views\Profile\Index.cshtml" />
     <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
@@ -267,10 +270,6 @@
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.ComponentModel.DataAnnotations.dll</HintPath>
@@ -295,9 +294,9 @@
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Optimization">
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Razor">
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>

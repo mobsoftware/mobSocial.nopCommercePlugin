@@ -4,9 +4,12 @@
 @{
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
 
-    Html.AddTitleParts(Model.Name);
+    Html.AppendTitleParts(Model.Name);
 
     Html.AddScriptParts(ResourceLocation.Foot, "~/Themes/DefaultClean/Content/mobSocial/event-pages.js");
+
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
 
 
 }
@@ -14,9 +17,26 @@
 @section left {
 
 
-    <img id="event-picture" class="event-picture" src="@Model.MainPictureUrl" title="@(Model.Name) Picture" />
-    @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
+    <a href="@Model.FullSizeImageUrl" title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
+        <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) Picture" />
+    </a>
+    <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#main-event-img-lightbox-anchor-@Model.Id').magnificPopup(
+                        {
+                            type: 'image',
+                            removalDelay: 300,
+                            gallery: {
+                                enabled: true
+                            }
+                        });
+                    });
+    </script>
 
+
+    
+    @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
+    <br />
     <span>Starts @Model.StartDate.ToString("MMMM d, yyyy") at @Model.StartDate.ToString("hh:mmtt")</span><br />
 
 
@@ -45,33 +65,30 @@
             }
             @if (!string.IsNullOrEmpty(Model.LocationWebsite))
             {
-                <span class="value">@Model.LocationWebsite</span><br />
+                <span class="value"><a href="http://@(Model.LocationWebsite)" target="_new">@Model.LocationWebsite</a></span><br />
             }
             @if (!string.IsNullOrEmpty(Model.LocationEmail))
             {
                 <span class="value">@Model.LocationEmail</span><br />
             }
         </div>
-    </div><br />
+    </div><br /><br />
 
     <div ng-controller="EventPageButtonsController" model='{ "eventPageId":"@Model.Id" }'>
 
-        {{CustomerAttendanceStatusText}}<br /><br />
 
-        <button id="goingButton" open-dialog="inviteFriendsDialog" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
+        <button id="goingButton" open-dialog="inviteFriendsDialog" min-width="493" ok-button-text="Invite" ok-button-click="inviteFriends" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
         <button id="goingButton" ng-click="setGoing()">Going</button>
-        <button id="goingButton" ng-click="setMaybe()">Maybe</button>
-        <button id="goingButton" ng-click="setNotGoing()">Not Going</button>
+        @*<button id="goingButton" ng-click="setMaybe()">Maybe</button>
+        <button id="goingButton" ng-click="setNotGoing()">Not Going</button>*@
 
-        <div id="inviteFriendsDialog" title="Invite Friends" style="display:none;">
-            <div when-scrolled="getUninvitedFriends(false)" style="height: 277px; overflow-x: auto; border: 1px solid black;">
-                <div ng-click="updateInvitation(customer)" class="friend-block"   ng-repeat="customer in uninvitedFriends">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" /><br />
-                    <span style="font-size: 7pt; ">{{customer.FullName}}</span><br />
-                    <input type="checkbox" ng-model="customer.IsInvited" style="pointer-events: none" />
-                </div>
+        <div id="inviteFriendsDialog" when-scrolled="getUninvitedFriends(false)"  title="Invite Friends" style="display: none; height: 277px;  overflow-x: auto;">
+            <div ng-click="updateInvitation(customer)" class="friend-block" ng-class="{ 'highlight-block': customer.IsInvited == true }" ng-repeat="customer in uninvitedFriends">
+                <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" /><br />
+                <span style="font-size: 7pt; ">{{customer.FullName}}</span><br />
+                <input type="checkbox" ng-model="customer.IsInvited" style="pointer-events: none" />
             </div>
-            <button ng-click="inviteFriends()">Invite</button>
+            @*<button ng-click="inviteFriends()">Invite</button>*@
         </div>
 
     </div>
@@ -199,7 +216,7 @@
                                     <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
                                 }
                             </div>
-                        </div>
+                        </div><br />
                     </text>
                 }
             </div>
