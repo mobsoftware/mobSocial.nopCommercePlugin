@@ -215,7 +215,7 @@ li a:hover {
 }
 
 .ui-menu-item a .details {
-    margin-left: 7px;
+ 
 }
 
 .ui-menu-item a .title {
@@ -238,9 +238,23 @@ li a:hover {
 }
 
 
+/*.ui-selectmenu-menu .ui-menu .ui-menu-item .beta-label::after {
+    content: 'beta';
+    font-size: 5pt;
+    color: rgb(12, 146, 0);
+    top: -5px;
+    left: 1px;
+    position: relative;
+    margin-right:-4px;
+    
+}*/
+
+
+
 .people-search-box-thumbnail-container {
     min-width: 50px;
     float:left;
+    margin-right: 5px;
 }
 
 
@@ -295,6 +309,11 @@ li a:hover {
 
 .ui-autocomplete {
     text-align: left;
+}
+
+.ui-autocomplete .ui-menu-item a {
+	text-align: left !important;
+	display: inline-block;
 }
 
 
