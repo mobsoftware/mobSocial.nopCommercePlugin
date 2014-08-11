@@ -1,13 +1,15 @@
 ﻿@model ProfileIndexModel
 @using Nop.Web.Models.Profile;
 @using Nop.Web.Framework.UI
-@{    
+@{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     Html.AddTitleParts(T("PageTitle.Profile").Text);
 
-    
-    
+    var currentThemeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    Html.AddScriptParts(ResourceLocation.Foot, "~/Themes/" + currentThemeName + "/Content/mobSocial/customer-profile.js");
+
+
 }
 
 
@@ -19,7 +21,7 @@
     <div class="profile-left" ng-controller="customerProfileController" model='{ "id": @Model.CustomerProfileId }' ng-model="customerProfile">
 
         @Html.Action("ProfilePicture", "MobSocial", new { customerId = Model.CustomerProfileId })
-        <div><span style="text-align: right;">{{(customerProfile.Views > 1) ? customerProfile.Views + ' views' : customerprofile.Views + ' view'}}</span></div>
+        <div><span style="text-align: right;">{{(customerProfile.Views > 1) ? customerProfile.Views + ' views' : customerProfile.Views + ' view'}}</span></div>
         <br />
 
         @Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })
