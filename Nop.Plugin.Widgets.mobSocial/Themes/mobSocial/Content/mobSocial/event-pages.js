@@ -135,6 +135,12 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
                 method: 'POST',
                 data: { eventPageId: $scope.eventPageId, customerIds: invitedCustomerIds },
             }).success(function (data, status, headers, config) {
+
+                if (data.redirect) {
+                    document.location.href = data.redirect;
+                    return;
+                }
+
                 $rootScope.$emit('updateInvited', data);
                 $scope.invitingFriends = false;
             }).error(function (data, status, headers, config) {
@@ -209,6 +215,12 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
                 method: 'POST',
                 data: { eventPageId: $scope.eventPageId, attendanceStatusId: attendanceStatusId },
             }).success(function (data, status, headers, config) {
+
+                if (data.redirect) {
+                    document.location.href = data.redirect;
+                    return;
+                }
+                
                 $scope.PreviousCustomerAttendanceStatusId = $scope.CustomerAttendanceStatusId;
                 $scope.CustomerAttendanceStatusId = data.AttendanceStatusId;
                 

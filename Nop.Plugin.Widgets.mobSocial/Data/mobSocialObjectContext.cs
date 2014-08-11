@@ -38,6 +38,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new CustomerVideoAlbumMap());
             modelBuilder.Configurations.Add(new CustomerVideoMap());
             modelBuilder.Configurations.Add(new CustomerVideoLikeMap());
+
+            modelBuilder.Configurations.Add(new CustomerProfileViewMap());
             
 
 
@@ -86,7 +88,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                     "IF OBJECT_ID('TeamPage', 'U') IS NOT NULL DROP TABLE TeamPage; " +
                     "IF OBJECT_ID('CustomerSkateMove', 'U') IS NOT NULL DROP TABLE CustomerSkateMove; " +
                     "IF OBJECT_ID('SkateMove', 'U') IS NOT NULL DROP TABLE SkateMove; " +
-                    "IF OBJECT_ID('CustomerFriend', 'U') IS NOT NULL DROP TABLE CustomerFriend; ";
+                    "IF OBJECT_ID('CustomerFriend', 'U') IS NOT NULL DROP TABLE CustomerFriend; " +
+                    "IF OBJECT_ID('CustomerProfileView', 'U') IS NOT NULL DROP TABLE CustomerProfileView; ";
 
 
                 Database.ExecuteSqlCommand(dbScript);

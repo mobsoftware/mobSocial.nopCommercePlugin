@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,9 +42,12 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
     <Compile Include="Core\AttendanceStatus.cs" />
+    <Compile Include="Core\CustomerProfileViewService.cs" />
     <Compile Include="Core\EventPageAttendanceService.cs" />
     <Compile Include="Core\IEventPageAttendanceService.cs" />
+    <Compile Include="Data\CustomerProfileViewMap.cs" />
     <Compile Include="Data\EventPageAttendanceMap.cs" />
+    <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\EventPagePictureModel.cs" />
     <Compile Include="Models\EventPageHotelModel.cs" />
@@ -149,6 +152,7 @@
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Themes\mobSocial\Content\mobSocial\customer-profile.js" />
     <Content Include="Themes\mobSocial\Content\mobSocial\event-pages.js" />
     <Content Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Themes\mobSocial\Content\jquery-ui.min.css" />

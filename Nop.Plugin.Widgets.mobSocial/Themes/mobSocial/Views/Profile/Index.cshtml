@@ -16,30 +16,32 @@
     
     <div class="clear">
     </div>
-    <div class="profile-left" >
-    
+    <div class="profile-left" ng-controller="customerProfileController" model='{ "id": @Model.CustomerProfileId }' ng-model="customerProfile">
+
         @Html.Action("ProfilePicture", "MobSocial", new { customerId = Model.CustomerProfileId })
-        
+        <div><span style="text-align: right;">{{(customerProfile.Views > 1) ? customerProfile.Views + ' views' : customerprofile.Views + ' view'}}</span></div>
+        <br />
+
         @Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })
-        <br/>
-        <br/>
+        <br />
+        <br />
         <div class="profile-stat">
-            
+
             <div class="send-pm-box">
                 <span class="ui-icon ui-icon-mail-closed"></span>
                 @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })
             </div>
         </div>
-        <br />  
-        <br/>
+        <br />
+        <br />
 
-        
+
         @Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
-        
+
         @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
         *@
-        <br/>
-@*        <div><b>Skate Moves</b></div>*@
+        <br />
+        @*        <div><b>Skate Moves</b></div>*@
 
     </div>
 

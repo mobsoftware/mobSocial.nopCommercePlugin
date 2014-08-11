@@ -93,6 +93,10 @@ namespace Nop.Plugin.Widgets.MobSocial
               .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
               .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<CustomerProfileView>>().As<IRepository<CustomerProfileView>>()
+             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+             .InstancePerRequest();
+
 
             // Service Injection
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
@@ -105,7 +109,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 .InstancePerRequest();
             builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
             builder.RegisterType<TeamPageService>().As<ITeamPageService>().InstancePerRequest();
-
+            builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>()
+               .InstancePerRequest();
 
 
             

@@ -11,6 +11,13 @@ namespace Nop.Plugin.Widgets.MobSocial
         public void RegisterRoutes(RouteCollection routes)
         {
 
+
+            routes.MapRoute("GetCustomerProfile",
+                  "MobSocial/GetCustomerProfile/{customerId}",
+                  new { controller = "mobSocial", action = "GetCustomerProfile" },
+                  new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+            );
+
             routes.MapLocalizedRoute("PopulateUrlSlugs",
                             "MobSocial/PopulateUrlSlugs",
                             new { controller = "mobSocial", action = "PopulateUrlSlugs" },

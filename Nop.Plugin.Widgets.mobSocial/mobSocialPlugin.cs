@@ -150,13 +150,14 @@ namespace Nop.Plugin.Widgets.MobSocial
                 PeopleSearchAutoCompleteNumberOfResults = 10,
                 EventPageSearchAutoCompleteNumberOfResults = 10,
                 PeopleSearchTermMinimumLength = 3,
-                EventPageSearchTermMinimumLength = 3,
+                EventPageSearchTermMinimumLength = 1,
                 ShowProfileImagesInSearchAutoComplete = true,
                 CustomerAlbumPictureThumbnailWidth = 290,
                 MaximumMainAlbumPictures = 10,
                 MaximumMainAlbumVideos = 10,
                 EventPageAttendanceThumbnailSize = 25,
-                UninvitedFriendsNumberOfResults = 20
+                UninvitedFriendsNumberOfResults = 20,
+                CustomerProfileUpdateViewCountAfterNumberOfSeconds = 180 // 3 minutes
             };
 
 

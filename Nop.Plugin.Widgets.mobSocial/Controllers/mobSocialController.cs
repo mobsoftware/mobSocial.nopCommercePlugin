@@ -57,6 +57,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IUrlRecordService _urlRecordService;
         private readonly IRepository<UrlRecord> _urlRecordRepository;
         private readonly ICustomerVideoAlbumService _customerVideoAlbumService;
+        private readonly CustomerProfileViewService _customerProfileViewService;
 
         public mobSocialController(IPermissionService permissionService,
             IWorkContext workContext, AdminAreaSettings adminAreaSettings, ILocalizationService localizationService,
@@ -64,7 +65,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             ICustomerAlbumPictureService customerAlbumPictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, CustomerSettings customerSettings, 
             ForumSettings forumSettings, RewardPointsSettings rewardPointsSettings, OrderSettings orderSettings,
              IStoreContext storeContext, IWebHelper webHelper, IUrlRecordService urlRecordService, IRepository<UrlRecord> urlRecordRepository,
-            ICustomerVideoAlbumService customerVideoAlbumService)
+            ICustomerVideoAlbumService customerVideoAlbumService, CustomerProfileViewService customerProfileViewService)
         {
             _permissionService = permissionService;
             _workContext = workContext;
@@ -85,6 +86,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _urlRecordService = urlRecordService;
             _urlRecordRepository = urlRecordRepository;
             _customerVideoAlbumService = customerVideoAlbumService;
+            _customerProfileViewService = customerProfileViewService;
         }
 
 
@@ -306,6 +308,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("_CustomerFriendBlock", model);
 
         }
+
+
 
 
         public ActionResult FriendRequests()
@@ -846,6 +850,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             
         }*/
 
+
+        //TODO: Look into using this method below and angular as the single initilizer for the customer profile pages
+        public ActionResult GetCustomerProfile(int customerId)
+        {
+            
+            _customerProfileViewService.IncrementViewCount(customerId);
+
+            var customerProfile = new
+            {
+                Views = _customerProfileViewService.GetViewCount(customerId)
+            };
+
+            return Json(customerProfile);
+        }
         
 
         private void CreateSampleData()

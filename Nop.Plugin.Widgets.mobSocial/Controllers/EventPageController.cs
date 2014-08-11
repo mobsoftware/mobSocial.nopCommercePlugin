@@ -297,6 +297,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [HttpPost]
         public ActionResult InviteFriends(int eventPageId, int[] customerIds)
         {
+
+           if (_workContext.CurrentCustomer.IsGuest())
+                return Json(new {redirect = Url.RouteUrl("Login")}, JsonRequestBehavior.AllowGet);
+
+
             var invitedCustomers = _eventPageAttendanceService.InviteFriends(eventPageId, customerIds);
 
             var models = new List<object>();
@@ -443,6 +448,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [HttpPost]
         public ActionResult UpdateAttendanceStatus(int eventPageId, int attendanceStatusId)
         {
+            if (_workContext.CurrentCustomer.IsGuest())
+                return Json(new { redirect = Url.RouteUrl("Login") }, JsonRequestBehavior.AllowGet);
+
+                
 
             try
             {

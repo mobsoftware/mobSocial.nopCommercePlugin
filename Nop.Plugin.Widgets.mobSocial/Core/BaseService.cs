@@ -35,6 +35,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _pictureRepository = null;
         }
 
+        public BaseService(IRepository<T> repository, IWorkContext workContext)
+        {
+            _repository = repository;
+            _pictureRepository = null;
+            _workContext = workContext;
+        }
+
         public BaseService(IRepository<T> repository, IWorkContext workContext, IUrlRecordService urlRecordService)
         {
             _repository = repository;
@@ -61,6 +68,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 InsertUrlRecord(entity);
 
         }
+
         public void Update(T entity)
         {
 
