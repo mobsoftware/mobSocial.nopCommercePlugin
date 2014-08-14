@@ -41,7 +41,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             if (viewerViewCount != null)
             {
-                var secondsSinceLastUpdated = (DateTime.Now - viewerViewCount.DateUpdated).Seconds;
+                var secondsSinceLastUpdated = (DateTime.Now - viewerViewCount.DateUpdated).TotalSeconds;
                 if (secondsSinceLastUpdated >= _mobSocialSettings.CustomerProfileUpdateViewCountAfterNumberOfSeconds)
                 {
                     viewerViewCount.Views++;

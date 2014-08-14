@@ -11,6 +11,13 @@ namespace Nop.Plugin.Widgets.MobSocial
         public void RegisterRoutes(RouteCollection routes)
         {
 
+            // redirects to your store
+            routes.MapRoute("FacebookWebsiteApp",
+                 "FacebookWebsiteApp",
+                 new { controller = "FacebookWebsiteApp", action = "Index" },
+                 new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+           );
+
 
             routes.MapRoute("GetCustomerProfile",
                   "MobSocial/GetCustomerProfile/{customerId}",

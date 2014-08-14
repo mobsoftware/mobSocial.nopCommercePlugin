@@ -40,6 +40,7 @@
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\FacebookWebsiteAppController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
     <Compile Include="Core\AttendanceStatus.cs" />
     <Compile Include="Core\CustomerProfileViewService.cs" />
@@ -175,6 +176,7 @@
     <Content Include="Themes\mobSocial\Content\mobSocial\search-box-custom.css" />
     <Content Include="Themes\mobSocial\Installation.txt" />
     <None Include="packages.config" />
+    <Content Include="Themes\mobSocial\Views\FacebookWebsiteApp\Index.cshtml" />
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.eot" />
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.ttf" />
     <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.woff" />

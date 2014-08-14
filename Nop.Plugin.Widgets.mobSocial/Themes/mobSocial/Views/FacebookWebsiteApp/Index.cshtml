@@ -1,0 +1,10 @@
+﻿@{
+    var webHelper = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWebHelper>();
+    var storeUrl = webHelper.GetStoreLocation();
+}
+
+<script type='text/javascript'>
+    if (top.location != self.location) {
+        top.location = '@(storeUrl)';
+    }
+</script>

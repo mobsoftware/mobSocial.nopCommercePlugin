@@ -31,5 +31,8 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int UninvitedFriendsNumberOfResults { get; set; }
 
         public int CustomerProfileUpdateViewCountAfterNumberOfSeconds { get; set; }
+
+        public string FacebookWebsiteAppId { get; set; }
+
     }
 }

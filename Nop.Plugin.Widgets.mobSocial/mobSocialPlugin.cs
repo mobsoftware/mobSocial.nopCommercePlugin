@@ -157,7 +157,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 MaximumMainAlbumVideos = 10,
                 EventPageAttendanceThumbnailSize = 25,
                 UninvitedFriendsNumberOfResults = 20,
-                CustomerProfileUpdateViewCountAfterNumberOfSeconds = 180 // 3 minutes
+                CustomerProfileUpdateViewCountAfterNumberOfSeconds = 180, // 3 minutes,
+                FacebookWebsiteAppId = "1234567890123456"
             };
 
 

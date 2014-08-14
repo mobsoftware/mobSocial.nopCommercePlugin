@@ -11,7 +11,7 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
     $http({
         url: '/MobSocial/GetCustomerProfile',
         method: 'POST',
-        data: { customerId: $scope.customerId },
+        data: { customerId: $scope.customerId, rnd: new Date().getTime() },
     }).success(function (data, status, headers, config) {
         if (data != "") $scope.customerProfile = data;
     }).error(function (data, status, headers, config) {
@@ -20,4 +20,23 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
 
 
 }]);
+
+
+
+
+
+function sendRequestViaMultiFriendSelector() {
+    FB.ui({
+        method: 'apprequests',
+        message: 'You\'ve beeb invited to join SkateMob.com',
+        cookie: true,
+        status: true,
+        xfbml: true
+    }, requestCallback);
+}
+
+function requestCallback(response) {
+    // handle requests after invite is sent
+    // response.request_ids = ids of selected facebook users
+}
 
