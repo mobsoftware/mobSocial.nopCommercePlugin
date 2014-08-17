@@ -45,7 +45,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.FriendRequestsLinkText = "Friend Requests (" + friendRequestCount + ")";
             model.ProfileInformationLinkText = "Profile Info";
 
-           return View(model);
+           return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/SocialNetworkNavigation/PublicInfo.cshtml", model);
         }
 
     }

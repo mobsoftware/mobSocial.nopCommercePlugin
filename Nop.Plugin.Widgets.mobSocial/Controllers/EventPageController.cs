@@ -157,12 +157,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.FullSizeImageUrl = _pictureService.GetDefaultPictureUrl();
             }  
 
-
-            
-
-            return View(model);
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/EventPage/Index.cshtml", model);
         }
-
+        
         [HttpPost]
         public ActionResult GetGoing(int eventPageId)
         {

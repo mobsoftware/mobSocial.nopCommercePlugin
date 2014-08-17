@@ -26,7 +26,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [ChildActionOnly]
         public ActionResult PublicInfo(string widgetZone)
         {
-           return View();
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/HeaderMenu/PublicInfo.cshtml");
         }
 
     }

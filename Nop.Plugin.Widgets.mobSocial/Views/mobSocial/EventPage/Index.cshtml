@@ -1,0 +1,237 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
+
+@using Nop.Web.Framework.UI
+@{
+    Layout = "~/Views/Shared/_ColumnsThree.cshtml";
+
+    Html.AppendTitleParts(Model.Name);
+
+    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/event-pages.js");
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+
+
+}
+
+@section left {
+
+
+    <a href="@Model.FullSizeImageUrl" title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
+        <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) Picture" />
+    </a>
+    <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#main-event-img-lightbox-anchor-@Model.Id').magnificPopup(
+                        {
+                            type: 'image',
+                            removalDelay: 300,
+                            gallery: {
+                                enabled: true
+                            }
+                        });
+                    });
+    </script>
+
+
+    
+    @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
+    <br />
+    <span>Starts @Model.StartDate.ToString("MMMM d, yyyy") at @Model.StartDate.ToString("hh:mmtt")</span><br />
+
+
+    @*@Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })*@
+
+    @*@Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })*@
+
+    @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
+    *@
+    <br />
+    @*        <div><b>Skate Moves</b></div>*@
+
+
+    <div class="hotel-information-block">
+        <span class="title">@(Model.LocationName)</span><br />
+        <div class="hotel-information">
+            <span class="value">@Model.LocationAddress1 @Model.LocationAddress2</span><br />
+            <span class="value">@(Model.LocationCity), @Model.LocationState @Model.LocationZipPostalCode</span><br />
+            @if (!string.IsNullOrEmpty(Model.LocationCountry))
+            {
+                <span class="value">@Model.LocationCountry</span><br />
+            }
+            @if (!string.IsNullOrEmpty(Model.LocationPhone))
+            {
+                <span class="value">@Model.LocationPhone</span><br />
+            }
+            @if (!string.IsNullOrEmpty(Model.LocationWebsite))
+            {
+                <span class="value"><a href="http://@(Model.LocationWebsite)" target="_new">@Model.LocationWebsite</a></span><br />
+            }
+            @if (!string.IsNullOrEmpty(Model.LocationEmail))
+            {
+                <span class="value">@Model.LocationEmail</span><br />
+            }
+        </div>
+    </div><br /><br />
+
+    <div ng-controller="EventPageButtonsController" model='{ "eventPageId":"@Model.Id" }'>
+
+
+        <button ng-click="inviteFriendsDialog('inviteFriendsDialog', 493)" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
+        <button id="goingButton" ng-click="setGoing()">Going</button>
+        @*<button id="goingButton" ng-click="setMaybe()">Maybe</button>
+        <button id="goingButton" ng-click="setNotGoing()">Not Going</button>*@
+
+        <div id="inviteFriendsDialog" when-scrolled="getUninvitedFriends(false)"  title="Invite Friends" style="display: none; height: 277px;  overflow-x: auto;">
+            <div ng-click="updateInvitation(customer)" class="friend-block" ng-class="{ 'highlight-block': customer.IsInvited == true }" ng-repeat="customer in uninvitedFriends">
+                <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" /><br />
+                <span style="font-size: 7pt; ">{{customer.FullName}}</span><br />
+                <input type="checkbox" ng-model="customer.IsInvited" style="pointer-events: none" />
+            </div>
+            @*<button ng-click="inviteFriends()">Invite</button>*@
+        </div>
+
+    </div>
+        
+
+
+    <br /><br />
+
+
+
+    
+
+}
+
+
+@section right {
+    <div class="event-page-attendance" ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
+
+
+        <span class="title">Invited ({{InvitedCustomers.length}})</span><br />
+
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in InvitedCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+            <span class="title" ng-show="GoingCustomers.length > 0">Going ({{GoingCustomers.length}})</span><br />
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in GoingCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+            <span class="title" ng-show="MaybeCustomers.length > 0">Maybe ({{MaybeCustomers.length}})</span><br />
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in MaybeCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+            <span class="title" ng-show="NotGoingCustomers.length > 0">Not Going ({{NotGoingCustomers.length}})</span><br />
+            <div class="event-page-attendance-block">
+                <span class="evene-page-attendance-customer-block" ng-repeat="customer in NotGoingCustomers">
+                    <a href="{{customer.ProfileUrl}}">
+                        <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
+                    </a>
+                </span>
+            </div>
+
+
+        </div>
+
+}
+
+<div class="event-center-content">
+
+    <h1>@Model.Name</h1>
+
+    <div class="page-body">
+        @{
+            var selectPostsTab = String.Empty;
+    /*if (Model.ForumsEnabled && Model.PagingPosts)
+    {
+        selectPostsTab = ".tabs('select', 1)";
+    }*/
+        }
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#tabs").tabs();
+                $("#tabs").tabs("option", "active", 0);
+            });
+        </script>
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1"><i class="fa fa-info"></i> About</a></li><li>
+                <a href="#tabs-2"><i class="fa fa-home"></i> Hotels</a></li>
+                <li><a href="#tabs-3"><i class="fa fa-picture-o"></i> Pictures</a></li>
+                
+                @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
+                @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
+                <li><a href="#tabs-4"><i class="fa fa-group"></i> Results</a></li>
+                @*@if (Model.ForumsEnabled)
+                    {
+                        <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
+                    }*@
+
+            </ul>
+            <div id="tabs-1">
+                @Html.Raw(Model.Description)
+            </div>
+            <div id="tabs-2">
+
+                @if (Model.Hotels.Count == 0)
+                {
+                    <span>No hotels listed</span><br /><br />
+                }
+
+
+                @foreach (var hotel in Model.Hotels)
+                {
+                    <text>
+                        <div class="hotel-information-block">
+                            <span class="title">@(hotel.Title):</span><br />
+                            <div class="hotel-information">
+                                <span class="label">@hotel.Name</span><br />
+                                <span class="value">@hotel.Address1 @hotel.Address2</span><br />
+                                <span class="value">@(hotel.City), @hotel.State @hotel.ZipPostalCode</span><br />
+                                @if (!string.IsNullOrEmpty(hotel.Country))
+                                {
+                                    <span class="value">@hotel.Country</span><br />
+                                }
+                                @if (!string.IsNullOrEmpty(hotel.PhoneNumber))
+                                {
+                                    <span class="value">@hotel.PhoneNumber</span><br />
+                                }
+                                @if (!string.IsNullOrEmpty(hotel.AdditionalInformation))
+                                {
+                                    <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
+                                }
+                            </div>
+                        </div><br />
+                    </text>
+                }
+            </div>
+            <div id="tabs-3">
+                @Model.Name Pictures
+            </div>
+            <div id="tabs-4">
+                @Model.Name Results
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+

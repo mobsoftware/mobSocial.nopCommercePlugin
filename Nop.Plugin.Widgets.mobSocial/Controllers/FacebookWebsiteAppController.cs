@@ -39,8 +39,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         public ActionResult Index()
         {
-
-            return View();
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/FacebookWebsiteApp/Index.cshtml");
         }
 
     }

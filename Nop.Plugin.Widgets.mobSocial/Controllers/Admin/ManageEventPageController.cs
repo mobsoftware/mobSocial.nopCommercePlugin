@@ -117,7 +117,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         [AdminAuthorize]
         public ActionResult List()
         {
-            return View("List");
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/List.cshtml");
         }
 
         [AdminAuthorize]
@@ -128,7 +128,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             //    return AccessDeniedView();
 
             var model = new EventPageModel();
-            return View(model);
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
         }
 
 
@@ -167,7 +167,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 DateUpdated = item.DateUpdated,
             };
 
-            return View("Edit", model);
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
 
         }
 
@@ -215,7 +215,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 return continueEditing ? RedirectToAction("Edit", new { id = entity.Id }) : RedirectToAction("List");
             }
             
-            return View(model);
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
 
         }
 
@@ -282,10 +282,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 }
             }
 
-            return View(model);
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
         }
 
-        //delete product
         [HttpPost]
         public ActionResult Delete(int id)
         {

@@ -1,0 +1,52 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.AddFriendButtonModel
+
+
+@{
+    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/add-friend-button.js");
+}
+
+
+@if (Model.ShowAddFriendButton || Model.ShowFriendRequestSent)
+{
+    <div class="addFriendContainer">
+        
+        <div id="add-friend-button-container" class="profile-stat @(Model.ShowAddFriendButton ? "show" : "hide")">
+            <div class="send-pm-box">
+                <a href="#" class="add-friend-button pm-link-button" data-toCustomerId="@Model.CustomerProfileId"> @(T("MobSocial.AddFriendButtonText").Text)</a>
+            </div>
+        </div>    
+        
+        <div id="friend-request-sent-container" data-friendCustomerId="@Model.CustomerProfileId" class="profile-stat @(Model.ShowFriendRequestSent ? "show" : "hide")">
+            <div class="send-pm-box">
+                <span class="ui-icon ui-icon-check"></span>
+                <span id="friend-request-sent" class="friend-request-sent-label">@T("MobSocial.FriendRequestSentLabel")&nbsp;</span>
+            </div>
+        </div>
+        
+    </div>    
+    
+}
+else if (Model.ShowFriendsButton)
+{
+    <div class="profile-stat">
+        <div class="send-pm-box">
+            <span class="ui-icon ui-icon-check"></span>
+            <span id="friends-button" class="friend-button" >@T("MobSocial.FriendsLabelText")</span>
+        </div>
+    </div>   
+}
+else if (Model.ShowConfirmFriendButton)
+{
+    <div class="profile-stat" data-showConfirmButton="true" data-friendCustomerId="@Model.CustomerProfileId">
+        <div class="send-pm-box">
+            <span class="confirm-friend-button friend-button" data-friendCustomerId="@Model.CustomerProfileId" >@T("MobSocial.ConfirmFriendButtonText")</span>
+            <span class="confirmed-friend-button-icon ui-icon ui-icon-check"></span><span class="confirmed-friend-button" class="friend-button">Confirmed</span>
+        </div>
+    </div>   
+}
+
+
+
+
+
+

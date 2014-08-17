@@ -77,7 +77,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         [AdminAuthorize]
         public ActionResult Index()
         {
-            return View("Index");
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/TeamPage/Index.chstml");
         }
        
         #endregion

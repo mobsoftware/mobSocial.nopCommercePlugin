@@ -36,7 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Admin\Models\EventPageListModel.cs" />
+    <Compile Include="Models\Admin\EventPageListModel.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -139,82 +139,193 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
-    <Content Include="Admin\Views\TeamPage\Index.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\Edit.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Pictures.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\List.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Info.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\Create.cshtml" />
-    <Content Include="Admin\Views\ManageEventPage\_CreateOrUpdate.Hotels.cshtml" />
+    <Content Include="Content\mobSocial\customer-video-albums.js" />
+    <Content Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Pictures.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\List.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Info.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\Create.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Hotels.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Themes\mobSocial\Content\mobSocial\customer-profile.js" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\event-pages.js" />
-    <Content Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.svg" />
-    <Content Include="Themes\mobSocial\Content\jquery-ui.min.css" />
-    <Content Include="Themes\mobSocial\Content\jquery-ui.structure.min.css" />
-    <Content Include="Themes\mobSocial\Content\jquery-ui.theme.min.css" />
-    <Content Include="Themes\mobSocial\Content\scripts\angular.min.js" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.js" />
-    <Content Include="Themes\mobSocial\Content\scripts\jquery-1.11.min.js" />
-    <Content Include="Themes\mobSocial\Content\scripts\jquery-ui-1.11.min.js" />
-    <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.css" />
-    <Content Include="Themes\mobSocial\Content\jquery.simplyscroll.old2.css" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\add-friend-button.js" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\common.js" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\customer-albums.js" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\customer-friend-block.js" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\font-awesome.min.css" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\jquery.form.js" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial-custom.css" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\mobSocial.css" />
-    <Content Include="Themes\mobSocial\Content\mobSocial\search-box-custom.css" />
+    <Content Include="Content\mobSocial\customer-profile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\event-pages.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\fontawesome-webfont.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jquery-ui.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jquery-ui.structure.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jquery-ui.theme.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\scripts\angular.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\mobSocial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\scripts\jquery-1.11.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\scripts\jquery-ui-1.11.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jquery.simplyscroll.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jquery.simplyscroll.old2.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\add-friend-button.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\common.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\customer-albums.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\customer-friend-block.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\font-awesome.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\jquery.form.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\mobSocial-custom.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\mobSocial.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\search-box-custom.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Themes\mobSocial\Installation.txt" />
     <None Include="packages.config" />
-    <Content Include="Themes\mobSocial\Views\FacebookWebsiteApp\Index.cshtml" />
-    <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.eot" />
-    <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.ttf" />
-    <None Include="Themes\mobSocial\Content\fonts\fontawesome-webfont.woff" />
-    <None Include="Themes\mobSocial\Content\fonts\FontAwesome.otf" />
+    <Content Include="Views\mobSocial\FacebookWebsiteApp\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\fontawesome-webfont.eot">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\fontawesome-webfont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\fontawesome-webfont.woff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\FontAwesome.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Themes\mobSocial\theme.config" />
     <Content Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml">
       <SubType>
       </SubType>
     </Content>
-    <Content Include="Themes\mobSocial\Views\EventPage\Search.js" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerAlbumPictures.cshtml" />
-    <Content Include="Themes\mobSocial\Views\SocialNetworkNavigation\PublicInfo.cshtml" />
-    <Content Include="Themes\mobSocial\Views\EventPage\Search.cshtml" />
-    <Content Include="Themes\mobSocial\Views\EventPage\Index.cshtml" />
-    <None Include="Themes\mobSocial\Views\HeaderMenu\PublicInfo.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\AddCustomerAlbumPicture.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\ProfileInformation.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\FriendRequests.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\TeamPage_old.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_AddFriendButton.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_ColumnsThree.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerFriendBlock.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerFriends.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_ProfilePicture.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_TeamPageInfo.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_CustomerVideoAlbums.cshtml" />
-    <Content Include="Themes\mobSocial\Views\mobSocial\_FeaturedVideosBlock.cshtml" />
-    <None Include="Themes\mobSocial\Views\Profile\Index.cshtml" />
-    <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml" />
+    <Content Include="Views\mobSocial\EventPage\Search.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_CustomerAlbumPictures.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\SocialNetworkNavigation\PublicInfo.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\EventPage\Search.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\EventPage\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\HeaderMenu\PublicInfo.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\AddCustomerAlbumPicture.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\ProfileInformation.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\FriendRequests.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\TeamPage.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\TeamPage_old.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_AddFriendButton.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_ColumnsThree.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_CustomerFriendBlock.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_CustomerFriends.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_ProfilePicture.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_TeamPageInfo.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_CustomerVideoAlbums.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_FeaturedVideosBlock.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\mobSocial\Views\Profile\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
     <Content Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml">
       <SubType>
       </SubType>
     </Content>
-    <None Include="web.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Content Include="web.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt">
