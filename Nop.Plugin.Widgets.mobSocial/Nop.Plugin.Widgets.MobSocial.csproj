@@ -139,7 +139,11 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
+    <Content Include="Content\ie6.css" />
+    <Content Include="Content\ie7.css" />
     <Content Include="Content\mobSocial\customer-video-albums.js" />
+    <Content Include="Content\styles.css" />
+    <Content Include="Content\styles.rtl.css" />
     <Content Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -317,10 +321,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
-    <Content Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml">
+    <None Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml">
       <SubType>
       </SubType>
-    </Content>
+    </None>
     <Content Include="web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -385,7 +385,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-            return View("_CustomerFriends", model);
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_CustomerFriends.cshtml", model);
 
         }
 

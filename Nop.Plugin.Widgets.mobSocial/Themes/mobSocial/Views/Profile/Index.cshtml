@@ -5,22 +5,22 @@
 @using Nop.Web.Framework.Themes
 @using Nop.Plugin.Widgets.MobSocial;
 @using Nop.Services.Configuration;
-@{    
+@{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
-    
+
     Html.AddTitleParts(Model.ProfileTitle);
     Html.AppendMetaKeywordParts(Model.ProfileTitle);
     Html.AppendMetaDescriptionParts(Model.ProfileTitle);
 
     var currentThemeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
     Html.AddScriptParts("http://connect.facebook.net/en_US/all.js");
-    Html.AddScriptParts(ResourceLocation.Foot, "~/Themes/" + currentThemeName + "/Content/mobSocial/customer-profile.js");
+    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/customer-profile.js");
 
     var settingService = EngineContext.Current.Resolve<ISettingService>();
 
     var mobSocialSettings = settingService.LoadSetting<mobSocialSettings>();
     var facebookWebsiteAppId = mobSocialSettings.FacebookWebsiteAppId;
-    
+
 }
 
 <script type="text/javascript">
@@ -36,7 +36,7 @@
 <div id="fb-root"></div>
 
 <div class="page profile-page">
-    
+
     <div class="clear"></div>
 
     <div class="profile-left" ng-controller="customerProfileController" model='{ "id": @Model.CustomerProfileId }' ng-model="customerProfile">
@@ -48,12 +48,12 @@
 
         <br />
         <br />
-       
+
         <div class="send-pm-box">
-            <a href="#"  onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a>
+            <a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a>
         </div>
 
-     
+
         <div class="profile-stat">
             <div class="send-pm-box">
                 <span class="ui-icon ui-icon-mail-closed"></span>
@@ -76,16 +76,16 @@
     </div>
 
     <div class="profile-center-content">
-        
+
         <h2>@Model.ProfileTitle</h2>
-         
+
         <div class="page-body">
             @{
                 var selectPostsTab = String.Empty;
-                /*if (Model.ForumsEnabled && Model.PagingPosts)
-                {
-                    selectPostsTab = ".tabs('select', 1)";
-                }*/
+    /*if (Model.ForumsEnabled && Model.PagingPosts)
+    {
+        selectPostsTab = ".tabs('select', 1)";
+    }*/
             }
             <script type="text/javascript">
                 $(document).ready(function () {
@@ -103,19 +103,19 @@
                     {
                         <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
                     }
-                    
+
                 </ul>
                 <div id="tabs-1">
                     @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })
                 </div>
                 <div id="tabs-2">
-                    @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId } )
+                    @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId })
                 </div>
                 <div id="tabs-3">
-                    
+
                 </div>
                 <div id="tabs-4">
-                    @Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId } )
+                    @Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId })
                 </div>
                 @if (Model.ForumsEnabled)
                 {
@@ -123,22 +123,22 @@
                         @Html.Action("posts", new { customerProfileId = Model.CustomerProfileId, page = Model.PostsPage })
                     </div>
                 }
-                 
-                
+
+
 
             </div>
         </div>
-    
+
     </div>
-    
+
     @*<div class="profile-right">
-        $1$ &nbsp;<br/>
-        <div>
-            This is where events will go!
-        </div>
-        <div>
-            And ads!
-        </div>#1#
-    </div>*@
+            $1$ &nbsp;<br/>
+            <div>
+                This is where events will go!
+            </div>
+            <div>
+                And ads!
+            </div>#1#
+        </div>*@
 
 </div>
