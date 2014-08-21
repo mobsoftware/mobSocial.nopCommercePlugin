@@ -21,16 +21,14 @@
         @TabInfo()
     </div>
     <div>
-        SEO for event pages
-        @*@TabSeo()*@
+        @TabSeo()
     </div>
     <div>
-        Pictures
         @TabPictures()
     </div>
-        <div>
-            @TabHotels()
-        </div>
+    <div>
+        @TabHotels()
+    </div>
 </div>
 <script>
     $(document).ready(function () {
@@ -69,6 +67,11 @@
 @helper TabHotels()
 {
     @Html.Partial("_CreateOrUpdate.Hotels", Model)
+}
+
+@helper TabSeo()
+{
+    @Html.Partial("_CreateOrUpdate.SEO", Model)
 }
 @*@helper TabSpecificationAttributes()
 {

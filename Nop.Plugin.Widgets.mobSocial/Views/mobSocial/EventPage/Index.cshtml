@@ -1,4 +1,6 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
+﻿@using Nop.Plugin.Widgets.MobSocial.Models;
+
+@model EventPageModel
 
 @using Nop.Web.Framework.UI
 @{
@@ -6,9 +8,13 @@
 
     Html.AppendTitleParts(Model.Name);
 
+    Html.AppendMetaKeywordParts(Model.MetaKeywords);
+    Html.AppendMetaDescriptionParts(Model.MetaDescription);
+        
     Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/event-pages.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+    
 
 
 }

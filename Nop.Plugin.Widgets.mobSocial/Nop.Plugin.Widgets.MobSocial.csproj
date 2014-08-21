@@ -140,30 +140,30 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
     <Content Include="Content\mobSocial\customer-video-albums.js" />
-    <Content Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
+    <None Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml">
+    </None>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Pictures.cshtml">
+    </None>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Pictures.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\List.cshtml">
+    </None>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\List.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.cshtml">
+    </None>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Info.cshtml">
+    </None>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Info.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\Create.cshtml">
+    </None>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\Create.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Hotels.cshtml">
+    </None>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Hotels.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -326,6 +326,7 @@
     <Content Include="web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.SEO.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt">

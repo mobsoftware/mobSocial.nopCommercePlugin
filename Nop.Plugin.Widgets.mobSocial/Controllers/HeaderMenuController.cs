@@ -12,6 +12,7 @@ using Nop.Services.Localization;
 using Nop.Services.Media;
 using Nop.Services.Security;
 using Nop.Web.Controllers;
+using Nop.Web.Models.Catalog;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {

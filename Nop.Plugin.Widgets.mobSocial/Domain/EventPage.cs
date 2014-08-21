@@ -23,6 +23,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string LocationEmail { get; set; }
         public string Description { get; set; }
 
+
+        public string SeName { get; set; }
+        public string MetaKeywords { get; set; }
+        public string MetaDescription { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 

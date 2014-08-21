@@ -4,14 +4,16 @@ using Nop.Web.Framework;
 using Nop.Web.Framework.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using Nop.Web.Framework.Localization;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {
-    public class EventPageModel : BaseNopEntityModel
+    public class EventPageModel : BaseNopEntityModel, ILocalizedModel<EventPageLocalizedModel>
     {
 
         public EventPageModel()
         {
+            Locales = new List<EventPageLocalizedModel>();
             AddHotelModel = new EventPageHotelModel();
             AddPictureModel = new EventPageAddPictureModel();
             Pictures = new List<EventPagePictureModel>();
@@ -41,7 +43,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public string SeName { get; set; }
         public string MainPictureUrl { get; set; }
 
-
+        public IList<EventPageLocalizedModel> Locales { get; set; }
+        
         public List<EventPageHotelModel> Hotels { get; set; }
 
         public List<EventPagePictureModel> Pictures { get; set; }
@@ -65,5 +68,26 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         }
 
         public string FullSizeImageUrl { get; set; }
+    }
+
+    public partial class EventPageLocalizedModel : ILocalizedModelLocal
+    {
+        public int LanguageId { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaKeywords")]
+        [AllowHtml]
+        public string MetaKeywords { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaDescription")]
+        [AllowHtml]
+        public string MetaDescription { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaTitle")]
+        [AllowHtml]
+        public string MetaTitle { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.SeName")]
+        [AllowHtml]
+        public string SeName { get; set; }
     }
 }
