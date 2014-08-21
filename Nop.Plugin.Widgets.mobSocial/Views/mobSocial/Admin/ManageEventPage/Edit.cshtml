@@ -1,5 +1,6 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
 @{
+    Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
     //page title
     ViewBag.Title = T("Admin.EventPage.EditDetails").Text;
 }
@@ -18,7 +19,7 @@
             <span id="product-delete" class="k-button">@T("Admin.Common.Delete")</span>
         </div>
     </div>
-    @Html.Partial("_CreateOrUpdate", Model)
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/_CreateOrUpdate.cshtml", Model)
 }
 @Html.DeleteConfirmation("product-delete")
 

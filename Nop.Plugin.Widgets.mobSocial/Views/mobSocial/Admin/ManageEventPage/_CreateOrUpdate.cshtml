@@ -1,4 +1,9 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
+﻿@using Nop.Web.Framework;
+@using Nop.Web.Framework.Events;
+@using Nop.Core.Infrastructure;
+@using Nop.Services.Events;
+
+@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
 @Html.ValidationSummary(false)
 @Html.HiddenFor(model => model.Id)
 <div id="product-edit">
@@ -15,7 +20,10 @@
         <li @Html.RenderSelectedTabIndex(3, GetSelectedTabIndex())>
             @T("Admin.MobSocial.EventPage.Hotels")
         </li>
-       
+        <li @Html.RenderSelectedTabIndex(4, GetSelectedTabIndex())>
+            @T("Admin.MobSocial.EventPage.Tickets")
+        </li>
+
     </ul>
     <div>
         @TabInfo()
@@ -28,6 +36,9 @@
     </div>
     <div>
         @TabHotels()
+    </div>
+    <div>
+        @TabTickets()
     </div>
 </div>
 <script>
@@ -45,7 +56,7 @@
 
 @{
     //custom tabs
-    var eventMessage = new AdminTabStripCreated(this.Html, "product-edit");
+    var eventMessage = new AdminTabStripCreated(this.Html, "eventpage-edit");
     EngineContext.Current.Resolve<IEventPublisher>().Publish(eventMessage);
     foreach (var eventBlock in eventMessage.BlocksToRender)
     {
@@ -57,61 +68,66 @@
 <input type="hidden" id="selected-tab-index" name="selected-tab-index" value="@(GetSelectedTabIndex())">
 
 @helper TabInfo()
-{ 
-    @Html.Partial("_CreateOrUpdate.Info", Model)
+{
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/_CreateOrUpdate.Info.cshtml", Model)
 }
 @helper TabPictures()
 {
-    @Html.Partial("_CreateOrUpdate.Pictures", Model)
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/_CreateOrUpdate.Pictures.cshtml", Model)
 }
 @helper TabHotels()
 {
-    @Html.Partial("_CreateOrUpdate.Hotels", Model)
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/_CreateOrUpdate.Hotels.cshtml", Model)
 }
 
 @helper TabSeo()
 {
-    @Html.Partial("_CreateOrUpdate.SEO", Model)
-}
-@*@helper TabSpecificationAttributes()
-{
-    @Html.Partial("_CreateOrUpdate.SpecificationAttributes", Model)
-}
-@helper TabAcl()
-{
-    @Html.Partial("_CreateOrUpdate.Acl", Model)
-}
-@helper TabStores()
-{
-    @Html.Partial("_CreateOrUpdate.Stores", Model)
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/_CreateOrUpdate.SEO.cshtml", Model)
 }
 
-@helper TabTierPrices()
+@helper TabTickets()
 {
-    @Html.Partial("_CreateOrUpdate.TierPrices", Model)
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/_CreateOrUpdate.Tickets.cshtml", Model)
 }
-@helper TabProductAttributes()
-{
-    @Html.Partial("_CreateOrUpdate.ProductAttributes", Model)
-}
-@helper TabDiscounts()
-{
-    @Html.Partial("_CreateOrUpdate.Discounts", Model)
-}
-@helper TabRelatedProducts()
-{
-    @Html.Partial("_CreateOrUpdate.RelatedProducts", Model)
-}
-@helper TabCrossSells()
-{
-    @Html.Partial("_CreateOrUpdate.CrossSells", Model)
-}
-@helper TabAssociatedProducts()
-{
-    @Html.Partial("_CreateOrUpdate.AssociatedProducts", Model)
-}
-@helper TabPurchasedWithOrders()
-{
-    @Html.Partial("_CreateOrUpdate.PurchasedWithOrders", Model)
-}*@
+@*@helper TabSpecificationAttributes()
+    {
+        @Html.Partial("_CreateOrUpdate.SpecificationAttributes", Model)
+    }
+    @helper TabAcl()
+    {
+        @Html.Partial("_CreateOrUpdate.Acl", Model)
+    }
+    @helper TabStores()
+    {
+        @Html.Partial("_CreateOrUpdate.Stores", Model)
+    }
+
+    @helper TabTierPrices()
+    {
+        @Html.Partial("_CreateOrUpdate.TierPrices", Model)
+    }
+    @helper TabProductAttributes()
+    {
+        @Html.Partial("_CreateOrUpdate.ProductAttributes", Model)
+    }
+    @helper TabDiscounts()
+    {
+        @Html.Partial("_CreateOrUpdate.Discounts", Model)
+    }
+    @helper TabRelatedProducts()
+    {
+        @Html.Partial("_CreateOrUpdate.RelatedProducts", Model)
+    }
+    @helper TabCrossSells()
+    {
+        @Html.Partial("_CreateOrUpdate.CrossSells", Model)
+    }
+    @helper TabAssociatedProducts()
+    {
+        @Html.Partial("_CreateOrUpdate.AssociatedProducts", Model)
+    }
+    @helper TabPurchasedWithOrders()
+    {
+        @Html.Partial("_CreateOrUpdate.PurchasedWithOrders", Model)
+    }*@
 

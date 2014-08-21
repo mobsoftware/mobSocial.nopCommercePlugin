@@ -1,0 +1,288 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
+
+
+@if (Model.Id > 0)
+{   
+<table class="adminContent">
+    <tr>
+        <td>
+            <div id="hotels-grid"></div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#hotels-grid").kendoGrid({
+                        dataSource: {
+                            type: "json",
+                            transport: {
+                                read: {
+                                    url: "@Html.Raw(Url.Action("HotelList", "ManageEventPage", new { eventPageId = Model.Id }))",
+                                    type: "POST",
+                                    dataType: "json"
+                                },
+                                update: {
+                                    url:"@Html.Raw(Url.Action("HotelUpdate", "ManageEventPage"))",
+                                    type: "POST",
+                                    dataType: "json"
+                                },
+                                destroy: {
+                                    url: "@Html.Raw(Url.Action("HotelDelete", "ManageEventPage"))",
+                                    type: "POST",
+                                    dataType: "json"
+                                }
+                            },
+                            schema: {
+                                data: "Data",
+                                total: "Total",
+                                errors: "Errors",
+                                model: {
+                                    id: "Id",
+                                    fields: {
+                                        Id: { editable: false, type: "string" },
+                                        DisplayOrder: {editable: true, type: "number" },
+                                    }
+                                }
+                            },
+                            requestEnd: function(e) {
+                                if(e.type=="update") {
+                                    this.read();
+                                }
+                            },
+                            error: function(e) {
+                                display_kendoui_grid_error(e);
+                                // Cancel the changes
+                                this.cancelChanges();
+                            },
+                            serverPaging: true,
+                            serverFiltering: true,
+                            serverSorting: true
+                        },
+                        pageable: {
+                            refresh: true,
+                            numeric: false,
+                            previousNext: false,
+                            info: false
+                        },
+                        editable: {
+                            confirmation: false,
+                            mode: "inline"
+                        },
+                        scrollable: false,
+                        columns: [{
+                            field: "Name",
+                            title: "Name"
+                        }, {
+                            field: "DisplayOrder",
+                            title: "DisplayOrder",
+                            width: 150
+                        }, {
+                            command: [{
+                                name: "edit",
+                                text: "@T("Admin.Common.Edit")"
+                            }, {
+                                name: "destroy",
+                                text: "@T("Admin.Common.Delete")"
+                            }],
+                            width: 200
+                        }]
+                    });
+                });
+            </script>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="100%">
+
+            <p>
+                <strong>@T("Admin.MobSocial.EventPage.Hotels.AddNew")</strong>
+            </p>
+
+            <script type="text/javascript">
+
+                $(document).ready(function () {
+                    $('#btnAddNew').click(function () {
+
+                        var eventPageId = $("#@Html.FieldIdFor(model => model.Id)").val();
+                        var title = $("#@Html.FieldIdFor(model => model.AddHotelModel.Title)").val();
+                        var name = $("#@Html.FieldIdFor(model => model.AddHotelModel.Name)").val();
+                        var address1 = $("#@Html.FieldIdFor(model => model.AddHotelModel.Address1)").val();
+                        var address2 = $("#@Html.FieldIdFor(model => model.AddHotelModel.Address2)").val();
+                        var city = $("#@Html.FieldIdFor(model => model.AddHotelModel.City)").val();
+                        var state = $("#@Html.FieldIdFor(model => model.AddHotelModel.State)").val();
+                        var zipPostalCode = $("#@Html.FieldIdFor(model => model.AddHotelModel.ZipPostalCode)").val();
+                        var country = $("#@Html.FieldIdFor(model => model.AddHotelModel.Country)").val();
+                        var phoneNumber = $("#@Html.FieldIdFor(model => model.AddHotelModel.PhoneNumber)").val();
+                        var additionalInformation = tinyMCE.get('@Html.FieldIdFor(model => model.AddHotelModel.AdditionalInformation)').getContent();
+                        var displayOrder = $("#@Html.FieldIdFor(model => model.AddHotelModel.DisplayOrder)").val();
+
+
+                        var data = {
+                            EventPageId: eventPageId,
+                            Title: title,
+                            Name: name,
+                            Address1: address1,
+                            Address2:  address2,
+                            City:  city,
+                            State:   state,
+                            ZipPostalCode: zipPostalCode,
+                            Country: country,
+                            PhoneNumber: phoneNumber,
+                            AdditionalInformation:   additionalInformation,
+                            DisplayOrder:    displayOrder
+                        };
+
+                        $('#addNew').attr('disabled', true);
+
+                        $.ajax({
+                            cache:false,
+                            type: "GET",
+                            url: "@(Url.Action("HotelAdd", "ManageEventPage"))",
+                            data: data,
+                            success: function (data) {
+                                var grid = $("#hotels-grid");
+                                grid.data('kendoGrid').dataSource.read();
+                                $('#addNew').attr('disabled', false);
+                                return false;
+                            },
+                            error:function (xhr, ajaxOptions, thrownError){
+                                alert('Failed to add hotel.');
+                                $('#addNew').attr('disabled', false);
+                                return false;
+                            }
+                        });
+                    });
+                });
+
+            </script>
+
+            <table class="adminContent">
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Title):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Title)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Title)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Name):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Name)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Address1):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Address1)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Address1)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Address2):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Address2)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Address2)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.City):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.City)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.City)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.State):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.State)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.State)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.ZipPostalCode):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.ZipPostalCode)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.ZipPostalCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.Country):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.Country)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.Country)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.PhoneNumber):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.PhoneNumber)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.PhoneNumber)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.AdditionalInformation):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.AdditionalInformation, "RichEditor")
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.AdditionalInformation)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="adminTitle">
+                        @Html.NopLabelFor(model => model.AddHotelModel.DisplayOrder):
+                    </td>
+                    <td class="adminData">
+                        @Html.EditorFor(model => model.AddHotelModel.DisplayOrder)
+                        @Html.ValidationMessageFor(model => model.AddHotelModel.DisplayOrder)
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+
+
+    <tr>
+        <td width="100%">
+            <input type="button" id="btnAddNew" name="btnAddNew" value="Add" class="k-button" />
+            <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnRefresh').click(function () {
+                        //refresh grid
+                        var optionsGrid = $("#hotels-grid").data('kendoGrid');
+                        optionsGrid.dataSource.read();
+
+                        //return false to don't reload a page
+                        return false;
+                    });
+                });
+            </script>
+        </td>
+    </tr>
+</table>
+}
+else
+{
+    @T("Admin.MobSocial.Common.SaveBeforeEdit")
+}

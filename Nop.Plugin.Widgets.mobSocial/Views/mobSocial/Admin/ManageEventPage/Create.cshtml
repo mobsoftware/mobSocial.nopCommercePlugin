@@ -1,7 +1,9 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.EventPageModel
 @{
+    Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
     //page title
     ViewBag.Title = T("Admin.MobSocial.EventPage.AddNew").Text;
+    
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "product-form" }))
 {

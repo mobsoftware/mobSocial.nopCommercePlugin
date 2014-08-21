@@ -7,8 +7,10 @@
 @using Nop.Services.Configuration;
 @{    
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
-
-    Html.AddTitleParts(T("PageTitle.Profile").Text);
+    
+    Html.AddTitleParts(Model.ProfileTitle);
+    Html.AppendMetaKeywordParts(Model.ProfileTitle);
+    Html.AppendMetaDescriptionParts(Model.ProfileTitle);
 
     var currentThemeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
     Html.AddScriptParts("http://connect.facebook.net/en_US/all.js");
