@@ -143,27 +143,13 @@
     <None Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Pictures.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\List.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Info.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\Create.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Hotels.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml" />
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Pictures.cshtml" />
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\List.cshtml" />
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Info.cshtml" />
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\Create.cshtml" />
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Hotels.cshtml" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -267,9 +253,7 @@
     <Content Include="Views\mobSocial\EventPage\Search.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\EventPage\Index.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Views\mobSocial\EventPage\Index.cshtml" />
     <Content Include="Views\mobSocial\HeaderMenu\PublicInfo.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -326,7 +310,7 @@
     <Content Include="web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.SEO.cshtml" />
+    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.SEO.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt">

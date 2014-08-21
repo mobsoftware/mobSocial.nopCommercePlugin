@@ -117,7 +117,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         [AdminAuthorize]
         public ActionResult List()
         {
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/List.cshtml");
+            return View();
         }
 
         [AdminAuthorize]
@@ -128,7 +128,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             //    return AccessDeniedView();
 
             var model = new EventPageModel();
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
+            return View(model);
         }
 
 
@@ -149,7 +149,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             {
                 Id = item.Id,
                 Name = item.Name,
-                SeName = item.GetSeName(0),
+                SeName = item.GetSeName(_workContext.WorkingLanguage.Id),
                 LocationName = item.LocationName,
                 LocationAddress1 = item.LocationAddress1,
                 LocationAddress2 = item.LocationAddress2,
@@ -165,9 +165,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 Description = item.Description,
                 DateCreated = item.DateCreated,
                 DateUpdated = item.DateUpdated,
+                MetaDescription = item.MetaDescription,
+                MetaKeywords = item.MetaKeywords,
+                
             };
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
+            return View(model);
 
         }
 
@@ -195,10 +198,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
                     Description = model.Description,
+                    MetaKeywords = model.MetaKeywords,
+                    MetaDescription = model.MetaDescription,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                 };
 
+                //search engine name
+                model.SeName = entity.GetSeName(_workContext.WorkingLanguage.Id);
+             
                 // todo: add event hosts
                 _eventPageService.Insert(entity);
 
@@ -215,7 +223,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 return continueEditing ? RedirectToAction("Edit", new { id = entity.Id }) : RedirectToAction("List");
             }
             
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
+            return View(model);
 
         }
 
@@ -252,16 +260,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 item.StartDate = model.StartDate;
                 item.EndDate = model.EndDate;
                 item.Description = model.Description;
+                item.MetaKeywords = model.MetaKeywords;
+                item.MetaDescription = model.MetaDescription;
+                
                 item.DateUpdated = DateTime.Now;
 
-
-                
-
+            
                 _eventPageService.Update(item);
 
                 //search engine name
                 model.SeName = item.GetSeName(_workContext.WorkingLanguage.Id);
-
+             
                 _urlRecordService.SaveSlug(item, model.SeName, _workContext.WorkingLanguage.Id);
 
                 //picture seo names
@@ -282,7 +291,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 }
             }
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
+            return View(model);
         }
 
         [HttpPost]

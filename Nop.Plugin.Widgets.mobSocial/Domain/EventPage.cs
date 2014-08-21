@@ -24,7 +24,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string Description { get; set; }
 
 
-        public string SeName { get; set; }
+
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
 

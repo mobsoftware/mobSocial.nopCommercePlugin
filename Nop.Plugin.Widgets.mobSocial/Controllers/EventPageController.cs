@@ -107,6 +107,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
                 Description = entity.Description,
+                MetaKeywords = entity.MetaKeywords,
+                MetaDescription = entity.MetaDescription,
                 DateCreated = entity.DateCreated,
                 DateUpdated = entity.DateUpdated,
             };

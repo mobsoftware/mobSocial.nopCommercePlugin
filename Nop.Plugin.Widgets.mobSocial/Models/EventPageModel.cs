@@ -40,7 +40,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         [AllowHtml]
         public string Description { get; set; }
 
+        [AllowHtml]
+        public string MetaKeywords { get; set; }
+
+        [AllowHtml]
+        public string MetaDescription { get; set; }
+
+        [AllowHtml]
+        public string MetaTitle { get; set; }
+
+        [AllowHtml]
         public string SeName { get; set; }
+
         public string MainPictureUrl { get; set; }
 
         public IList<EventPageLocalizedModel> Locales { get; set; }
@@ -74,19 +85,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
     {
         public int LanguageId { get; set; }
 
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaKeywords")]
         [AllowHtml]
         public string MetaKeywords { get; set; }
 
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaDescription")]
         [AllowHtml]
         public string MetaDescription { get; set; }
 
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaTitle")]
         [AllowHtml]
         public string MetaTitle { get; set; }
 
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.SeName")]
         [AllowHtml]
         public string SeName { get; set; }
     }
