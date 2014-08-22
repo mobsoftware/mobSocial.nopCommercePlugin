@@ -5,14 +5,6 @@ var currentPictureId = null;
 var okDialog = null;
 
 
-function AjaxError(jqXhr, textStatus, errorThrown) {
-    alert($.parseJSON(jqXhr.responseText).message);
-    mobSocialDialog.dialog("close");
-}
-
-function SubmitSuccesful(responseText, statusText) {
-    mobSocialDialog.dialog("close");
-}
 
 
 $(document).ready(function () {
@@ -23,14 +15,8 @@ $(document).ready(function () {
         modal: true,
         buttons: {
             "OK": function () {
-
-                $('#uploadPictureForm').ajaxForm({
-                    success: SubmitSuccesful,
-                    error: AjaxError
-                }).submit();
-
-
-
+                $('#uploadPictureForm').submit();
+                $('#dialog-modal').dialog("close");
             }
         }
     });
@@ -57,16 +43,11 @@ $(document).ready(function () {
                     data: postData,
                     success: function (data) {
                         var pictureDeleted = $('.customer-album-picture-block[data-customerAlbumPictureId="' + currentPictureId + '"]');
-
-                        alert(pictureDeleted);
-
                         pictureDeleted.remove();
-
                         confirmDialog.dialog("close");
 
                     },
                     error: function (request, status, error) {
-
                         okDialog.dialog('option', 'title', 'Upload Picture');
                         okDialog.html(request.responseText);
                     }
@@ -99,6 +80,16 @@ $(document).ready(function () {
 
 
 
+    function AjaxError(jqXhr, textStatus, errorThrown) {
+        alert($.parseJSON(jqXhr.responseText).message);
+        mobSocialDialog.dialog("close");
+    }
+
+    function SubmitSuccesful(responseText, statusText) {
+        mobSocialDialog.dialog("close");
+        // TODO: later the picture needs to be added without reloading the page by returning the path to the new picture.
+        location.reload();
+    }
 
 
 

@@ -1,111 +1,25 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerAlbumModel
 
 @{
-    Html.AddScriptParts("~/Scripts/jquery.fancybox-1.3.4.pack.js");
-}
-
-<script type="text/javascript">
-
-    var mobSocialDialog = null;
-    var confirmDialog = null;
-    var currentPictureId = null;
-    var okDialog = null;
-
-    $(document).ready(function () {
-      
-        /*todo:make these ok and confirm dialogs global to mobSocial and reusable to reduce code and development time.*/
-        mobSocialDialog = $('#dialog-modal').dialog({
-            autoOpen: false,
-            modal: true,
-            buttons: {
-                "OK": function () {
-                    okDialog.dialog("close");
-                }
-            }
-        });
-        
-        okDialog = $('#dialog-ok').dialog({
-            autoOpen: false,
-            modal: true,
-            buttons: {
-                "OK": function() {
-                            okDialog.dialog("close");
-                    }
-                }
-        });
-        
-        confirmDialog = $('#dialog-confirm').dialog({
-            autoOpen: false,
-            modal: true,
-            buttons: {
-                "Confirm": function() {
-                    var postData = { customerAlbumPictureId: currentPictureId };
-                    $.ajax({
-                        type: 'Post',
-                        url: Website.RootUrl + '/mobSocial/DeleteCustomerAlbumPicture',
-                        data: postData,
-                        success: function(data) {
-                            var pictureDeleted = $('.customer-album-picture-block[data-customerAlbumPictureId="' + currentPictureId + '"]');
-
-                            alert(pictureDeleted);
-
-                            pictureDeleted.remove();
-
-                            confirmDialog.dialog("close");
-
-                        },
-                        error: function(request, status, error) {
-
-                            okDialog.dialog('option', 'title', 'Upload Picture');
-                            okDialog.html(request.responseText);
-                        }
-                    });
-                },
-                "Cancel": function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-
-        $('.add-picture-button').click(function () {
-            $('#dialog-modal').dialog('open');
-            
-            mobSocialDialog.data("uiDialog")._title = function (title) {
-                title.html(this.options.title);
-            };
-        });
-        
-
-        $('.delete-picture-button').click(function () {
-
-            currentPictureId = $(this).attr('data-customerAlbumPictureId');
-            confirmDialog.dialog('open');
-
-
-        });
-        
-
-
-
-
-        
-    });
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
     
-</script>
+    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/customer-albums.js");
+    Html.AddScriptParts("~/Scripts/jquery.fancybox-1.3.4.pack.js");
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+}
 
 <div id="dialog-ok"></div>
 
 <div id="dialog-modal" title="Upload Picture">
     Choose a picture to upload:
     
-    @using (Html.BeginForm("UploadAlbumPicture", "MobSocial", FormMethod.Post, new { enctype = "multipart/form-data", id = "uploadPictureForm" }))
+    @using (Ajax.BeginForm("UploadAlbumPicture", "MobSocial", new AjaxOptions() { HttpMethod = "POST" }, new { id = "uploadPictureForm", enctype = "multipart/form-data" }))
     {
         <input type="hidden" name="albumId" value="@Model.AlbumId"/>
         <img id="previewPicture" src="#" alt="Picture Preview" width="190" />
         <input type="file" name="pictureFile" />
         <br/><br/>
-        <input type="submit" value="OK" />
+        
     }
 
 </div>
@@ -132,7 +46,6 @@
         </div>
     }
 </div>
-
 
 
 

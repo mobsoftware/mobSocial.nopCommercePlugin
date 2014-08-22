@@ -3,6 +3,24 @@
  @if (Model.AvatarEnabled && !String.IsNullOrEmpty(Model.AvatarUrl))
     {
         <div class="avatar">
-            <img src="@(Model.AvatarUrl)" class="avatar-img" alt="Avatar" />
-        </div>         
+            <a href="@Model.FullSizeAvatarUrl" id="main-img-lightbox-anchor-1">
+                <img id="main-event-img-1" class="avatar-img" src="@Model.AvatarUrl" itemprop="image" />
+            </a>
+        </div>
+
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#main-img-lightbox-anchor-1').magnificPopup(
+            {
+                type: 'image',
+                removalDelay: 300,
+                gallery: {
+                    enabled: true
+                }
+            });
+        });
+    </script>
+
+
     }

@@ -812,6 +812,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             bool avatarEnabled = false;
             string avatarUrl = _pictureService.GetDefaultPictureUrl(_mediaSettings.AvatarPictureSize, PictureType.Avatar);
+            string fullSizeAvatarUrl = _pictureService.GetDefaultPictureUrl(0, PictureType.Avatar);
 
             if (_customerSettings.AllowCustomersToUploadAvatars)
             {
@@ -820,7 +821,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var customerAvatarId = customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId);
 
                 if (customerAvatarId != 0)
+                {
                     avatarUrl = _pictureService.GetPictureUrl(customerAvatarId, _mediaSettings.AvatarPictureSize);
+                    fullSizeAvatarUrl = _pictureService.GetPictureUrl(customerAvatarId);
+                }
                 else
                 {
                     if (!_customerSettings.DefaultAvatarEnabled)
@@ -833,7 +837,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     AvatarEnabled = avatarEnabled,
                     AvatarUrl = avatarUrl,
-
+                    FullSizeAvatarUrl = fullSizeAvatarUrl 
                 };
 
 
