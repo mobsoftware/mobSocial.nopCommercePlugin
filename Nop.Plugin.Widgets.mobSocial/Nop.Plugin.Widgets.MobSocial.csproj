@@ -139,6 +139,12 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
+    <Content Include="Content\mobSocial\easy-responsive-tabs.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\easyResponsiveTabs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\ie6.css" />
     <Content Include="Content\ie7.css" />
     <Content Include="Content\mobSocial\customer-video-albums.js" />
@@ -271,7 +277,9 @@
     <Content Include="Views\mobSocial\EventPage\Search.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\EventPage\Index.cshtml" />
+    <Content Include="Views\mobSocial\EventPage\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\mobSocial\HeaderMenu\PublicInfo.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

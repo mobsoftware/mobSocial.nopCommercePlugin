@@ -12,9 +12,11 @@
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
 
     Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/event-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/easyResponsiveTabs.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
-    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
 
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+    Html.AddCssFileParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/easy-responsive-tabs.css");
 
 
 }
@@ -23,7 +25,7 @@
 
 
     <a href="@Model.FullSizeImageUrl" title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
-        <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) Picture" />
+        <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture" />
     </a>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -87,8 +89,12 @@
         @*<button id="goingButton" ng-click="setMaybe()">Maybe</button>
             <button id="goingButton" ng-click="setNotGoing()">Not Going</button>*@
 
-        <div id="inviteFriendsDialog" when-scrolled="getUninvitedFriends(false)" title="Invite Friends" style="display: none; height: 277px;  overflow-x: auto;">
-            <div ng-click="updateInvitation(customer)" class="friend-block" ng-class="{ 'highlight-block': customer.IsInvited == true }" ng-repeat="customer in uninvitedFriends">
+        <div id="inviteFriendsDialog" when-scrolled="getUninvitedFriends(false)" title="Invite Friends" style="display: none; height: 277px;  overflow-x:
+
+auto;">
+            <div ng-click="updateInvitation(customer)" class="friend-block" ng-class="{ 'highlight-block': customer.IsInvited == true }" ng-repeat="customer
+
+in uninvitedFriends">
                 <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" /><br />
                 <span style="font-size: 7pt; ">{{customer.FullName}}</span><br />
                 <input type="checkbox" ng-model="customer.IsInvited" style="pointer-events: none" />
@@ -169,70 +175,64 @@
         }
         <script type="text/javascript">
             $(document).ready(function () {
-                $("#tabs").tabs();
-                $("#tabs").tabs("option", "active", 0);
+                $("#tabs").easyResponsiveTabs();
+                //$("#tabs").tabs("option", "active", 0);
             });
         </script>
         <div id="tabs">
-            <ul>
-                <li><a href="#tabs-1"><i class="fa fa-info"></i> About</a></li>
-                <li>
-                    <a href="#tabs-2"><i class="fa fa-home"></i> Hotels</a>
-                </li>
-                <li><a href="#tabs-3"><i class="fa fa-picture-o"></i> Pictures</a></li>
-
+            <ul class="resp-tabs-list">
+                <li><i class="fa fa-info"></i> About</li>
+                <li><i class="fa fa-home"></i> Hotels</li>
+                <li><i class="fa fa-picture-o"></i> Pictures</li>
                 @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
                 @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
-                <li><a href="#tabs-4"><i class="fa fa-group"></i> Results</a></li>
+                <li><i class="fa fa-group"></i> Results</li>
                 @*@if (Model.ForumsEnabled)
                     {
                         <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
                     }*@
-
             </ul>
-            <div id="tabs-1">
-                @Html.Raw(Model.Description)
-            </div>
-            <div id="tabs-2">
 
-                @if (Model.Hotels.Count == 0)
-                {
+            <div class="resp-tabs-container">
+                <div>@Html.Raw(Model.Description)</div>
+                <div>
+                    @if (Model.Hotels.Count == 0)
+                    {
                     <span>No hotels listed</span><br /><br />
-                }
+                    }
 
 
-                @foreach (var hotel in Model.Hotels)
-                {
-                    <text>
-                        <div class="hotel-information-block">
-                            <span class="title">@(hotel.Title):</span><br />
-                            <div class="hotel-information">
-                                <span class="label">@hotel.Name</span><br />
-                                <span class="value">@hotel.Address1 @hotel.Address2</span><br />
-                                <span class="value">@(hotel.City), @hotel.State @hotel.ZipPostalCode</span><br />
-                                @if (!string.IsNullOrEmpty(hotel.Country))
-                                {
-                                    <span class="value">@hotel.Country</span><br />
-                                }
-                                @if (!string.IsNullOrEmpty(hotel.PhoneNumber))
-                                {
-                                    <span class="value">@hotel.PhoneNumber</span><br />
-                                }
-                                @if (!string.IsNullOrEmpty(hotel.AdditionalInformation))
-                                {
-                                    <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
-                                }
-                            </div>
-                        </div><br />
-                    </text>
-                }
+                    @foreach (var hotel in Model.Hotels)
+                    {
+                        <text>
+                            <div class="hotel-information-block">
+                                <span class="title">@(hotel.Title):</span><br />
+                                <div class="hotel-information">
+                                    <span class="label">@hotel.Name</span><br />
+                                    <span class="value">@hotel.Address1 @hotel.Address2</span><br />
+                                    <span class="value">@(hotel.City), @hotel.State @hotel.ZipPostalCode</span><br />
+                                    @if (!string.IsNullOrEmpty(hotel.Country))
+                                        {
+                                        <span class="value">@hotel.Country</span><br />
+                                        }
+                                    @if (!string.IsNullOrEmpty(hotel.PhoneNumber))
+                                        {
+                                        <span class="value">@hotel.PhoneNumber</span><br />
+                                        }
+                                    @if (!string.IsNullOrEmpty(hotel.AdditionalInformation))
+                                        {
+                                        <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
+                                        }
+                                </div>
+                            </div><br />
+                        </text>
+                    }
+
+                </div>
+                <div>@Model.Name Pictures</div>
+                <div>@Model.Name Results</div>
             </div>
-            <div id="tabs-3">
-                @Model.Name Pictures
-            </div>
-            <div id="tabs-4">
-                @Model.Name Results
-            </div>
+
 
 
 

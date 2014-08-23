@@ -348,3 +348,9 @@
 }
 /*** END EVENT PAGE STYLES ***/
 
+
+/*** RESPONSIVE TABS ***/
+.resp-tab-content {
+    min-height: 100px;
+}
+/*** END RESPONSIVE TABS ***/
