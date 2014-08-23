@@ -150,7 +150,9 @@
     <Content Include="Content\mobSocial\customer-video-albums.js" />
     <Content Include="Content\styles.css" />
     <Content Include="Content\styles.rtl.css" />
-    <Content Include="license.txt" />
+    <Content Include="license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
