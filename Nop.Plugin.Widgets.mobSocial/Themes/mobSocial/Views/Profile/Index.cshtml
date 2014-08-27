@@ -12,14 +12,18 @@
     Html.AppendMetaKeywordParts(Model.ProfileTitle);
     Html.AppendMetaDescriptionParts(Model.ProfileTitle);
 
-    var currentThemeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
     Html.AddScriptParts("http://connect.facebook.net/en_US/all.js");
     Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/customer-profile.js");
+    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/easyResponsiveTabs.js");
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+    Html.AddCssFileParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/easy-responsive-tabs.css");
 
     var settingService = EngineContext.Current.Resolve<ISettingService>();
-
     var mobSocialSettings = settingService.LoadSetting<mobSocialSettings>();
     var facebookWebsiteAppId = mobSocialSettings.FacebookWebsiteAppId;
+
 
 }
 
@@ -89,44 +93,53 @@
             }
             <script type="text/javascript">
                 $(document).ready(function () {
-                    $("#tabs").tabs();
-                    $("#tabs").tabs("option", "active", 0);
+                    $("#tabs").easyResponsiveTabs();
                 });
             </script>
             <div id="tabs">
-                <ul>
-                    <li><a href="#tabs-1"><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</a></li>
-                    <li><a href="#tabs-2"><i class="fa fa-picture-o"></i> Pictures</a></li>
-                    <li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>
-                    <li><a href="#tabs-4"><i class="fa fa-group"></i> Friends</a></li>
+
+
+                <ul class="resp-tabs-list">
+                    <li><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</li>
+                    <li><i class="fa fa-picture-o"></i> Pictures</li>
+                    <li><i class="fa fa-video-camera"></i> Videos</li>
+                    <li><i class="fa fa-group"></i> Friends</li>
                     @if (Model.ForumsEnabled)
                     {
-                        <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
+                        <li><i class="fa fa-list"></i> @T("Profile.LatestPosts")</li>
                     }
 
                 </ul>
-                <div id="tabs-1">
-                    @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })
-                </div>
-                <div id="tabs-2">
-                    @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId })
-                </div>
-                <div id="tabs-3">
 
-                </div>
-                <div id="tabs-4">
-                    @Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId })
-                </div>
-                @if (Model.ForumsEnabled)
-                {
-                    <div id="tabs-5">
-                        @Html.Action("posts", new { customerProfileId = Model.CustomerProfileId, page = Model.PostsPage })
+
+                <div class="resp-tabs-container">
+                    <div>
+                        @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })
                     </div>
-                }
+                    <div>
+                        @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId })
+                    </div>
+                    <div>
 
-
+                    </div>
+                    <div>
+                        @Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId })
+                    </div>
+                    @if (Model.ForumsEnabled)
+                    {
+                        <div>
+                            @Html.Action("posts", new { customerProfileId = Model.CustomerProfileId, page = Model.PostsPage })
+                        </div>
+                    }
+                </div>
 
             </div>
+
+
+
+
+
+
         </div>
 
     </div>

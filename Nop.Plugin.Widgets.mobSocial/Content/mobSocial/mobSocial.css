@@ -18,7 +18,7 @@
     padding: 0;
 }
 
-.profile-center-content h2 {
+.profile-center-content h2:first-child {
     font-size: 16pt;
     color: rgb(58, 64, 69);
     text-transform: capitalize;
@@ -348,3 +348,30 @@
 }
 /*** END EVENT PAGE STYLES ***/
 
+
+/*** RESPONSIVE TABS ***/
+
+
+
+.resp-tab-content {
+    min-height: 450px;
+}
+
+
+
+/*** END RESPONSIVE TABS ***/
+
+
+/*=====================================================
+    
+    SMALLER MOBILE DEVICES
+
+=====================================================*/
+@media screen and (max-width:480px){
+    /* MASTER PAGE WRAPPERS */
+    .master-wrapper-main .leftside-3 {display:block; float: left; margin-left: 5px;}
+    .master-wrapper-main .rightside-3 { display: block; float: left; margin-left: 5px; }
+    .profile-center-content { width: 98%; }
+    input[type="text"].search-box-text { width: 55.4%; font-size: 1.5em; }
+    .search-box-border { width: 100%; }
+}
