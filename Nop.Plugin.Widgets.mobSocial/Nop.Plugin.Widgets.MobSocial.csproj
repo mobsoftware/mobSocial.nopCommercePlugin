@@ -36,6 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Models\Admin\EventPageListModel.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />

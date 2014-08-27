@@ -9,6 +9,7 @@ using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Services.Media;
+using Nop.Services.Seo;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -111,6 +112,9 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<TeamPageService>().As<ITeamPageService>().InstancePerRequest();
             builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>()
                .InstancePerRequest();
+
+
+            builder.RegisterType<SitemapGenerator>().As<ISitemapGenerator>().InstancePerLifetimeScope();
 
 
             
