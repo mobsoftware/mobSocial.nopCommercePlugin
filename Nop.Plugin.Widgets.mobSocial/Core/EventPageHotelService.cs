@@ -20,66 +20,26 @@ using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
-    public class EventPageHotelService : IEventPageHotelService
+    public class EventPageHotelService : BaseService<EventPageHotel, EventPageHotel>,
+        IEventPageHotelService
     {
-        private readonly IRepository<EventPageHotel> _eventPageHotelRepository;
-        private MediaSettings _nopMediaSettings;
-        private IUrlRecordService _urlRecordService;
-        private IWorkContext _workContext;
 
-
-
-        public EventPageHotelService(ISettingService settingService, IWebHelper webHelper,
-            ILogger logger, IEventPublisher eventPublisher,
-            IRepository<EventPageHotel> eventPageHotelRepository,
-            MediaSettings mediaSettings,
-            IUrlRecordService urlRecordService,
-            IWorkContext workContext)
+        public EventPageHotelService(IRepository<EventPageHotel> repository,
+            IWorkContext workContext) : base(repository, workContext)
         {
-            _eventPageHotelRepository = eventPageHotelRepository;
-            _nopMediaSettings = mediaSettings;
-            _urlRecordService = urlRecordService;
-            _workContext = workContext;
-        }
-
-        public void Insert(EventPageHotel entity)
-        {
-            _eventPageHotelRepository.Insert(entity);
-        }
-
-        public void Update(EventPageHotel entity)
-        {
-            _eventPageHotelRepository.Update(entity);
-        }
-
-        public void Delete(EventPageHotel entity)
-        {
-            _eventPageHotelRepository.Delete(entity);
-        }
-
-        public EventPageHotel GetById(int id)
-        {
-            return _eventPageHotelRepository.GetById(id);
-        }
-
-
-        public List<EventPageHotel> GetAll()
-        {
-            return _eventPageHotelRepository.Table.ToList();
-
         }
 
         public List<EventPageHotel> GetAll(int eventPageId)
         {
-            return _eventPageHotelRepository.Table
+            return base.Repository.Table
                 .Where(x => x.EventPageId == eventPageId)
                 .ToList();
         }
 
-        public List<EventPageHotel> GetAll(string term, int count)
+        public override List<EventPageHotel> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.
-            return _eventPageHotelRepository.Table
+            return base.Repository.Table
                 .Where(x => x.Name.ToLower().Contains(term.ToLower()))
                 .Take(count)
                 .ToList();
@@ -87,8 +47,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-        
 
+
+        public override List<EventPageHotel> GetAllPictures(int entityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EventPageHotel GetFirstPicture(int entityId)
+        {
+            throw new NotImplementedException();
+
+        }
 
     }
 

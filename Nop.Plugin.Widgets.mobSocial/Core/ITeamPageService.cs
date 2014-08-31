@@ -9,7 +9,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     /// <summary>
     /// Product service
     /// </summary>
-    public interface ITeamPageService : IGenericService<TeamPage>
+    public interface ITeamPageService : IBaseService<TeamPage, TeamPage>
     {
     }
 

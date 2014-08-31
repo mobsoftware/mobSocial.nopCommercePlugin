@@ -40,7 +40,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly ForumSettings _forumSettings;
         private readonly CustomerSettings _customerSettings;
         private readonly MediaSettings _mediaSettings;
-        private readonly BaseService<EventPage, EventPagePicture> _eventPageService;
+        private readonly IEventPageService _eventPageService;
         private readonly mobSocialSettings _mobSocialSettings;
         private readonly EventPageAttendanceService _eventPageAttendanceService;
         private readonly IWorkContext _workContext;
@@ -50,7 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IPictureService pictureService, ICountryService countryService,
             ICustomerService customerService, IDateTimeHelper dateTimeHelper,
             ForumSettings forumSettings, CustomerSettings customerSettings,
-            MediaSettings mediaSettings, BaseService<EventPage, EventPagePicture> eventPageService,
+            MediaSettings mediaSettings, IEventPageService eventPageService,
             mobSocialSettings mobSocialSettings, EventPageAttendanceService eventPageAttendanceService,
             IMobSocialService mobSocialService, IWorkContext workContext)
         {

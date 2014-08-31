@@ -18,7 +18,7 @@
     padding: 0;
 }
 
-.profile-center-content h2:first-child {
+.profile-center-content > h2 {
     font-size: 16pt;
     color: rgb(58, 64, 69);
     text-transform: capitalize;

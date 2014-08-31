@@ -98,20 +98,23 @@ namespace Nop.Plugin.Widgets.MobSocial
              .InstancePerRequest();
 
 
+
+
             // Service Injection
+            builder.RegisterGeneric(typeof(BaseService<,>)).As(typeof(IBaseService<,>)).InstancePerLifetimeScope();
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
             builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerRequest();
             builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerRequest();
             builder.RegisterType<CustomerVideoAlbumService>().As<ICustomerVideoAlbumService>().InstancePerRequest();
-            builder.RegisterType<EventPageService>().As<BaseService<EventPage, EventPagePicture>>().InstancePerRequest();
-            builder.RegisterType<EventPageAttendanceService>().As<EventPageAttendanceService>()
-                .Keyed<IEventPageAttendanceService>(typeof(BaseService<EventPageAttendance, EventPageAttendance>))
-                .InstancePerRequest();
+            builder.RegisterType<EventPageService>().As<IEventPageService>().InstancePerRequest();
+            builder.RegisterType<EventPageAttendanceService>().As<IEventPageAttendanceService>().InstancePerRequest();
             builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
-            builder.RegisterType<TeamPageService>().As<ITeamPageService>().InstancePerRequest();
-            builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>()
-               .InstancePerRequest();
-
+            builder.RegisterType<TeamPageService>().AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>().InstancePerRequest();
+            
+            
+            // Override any NopCommerce Services below:
+            builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 
             
         }

@@ -36,6 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Models\Admin\EventPageListModel.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="Core\IEventPageHotelService.cs" />
     <Compile Include="Core\BaseService.cs" />
     <Compile Include="Core\ITeamPageService.cs" />
-    <Compile Include="Core\IGenericService.cs" />
+    <Compile Include="Core\IBaseService.cs" />
     <Compile Include="Core\IEventPageService.cs" />
     <Compile Include="Core\ICustomerVideoAlbumService.cs" />
     <Compile Include="Core\CustomerVideoAlbumService.cs" />
