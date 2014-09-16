@@ -115,9 +115,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             
             
             // Override any NopCommerce Services below:
-            builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
-
-            builder.RegisterType<SitemapGenerator>().As<ISitemapGenerator>().InstancePerLifetimeScope();
+            builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 
 
             

@@ -53,16 +53,11 @@
         <br />
         <br />
 
-        <div class="send-pm-box">
-            <a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a>
-        </div>
+        <div class="send-pm-box"><a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a></div>
 
 
         <div class="profile-stat">
-            <div class="send-pm-box">
-                <span class="ui-icon ui-icon-mail-closed"></span>
-                @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })
-            </div>
+            <div class="send-pm-box">&nbsp;<i class="fa fa-envelope"></i>@Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })</div>
         </div>
         <br />
         <br />
@@ -100,6 +95,7 @@
 
 
                 <ul class="resp-tabs-list">
+                    <li><i class="fa fa-clock-o"></i> Timeline</li>
                     <li><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</li>
                     <li><i class="fa fa-picture-o"></i> Pictures</li>
                     <li><i class="fa fa-video-camera"></i> Videos</li>
@@ -113,6 +109,9 @@
 
 
                 <div class="resp-tabs-container">
+                    <div>
+                        What's new?
+                    </div>
                     <div>
                         @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })
                     </div>
