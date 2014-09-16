@@ -9,7 +9,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     /// <summary>
     /// Product service
     /// </summary>
-    public interface IEventPageHotelService : IGenericService<EventPageHotel>
+    public interface IEventPageHotelService : IBaseService<EventPageHotel, EventPageHotel>
     {
         List<EventPageHotel> GetAll(int eventPageId);
     }

@@ -9,8 +9,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     /// <summary>
     /// Product service
     /// </summary>
-    public interface IEventPageService : IGenericService<EventPage>
+    public interface IEventPageService : IBaseService<EventPage, EventPagePicture>
     {
+        List<EventPage> GetAllUpcomingEvents();
     }
 
 }

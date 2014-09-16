@@ -60,7 +60,7 @@
     <Compile Include="Core\IEventPageHotelService.cs" />
     <Compile Include="Core\BaseService.cs" />
     <Compile Include="Core\ITeamPageService.cs" />
-    <Compile Include="Core\IGenericService.cs" />
+    <Compile Include="Core\IBaseService.cs" />
     <Compile Include="Core\IEventPageService.cs" />
     <Compile Include="Core\ICustomerVideoAlbumService.cs" />
     <Compile Include="Core\CustomerVideoAlbumService.cs" />

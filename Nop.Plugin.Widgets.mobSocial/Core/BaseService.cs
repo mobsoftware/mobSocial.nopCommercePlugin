@@ -16,7 +16,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     /// <summary>
     /// Generic base service to standardize Service APIs
     /// </summary>
-    public abstract class BaseService<T, P> where T : BaseEntity where P : BaseEntity
+    public abstract class BaseService<T, P> : IBaseService<T,P> where T : BaseEntity where P : BaseEntity
     {
 
         private readonly IRepository<T> _repository;

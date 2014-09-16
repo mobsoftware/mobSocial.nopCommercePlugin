@@ -20,12 +20,13 @@ using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
-    public class EventPageService : BaseService<EventPage, EventPagePicture>
+    public class EventPageService : BaseService<EventPage, EventPagePicture>, IEventPageService
     {
         private MediaSettings _nopMediaSettings;
         private IUrlRecordService _urlRecordService;
         private IWorkContext _workContext;
         
+        protected IRepository<EventPagePicture> PictureRepository {get;set;}
 
         public EventPageService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger, IEventPublisher eventPublisher,
@@ -40,24 +41,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _workContext = workContext;
         }
 
-        public void InsertPicture(EventPage entity)
-        {
-            base.Repository.Insert(entity);
-
-            UrlRecord urlRecord = new UrlRecord()
-            {
-                EntityId = entity.Id,
-                EntityName = "EntityPage",
-                IsActive = true,
-                LanguageId = _workContext.WorkingLanguage.Id,
-                Slug = entity.GetSeName()
-            };
-
-            _urlRecordService.InsertUrlRecord(urlRecord);
-
-
-        }
-
+      
         public override List<EventPage> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.
@@ -83,6 +67,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 .Where(x => x.EventPageId == entityId)
                 .FirstOrDefault();
                 
+        }
+        
+        public List<EventPage> GetAllUpcomingEvents()
+        {
+            return base.Repository.Table.Where(x => x.EndDate >= DateTime.Now || !x.EndDate.HasValue).ToList();
         }
 
     }

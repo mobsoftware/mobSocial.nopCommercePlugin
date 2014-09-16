@@ -18,7 +18,7 @@
     padding: 0;
 }
 
-.profile-center-content h2:first-child {
+.profile-center-content > h2 {
     font-size: 16pt;
     color: rgb(58, 64, 69);
     text-transform: capitalize;
@@ -310,9 +310,6 @@
     display:inline-block;
 }
 
-.event-center-content {
-    margin-top: -5px;
-}
 
 .event-center-content h1 {
     font-size: 14pt;
@@ -349,6 +346,14 @@
 /*** END EVENT PAGE STYLES ***/
 
 
+
+/*** OVERRIDE NOPCOMMERCE STYLES ***/
+/*Fix Overflows*/
+.product-grid .product-item .picture { overflow:visible; }
+.master-wrapper-main .center-3 { overflow:visible; }
+/*** END OVERRIDE NOPCOMMERCE STYLES ***/
+
+
 /*** RESPONSIVE TABS ***/
 
 
@@ -370,8 +375,20 @@
 @media screen and (max-width:480px){
     /* MASTER PAGE WRAPPERS */
     .master-wrapper-main .leftside-3 {display:block; float: left; margin-left: 5px;}
-    .master-wrapper-main .rightside-3 { display: block; float: left; margin-left: 5px; }
-    .profile-center-content { width: 98%; }
+    .master-wrapper-main .rightside-3 { display: block; float: left; margin-left: 5px; text-align: center; width: 100%; }
+    
     input[type="text"].search-box-text { width: 55.4%; font-size: 1.5em; }
     .search-box-border { width: 100%; }
+    .block-category-navigation { display: none; }
+    .block-manufacturer-navigation { display: none; }
+    .block-popular-tags { display: none; }
+    .block-newsletter .title { text-align: center; }
+
+    /* Event Pages */
+    .event-page-attendance-block { width: 100%; }
+
+    
+    /* Profile Pages */
+    .profile-center-content { width: 98%; }
+
 }

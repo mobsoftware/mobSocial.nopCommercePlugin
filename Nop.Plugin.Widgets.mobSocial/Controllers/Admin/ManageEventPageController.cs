@@ -24,7 +24,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
     {
         
         #region Fields
-        private readonly BaseService<EventPage, EventPagePicture> _eventPageService;
+        private readonly IEventPageService _eventPageService;
         private readonly IPermissionService _permissionService;
         private readonly IWorkContext _workContext;
         private readonly IUrlRecordService _urlRecordService;
@@ -37,7 +37,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         #region Constructors
 
         public ManageEventPageController(IPermissionService permissionService,
-            BaseService<EventPage, EventPagePicture> eventPageService,
+            IEventPageService eventPageService,
             IWorkContext workContext,
             IUrlRecordService urlRecordService,
             ILocalizationService localizationService,
