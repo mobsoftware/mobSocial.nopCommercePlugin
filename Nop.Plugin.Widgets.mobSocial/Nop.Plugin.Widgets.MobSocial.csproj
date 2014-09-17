@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Core\SitemapGenerator.cs" />
+    <Compile Include="Data\CustomerTimelineMap.cs" />
+    <Compile Include="Domain\CustomerTimeline.cs" />
     <Compile Include="Models\Admin\EventPageListModel.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
