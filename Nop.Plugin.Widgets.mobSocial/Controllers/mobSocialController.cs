@@ -868,7 +868,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             return Json(customerProfile);
         }
-        
+
+
+        [HttpPost]
+        public ActionResult PostStatusToTimeline(int customerId, string statusText)
+        {
+
+            
+
+            return Json(customerProfile);
+        }
+
+
 
         private void CreateSampleData()
         {

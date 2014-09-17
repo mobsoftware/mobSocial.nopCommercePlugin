@@ -39,11 +39,11 @@
 
 <div id="fb-root"></div>
 
-<div class="page profile-page">
+<div class="page profile-page" ng-controller="customerProfileController" model='{ "id": @Model.CustomerProfileId }' ng-model="customerProfile">
 
     <div class="clear"></div>
 
-    <div class="profile-left" ng-controller="customerProfileController" model='{ "id": @Model.CustomerProfileId }' ng-model="customerProfile">
+    <div class="profile-left">
 
         @Html.Action("ProfilePicture", "MobSocial", new { customerId = Model.CustomerProfileId })
         <div><span style="text-align: right;">{{(customerProfile.Views > 1) ? customerProfile.Views + ' views' : customerProfile.Views + ' view'}}</span></div>
@@ -57,7 +57,7 @@
 
 
         <div class="profile-stat">
-            <div class="send-pm-box">&nbsp;<i class="fa fa-envelope"></i>@Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })</div>
+            <div class="send-pm-box">&nbsp;<i class="fa fa-envelope"></i> @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })</div>
         </div>
         <br />
         <br />
@@ -110,7 +110,13 @@
 
                 <div class="resp-tabs-container">
                     <div>
-                        What's new?
+
+                        <div style="border: 1px solid #e4e4e4; height: 200px;" width:400px;">
+                            <input type="text" class="status-box" contenteditable="true" ng-model="statusText" style="border-radius: 3px; width:90%; height:70px;" placeholder="What's new?" /><br />
+                            <div style="width:100%; text-align: right">
+                                <button ng-click="postStatusToTimeline">Post</button>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })

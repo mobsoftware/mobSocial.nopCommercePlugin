@@ -7,6 +7,7 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
 
     $scope.customerId = model.id;
     $scope.customerProfile = null;
+    $scope.statusText = '';
 
     $http({
         url: '/MobSocial/GetCustomerProfile',
@@ -17,6 +18,29 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
     }).error(function (data, status, headers, config) {
         alert('error occured.');
     });
+
+
+
+    $scope.postStatusToTimeline = function () {
+
+        if ($scope.statusText == '' || $scope.statusText.trim() == '' || $scope.statusText == null)
+            return; // todo: replace with a user friendly message but not an alert or popup. Those can be intrusive.
+
+        $http({
+            url: '/MobSocial/PostStatusToTimeline',
+            method: 'POST',
+            data: {
+                customerId: $scope.customerId,
+                statusText: $scope.statusText,
+                rnd: new Date().getTime()
+            },
+        }).success(function (data, status, headers, config) {
+            if (data != "") $scope.customerProfile = data;
+        }).error(function (data, status, headers, config) {
+            alert('error occured.');
+        });
+
+    };
 
 
 }]);
