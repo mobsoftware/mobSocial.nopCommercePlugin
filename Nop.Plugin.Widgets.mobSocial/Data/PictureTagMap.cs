@@ -4,23 +4,25 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class CustomerTimelineMap : EntityTypeConfiguration<CustomerTimeline>
+    public class PictureTagMap : EntityTypeConfiguration<PictureTag>
     {
 
-        public CustomerTimelineMap()
+        public PictureTagMap()
         {
-            ToTable("CustomerTimeline");
+            ToTable("PictureTag");
 
             //Map the primary key
             HasKey(m => m.Id);
 
             //Map the additional properties
+            Property(m => m.PictureId);
+            Property(m => m.PositionX);
+            Property(m => m.PositionY);
             Property(m => m.CustomerId);
-            Property(m => m.StatusText);
-            Property(m => m.PictureId).IsOptional();
+            Property(m => m.TaggedByCustomerId);
+    
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2");
-
 
         }
 

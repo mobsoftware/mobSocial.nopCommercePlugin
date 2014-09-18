@@ -98,6 +98,14 @@ namespace Nop.Plugin.Widgets.MobSocial
              .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
              .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<CustomerTimeline>>().As<IRepository<CustomerTimeline>>()
+             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+             .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<PictureTag>>().As<IRepository<PictureTag>>()
+             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+             .InstancePerRequest();
+
 
 
 
@@ -112,6 +120,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
             builder.RegisterType<TeamPageService>().AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>().InstancePerRequest();
+            builder.RegisterType<CustomerTimelineService>().As<CustomerTimelineService>().InstancePerRequest();
             
             
             // Override any NopCommerce Services below:

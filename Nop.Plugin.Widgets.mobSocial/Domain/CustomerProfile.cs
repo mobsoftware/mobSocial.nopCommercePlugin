@@ -3,11 +3,9 @@ using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class CustomerTimeline : BaseEntity
+    public class CustomerProfile : BaseEntity
     {
-        public int CustomerId { get; set; }
-        public string StatusText { get; set; }
-        public int? PictureId { get; set; }
+        public string AboutMe { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 

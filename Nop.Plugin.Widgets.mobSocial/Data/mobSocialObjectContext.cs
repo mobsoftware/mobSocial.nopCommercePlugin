@@ -40,6 +40,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new CustomerVideoLikeMap());
 
             modelBuilder.Configurations.Add(new CustomerProfileViewMap());
+
+            modelBuilder.Configurations.Add(new CustomerTimelineMap());
+
+            modelBuilder.Configurations.Add(new PictureTagMap());
+
+            modelBuilder.Configurations.Add(new CustomerProfileMap());
             
 
 
@@ -78,7 +84,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                     "IF OBJECT_ID('EventPageHotel', 'U') IS NOT NULL DROP TABLE EventPageHotel; " +
                     "IF OBJECT_ID('EventPage', 'U') IS NOT NULL DROP TABLE EventPage; " +
                     "IF OBJECT_ID('GroupPageMember', 'U') IS NOT NULL DROP TABLE GroupPageMember; " +
+                    "IF OBJECT_ID('CustomerTimeline', 'U') IS NOT NULL DROP TABLE CustomerTimeline; " +
                     //"IF OBJECT_ID('CustomerAlbumPictureLike', 'U') IS NOT NULL DROP TABLE CustomerAlbumPictureLike; " +
+                    "IF OBJECT_ID('CustomerProfile', 'U') IS NOT NULL DROP TABLE CustomerProfile; " +
                     "IF OBJECT_ID('CustomerAlbumPicture', 'U') IS NOT NULL DROP TABLE CustomerAlbumPicture; " +
                     "IF OBJECT_ID('CustomerAlbum', 'U') IS NOT NULL DROP TABLE CustomerAlbum; " +
                     "IF OBJECT_ID('CustomerVideoLike', 'U') IS NOT NULL DROP TABLE CustomerVideoLike; " +
@@ -89,6 +97,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                     "IF OBJECT_ID('CustomerSkateMove', 'U') IS NOT NULL DROP TABLE CustomerSkateMove; " +
                     "IF OBJECT_ID('SkateMove', 'U') IS NOT NULL DROP TABLE SkateMove; " +
                     "IF OBJECT_ID('CustomerFriend', 'U') IS NOT NULL DROP TABLE CustomerFriend; " +
+                    "IF OBJECT_ID('PictureTag', 'U') IS NOT NULL DROP TABLE PictureTag; " +
                     "IF OBJECT_ID('CustomerProfileView', 'U') IS NOT NULL DROP TABLE CustomerProfileView; ";
 
 

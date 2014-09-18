@@ -4,20 +4,18 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class CustomerTimelineMap : EntityTypeConfiguration<CustomerTimeline>
+    public class CustomerProfileMap : EntityTypeConfiguration<CustomerProfile>
     {
 
-        public CustomerTimelineMap()
+        public CustomerProfileMap()
         {
-            ToTable("CustomerTimeline");
+            ToTable("CustomerProfile");
 
             //Map the primary key
             HasKey(m => m.Id);
 
             //Map the additional properties
-            Property(m => m.CustomerId);
-            Property(m => m.StatusText);
-            Property(m => m.PictureId).IsOptional();
+            Property(m => m.AboutMe);
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2");
 
