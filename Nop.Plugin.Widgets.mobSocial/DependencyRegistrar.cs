@@ -106,7 +106,9 @@ namespace Nop.Plugin.Widgets.MobSocial
              .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
              .InstancePerRequest();
 
-
+            builder.RegisterType<EfRepository<CustomerProfile>>().As<IRepository<CustomerProfile>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
 
 
             // Service Injection
@@ -121,6 +123,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<TeamPageService>().AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>().InstancePerRequest();
             builder.RegisterType<CustomerTimelineService>().As<CustomerTimelineService>().InstancePerRequest();
+            builder.RegisterType<CustomerProfileService>().As<CustomerProfileService>().InstancePerRequest();
             
             
             // Override any NopCommerce Services below:

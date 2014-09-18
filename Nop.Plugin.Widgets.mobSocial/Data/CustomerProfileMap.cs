@@ -15,6 +15,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             HasKey(m => m.Id);
 
             //Map the additional properties
+            Property(m => m.CustomerId);
             Property(m => m.AboutMe);
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2");

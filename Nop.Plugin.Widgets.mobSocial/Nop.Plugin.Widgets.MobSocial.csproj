@@ -36,6 +36,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CustomerProfileController.cs" />
+    <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Data\CustomerProfileMap.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Data\EventPageAttendanceMap.cs" />
     <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
+    <Compile Include="Models\CustomerProfileModel.cs" />
     <Compile Include="Models\EventPagePictureModel.cs" />
     <Compile Include="Models\EventPageHotelModel.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
@@ -354,6 +357,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Tickets.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\AboutMe\PublicInfo.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

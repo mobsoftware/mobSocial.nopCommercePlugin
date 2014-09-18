@@ -27,15 +27,15 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly IMobSocialService _socialNetworkService;
         private readonly ILocalizationService _localizationService;
 
-        public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings socialNetworkSettings, 
+        public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings, 
             ISettingService settingService, IMessageTemplateService messageTemplateService, 
             IScheduleTaskService scheduleTaskService,
             IMobSocialService socialNetworkService,
             ILocalizationService localizationService)
         {
             _context = context;
-            _socialNetworkSettings = socialNetworkSettings;
-            this._settingService = settingService;
+            _socialNetworkSettings = mobSocialSettings;
+            _settingService = settingService;
             _messageTemplateService = messageTemplateService;
             _scheduleTaskService = scheduleTaskService;
             _socialNetworkService = socialNetworkService;
@@ -48,7 +48,12 @@ namespace Nop.Plugin.Widgets.MobSocial
         public IList<string> GetWidgetZones()
         {
             return !string.IsNullOrWhiteSpace(_socialNetworkSettings.WidgetZone)
-                      ? new List<string>() { _socialNetworkSettings.WidgetZone, "header_menu_after", "account_navigation_after" }
+                      ? new List<string>() { 
+                          _socialNetworkSettings.WidgetZone, 
+                          "header_menu_after", 
+                          "account_navigation_after", 
+                          "profile_page_info_userstats" 
+                      } 
                       : new List<string>() { "after_header_links" };   
         }
 
@@ -84,7 +89,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                     routeValues = new RouteValueDictionary()
                         {
-                            {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers"},
+                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
                             {"area", null},
                             {"widgetZone", widgetZone}
                         };
@@ -97,7 +102,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                     routeValues = new RouteValueDictionary()
                     {
-                        {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
+                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
                         {"area", null},
                         {"widgetZone", widgetZone}
                     };
@@ -109,7 +114,19 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                     routeValues = new RouteValueDictionary()
                     {
-                        {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
+                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
+                        {"area", null},
+                        {"widgetZone", widgetZone}
+                    };
+                    break;
+                }
+                case "profile_page_info_userstats": {
+                     actionName = "PublicInfo";
+                    controllerName = "CustomerProfile";
+
+                    routeValues = new RouteValueDictionary()
+                    {
+                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
                         {"area", null},
                         {"widgetZone", widgetZone}
                     };
@@ -121,7 +138,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                         routeValues = new RouteValueDictionary()
                         {
-                            {"Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" },
+                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
                             {"area", null},
                             {"widgetZone", widgetZone}
                         };

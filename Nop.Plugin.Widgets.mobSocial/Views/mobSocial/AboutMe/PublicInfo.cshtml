@@ -1,0 +1,21 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerProfileModel
+    asdfafsdfsad
+@{
+    string editable = "false";
+    
+    if (Model.IsLoggedInUsersProfile) {
+        editable = "true";
+    }
+    
+}
+                  asfdsadffsad
+<div class="aboutme">
+
+
+
+    <div class="aboutme-text" contenteditable="@editable">
+        @Model.AboutMe        
+    </div>
+
+
+</div>
