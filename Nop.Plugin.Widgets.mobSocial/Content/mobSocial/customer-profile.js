@@ -9,8 +9,9 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
     $scope.customerProfile = null;
     $scope.statusText = '';
 
+
     $http({
-        url: '/MobSocial/GetCustomerProfile',
+        url: '/CustomerProfile/GetCustomerProfile',
         method: 'POST',
         data: { customerId: $scope.customerId, rnd: new Date().getTime() },
     }).success(function (data, status, headers, config) {
@@ -36,6 +37,20 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
             },
         }).success(function (data, status, headers, config) {
             if (data != "") $scope.customerProfile = data;
+        }).error(function (data, status, headers, config) {
+            alert('error occured.');
+        });
+
+    };
+
+    $scope.updateCustomerProfile = function () {
+
+        $http({
+            url: '/CustomerProfile/SaveCustomerProfile',
+            method: 'POST',
+            data: $scope.customerProfile,
+        }).success(function (data, status, headers, config) {
+            // make a success message appear
         }).error(function (data, status, headers, config) {
             alert('error occured.');
         });

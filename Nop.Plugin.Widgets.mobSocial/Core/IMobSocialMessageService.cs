@@ -16,8 +16,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         int SendEventInvitationNotification(Customer customer, int languageId, int storeId);
 
-        int SendBirthdayNotification(Customer customer, int languageId, int storeId);
+        int SendPendingFriendRequestNotification(Customer customer, int friendRequestCount, int languageId, int storeId);
 
+        int SendBirthdayNotification(Customer customer, int languageId, int storeId);
+        
 
     }
 

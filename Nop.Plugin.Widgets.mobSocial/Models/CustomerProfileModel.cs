@@ -7,9 +7,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
     {
         public int CustomerId { get; set; }
         public string AboutMe { get; set; }
+        public string Website { get; set; }
         public bool IsLoggedInUsersProfile { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-
+        public int Views { get; set; }
+        public int FriendCount { get; set; }
     }
 }

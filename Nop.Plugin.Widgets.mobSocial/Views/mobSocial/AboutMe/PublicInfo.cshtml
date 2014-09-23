@@ -1,20 +1,58 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerProfileModel
-    asdfafsdfsad
-@{
-    string editable = "false";
-    
-    if (Model.IsLoggedInUsersProfile) {
-        editable = "true";
+﻿
+<style>
+    .aboutme {
+        margin-top: 10px;
     }
-    
-}
-                  asfdsadffsad
+
+    .website-text {
+        min-height: 25px;
+        min-width: 200px;
+        max-width: 450px;
+        margin-bottom: 10px;
+    }
+
+    .aboutme-text {
+        min-height: 25px;
+        min-width: 200px;
+        max-width: 450px;
+        margin-bottom: 10px;
+    }
+
+    .editable {
+        cursor: pointer;
+    }
+</style>
+
 <div class="aboutme">
 
 
+    <div>
+        About Me
+    </div>
+    <div contenteditable
+         class="aboutme-text"
+         ng-model="customerProfile.AboutMe"
+         ng-class="{ 'editable': customerProfile.IsLoggedInUsersProfile }"
+         iseditable="{{customerProfile.IsLoggedInUsersProfile}}"
+         ng-blur="updateCustomerProfile()"
+         placeholder="Click to edit"
+         title="Click to edit">
 
-    <div class="aboutme-text" contenteditable="@editable">
-        @Model.AboutMe        
+    </div>
+
+
+    <div>
+        Website
+    </div>
+    <div contenteditable
+         class="website-text"
+         ng-model="customerProfile.Website"
+         ng-class="{ 'editable': customerProfile.IsLoggedInUsersProfile }"
+         iseditable="{{customerProfile.IsLoggedInUsersProfile}}"
+         ng-blur="updateCustomerProfile()"
+         placeholder="Click to edit"
+         title="Click to edit">
+
     </div>
 
 

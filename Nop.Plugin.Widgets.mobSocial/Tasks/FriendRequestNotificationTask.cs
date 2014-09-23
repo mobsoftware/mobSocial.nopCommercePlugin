@@ -20,7 +20,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Tasks
         public void Execute()
         {
             //is plugin installed?
-            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName("mobSocial");
+            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName("Widgets.mobSocial");
             if (pluginDescriptor == null)
                 return;
 

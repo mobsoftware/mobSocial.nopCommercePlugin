@@ -108,7 +108,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [ChildActionOnly]
         public ActionResult SocialNetworkByMobSocial(string widgetZone)
         {
-            return Content("social network by mobSocial");
+            return Content("social network by <a href=\"http://mobSocial.codeplex.com\">mobSocial</a>");
         }
 
         
@@ -858,19 +858,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }*/
 
 
-        //TODO: Look into using this method below and angular as the single initilizer for the customer profile pages
-        public ActionResult GetCustomerProfile(int customerId)
-        {
-            
-            _customerProfileViewService.IncrementViewCount(customerId);
-
-            var customerProfile = new
-            {
-                Views = _customerProfileViewService.GetViewCount(customerId)
-            };
-
-            return Json(customerProfile);
-        }
+       
 
 
         [HttpPost]

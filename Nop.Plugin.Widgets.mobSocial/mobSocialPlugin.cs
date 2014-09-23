@@ -20,25 +20,25 @@ namespace Nop.Plugin.Widgets.MobSocial
 
     {
         private readonly MobSocialObjectContext _context;
-        private readonly mobSocialSettings _socialNetworkSettings;
+        private readonly mobSocialSettings _mobSocialSettings;
         private readonly ISettingService _settingService;
         private readonly IMessageTemplateService _messageTemplateService;
         private readonly IScheduleTaskService _scheduleTaskService;
-        private readonly IMobSocialService _socialNetworkService;
+        private readonly IMobSocialService _mobSocialService;
         private readonly ILocalizationService _localizationService;
 
         public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings, 
             ISettingService settingService, IMessageTemplateService messageTemplateService, 
             IScheduleTaskService scheduleTaskService,
-            IMobSocialService socialNetworkService,
+            IMobSocialService mobSocialService,
             ILocalizationService localizationService)
         {
             _context = context;
-            _socialNetworkSettings = mobSocialSettings;
+            _mobSocialSettings = mobSocialSettings;
             _settingService = settingService;
             _messageTemplateService = messageTemplateService;
             _scheduleTaskService = scheduleTaskService;
-            _socialNetworkService = socialNetworkService;
+            _mobSocialService = mobSocialService;
             _localizationService = localizationService;
         }
 
@@ -47,12 +47,12 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public IList<string> GetWidgetZones()
         {
-            return !string.IsNullOrWhiteSpace(_socialNetworkSettings.WidgetZone)
+            return !string.IsNullOrWhiteSpace(_mobSocialSettings.WidgetZone)
                       ? new List<string>() { 
-                          _socialNetworkSettings.WidgetZone, 
+                          _mobSocialSettings.WidgetZone, 
                           "header_menu_after", 
                           "account_navigation_after", 
-                          "profile_page_info_userstats" 
+                          "profile_page_info_userdetails" 
                       } 
                       : new List<string>() { "after_header_links" };   
         }
@@ -66,7 +66,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
             actionName = "Configure";
-            controllerName = "SocialNetwork";
+            controllerName = "MobSocial";
             routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" }, { "area", null } };
         }
 
@@ -120,7 +120,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                     };
                     break;
                 }
-                case "profile_page_info_userstats": {
+                case "profile_page_info_userdetails":
+                    {
                      actionName = "PublicInfo";
                     controllerName = "CustomerProfile";
 
@@ -212,28 +213,13 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             InsertMessageTemplates();
-            
-            
+
+            //24 * 60 * 60
+            AddScheduledTask("Friend Request Notification Task", 60, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
            
 
 
-            var task = _scheduleTaskService.GetTaskByType("Nop.Plugin.Widgets.mobSocial.FriendNotificationTask, Nop.Plugin.Widgets.mobSocial");
-
-            if (task == null)
-            {
-                task = new ScheduleTask
-                {
-                    Name = "Friend Request Notification Task",
-                    //every 24 hours
-                    Seconds = 24 * 60 * 60,
-                    Type = "Nop.Plugin.Widgets.mobSocial.FriendNotificationTask, Nop.Plugin.Widgets.mobSocial",
-                    Enabled = false,
-                    StopOnError = false,
-                };
-
-                _scheduleTaskService.InsertTask(task);
-            }
-
+            
 
 
             _context.Install();
@@ -258,7 +244,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.DeletePluginLocaleResource("SearchDropdown.PeopleSearchText");
             // do not remove core locales
 
-
+            RemoveScheduledTask("Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
 
             //settings
             _settingService.DeleteSetting<mobSocialSettings>();
@@ -273,8 +259,44 @@ namespace Nop.Plugin.Widgets.MobSocial
         #region Tasks
         public void SendFriendRequestNotifications()
         {
-            _socialNetworkService.SendFriendRequestNotifications();
+            _mobSocialService.SendFriendRequestNotifications();
         }
+
+
+
+
+        public void AddScheduledTask(string name, int seconds, bool enabled, bool stopOnError, string type)
+        {
+            var task = _scheduleTaskService.GetTaskByType(type);
+
+            if (task == null)
+            {
+                task = new ScheduleTask
+                {
+                    Name = name,
+                    Seconds = seconds,
+                    Type = type,
+                    Enabled = enabled,
+                    StopOnError = stopOnError,
+                };
+
+                _scheduleTaskService.InsertTask(task);
+            }
+
+        }
+
+
+        public void RemoveScheduledTask(string type)
+        {
+            var task = _scheduleTaskService.GetTaskByType(type);
+
+            if (task != null)
+                _scheduleTaskService.DeleteTask(task);
+
+        }
+
+
+
         #endregion
 
         public bool Authenticate()
@@ -343,6 +365,24 @@ namespace Nop.Plugin.Widgets.MobSocial
                 };
 
             _messageTemplateService.InsertMessageTemplate(friendRequestNotification);
+
+
+            // Send periodic friend request reminders, but not too many that frustrate users - Bruce Leggett
+            var friendRequestReminderNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.FriendRequestNotificationReminder",
+                Subject = "You have pending friend requests at %Store.Name%",
+                Body = "You have friends waiting for you to confirm their requests!<br/><br/>" +
+                       "<a href=\"%Store.URL%\">Log in</a> to view and confirm your friend requests.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+
+            };
+
+            _messageTemplateService.InsertMessageTemplate(friendRequestReminderNotification);
+
+
 
 
             // Require user to login in order to view who and confirm the request - Bruce Leggett

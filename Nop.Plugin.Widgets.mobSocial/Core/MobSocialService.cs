@@ -30,6 +30,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private readonly IRepository<CustomerFriend> _customerFriendRepository;
         private readonly IRepository<TeamPage> _teamPageRepository;
         private readonly IRepository<CustomerAlbum> _customerAlbumRepository;
+        private readonly IStoreContext _storeContext;
+
 
 
         private ICacheManager _cacheManager;
@@ -72,7 +74,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             IRepository<GroupPageMember> groupPageMemberRepository, IRepository<CustomerFriend> customerFriendRepository,
             IRepository<TeamPage> teamPageRepository, IRepository<CustomerAlbum> customerAlbumRepository, ICacheManager cacheManager, IWorkContext workContext,
             IWorkflowMessageService workflowMessageService, ICustomerService customerService,
-            IMobSocialMessageService mobSocialMessageService)
+            IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext)
         {
 
             this._groupPageRepository = groupPageRepository;
@@ -88,7 +90,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _customerService = customerService;
             _mobSocialMessageService = mobSocialMessageService;
             _productService = productService;
-
+            _storeContext = storeContext;
 
            
 
@@ -217,6 +219,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return friends;
         }
 
+
+       
+
         public List<CustomerFriend> GetFriends(int customerId, int index, int count)
         {
 
@@ -255,10 +260,71 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             {
                 var customer = _customerService.GetCustomerById(friendRequest.CustomerId);
 
+                
+
                 _mobSocialMessageService.SendFriendRequestNotification(customer, 
-                    friendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, 0);
+                    friendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+
+
+                UpdateFriendRequestNotificationCounts(friendRequest.CustomerId);
+
+
             }
+
+
+            // Send a reminder a week later. Get friend requests that have had one notification sent last week
+            var weekUnconfirmedFriendRequests = _customerFriendRepository.Table
+                                                          .Where(x => x.Confirmed == false && x.NotificationCount == 1 && x.LastNotificationDate > DateTime.Now.AddDays(-7))
+                                                          .GroupBy(x => x.ToCustomerId)
+                                                          .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+                                                          .ToList();
+
+
+            foreach (var weekUnconfirmedFriendRequest in weekUnconfirmedFriendRequests)
+            {
+                var customer = _customerService.GetCustomerById(weekUnconfirmedFriendRequest.CustomerId);
+
+                _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
+                    weekUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+
+                UpdateFriendRequestNotificationCounts(weekUnconfirmedFriendRequest.CustomerId);
+
+            }
+
+
+            // Send pending friend request reminder monthly
+            var monthlyUnconfirmedFriendRequests = _customerFriendRepository.Table
+                                                          .Where(x => x.Confirmed == false && x.NotificationCount > 1 && x.LastNotificationDate > DateTime.Now.AddMonths(-x.NotificationCount-1))
+                                                          .GroupBy(x => x.ToCustomerId)
+                                                          .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+                                                          .ToList();
+
+
+            foreach (var monthlyUnconfirmedFriendRequest in monthlyUnconfirmedFriendRequests)
+            {
+                var customer = _customerService.GetCustomerById(monthlyUnconfirmedFriendRequest.CustomerId);
+
+                _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
+                    monthlyUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+
+                UpdateFriendRequestNotificationCounts(monthlyUnconfirmedFriendRequest.CustomerId);
+            }
+
+
+
         
+        }
+
+        private void UpdateFriendRequestNotificationCounts(int customerId)
+        {
+            var customerFriendRequests = _customerFriendRepository.Table.Where(x => x.Confirmed == false && x.ToCustomerId == customerId).ToList();
+
+            customerFriendRequests.ForEach(x => {
+                x.NotificationCount++;
+                x.LastNotificationDate = DateTime.Now;
+                _customerFriendRepository.Update(x);
+            });
+
         }
 
         public List<CustomerFriend> GetFriendRequests(int currentCustomerId)
