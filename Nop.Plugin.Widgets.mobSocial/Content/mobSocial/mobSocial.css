@@ -35,8 +35,9 @@
 }
 
 .send-pm-box {
-    height: 16px;
+    height: auto;
     vertical-align: middle;
+    padding: 3px;
 }
 
     .send-pm-box span { 

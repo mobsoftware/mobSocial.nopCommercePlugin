@@ -214,14 +214,9 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             InsertMessageTemplates();
 
-            //24 * 60 * 60
-            AddScheduledTask("Friend Request Notification Task", 60, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
+            int every24hrs = 24 * 60 * 60;
+            AddScheduledTask("Friend Request Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
            
-
-
-            
-
-
             _context.Install();
 
 
@@ -370,7 +365,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             // Send periodic friend request reminders, but not too many that frustrate users - Bruce Leggett
             var friendRequestReminderNotification = new MessageTemplate()
             {
-                Name = "MobSocial.FriendRequestNotificationReminder",
+                Name = "MobSocial.PendingFriendRequestNotification",
                 Subject = "You have pending friend requests at %Store.Name%",
                 Body = "You have friends waiting for you to confirm their requests!<br/><br/>" +
                        "<a href=\"%Store.URL%\">Log in</a> to view and confirm your friend requests.",

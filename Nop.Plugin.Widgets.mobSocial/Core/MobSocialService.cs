@@ -11,6 +11,8 @@ using Nop.Plugin.Widgets.MobSocial.Controllers;
 using Nop.Services.Catalog;
 using Nop.Services.Customers;
 using Nop.Services.Messages;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -99,19 +101,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         #endregion
 
 
-
-
         #region Methods
-
-
-
-
-
 
         public void SendFriendRequest(int fromCustomerId, int toCustomerId)
         {
-
-
             _customerFriendRepository.Insert(new CustomerFriend()
                 {
                     DateRequested   = DateTime.Now,
@@ -119,10 +112,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                     FromCustomerId = fromCustomerId,
                     ToCustomerId = toCustomerId,
                 });
-
-
-            
-
 
         }
 
@@ -251,91 +240,90 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         {
             // get friend requests that haven't had a notification sent
             var friendRequests = _customerFriendRepository.Table
-                                                          .Where(x => x.Confirmed == false && x.NotificationCount == 0)
-                                                          .GroupBy(x=>x.ToCustomerId)
-                                                          .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
-                                                          .ToList();
+                                    .Where(x => x.Confirmed == false && x.NotificationCount == 0)
+                                    .GroupBy(x=>x.ToCustomerId)
+                                    .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+                                    .ToList();
 
             foreach (var friendRequest in friendRequests)
             {
                 var customer = _customerService.GetCustomerById(friendRequest.CustomerId);
 
-                
+                if (customer == null)
+                    continue;
 
-                _mobSocialMessageService.SendFriendRequestNotification(customer, 
-                    friendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-
-
+                _mobSocialMessageService.SendFriendRequestNotification(customer, friendRequest.FriendRequestCount, 
+                    _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
                 UpdateFriendRequestNotificationCounts(friendRequest.CustomerId);
-
-
             }
 
 
-            // Send a reminder a week later. Get friend requests that have had one notification sent last week
+            // Send a reminder a week later. Get friend requests that have had one notification since last week
             var weekUnconfirmedFriendRequests = _customerFriendRepository.Table
-                                                          .Where(x => x.Confirmed == false && x.NotificationCount == 1 && x.LastNotificationDate > DateTime.Now.AddDays(-7))
-                                                          .GroupBy(x => x.ToCustomerId)
-                                                          .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
-                                                          .ToList();
+                                                    .Where(x => x.Confirmed == false && x.NotificationCount == 1)
+                                                    .Where(x => DbFunctions.AddDays(x.LastNotificationDate, 7) < DateTime.Now)
+                                                    .GroupBy(x => x.ToCustomerId)
+                                                    .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+                                                    .ToList();
 
 
             foreach (var weekUnconfirmedFriendRequest in weekUnconfirmedFriendRequests)
             {
                 var customer = _customerService.GetCustomerById(weekUnconfirmedFriendRequest.CustomerId);
-
                 _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
                     weekUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-
                 UpdateFriendRequestNotificationCounts(weekUnconfirmedFriendRequest.CustomerId);
-
             }
 
 
-            // Send pending friend request reminder monthly
+            // Send pending friend request reminder each month
             var monthlyUnconfirmedFriendRequests = _customerFriendRepository.Table
-                                                          .Where(x => x.Confirmed == false && x.NotificationCount > 1 && x.LastNotificationDate > DateTime.Now.AddMonths(-x.NotificationCount-1))
-                                                          .GroupBy(x => x.ToCustomerId)
-                                                          .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
-                                                          .ToList();
+                    .Where(x => x.Confirmed == false && x.NotificationCount > 1)
+                    .Where(x => DbFunctions.AddMonths(x.LastNotificationDate, 1) < DateTime.Now)
+                    .GroupBy(x => x.ToCustomerId)
+                    .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+                    .ToList();
 
 
             foreach (var monthlyUnconfirmedFriendRequest in monthlyUnconfirmedFriendRequests)
             {
                 var customer = _customerService.GetCustomerById(monthlyUnconfirmedFriendRequest.CustomerId);
-
                 _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
                     monthlyUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-
                 UpdateFriendRequestNotificationCounts(monthlyUnconfirmedFriendRequest.CustomerId);
             }
 
-
+        }
 
         
-        }
-
-        private void UpdateFriendRequestNotificationCounts(int customerId)
-        {
-            var customerFriendRequests = _customerFriendRepository.Table.Where(x => x.Confirmed == false && x.ToCustomerId == customerId).ToList();
-
-            customerFriendRequests.ForEach(x => {
-                x.NotificationCount++;
-                x.LastNotificationDate = DateTime.Now;
-                _customerFriendRepository.Update(x);
-            });
-
-        }
 
         public List<CustomerFriend> GetFriendRequests(int currentCustomerId)
         {
 
             var me = currentCustomerId;
             return _customerFriendRepository.Table
-                                    .Where(x => (x.ToCustomerId == me) && !x.Confirmed).ToList();
+                .Where(x => (x.ToCustomerId == me) && !x.Confirmed).ToList();
                
         }
         
+        #endregion
+
+
+        #region Helper Methods
+        private void UpdateFriendRequestNotificationCounts(int customerId)
+        {
+            var customerFriendRequests = _customerFriendRepository.Table
+                .Where(x => x.Confirmed == false && x.ToCustomerId == customerId)
+                .ToList();
+
+            customerFriendRequests.ForEach(x =>
+            {
+                x.NotificationCount++;
+                x.LastNotificationDate = DateTime.Now;
+                _customerFriendRepository.Update(x);
+            });
+
+        }
         #endregion
 
     }
