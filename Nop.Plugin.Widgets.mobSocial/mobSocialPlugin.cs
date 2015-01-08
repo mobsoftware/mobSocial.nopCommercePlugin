@@ -396,6 +396,23 @@ namespace Nop.Plugin.Widgets.MobSocial
             _messageTemplateService.InsertMessageTemplate(eventInvitationNotification);
 
 
+
+
+            var productReviewNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.ProductReviewNotification",
+                Subject = "How do you like your products?",
+                Body = "We see that you've had your products for a while now. Click on the products below and let other skaters know what you think?<br/><br/>" +
+                       "%ProductLinks%",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+
+            };
+
+            _messageTemplateService.InsertMessageTemplate(productReviewNotification);
+
+
         }
 
 

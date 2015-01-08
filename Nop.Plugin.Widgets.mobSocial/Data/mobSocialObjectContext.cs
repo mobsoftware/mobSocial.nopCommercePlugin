@@ -46,6 +46,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new PictureTagMap());
 
             modelBuilder.Configurations.Add(new CustomerProfileMap());
+
+            modelBuilder.Configurations.Add(new NotificationMap());
             
 
 
@@ -98,6 +100,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                     "IF OBJECT_ID('SkateMove', 'U') IS NOT NULL DROP TABLE SkateMove; " +
                     "IF OBJECT_ID('CustomerFriend', 'U') IS NOT NULL DROP TABLE CustomerFriend; " +
                     "IF OBJECT_ID('PictureTag', 'U') IS NOT NULL DROP TABLE PictureTag; " +
+                    "IF OBJECT_ID('Notification', 'U') IS NOT NULL DROP TABLE Notification; " +
                     "IF OBJECT_ID('CustomerProfileView', 'U') IS NOT NULL DROP TABLE CustomerProfileView; ";
 
 

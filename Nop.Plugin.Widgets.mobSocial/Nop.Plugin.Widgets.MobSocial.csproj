@@ -41,9 +41,11 @@
     <Compile Include="Core\CustomerTimelineService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Data\CustomerProfileMap.cs" />
+    <Compile Include="Data\NotificationMap.cs" />
     <Compile Include="Data\PictureTagMap.cs" />
     <Compile Include="Data\CustomerTimelineMap.cs" />
     <Compile Include="Domain\CustomerProfile.cs" />
+    <Compile Include="Domain\Notification.cs" />
     <Compile Include="Domain\PictureTag.cs" />
     <Compile Include="Domain\CustomerTimeline.cs" />
     <Compile Include="Models\Admin\EventPageListModel.cs" />

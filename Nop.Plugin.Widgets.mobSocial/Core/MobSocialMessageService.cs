@@ -16,6 +16,9 @@ using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Stores;
 using Mob.Core;
+using Nop.Core.Domain.Orders;
+using Nop.Services.Orders;
+using Nop.Core.Domain.Shipping;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -53,7 +56,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private readonly IEmailAccountService _emailAccountService;
         private readonly EmailAccountSettings _emailAccountSettings;
         private readonly IWorkflowMessageService _workflowMessageService;
-        private IProductService _productService;
+        private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
 
         #endregion
 
@@ -69,6 +73,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                                            IStoreContext storeContext, ICustomerService customerService,
                                            IEventPublisher eventPublisher,
                                            ITokenizer tokenizer, IQueuedEmailService queuedEmailService,
+                                           IOrderService orderService, IProductService productService,
                                            IEmailAccountService emailAccountService,
                                            EmailAccountSettings emailAccountSettings)
         {
@@ -81,6 +86,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _customerService = customerService;
             _eventPublisher = eventPublisher;
             _tokenizer = tokenizer;
+            _productService = productService;
+            _orderService = orderService;
             _queuedEmailService = queuedEmailService;
             _emailAccountService = emailAccountService;
             _emailAccountSettings = emailAccountSettings;
@@ -193,6 +200,50 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
+
+
+        public int SendSubmitProductReviewNotification(Customer customer, Order order, int languageId, int storeId)
+        {
+
+            var customerProductReviews = _productService.GetAllProductReviews(customer.Id, null);
+            var customerOrderedItems = _orderService.GetAllOrderItems(null, customer.Id, null, null, OrderStatus.Complete, null, ShippingStatus.Delivered, false);
+            var customerProductReviewIds = customerProductReviews.Select(pr => pr.ProductId);
+            var customerItemsWithoutReview = customerOrderedItems.Where(oi => !customerProductReviewIds.Contains(oi.ProductId));
+
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.ProductReviewNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, customer);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = customer.Email;
+            var toName = customer.GetFullName().ToTitleCase();
+
+
+            var emailId = SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+
+
+
+
+
+            return emailId;
+        }
+
+
+
         #endregion
 
 
@@ -277,9 +328,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         #endregion
 
-      
+
     }
 }
 
     
+
 

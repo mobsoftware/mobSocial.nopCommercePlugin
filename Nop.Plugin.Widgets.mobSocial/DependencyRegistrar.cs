@@ -110,6 +110,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
             .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<Notification>>().As<IRepository<Notification>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
 
             // Service Injection
             builder.RegisterGeneric(typeof(BaseService<,>)).As(typeof(IBaseService<,>)).InstancePerLifetimeScope();
