@@ -54,6 +54,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private MessageTemplatesSettings _messageTemplateSettings;
         private CatalogSettings _catalogSettings;
         private IProductAttributeParser _productAttributeParser;
+        private INotificationService _notificationService;
 
         #endregion
 
@@ -89,7 +90,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             IRepository<TeamPage> teamPageRepository, IRepository<CustomerAlbum> customerAlbumRepository, ICacheManager cacheManager, IWorkContext workContext,
             IWorkflowMessageService workflowMessageService, ICustomerService customerService,
             IOrderService orderService, ILocalizationService localizationService, MessageTemplatesSettings messageTemplateSettings,
-            CatalogSettings catalogSettings, IProductAttributeParser productAttributeParser,
+            INotificationService notificationService, CatalogSettings catalogSettings, IProductAttributeParser productAttributeParser,
             IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext)
         {
 
@@ -112,9 +113,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _messageTemplateSettings = messageTemplateSettings;
             _catalogSettings = catalogSettings;
             _productAttributeParser = productAttributeParser;
-
-           
-
+            _notificationService = notificationService;
         }
 
         #endregion
@@ -314,18 +313,28 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             var customerOrders = orders
                 .GroupBy(o => o.CustomerId)
-                .Select((ordrs, customerId) => new { CustomerId = customerId, Orders = ordrs })
+                .Select((ordrs, customerId) => new { Customer = ordrs.First().Customer, Orders = ordrs.ToList() })
                 .ToList();
 
             
 
-            if(true)
+            foreach(var customerAndOrders in customerOrders)
             {
+                var customer = customerAndOrders.Customer;
+                var customerDistinctProducts = customerAndOrders.Orders.SelectMany(o => o.OrderItems.Select(oi => oi.Product).Distinct());
+                var customerDistinctProductIds = customerDistinctProducts.Select(p => p.Id).ToList();
+
+                var productReviewNotifications = _notificationService.GetProductReviewNotifications(customer.Id, customerDistinctProductIds);
+                var productReviewNotificationsProductIds = productReviewNotifications.Select(prv => prv.ProductId);
+
+                var unsentProductIds = customerDistinctProductIds.Except(productReviewNotificationsProductIds);
+
+                // Send one notificaiton for all products that have not had a review written by the customer; sending one notification per product would frustrate customers.
+                var unreviewedProducts = _productService.GetProductsByIds(unsentProductIds.ToArray()).ToList();
+
+                SendProductReviewNotification(customer, unreviewedProducts);
 
             }
-
-            //orders.ElementAt(0).Customer.Email
-
 
             //    _mobSocialMessageService.SendPendingFriendRequestNotification
 
@@ -483,6 +492,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             result = sb.ToString();
             return result;
         }
+
+
+        private void SendProductReviewNotification(Customer customer, List<Product> products)
+        {
+
+        }
+
+
         #endregion
 
     }

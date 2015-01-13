@@ -185,27 +185,10 @@ namespace Nop.Plugin.Widgets.MobSocial
                     AvatarPictureSize = 200
                 };
 
+
+
+            AddLocaleResourceStrings();
             
-            this.AddOrUpdatePluginLocaleResource("MobSocial.MessageButtonText", "Send Message");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.AddFriendButtonText", "Add Friend");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendsLabelText", "Friends");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendRequestSentLabel", "Friend Request Sent!");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmFriendButtonText", "Confirm");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmedButtonText", "Confirmed!");
-            this.AddOrUpdatePluginLocaleResource("SearchDropdown.PeopleSearchText", "People");
-            this.AddOrUpdatePluginLocaleResource("SearchDropdown.EventPageSearchText", "Events");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.Text", "Social Network");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage", "Manage Team Pages");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage", "Manage Event Pages");
-            this.AddOrUpdatePluginLocaleResource("Admin.EventPage.BackToList", "Back to list");
-
-
-            // Update core locales. do not remove core locales during uninstall
-            this.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}"); 
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar", "Profile Picture");
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar.MaximumUploadedFileSize", "Maximum profile picture size is {0} bytes");
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar.RemoveAvatar", "Remove Profile Picture");
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar.UploadRules", "Profile Picture must be in GIF or JPEG format with the maximum size of 20 KB");
 
 
             _settingService.SaveSetting(mediaSettings);
@@ -214,18 +197,19 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             InsertMessageTemplates();
 
-            int every24hrs = 24 * 60 * 60;
-            AddScheduledTask("Friend Request Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
+            AddScheduledTasks();
+
            
+
             _context.Install();
-
-
 
             base.Install();
 
+        }
+
+        
 
        
-        }
 
        
         public override void Uninstall()
@@ -263,38 +247,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         }
 
 
-
-
-        public void AddScheduledTask(string name, int seconds, bool enabled, bool stopOnError, string type)
-        {
-            var task = _scheduleTaskService.GetTaskByType(type);
-
-            if (task == null)
-            {
-                task = new ScheduleTask
-                {
-                    Name = name,
-                    Seconds = seconds,
-                    Type = type,
-                    Enabled = enabled,
-                    StopOnError = stopOnError,
-                };
-
-                _scheduleTaskService.InsertTask(task);
-            }
-
-        }
-
-
-        public void RemoveScheduledTask(string type)
-        {
-            var task = _scheduleTaskService.GetTaskByType(type);
-
-            if (task != null)
-                _scheduleTaskService.DeleteTask(task);
-
-        }
-
+       
 
 
         #endregion
@@ -349,21 +302,87 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
 
-        private void InsertMessageTemplates()
+        #region Helper Methods
+        private void AddScheduledTasks()
         {
-            // Require user to login in order to view who and confirm the request - Bruce Leggett
-            var friendRequestNotification = new MessageTemplate()
-                {
-                    Name = "MobSocial.FriendRequestNotification",
-                    Subject = "You have a new friend request at %Store.Name%",
-                    Body = "You have a new friend request!<br/><br/>" +
-                           "<a href=\"%Store.URL%\">Log in</a> to view and confirm your friend request.",
-                    EmailAccountId = 1,
-                    IsActive = true,
-                    LimitedToStores = false
+            int every24hrs = 24 * 60 * 60;
+            AddScheduledTask("Friend Request Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
+            AddScheduledTask("Product Review Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.ProductReviewNotificationTask, Nop.Plugin.Widgets.MobSocial");
 
+        }
+
+
+        private void AddScheduledTask(string name, int seconds, bool enabled, bool stopOnError, string type)
+        {
+            var task = _scheduleTaskService.GetTaskByType(type);
+
+            if (task == null)
+            {
+                task = new ScheduleTask
+                {
+                    Name = name,
+                    Seconds = seconds,
+                    Type = type,
+                    Enabled = enabled,
+                    StopOnError = stopOnError,
                 };
 
+                _scheduleTaskService.InsertTask(task);
+            }
+
+        }
+
+
+        private void RemoveScheduledTask(string type)
+        {
+            var task = _scheduleTaskService.GetTaskByType(type);
+
+            if (task != null)
+                _scheduleTaskService.DeleteTask(task);
+
+        }
+
+
+
+        private void AddLocaleResourceStrings()
+        {
+            this.AddOrUpdatePluginLocaleResource("MobSocial.MessageButtonText", "Send Message");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.AddFriendButtonText", "Add Friend");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendsLabelText", "Friends");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendRequestSentLabel", "Friend Request Sent!");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmFriendButtonText", "Confirm");
+            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmedButtonText", "Confirmed!");
+            this.AddOrUpdatePluginLocaleResource("SearchDropdown.PeopleSearchText", "People");
+            this.AddOrUpdatePluginLocaleResource("SearchDropdown.EventPageSearchText", "Events");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.Text", "Social Network");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage", "Manage Team Pages");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage", "Manage Event Pages");
+            this.AddOrUpdatePluginLocaleResource("Admin.EventPage.BackToList", "Back to list");
+
+
+            // Update core locales. do not remove core locales during uninstall
+            this.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}");
+            this.AddOrUpdatePluginLocaleResource("Account.Avatar", "Profile Picture");
+            this.AddOrUpdatePluginLocaleResource("Account.Avatar.MaximumUploadedFileSize", "Maximum profile picture size is {0} bytes");
+            this.AddOrUpdatePluginLocaleResource("Account.Avatar.RemoveAvatar", "Remove Profile Picture");
+            this.AddOrUpdatePluginLocaleResource("Account.Avatar.UploadRules", "Profile Picture must be in GIF or JPEG format with the maximum size of 20 KB");
+
+        }
+
+        private void InsertMessageTemplates()
+        {
+            // Require user to login in order to view who and confirm the requests. Curiousity will drive traffic back to the site. - Bruce Leggett
+            var friendRequestNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.FriendRequestNotification",
+                Subject = "You have a new friend request at %Store.Name%",
+                Body = "You have a new friend request!<br/><br/>" +
+                       "<a href=\"%Store.URL%\">Log in</a> to view and confirm your friend request.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+
+            };
             _messageTemplateService.InsertMessageTemplate(friendRequestNotification);
 
 
@@ -379,13 +398,9 @@ namespace Nop.Plugin.Widgets.MobSocial
                 LimitedToStores = false
 
             };
-
             _messageTemplateService.InsertMessageTemplate(friendRequestReminderNotification);
 
-
-
-
-            // Require user to login in order to view who and confirm the request - Bruce Leggett
+            // Require user to login in order to view what event - Bruce Leggett
             var eventInvitationNotification = new MessageTemplate()
             {
                 Name = "MobSocial.EventInvitationNotification",
@@ -397,12 +412,9 @@ namespace Nop.Plugin.Widgets.MobSocial
                 LimitedToStores = false
 
             };
-
             _messageTemplateService.InsertMessageTemplate(eventInvitationNotification);
 
-
-
-
+            
             var productReviewNotification = new MessageTemplate()
             {
                 Name = "MobSocial.ProductReviewNotification",
@@ -414,13 +426,9 @@ namespace Nop.Plugin.Widgets.MobSocial
                 LimitedToStores = false
 
             };
-
             _messageTemplateService.InsertMessageTemplate(productReviewNotification);
-
-
         }
 
-
-
+        #endregion
     }
 }

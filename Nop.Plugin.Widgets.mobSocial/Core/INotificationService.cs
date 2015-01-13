@@ -9,7 +9,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     /// <summary>
     /// Notification service
     /// </summary>
-    public interface INotificationService
+    public interface INotificationService : IBaseService<Notification, Notification>
     {
 
         int GetFriendRequestCount(int currentCustomerId);
@@ -17,6 +17,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         void SendFriendRequestNotifications();
 
         void SendProductReviewNotifications();
+
+
+        List<Notification> GetProductReviewNotifications(int customerId, List<int> productIds);
 
 
     }

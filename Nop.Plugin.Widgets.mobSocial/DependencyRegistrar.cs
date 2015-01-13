@@ -128,7 +128,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>().InstancePerRequest();
             builder.RegisterType<CustomerTimelineService>().As<CustomerTimelineService>().InstancePerRequest();
             builder.RegisterType<CustomerProfileService>().As<CustomerProfileService>().InstancePerRequest();
-            
+            builder.RegisterType<NotificationService>().As<INotificationService>().InstancePerRequest();
             
             // Override any NopCommerce Services below:
             builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();

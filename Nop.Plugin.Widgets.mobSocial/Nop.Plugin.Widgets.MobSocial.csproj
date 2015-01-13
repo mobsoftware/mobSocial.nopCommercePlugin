@@ -39,6 +39,7 @@
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
+    <Compile Include="Core\NotificationService.cs" />
     <Compile Include="Core\INotificationService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Data\CustomerProfileMap.cs" />

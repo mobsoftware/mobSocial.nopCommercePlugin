@@ -4,6 +4,11 @@ using Nop.Services.Tasks;
 
 namespace Nop.Plugin.Widgets.MobSocial.Tasks
 {
+    /// <summary>
+    /// Sends product review notifications after a product has been delivered. 
+    /// When a customer writes a product review, it increases the value of the site to the community and also provides another opportunity
+    /// to get repeat business.
+    /// </summary>
     public class ProductReviewNotificationTask : ITask
     {
 
