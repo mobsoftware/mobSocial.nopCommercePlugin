@@ -75,6 +75,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                                            ITokenizer tokenizer, IQueuedEmailService queuedEmailService,
                                            IOrderService orderService, IProductService productService,
                                            IEmailAccountService emailAccountService,
+                                           INotificationService notificationService,
                                            EmailAccountSettings emailAccountSettings)
         {
             _workContext = workContext;
@@ -202,45 +203,55 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-        public int SendSubmitProductReviewNotification(Customer customer, Order order, int languageId, int storeId)
-        {
+        //public int SendSubmitProductReviewNotification(Customer customer, int languageId, int storeId)
+        //{
 
-            var customerProductReviews = _productService.GetAllProductReviews(customer.Id, null);
-            var customerOrderedItems = _orderService.GetAllOrderItems(null, customer.Id, null, null, OrderStatus.Complete, null, ShippingStatus.Delivered, false);
-            var customerProductReviewIds = customerProductReviews.Select(pr => pr.ProductId);
-            var customerItemsWithoutReview = customerOrderedItems.Where(oi => !customerProductReviewIds.Contains(oi.ProductId));
-
-            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
-
-            languageId = EnsureLanguageIsActive(languageId, store.Id);
-
-            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.ProductReviewNotification", store.Id);
-            if (messageTemplate == null)
-                return 0;
-
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-            _messageTokenProvider.AddCustomerTokens(tokens, customer);
-
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+        //    var customerProductReviews = _productService.GetAllProductReviews(customer.Id, null);
+        //    var customerOrderedItems = _orderService.GetAllOrderItems(null, customer.Id, null, null, OrderStatus.Complete, null, ShippingStatus.Delivered, false);
+        //    var customerProductReviewIds = customerProductReviews.Select(pr => pr.ProductId);
+        //    var customerItemsWithoutReview = customerOrderedItems.Where(oi => !customerProductReviewIds.Contains(oi.ProductId));
 
 
-            var toEmail = customer.Email;
-            var toName = customer.GetFullName().ToTitleCase();
-
-
-            var emailId = SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        //    var customerProductReviewNotifications = _notificationService.GetProductReviewNotifications(customer.Id);
 
 
 
 
+        //    var productsWithoutReviewNotifications =  customerProductReviewNotifications
 
-            return emailId;
-        }
+
+
+        //    var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+        //    languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+        //    var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.ProductReviewNotification", store.Id);
+        //    if (messageTemplate == null)
+        //        return 0;
+
+        //    var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+        //    //tokens
+        //    var tokens = new List<Token>();
+        //    _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+        //    _messageTokenProvider.AddCustomerTokens(tokens, customer);
+
+        //    //event notification
+        //    _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+        //    var toEmail = customer.Email;
+        //    var toName = customer.GetFullName().ToTitleCase();
+
+
+        //    var emailId = SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+
+
+
+
+
+        //    return emailId;
+        //}
 
 
 

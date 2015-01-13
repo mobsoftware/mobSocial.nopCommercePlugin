@@ -257,6 +257,11 @@ namespace Nop.Plugin.Widgets.MobSocial
             _mobSocialService.SendFriendRequestNotifications();
         }
 
+        public void SendProductReviewNotifications()
+        {
+            _mobSocialService.SendProductReviewNotifications();
+        }
+
 
 
 

@@ -13,6 +13,13 @@ using Nop.Services.Customers;
 using Nop.Services.Messages;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity;
+using Nop.Services.Orders;
+using Nop.Core.Domain.Orders;
+using Nop.Core.Domain.Shipping;
+using System.Text;
+using Nop.Services.Localization;
+using Nop.Core.Domain.Messages;
+using System.Web;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -42,6 +49,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private readonly ICustomerService _customerService;
         private readonly IMobSocialMessageService _mobSocialMessageService;
         private IProductService _productService;
+        private IOrderService _orderService;
+        private ILocalizationService _localizationService;
+        private MessageTemplatesSettings _messageTemplateSettings;
+        private CatalogSettings _catalogSettings;
+        private IProductAttributeParser _productAttributeParser;
 
         #endregion
 
@@ -76,6 +88,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             IRepository<GroupPageMember> groupPageMemberRepository, IRepository<CustomerFriend> customerFriendRepository,
             IRepository<TeamPage> teamPageRepository, IRepository<CustomerAlbum> customerAlbumRepository, ICacheManager cacheManager, IWorkContext workContext,
             IWorkflowMessageService workflowMessageService, ICustomerService customerService,
+            IOrderService orderService, ILocalizationService localizationService, MessageTemplatesSettings messageTemplateSettings,
+            CatalogSettings catalogSettings, IProductAttributeParser productAttributeParser,
             IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext)
         {
 
@@ -93,6 +107,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _mobSocialMessageService = mobSocialMessageService;
             _productService = productService;
             _storeContext = storeContext;
+            _orderService = orderService;
+            _localizationService = localizationService;
+            _messageTemplateSettings = messageTemplateSettings;
+            _catalogSettings = catalogSettings;
+            _productAttributeParser = productAttributeParser;
 
            
 
@@ -167,7 +186,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _groupPageRepository.Insert(groupPage);
         }
 
-        
         public FriendStatus GetFriendRequestStatus(int currentCustomerId, int friendCustomerId)
         {
 
@@ -208,9 +226,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return friends;
         }
 
-
-       
-
         public List<CustomerFriend> GetFriends(int customerId, int index, int count)
         {
 
@@ -224,18 +239,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return friends;
         }
 
-       
-
-
-       
-
-
         public int GetFriendRequestCount(int currentCustomerId)
         {
             var me = currentCustomerId;
             return _customerFriendRepository.Table.Count(x => x.ToCustomerId == me && !x.Confirmed);
         }
 
+        //TODO: Make a NotificationService to centralize and encapsulate notification methods/logic
         public void SendFriendRequestNotifications()
         {
             // get friend requests that haven't had a notification sent
@@ -295,6 +305,90 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         }
 
+        public void SendProductReviewNotifications()
+        {
+
+            // Last five years of delivered orders
+            var orders = _orderService.SearchOrders(0, 0, 0, 0, 0, 0, DateTime.Now.AddYears(-5), null, OrderStatus.Complete, null, ShippingStatus.Delivered, null, null, 0);
+
+
+            var customerOrders = orders
+                .GroupBy(o => o.CustomerId)
+                .Select((ordrs, customerId) => new { CustomerId = customerId, Orders = ordrs })
+                .ToList();
+
+            
+
+            if(true)
+            {
+
+            }
+
+            //orders.ElementAt(0).Customer.Email
+
+
+            //    _mobSocialMessageService.SendPendingFriendRequestNotification
+
+
+
+
+            //// get friend requests that haven't had a notification sent
+            //var friendRequests = _customerFriendRepository.Table
+            //                        .Where(x => x.Confirmed == false && x.NotificationCount == 0)
+            //                        .GroupBy(x=>x.ToCustomerId)
+            //                        .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+            //                        .ToList();
+
+            //foreach (var friendRequest in friendRequests)
+            //{
+            //    var customer = _customerService.GetCustomerById(friendRequest.CustomerId);
+
+            //    if (customer == null)
+            //        continue;
+
+            //    _mobSocialMessageService.SendFriendRequestNotification(customer, friendRequest.FriendRequestCount, 
+            //        _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+            //    UpdateFriendRequestNotificationCounts(friendRequest.CustomerId);
+            //}
+
+
+            //// Send a reminder a week later. Get friend requests that have had one notification since last week
+            //var weekUnconfirmedFriendRequests = _customerFriendRepository.Table
+            //                                        .Where(x => x.Confirmed == false && x.NotificationCount == 1)
+            //                                        .Where(x => DbFunctions.AddDays(x.LastNotificationDate, 7) < DateTime.Now)
+            //                                        .GroupBy(x => x.ToCustomerId)
+            //                                        .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+            //                                        .ToList();
+
+
+            //foreach (var weekUnconfirmedFriendRequest in weekUnconfirmedFriendRequests)
+            //{
+            //    var customer = _customerService.GetCustomerById(weekUnconfirmedFriendRequest.CustomerId);
+            //    _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
+            //        weekUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+            //    UpdateFriendRequestNotificationCounts(weekUnconfirmedFriendRequest.CustomerId);
+            //}
+
+
+            //// Send pending friend request reminder each month
+            //var monthlyUnconfirmedFriendRequests = _customerFriendRepository.Table
+            //        .Where(x => x.Confirmed == false && x.NotificationCount > 1)
+            //        .Where(x => DbFunctions.AddMonths(x.LastNotificationDate, 1) < DateTime.Now)
+            //        .GroupBy(x => x.ToCustomerId)
+            //        .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
+            //        .ToList();
+
+
+            //foreach (var monthlyUnconfirmedFriendRequest in monthlyUnconfirmedFriendRequests)
+            //{
+            //    var customer = _customerService.GetCustomerById(monthlyUnconfirmedFriendRequest.CustomerId);
+            //    _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
+            //        monthlyUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+            //    UpdateFriendRequestNotificationCounts(monthlyUnconfirmedFriendRequest.CustomerId);
+            //}
+
+        }
+
         
 
         public List<CustomerFriend> GetFriendRequests(int currentCustomerId)
@@ -323,6 +417,71 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 _customerFriendRepository.Update(x);
             });
 
+        }
+
+
+        /// <summary>
+        /// Convert a collection to a HTML table
+        /// </summary>
+        /// <param name="shipment">Shipment</param>
+        /// <param name="languageId">Language identifier</param>
+        /// <returns>HTML table of products</returns>
+        protected virtual string ProductListToHtmlTable(List<OrderItem> orderItems, int languageId)
+        {
+            var result = "";
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<table border=\"0\" style=\"width:100%;\">");
+
+            #region Products
+            sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:center;\">", _messageTemplateSettings.Color1));
+            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
+            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Quantity", languageId)));
+            sb.AppendLine("</tr>");
+
+            var table = orderItems.ToList();
+            for (int i = 0; i <= table.Count - 1; i++)
+            {
+                var orderItem = table[i];
+                if (orderItem == null)
+                    continue;
+
+                var product = orderItem.Product;
+                if (product == null)
+                    continue;
+
+                sb.AppendLine(string.Format("<tr style=\"background-color: {0};text-align: center;\">", _messageTemplateSettings.Color2));
+                //product name
+                string productName = product.GetLocalized(x => x.Name, languageId);
+
+                sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
+                //attributes
+                if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
+                {
+                    sb.AppendLine("<br />");
+                    sb.AppendLine(orderItem.AttributeDescription);
+                }
+                //sku
+                if (_catalogSettings.ShowProductSku)
+                {
+                    var sku = product.FormatSku(orderItem.AttributesXml, _productAttributeParser);
+                    if (!String.IsNullOrEmpty(sku))
+                    {
+                        sb.AppendLine("<br />");
+                        sb.AppendLine(string.Format(_localizationService.GetResource("Messages.Order.Product(s).SKU", languageId), HttpUtility.HtmlEncode(sku)));
+                    }
+                }
+                sb.AppendLine("</td>");
+
+                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: center;\">{0}</td>", orderItem.Quantity));
+
+                sb.AppendLine("</tr>");
+            }
+            #endregion
+
+            sb.AppendLine("</table>");
+            result = sb.ToString();
+            return result;
         }
         #endregion
 

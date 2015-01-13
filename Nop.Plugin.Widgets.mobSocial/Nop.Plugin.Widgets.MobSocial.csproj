@@ -39,6 +39,7 @@
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
+    <Compile Include="Core\INotificationService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Data\CustomerProfileMap.cs" />
     <Compile Include="Data\NotificationMap.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="mobSocialSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
+    <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
   </ItemGroup>
   <ItemGroup>
