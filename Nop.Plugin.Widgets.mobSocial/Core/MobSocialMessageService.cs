@@ -19,6 +19,8 @@ using Mob.Core;
 using Nop.Core.Domain.Orders;
 using Nop.Services.Orders;
 using Nop.Core.Domain.Shipping;
+using System.Text;
+using System.Web;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -58,6 +60,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
+        private ILocalizationService _localizationService;
+        private MessageTemplatesSettings _messageTemplateSettings;
+        private CatalogSettings _catalogSettings;
+        private IProductAttributeParser _productAttributeParser;
 
         #endregion
 
@@ -76,7 +82,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                                            IOrderService orderService, IProductService productService,
                                            IEmailAccountService emailAccountService,
                                            INotificationService notificationService,
-                                           EmailAccountSettings emailAccountSettings)
+                                           EmailAccountSettings emailAccountSettings,
+                                           ILocalizationService localizationService, 
+                                           MessageTemplatesSettings messageTemplateSettings,
+                                           CatalogSettings catalogSettings, 
+                                           IProductAttributeParser productAttributeParser
+            )
         {
             _workContext = workContext;
             _messageTemplateService = messageTemplateService;
@@ -92,6 +103,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _queuedEmailService = queuedEmailService;
             _emailAccountService = emailAccountService;
             _emailAccountSettings = emailAccountSettings;
+            _localizationService = localizationService;
+            _messageTemplateSettings = messageTemplateSettings;
+            _catalogSettings = catalogSettings;
+            _productAttributeParser = productAttributeParser;
         }
 
         #endregion
@@ -165,7 +180,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         }
 
-
         public int SendBirthdayNotification(Customer customer, int languageId, int storeId)
         {
             throw new NotImplementedException();
@@ -202,57 +216,38 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
 
+        public int SendProductReviewNotification(Customer customer, List<Product> unreviewedProducts, int languageId, int storeId)
+        {
 
-        //public int SendSubmitProductReviewNotification(Customer customer, int languageId, int storeId)
-        //{
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
 
-        //    var customerProductReviews = _productService.GetAllProductReviews(customer.Id, null);
-        //    var customerOrderedItems = _orderService.GetAllOrderItems(null, customer.Id, null, null, OrderStatus.Complete, null, ShippingStatus.Delivered, false);
-        //    var customerProductReviewIds = customerProductReviews.Select(pr => pr.ProductId);
-        //    var customerItemsWithoutReview = customerOrderedItems.Where(oi => !customerProductReviewIds.Contains(oi.ProductId));
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
 
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.ProductReviewNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
 
-        //    var customerProductReviewNotifications = _notificationService.GetProductReviewNotifications(customer.Id);
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
 
-
-
-
-        //    var productsWithoutReviewNotifications =  customerProductReviewNotifications
-
-
-
-        //    var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
-
-        //    languageId = EnsureLanguageIsActive(languageId, store.Id);
-
-        //    var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.ProductReviewNotification", store.Id);
-        //    if (messageTemplate == null)
-        //        return 0;
-
-        //    var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-        //    //tokens
-        //    var tokens = new List<Token>();
-        //    _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-        //    _messageTokenProvider.AddCustomerTokens(tokens, customer);
-
-        //    //event notification
-        //    _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+            //tokens
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, customer);
 
 
-        //    var toEmail = customer.Email;
-        //    var toName = customer.GetFullName().ToTitleCase();
+            var productUrls = ProductListToHtmlTable(unreviewedProducts, languageId, storeId);
 
+            tokens.Add(new Token("ProductUrls", productUrls));
 
-        //    var emailId = SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
 
+            var toEmail = customer.Email;
+            var toName = customer.GetFullName().ToTitleCase();
+            var emailId = SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
 
-
-
-
-        //    return emailId;
-        //}
-
+            return emailId;
+        }
 
 
         #endregion
@@ -335,6 +330,136 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return emailAccount;
 
         }
+
+
+
+
+
+        /// <summary>
+        /// Convert a collection to a HTML table
+        /// </summary>
+        /// <param name="shipment">Shipment</param>
+        /// <param name="languageId">Language identifier</param>
+        /// <returns>HTML table of products</returns>
+        protected virtual string ProductListToHtmlTable(List<Product> products,  int languageId, int storeId)
+        {
+            var result = "";
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<table border=\"0\" style=\"width:100%;\">");
+
+            #region Products
+            sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:left;\">", _messageTemplateSettings.Color1));
+            sb.AppendLine(string.Format("<th style=\"padding-left: 0.4em;\">{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
+            sb.AppendLine("</tr>");
+
+            foreach (var product in products)
+            {
+                sb.AppendLine(string.Format("<tr style=\"background-color: {0};text-align: center;\">", _messageTemplateSettings.Color2));
+                
+                //product name
+                string productName = product.GetLocalized(x => x.Name, languageId);
+                string productUrl = string.Format("{0}{1}", GetStoreUrl(storeId), product.GetSeName(languageId));
+
+                sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">");
+                sb.Append("<a href=\"" + productUrl + "\">" + HttpUtility.HtmlEncode(productName) + "</a>");
+
+                sb.AppendLine("</td>");
+
+
+                sb.AppendLine("</tr>");
+            }
+            #endregion
+
+            sb.AppendLine("</table>");
+            result = sb.ToString();
+            return result;
+        }
+
+
+        /// <summary>
+        /// Convert a collection to a HTML table
+        /// </summary>
+        /// <param name="shipment">Shipment</param>
+        /// <param name="languageId">Language identifier</param>
+        /// <returns>HTML table of products</returns>
+        protected virtual string ProductListToHtmlTable(List<OrderItem> orderItems, int languageId)
+        {
+            var result = "";
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<table border=\"0\" style=\"width:100%;\">");
+
+            #region Products
+            sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:center;\">", _messageTemplateSettings.Color1));
+            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
+            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Quantity", languageId)));
+            sb.AppendLine("</tr>");
+
+            var table = orderItems.ToList();
+            for (int i = 0; i <= table.Count - 1; i++)
+            {
+                var orderItem = table[i];
+                if (orderItem == null)
+                    continue;
+
+                var product = orderItem.Product;
+                if (product == null)
+                    continue;
+
+                sb.AppendLine(string.Format("<tr style=\"background-color: {0};text-align: center;\">", _messageTemplateSettings.Color2));
+                //product name
+                string productName = product.GetLocalized(x => x.Name, languageId);
+
+                sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
+                //attributes
+                if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
+                {
+                    sb.AppendLine("<br />");
+                    sb.AppendLine(orderItem.AttributeDescription);
+                }
+                //sku
+                if (_catalogSettings.ShowProductSku)
+                {
+                    var sku = product.FormatSku(orderItem.AttributesXml, _productAttributeParser);
+                    if (!String.IsNullOrEmpty(sku))
+                    {
+                        sb.AppendLine("<br />");
+                        sb.AppendLine(string.Format(_localizationService.GetResource("Messages.Order.Product(s).SKU", languageId), HttpUtility.HtmlEncode(sku)));
+                    }
+                }
+                sb.AppendLine("</td>");
+
+                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: center;\">{0}</td>", orderItem.Quantity));
+
+                sb.AppendLine("</tr>");
+            }
+            #endregion
+
+            sb.AppendLine("</table>");
+            result = sb.ToString();
+            return result;
+        }
+
+
+
+        /// <summary>
+        /// Get store URL
+        /// </summary>
+        /// <param name="storeId">Store identifier; Pass 0 to load URL of the current store</param>
+        /// <param name="useSsl">Use SSL</param>
+        /// <returns></returns>
+        private string GetStoreUrl(int storeId = 0, bool useSsl = false)
+        {
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            if (store == null)
+                throw new Exception("No store could be loaded");
+
+            return useSsl ? store.SecureUrl : store.Url;
+        }
+
+
 
 
         #endregion

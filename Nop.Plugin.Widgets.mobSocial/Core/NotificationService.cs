@@ -16,6 +16,7 @@ using System.Linq;
 using Nop.Services.Seo;
 using Nop.Core.Domain.Seo;
 using System.Collections.Generic;
+using Nop.Core.Domain.Customers;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
@@ -64,12 +65,59 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             throw new NotImplementedException();
         }
 
-        public List<Notification> GetProductReviewNotifications(int customerId, List<int> productIds)
+        public List<Notification> GetProductReviewNotifications(int customerId, List<int> productIds, DateTime fromDate)
         {
             return Repository.Table
                 .Where(x => x.CustomerId == customerId && productIds.Contains(x.ProductId))
+                .Where(x => x.LastSent <= fromDate)
                 .ToList();
         }
+
+
+        // TODO: Since all products are sent per customer then use only one record in the future.
+
+        /// <summary>
+        /// Inserts product review notifications for historical and regulation purposes
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <param name="unreviewedProducts"></param>
+        public void UpdateProductReviewNotifications(Customer customer, List<Product> unreviewedProducts)
+        {
+
+            foreach(var product in unreviewedProducts)
+            {
+                var notification = Repository.Table
+                    .FirstOrDefault(x => x.CustomerId == customer.Id && x.ProductId == product.Id);
+
+                if (notification != null)
+                {
+                    notification.Attempts += 1;
+                    notification.LastSent = DateTime.Now;
+
+                    Repository.Update(notification);
+                }
+                else
+                {
+                    var prNotification = new Notification()
+                    {
+                        Attempts = 1,
+                        CreatedOn = DateTime.Now,
+                        LastSent = DateTime.Now,
+                        CustomerId = customer.Id,
+                        Name = "ProductReviewNotification",
+                        ProductId = product.Id
+                    };
+
+                    Repository.Insert(prNotification);
+                }
+
+            }
+
+           
+        }
+
+
+
     }
 
 }

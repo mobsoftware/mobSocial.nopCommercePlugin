@@ -304,6 +304,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         }
 
+
+        //TODO: Too many moving parts for tasks and notifications move all the logic into the messageService and use of helper methods is fine
         public void SendProductReviewNotifications()
         {
 
@@ -324,78 +326,28 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 var customerDistinctProducts = customerAndOrders.Orders.SelectMany(o => o.OrderItems.Select(oi => oi.Product).Distinct());
                 var customerDistinctProductIds = customerDistinctProducts.Select(p => p.Id).ToList();
 
-                var productReviewNotifications = _notificationService.GetProductReviewNotifications(customer.Id, customerDistinctProductIds);
+
+                // send notification semi-annually (6 months) if customer has not written a review
+                var notificationFromDate = DateTime.Now.AddMonths(-6);
+                var productReviewNotifications = _notificationService.GetProductReviewNotifications(customer.Id, customerDistinctProductIds, notificationFromDate);
+
                 var productReviewNotificationsProductIds = productReviewNotifications.Select(prv => prv.ProductId);
 
                 var unsentProductIds = customerDistinctProductIds.Except(productReviewNotificationsProductIds);
 
+                if (unsentProductIds.Count() == 0)
+                    continue;
+
                 // Send one notificaiton for all products that have not had a review written by the customer; sending one notification per product would frustrate customers.
                 var unreviewedProducts = _productService.GetProductsByIds(unsentProductIds.ToArray()).ToList();
 
-                SendProductReviewNotification(customer, unreviewedProducts);
+                _mobSocialMessageService.SendProductReviewNotification(customer, unreviewedProducts, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+
+                _notificationService.UpdateProductReviewNotifications(customer, unreviewedProducts);
 
             }
 
-            //    _mobSocialMessageService.SendPendingFriendRequestNotification
-
-
-
-
-            //// get friend requests that haven't had a notification sent
-            //var friendRequests = _customerFriendRepository.Table
-            //                        .Where(x => x.Confirmed == false && x.NotificationCount == 0)
-            //                        .GroupBy(x=>x.ToCustomerId)
-            //                        .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
-            //                        .ToList();
-
-            //foreach (var friendRequest in friendRequests)
-            //{
-            //    var customer = _customerService.GetCustomerById(friendRequest.CustomerId);
-
-            //    if (customer == null)
-            //        continue;
-
-            //    _mobSocialMessageService.SendFriendRequestNotification(customer, friendRequest.FriendRequestCount, 
-            //        _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-            //    UpdateFriendRequestNotificationCounts(friendRequest.CustomerId);
-            //}
-
-
-            //// Send a reminder a week later. Get friend requests that have had one notification since last week
-            //var weekUnconfirmedFriendRequests = _customerFriendRepository.Table
-            //                                        .Where(x => x.Confirmed == false && x.NotificationCount == 1)
-            //                                        .Where(x => DbFunctions.AddDays(x.LastNotificationDate, 7) < DateTime.Now)
-            //                                        .GroupBy(x => x.ToCustomerId)
-            //                                        .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
-            //                                        .ToList();
-
-
-            //foreach (var weekUnconfirmedFriendRequest in weekUnconfirmedFriendRequests)
-            //{
-            //    var customer = _customerService.GetCustomerById(weekUnconfirmedFriendRequest.CustomerId);
-            //    _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
-            //        weekUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-            //    UpdateFriendRequestNotificationCounts(weekUnconfirmedFriendRequest.CustomerId);
-            //}
-
-
-            //// Send pending friend request reminder each month
-            //var monthlyUnconfirmedFriendRequests = _customerFriendRepository.Table
-            //        .Where(x => x.Confirmed == false && x.NotificationCount > 1)
-            //        .Where(x => DbFunctions.AddMonths(x.LastNotificationDate, 1) < DateTime.Now)
-            //        .GroupBy(x => x.ToCustomerId)
-            //        .Select(g => new { CustomerId = g.Key, FriendRequestCount = g.Count() })
-            //        .ToList();
-
-
-            //foreach (var monthlyUnconfirmedFriendRequest in monthlyUnconfirmedFriendRequests)
-            //{
-            //    var customer = _customerService.GetCustomerById(monthlyUnconfirmedFriendRequest.CustomerId);
-            //    _mobSocialMessageService.SendPendingFriendRequestNotification(customer,
-            //        monthlyUnconfirmedFriendRequest.FriendRequestCount, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-            //    UpdateFriendRequestNotificationCounts(monthlyUnconfirmedFriendRequest.CustomerId);
-            //}
-
+        
         }
 
         
@@ -429,70 +381,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-        /// <summary>
-        /// Convert a collection to a HTML table
-        /// </summary>
-        /// <param name="shipment">Shipment</param>
-        /// <param name="languageId">Language identifier</param>
-        /// <returns>HTML table of products</returns>
-        protected virtual string ProductListToHtmlTable(List<OrderItem> orderItems, int languageId)
-        {
-            var result = "";
-
-            var sb = new StringBuilder();
-            sb.AppendLine("<table border=\"0\" style=\"width:100%;\">");
-
-            #region Products
-            sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:center;\">", _messageTemplateSettings.Color1));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Quantity", languageId)));
-            sb.AppendLine("</tr>");
-
-            var table = orderItems.ToList();
-            for (int i = 0; i <= table.Count - 1; i++)
-            {
-                var orderItem = table[i];
-                if (orderItem == null)
-                    continue;
-
-                var product = orderItem.Product;
-                if (product == null)
-                    continue;
-
-                sb.AppendLine(string.Format("<tr style=\"background-color: {0};text-align: center;\">", _messageTemplateSettings.Color2));
-                //product name
-                string productName = product.GetLocalized(x => x.Name, languageId);
-
-                sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
-                //attributes
-                if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
-                {
-                    sb.AppendLine("<br />");
-                    sb.AppendLine(orderItem.AttributeDescription);
-                }
-                //sku
-                if (_catalogSettings.ShowProductSku)
-                {
-                    var sku = product.FormatSku(orderItem.AttributesXml, _productAttributeParser);
-                    if (!String.IsNullOrEmpty(sku))
-                    {
-                        sb.AppendLine("<br />");
-                        sb.AppendLine(string.Format(_localizationService.GetResource("Messages.Order.Product(s).SKU", languageId), HttpUtility.HtmlEncode(sku)));
-                    }
-                }
-                sb.AppendLine("</td>");
-
-                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: center;\">{0}</td>", orderItem.Quantity));
-
-                sb.AppendLine("</tr>");
-            }
-            #endregion
-
-            sb.AppendLine("</table>");
-            result = sb.ToString();
-            return result;
-        }
-
+      
 
         private void SendProductReviewNotification(Customer customer, List<Product> products)
         {
