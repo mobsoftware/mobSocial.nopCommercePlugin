@@ -312,13 +312,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             // Last five years of delivered orders
             var orders = _orderService.SearchOrders(0, 0, 0, 0, 0, 0, DateTime.Now.AddYears(-5), null, OrderStatus.Complete, null, ShippingStatus.Delivered, null, null, 0);
 
+            var fiveDaysAgo = DateTime.Now.AddDays(-5);
 
-            var customerOrders = orders
+            // Ensure the customer has had enough time to use the product (five days after delivery; most people are eager to try new products)
+            var usedOrders = orders.Where(x => x.Shipments.Any(y => y.DeliveryDateUtc <= fiveDaysAgo));
+
+            var customerOrders = usedOrders
                 .GroupBy(o => o.CustomerId)
                 .Select((ordrs, customerId) => new { Customer = ordrs.First().Customer, Orders = ordrs.ToList() })
                 .ToList();
-
-            
 
             foreach(var customerAndOrders in customerOrders)
             {
