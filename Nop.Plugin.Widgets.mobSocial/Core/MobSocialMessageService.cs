@@ -298,7 +298,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             //Replace subject and body tokens 
             var subjectReplaced = _tokenizer.Replace(subject, tokens, false);
-            var bodyReplaced = _tokenizer.Replace(body, tokens, true);
+            var bodyReplaced = _tokenizer.Replace(body, tokens, false);
 
             var email = new QueuedEmail()
             {
@@ -350,7 +350,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             #region Products
             sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:left;\">", _messageTemplateSettings.Color1));
-            sb.AppendLine(string.Format("<th style=\"padding-left: 0.4em;\">{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
+            sb.AppendLine(string.Format("<th style=\"padding-left: 0.4em;text-align:left;\">{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
             sb.AppendLine("</tr>");
 
             foreach (var product in products)

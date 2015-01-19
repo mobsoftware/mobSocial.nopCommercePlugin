@@ -418,8 +418,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             var productReviewNotification = new MessageTemplate()
             {
                 Name = "MobSocial.ProductReviewNotification",
-                Subject = "How do you like the product(s) you ordered?",
-                Body = "Hi %Customer.FirstName%,<br/><br/> What do you think about the product(s) you've ordered? Click on the products below and let us and others know what you think?<br/><br/>" +
+                Subject = "How do you like the products you ordered?",
+                Body = "Hi %Customer.FirstName%,<br/><br/> What do you think about the products you've ordered? What do you think about the products you've ordered? Click on the products below to write a review and let us and others know what you think?<br/><br/>" +
                        "%ProductUrls% <br/><br/>" +
                        "Thanks!<br/> %Store.Name% Team",
                 EmailAccountId = 1,

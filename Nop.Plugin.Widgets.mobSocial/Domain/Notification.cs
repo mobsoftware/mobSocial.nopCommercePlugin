@@ -19,8 +19,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public virtual DateTime CreatedOn { get; set; }
         public virtual DateTime LastSent { get; set; }
         public virtual int Attempts { get; set; }
-
-
     }
 
 }
