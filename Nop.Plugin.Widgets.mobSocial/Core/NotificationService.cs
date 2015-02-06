@@ -69,7 +69,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         {
             return Repository.Table
                 .Where(x => x.CustomerId == customerId && productIds.Contains(x.ProductId))
-                .Where(x => x.LastSent <= fromDate)
+                .Where(x => x.LastSent >= fromDate)
                 .ToList();
         }
 
