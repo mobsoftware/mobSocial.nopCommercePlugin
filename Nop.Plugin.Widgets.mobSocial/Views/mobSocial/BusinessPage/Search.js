@@ -1,0 +1,5 @@
+﻿$(function () {
+    $('#eventSearchButton').click(function () {
+
+    });
+});

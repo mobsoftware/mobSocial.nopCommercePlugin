@@ -124,6 +124,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<EventPageService>().As<IEventPageService>().InstancePerRequest();
             builder.RegisterType<EventPageAttendanceService>().As<IEventPageAttendanceService>().InstancePerRequest();
             builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
+            builder.RegisterType<BusinessPageService>().As<IBusinessPageService>().InstancePerRequest();
+            builder.RegisterType<BusinessPageCouponService>().As<IBusinessPageCouponService>().InstancePerRequest();
             builder.RegisterType<TeamPageService>().AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>().InstancePerRequest();
             builder.RegisterType<CustomerTimelineService>().As<CustomerTimelineService>().InstancePerRequest();

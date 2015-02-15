@@ -36,17 +36,30 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
+    <Compile Include="Controllers\BusinessPageController.cs" />
+    <Compile Include="Controllers\GenericRouteProvider.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
+    <Compile Include="Core\BusinessPageCouponService.cs" />
+    <Compile Include="Core\BusinessPageService.cs" />
+    <Compile Include="Core\IBusinessPageCouponService.cs" />
+    <Compile Include="Core\IBusinessPageService.cs" />
     <Compile Include="Core\NotificationService.cs" />
     <Compile Include="Core\INotificationService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Data\CustomerProfileMap.cs" />
+    <Compile Include="Data\BusinessPageCouponMap.cs" />
+    <Compile Include="Data\BusinessPageMap.cs" />
+    <Compile Include="Data\BusinessPagePictureMap.cs" />
     <Compile Include="Data\NotificationMap.cs" />
     <Compile Include="Data\PictureTagMap.cs" />
     <Compile Include="Data\CustomerTimelineMap.cs" />
+    <Compile Include="Domain\BusinessPageCoupon.cs" />
+    <Compile Include="Domain\BusinessPagePicture.cs" />
     <Compile Include="Domain\CustomerProfile.cs" />
+    <Compile Include="Domain\BusinessPage.cs" />
     <Compile Include="Domain\Notification.cs" />
     <Compile Include="Domain\PictureTag.cs" />
     <Compile Include="Domain\CustomerTimeline.cs" />
@@ -264,6 +277,9 @@
     </Content>
     <Content Include="Themes\mobSocial\Installation.txt" />
     <None Include="packages.config" />
+    <Content Include="Views\mobSocial\BusinessPage\Search.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\mobSocial\FacebookWebsiteApp\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -365,6 +381,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\AboutMe\PublicInfo.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\BusinessPage\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\BusinessPage\Search.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using Nop.Core;
 using Nop.Data;
+using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
@@ -20,6 +21,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new EventPagePictureMap());
             modelBuilder.Configurations.Add(new EventPageHotelMap());
             modelBuilder.Configurations.Add(new EventPageAttendanceMap());
+
+
+            modelBuilder.Configurations.Add(new BusinessPageMap());
+            modelBuilder.Configurations.Add(new BusinessPagePictureMap());
+            modelBuilder.Configurations.Add(new BusinessPageCouponMap());
+
 
             modelBuilder.Configurations.Add(new GroupPageMap());
             modelBuilder.Configurations.Add(new GroupPageMemberMap());
@@ -78,33 +85,34 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
                 // Remove Url Records
                 var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage'; ";
+                Database.ExecuteSqlCommand(dbScript);
 
                 // DROP Tables
-                dbScript = dbScript +
-                    "IF OBJECT_ID('EventPageAttendance', 'U') IS NOT NULL DROP TABLE EventPageAttendance; " +
-                    "IF OBJECT_ID('EventPagePicture', 'U') IS NOT NULL DROP TABLE EventPagePicture; " +
-                    "IF OBJECT_ID('EventPageHotel', 'U') IS NOT NULL DROP TABLE EventPageHotel; " +
-                    "IF OBJECT_ID('EventPage', 'U') IS NOT NULL DROP TABLE EventPage; " +
-                    "IF OBJECT_ID('GroupPageMember', 'U') IS NOT NULL DROP TABLE GroupPageMember; " +
-                    "IF OBJECT_ID('CustomerTimeline', 'U') IS NOT NULL DROP TABLE CustomerTimeline; " +
-                    //"IF OBJECT_ID('CustomerAlbumPictureLike', 'U') IS NOT NULL DROP TABLE CustomerAlbumPictureLike; " +
-                    "IF OBJECT_ID('CustomerProfile', 'U') IS NOT NULL DROP TABLE CustomerProfile; " +
-                    "IF OBJECT_ID('CustomerAlbumPicture', 'U') IS NOT NULL DROP TABLE CustomerAlbumPicture; " +
-                    "IF OBJECT_ID('CustomerAlbum', 'U') IS NOT NULL DROP TABLE CustomerAlbum; " +
-                    "IF OBJECT_ID('CustomerVideoLike', 'U') IS NOT NULL DROP TABLE CustomerVideoLike; " +
-                    "IF OBJECT_ID('CustomerVideo', 'U') IS NOT NULL DROP TABLE CustomerVideo; " +
-                    "IF OBJECT_ID('CustomerVideoAlbum', 'U') IS NOT NULL DROP TABLE CustomerVideoAlbum; " +
-                    "IF OBJECT_ID('GroupPage', 'U') IS NOT NULL DROP TABLE GroupPage; " +
-                    "IF OBJECT_ID('TeamPage', 'U') IS NOT NULL DROP TABLE TeamPage; " +
-                    "IF OBJECT_ID('CustomerSkateMove', 'U') IS NOT NULL DROP TABLE CustomerSkateMove; " +
-                    "IF OBJECT_ID('SkateMove', 'U') IS NOT NULL DROP TABLE SkateMove; " +
-                    "IF OBJECT_ID('CustomerFriend', 'U') IS NOT NULL DROP TABLE CustomerFriend; " +
-                    "IF OBJECT_ID('PictureTag', 'U') IS NOT NULL DROP TABLE PictureTag; " +
-                    "IF OBJECT_ID('Notification', 'U') IS NOT NULL DROP TABLE Notification; " +
-                    "IF OBJECT_ID('CustomerProfileView', 'U') IS NOT NULL DROP TABLE CustomerProfileView; ";
+                this.DropPluginTable<EventPageAttendance>();
+                this.DropPluginTable<EventPagePicture>();
+                this.DropPluginTable<EventPageHotel>();
+                this.DropPluginTable<BusinessPage>();
+                this.DropPluginTable<BusinessPageCoupon>();
+                this.DropPluginTable<BusinessPagePicture>();
+                this.DropPluginTable<EventPage>();
+                this.DropPluginTable<GroupPageMember>();
+                this.DropPluginTable<CustomerTimeline>();
+                //this.DropPluginTable"('CustomerAlbumPictureLike>();
+                this.DropPluginTable<CustomerProfile>();
+                this.DropPluginTable<CustomerAlbumPicture>();
+                this.DropPluginTable<CustomerAlbum>();
+                this.DropPluginTable<CustomerVideoLike>();
+                this.DropPluginTable<CustomerVideo>();
+                this.DropPluginTable<CustomerVideoAlbum>();
+                this.DropPluginTable<GroupPage>();
+                this.DropPluginTable<TeamPage>();
+                this.DropPluginTable<CustomerSkateMove>();
+                this.DropPluginTable<SkateMove>();
+                this.DropPluginTable<CustomerFriend>();
+                this.DropPluginTable<PictureTag>();
+                this.DropPluginTable<Notification>();
+                this.DropPluginTable<CustomerProfileView>();
 
-
-                Database.ExecuteSqlCommand(dbScript);
                 SaveChanges();
             }
             catch (Exception)
