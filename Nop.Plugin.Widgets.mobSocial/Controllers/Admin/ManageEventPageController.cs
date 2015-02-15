@@ -360,10 +360,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             var picturesModel = pictures
                 .Select(x =>
                 {
-                    return new EventPagePictureModel()
+                    return new PictureModel()
                     {
                         Id = x.Id,
-                        EventPageId = x.EventPageId,
+                        EntityId = x.EventPageId,
                         PictureId = x.PictureId,
                         PictureUrl = _pictureService.GetPictureUrl(x.PictureId),
                         DisplayOrder = x.DisplayOrder
@@ -381,7 +381,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult PictureUpdate(EventPagePictureModel model)
+        public ActionResult PictureUpdate(PictureModel model)
         {
             //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             //    return AccessDeniedView();

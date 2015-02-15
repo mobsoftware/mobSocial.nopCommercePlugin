@@ -39,7 +39,6 @@
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
-    <Compile Include="Controllers\GenericRouteProvider.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
     <Compile Include="Core\BusinessPageCouponService.cs" />
@@ -77,8 +76,12 @@
     <Compile Include="Data\EventPageAttendanceMap.cs" />
     <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
+    <Compile Include="Models\AddPictureModel.cs" />
+    <Compile Include="Models\BasePageModel.cs" />
+    <Compile Include="Models\BusinessPageCouponModel.cs" />
     <Compile Include="Models\CustomerProfileModel.cs" />
-    <Compile Include="Models\EventPagePictureModel.cs" />
+    <Compile Include="Models\BusinessPageModel.cs" />
+    <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Models\EventPageHotelModel.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
     <Compile Include="Controllers\HeaderMenuController.cs" />

@@ -1,6 +1,6 @@
 ﻿@using Nop.Plugin.Widgets.MobSocial.Models;
 
-@model EventPageModel
+@model BusinessPageModel
 
 @using Nop.Web.Framework.UI
 @{
@@ -23,6 +23,7 @@
 
 @section left {
 
+    Business Page
 
     <a href="@Model.FullSizeImageUrl" title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
         <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture" />

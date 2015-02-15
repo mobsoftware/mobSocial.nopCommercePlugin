@@ -4,12 +4,16 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
+
+
+
+
     public class BusinessPageMap : EntityTypeConfiguration<BusinessPage>
     {
 
         public BusinessPageMap()
         {
-            ToTable("BusinessPage");
+            ToTable(typeof(BusinessPage).Name);
 
             //Map the primary key
             HasKey(m => m.Id);

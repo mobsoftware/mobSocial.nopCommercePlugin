@@ -40,7 +40,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly ForumSettings _forumSettings;
         private readonly CustomerSettings _customerSettings;
         private readonly MediaSettings _mediaSettings;
-        private readonly IEventPageService _eventPageService;
+        private readonly IBusinessPageService _businessPageService;
         private readonly mobSocialSettings _mobSocialSettings;
         private readonly IEventPageAttendanceService _eventPageAttendanceService;
         private readonly IWorkContext _workContext;
@@ -52,7 +52,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IPictureService pictureService, ICountryService countryService,
             ICustomerService customerService, IDateTimeHelper dateTimeHelper,
             ForumSettings forumSettings, CustomerSettings customerSettings,
-            MediaSettings mediaSettings, IEventPageService eventPageService,
+            MediaSettings mediaSettings, IBusinessPageService businessPageService,
             mobSocialSettings mobSocialSettings, IEventPageAttendanceService eventPageAttendanceService,
             IMobSocialService mobSocialService, IWorkContext workContext)
         {
@@ -65,7 +65,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _forumSettings = forumSettings;
             _customerSettings = customerSettings;
             _mediaSettings = mediaSettings;
-            _eventPageService = eventPageService;
+            _businessPageService = businessPageService;
             _eventPageAttendanceService = eventPageAttendanceService;
             _mobSocialSettings = mobSocialSettings;
             _mobSocialService = mobSocialService;
@@ -86,13 +86,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 entityId = id.Value;
             }
 
-            var entity = _eventPageService.GetById(entityId);
+            var entity = _businessPageService.GetById(entityId);
             if (entity == null)
             {
                 return RedirectToRoute("HomePage");
             }
 
-            var model = new EventPageModel()
+            var model = new BusinessPageModel()
             {
                 Id = entity.Id,
                 Name = entity.Name,
@@ -115,32 +115,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 DateUpdated = entity.DateUpdated,
             };
 
-            // Event Page Hotels
-            foreach(var hotel in entity.Hotels)
+
+            foreach(var coupon in entity.Coupons)
             {
-                model.Hotels.Add(new EventPageHotelModel
+                model.Coupons.Add(new BusinessPageCouponModel
                 {
-                    Id = hotel.Id,
-                    Name = hotel.Name,
-                    Title = hotel.Title,
-                    Address1 = hotel.Address1,
-                    Address2 = hotel.Address2,
-                    City = hotel.City,
-                    State = hotel.State,
-                    ZipPostalCode = hotel.ZipPostalCode,
-                    Country = hotel.Country,
-                    PhoneNumber = hotel.PhoneNumber,
-                    AdditionalInformation = hotel.AdditionalInformation
+                    Id = coupon.Id,
+                    Name = coupon.Name,
+                    Title = coupon.Title,
+                    Disclaimer = coupon.Disclaimer,
+                    DisplayOrder = coupon.DisplayOrder
                 });                                          
             }
-
-            // Event Page Pictures
+            
             foreach(var picture in entity.Pictures)
             {
-                model.Pictures.Add(new EventPagePictureModel
+                model.Pictures.Add(new PictureModel
                 {
                     Id = picture.Id,
-                    EventPageId = entity.Id,
+                    EntityId = entity.Id,
                     PictureId = picture.PictureId,
                     DisplayOrder = picture.DisplayOrder,
                     DateCreated = picture.DateCreated,
@@ -511,14 +504,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.EventPageSearchTermMinimumLength)
                 return Json(new object());
 
-            var items = _eventPageService.GetAll(term, _mobSocialSettings.EventPageSearchAutoCompleteNumberOfResults);
+            var items = _businessPageService.GetAll(term, _mobSocialSettings.EventPageSearchAutoCompleteNumberOfResults);
 
 
             var models = new List<object>();
 
             foreach (var item in items)
             {
-                var entityPicture = _eventPageService.GetFirstPicture(item.Id);
+                var entityPicture = _businessPageService.GetFirstPicture(item.Id);
                 var defaultPicture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
 
                 models.Add(new

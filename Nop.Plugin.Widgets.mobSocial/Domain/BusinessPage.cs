@@ -34,8 +34,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 
-        public virtual List<BusinessPageCoupon> BusinessPageCoupons { get; set; }
-        public virtual List<BusinessPagePicture> BusinessPagePictures { get; set; }
+        public virtual List<BusinessPageCoupon> Coupons { get; set; }
+        public virtual List<BusinessPagePicture> Pictures { get; set; }
 
 
 

@@ -135,10 +135,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             // Event Page Pictures
             foreach(var picture in entity.Pictures)
             {
-                model.Pictures.Add(new EventPagePictureModel
+                model.Pictures.Add(new PictureModel
                 {
                     Id = picture.Id,
-                    EventPageId = entity.Id,
+                    EntityId = entity.Id,
                     PictureId = picture.PictureId,
                     DisplayOrder = picture.DisplayOrder,
                     DateCreated = picture.DateCreated,

@@ -26,15 +26,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private IUrlRecordService _urlRecordService;
         private IWorkContext _workContext;
 
-        protected IRepository<BusinessPagePicture> PictureRepository { get; set; }
-
         public BusinessPageService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger, IEventPublisher eventPublisher,
-            IRepository<EventPage> eventPageRepository,
-            IRepository<EventPagePicture> eventPagePictureRepository,
+            IRepository<BusinessPage> entityRepository,
+            IRepository<BusinessPagePicture> entityPictureRepository,
             MediaSettings mediaSettings,
             IUrlRecordService urlRecordService,
-            IWorkContext workContext) : base(eventPageRepository, eventPagePictureRepository, workContext, urlRecordService)
+            IWorkContext workContext) : base(entityRepository, entityPictureRepository, workContext, urlRecordService)
         {
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
@@ -51,8 +49,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 .ToList();
 
         }
-
-
 
         public override List<BusinessPagePicture> GetAllPictures(int entityId)
         {

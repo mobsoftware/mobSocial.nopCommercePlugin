@@ -12,6 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
     {
         public MobSocialObjectContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
+            this.DropPluginTable<EventPageAttendance>();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

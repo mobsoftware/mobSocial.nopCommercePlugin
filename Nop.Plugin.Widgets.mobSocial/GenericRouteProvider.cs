@@ -37,7 +37,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             routes.MapLocalizedRoute("BusinessPageUrl",
                            "{SeName}",
                            new { controller = "BusinessPage", action = "Index" },
-                           new[] { "Nop.Plugin.Widgets.MobSocial.Controller" });
+                           new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" });
 
 
         }
