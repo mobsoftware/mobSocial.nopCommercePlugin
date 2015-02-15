@@ -499,7 +499,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
        
-        public ActionResult EventPageSearchAutoComplete(string term)
+        public ActionResult BusinessPageSearchAutoComplete(string term)
         {
             if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.EventPageSearchTermMinimumLength)
                 return Json(new object());
@@ -518,9 +518,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
 
                     DisplayName = item.Name,
-                    Url = Url.RouteUrl("EventPageUrl", new { SeName = item.GetSeName() }),
+                    Url = Url.RouteUrl("BusinessPageUrl", new { SeName = item.GetSeName() }),
                     PictureUrl = _pictureService.GetPictureUrl(defaultPicture, 50, true),
-                    //TODO: Add EventStartsFormat as locale resource string 
                     EventStartsText = "Starts " + item.StartDate.ToString("MMMM d, yyyy") + " at " + item.StartDate.ToString("hh:mmtt"),
                 });
 

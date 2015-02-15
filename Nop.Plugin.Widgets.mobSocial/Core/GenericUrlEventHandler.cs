@@ -29,6 +29,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 eventMessage.RouteData.Values["id"] = eventMessage.UrlRecord.EntityId;
                 eventMessage.RouteData.Values["SeName"] = eventMessage.UrlRecord.Slug;
             }
+            else if (eventMessage.UrlRecord.EntityName == "BusinessPage")
+            {
+                eventMessage.RouteData.Values["controller"] = "BusinessPage";
+                eventMessage.RouteData.Values["action"] = "Index";
+                eventMessage.RouteData.Values["id"] = eventMessage.UrlRecord.EntityId;
+                eventMessage.RouteData.Values["SeName"] = eventMessage.UrlRecord.Slug;
+            }
 
         }
     }

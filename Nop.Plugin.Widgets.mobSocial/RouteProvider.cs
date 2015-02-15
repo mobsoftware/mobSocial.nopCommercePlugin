@@ -84,6 +84,11 @@ namespace Nop.Plugin.Widgets.MobSocial
                             new { controller = "EventPage", action = "EventPageSearchAutoComplete" },
                             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" });
 
+            routes.MapLocalizedRoute("BusinessPageSearchAutoComplete",
+                           "BusinessPage/BusinessPageSearchAutoComplete",
+                           new { controller = "BusinessPage", action = "BusinessPageSearchAutoComplete" },
+                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" });
+
 
             // admin routes
             routes.MapRoute("ManageTeamPage",

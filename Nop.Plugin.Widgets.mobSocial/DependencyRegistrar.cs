@@ -94,6 +94,18 @@ namespace Nop.Plugin.Widgets.MobSocial
               .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
               .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<BusinessPage>>().As<IRepository<BusinessPage>>()
+               .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+               .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<BusinessPagePicture>>().As<IRepository<BusinessPagePicture>>()
+                .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+                .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<BusinessPageCoupon>>().As<IRepository<BusinessPageCoupon>>()
+             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+             .InstancePerRequest();
+
             builder.RegisterType<EfRepository<CustomerProfileView>>().As<IRepository<CustomerProfileView>>()
              .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
              .InstancePerRequest();

@@ -11,12 +11,11 @@
     Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
 
-    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/event-pages.js");
-    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/business-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/easyResponsiveTabs.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
-
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
-    Html.AddCssFileParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/easy-responsive-tabs.css");
+    Html.AddCssFileParts(ModelUtil.ContentPath + "/easy-responsive-tabs.css");
 
 
 }
@@ -183,7 +182,7 @@ in uninvitedFriends">
         <div id="tabs">
             <ul class="resp-tabs-list">
                 <li><i class="fa fa-info"></i> About</li>
-                <li><i class="fa fa-home"></i> Hotels</li>
+                <li><i class="fa fa-home"></i> Coupons</li>
                 <li><i class="fa fa-picture-o"></i> Pictures</li>
                 @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
                 @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
@@ -197,13 +196,13 @@ in uninvitedFriends">
             <div class="resp-tabs-container">
                 <div>@Html.Raw(Model.Description)</div>
                 <div>
-                    @if (Model.Hotels.Count == 0)
+                    @if (Model.Coupons.Count == 0)
                     {
                     <span>No hotels listed</span><br /><br />
                     }
 
 
-                    @foreach (var hotel in Model.Hotels)
+                    @foreach (var hotel in Model.Coupons)
                     {
                         <text>
                             <div class="hotel-information-block">
@@ -230,7 +229,7 @@ in uninvitedFriends">
                     }
 
                 </div>
-                <div>@Model.Name Pictures</div>
+                <div>@Model.Name Coupons</div>
                 <div>@Model.Name Results</div>
             </div>
 

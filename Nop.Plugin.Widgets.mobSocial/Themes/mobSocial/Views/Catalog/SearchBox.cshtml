@@ -15,6 +15,7 @@
                 <option>Store</option>
                 <option>@T("SearchDropdown.PeopleSearchText")</option>
                 <option>@T("SearchDropdown.EventPageSearchText")</option>
+                <option>@T("SearchDropdown.BusinessPageSearchText")</option>
             </select>
 
             <input type="text" class="search-box-text" id="small-searchterms" autocomplete="off" value="@searchTooltip" name="q" />
@@ -75,11 +76,11 @@
                             } else if (searchType == "@T("SearchDropdown.EventPageSearchText")") {
                                 $('#small-searchterms').autocomplete(eventSearchOptions)
                                     .data("ui-autocomplete")._renderItem = renderEventItem;
+                            } else if (searchType == "@T("SearchDropdown.BusinessPageSearchText")") {
+                                    $('#small-searchterms').autocomplete(businessPageSearchOptions)
+                                        .data("ui-autocomplete")._renderItem = renderBusinessPageItem;
                             }
                         };
-
-
-                      
 
 
                         $('.search-type-button, .arrow-s .search-dropdown-arrow').click(function() {
@@ -126,6 +127,24 @@
                             }
                         };
 
+                    var businessPageSearchOptions = {
+                        delay: 500,
+                        minLength: @(Model.SearchTermMinimumLength.ToString()),
+                        source: '@(RouteTable.Routes["BusinessPageSearchAutoComplete"] == null ? "" : Url.RouteUrl("BusinessPageSearchAutoComplete"))',
+                        select: function(event, ui) {
+                            $("#small-searchterms").val(ui.item.Name);
+                            setLocation(ui.item.Name);
+                            return false;
+                        },
+                        open: function() {
+                            $('.ui-menu').css({
+                                border: '1px solid #333333',
+                                'border-radius': '0px',
+                                width: 300
+                            });
+                        }
+                    };
+
                         
                         
 
@@ -170,6 +189,18 @@
                         };
 
                         function renderEventItem(ul, item) {
+                            var t = item.DisplayName;
+
+                            //html encode
+                            t = htmlEncode(t);
+                            return $("<li></li>")
+                                .data("item.autocomplete", item)
+                                .append('<a href="' + item.Url + '"><div class="people-search-box-thumbnail-container"><img src="' + item.PictureUrl +
+                                    '"></div><div class="details"><span class="title">' + t + '</span><br /><span class="subtitle">' + item.EventStartsText + '</span></div></a>')
+                                .appendTo(ul);
+                        };
+
+                        function renderBusinessPageItem(ul, item) {
                             var t = item.DisplayName;
 
                             //html encode

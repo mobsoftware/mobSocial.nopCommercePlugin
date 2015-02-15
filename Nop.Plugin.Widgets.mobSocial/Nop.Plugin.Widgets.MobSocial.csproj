@@ -77,6 +77,7 @@
     <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\AddPictureModel.cs" />
+    <Compile Include="Models\ModelUtil.cs" />
     <Compile Include="Models\BasePageModel.cs" />
     <Compile Include="Models\BusinessPageCouponModel.cs" />
     <Compile Include="Models\CustomerProfileModel.cs" />
@@ -171,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
+    <Content Include="Content\mobSocial\business-pages.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\my-health.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
