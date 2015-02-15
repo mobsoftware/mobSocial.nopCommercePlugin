@@ -313,6 +313,43 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
 
+        public ActionResult MyHealth()
+        {
+
+
+
+            var friendRequests = _socialNetworkService.GetFriendRequests(_workContext.CurrentCustomer.Id);
+
+            var model = new FriendRequestsModel();
+
+            model.NavigationModel = SessionState.Instance.CustomerNavigationModel;
+
+            foreach (var request in friendRequests)
+            {
+
+                var friendId = request.FromCustomerId;
+                var friendCustomer = _customerService.GetCustomerById(friendId);
+                var friendThumbnailUrl = _pictureService.GetPictureUrl(
+                        friendCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        75);
+
+                model.FriendRequests.Add(new FriendRequestModel()
+                {
+                    FriendId = friendId,
+                    CustomerDisplayName = friendCustomer.GetFullName(),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
+                    ProfileThumbnailUrl = friendThumbnailUrl
+                });
+
+            }
+
+
+
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/MyHealth.cshtml", model);
+
+        }
+
+
 
 
         public ActionResult FriendRequests()
