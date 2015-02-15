@@ -22,8 +22,6 @@
 
 @section left {
 
-    Business Page
-
     <a href="@Model.FullSizeImageUrl" title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
         <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture" />
     </a>
@@ -44,8 +42,10 @@
 
     @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
     <br />
-    <span>Starts @Model.StartDate.ToString("MMMM d, yyyy") at @Model.StartDate.ToString("hh:mmtt")</span><br />
-
+    <span>@T("BusinessPage.HoursOfOperationText")</span><br />
+    <ul>
+        <li>Friday Super Skate 7pm - 11pm <i class="fa fa-ticket"></i> Buy Tickets </li>
+    </ul>
 
     @*@Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })*@
 
@@ -84,10 +84,10 @@
     <div ng-controller="EventPageButtonsController" model='{ "eventPageId":"@Model.Id" }'>
 
 
-        <button ng-click="inviteFriendsDialog('inviteFriendsDialog', 493)" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
-        <button id="goingButton" ng-click="setGoing()">Going</button>
-        @*<button id="goingButton" ng-click="setMaybe()">Maybe</button>
-            <button id="goingButton" ng-click="setNotGoing()">Not Going</button>*@
+    @*<button ng-click="inviteFriendsDialog('inviteFriendsDialog', 493)" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
+     <button id="goingButton" ng-click="setGoing()">Going</button>
+    <button id="goingButton" ng-click="setMaybe()">Maybe</button>
+         <button id="goingButton" ng-click="setNotGoing()">Not Going</button>*@
 
         <div id="inviteFriendsDialog" when-scrolled="getUninvitedFriends(false)" title="Invite Friends" style="display: none; height: 277px;  overflow-x:
 
@@ -182,11 +182,11 @@ in uninvitedFriends">
         <div id="tabs">
             <ul class="resp-tabs-list">
                 <li><i class="fa fa-info"></i> About</li>
-                <li><i class="fa fa-home"></i> Coupons</li>
+                <li><i class="fa fa-tags"></i> Coupons</li>
                 <li><i class="fa fa-picture-o"></i> Pictures</li>
                 @*<li><a href="#tabs-3"><i class="fa fa-video-camera"></i> Videos</a></li>*@
                 @*<li><a href="#tabs-4"><i class="fa fa-group"></i> Location</a></li>*@
-                <li><i class="fa fa-trophy"></i> Results</li>
+                <li><i class="fa fa-calendar"></i> Calendar</li>
                 @*@if (Model.ForumsEnabled)
                     {
                         <li><a href="#tabs-5"><i class="fa fa-list"></i> @T("Profile.LatestPosts")</a></li>
@@ -198,7 +198,7 @@ in uninvitedFriends">
                 <div>
                     @if (Model.Coupons.Count == 0)
                     {
-                    <span>No hotels listed</span><br /><br />
+                        <span>No coupons</span><br /><br />
                     }
 
 
@@ -212,25 +212,25 @@ in uninvitedFriends">
                                     <span class="value">@hotel.Address1 @hotel.Address2</span><br />
                                     <span class="value">@(hotel.City), @hotel.State @hotel.ZipPostalCode</span><br />
                                     @if (!string.IsNullOrEmpty(hotel.Country))
-                                        {
+                                    {
                                         <span class="value">@hotel.Country</span><br />
-                                        }
+                                    }
                                     @if (!string.IsNullOrEmpty(hotel.PhoneNumber))
-                                        {
+                                    {
                                         <span class="value">@hotel.PhoneNumber</span><br />
-                                        }
+                                    }
                                     @if (!string.IsNullOrEmpty(hotel.AdditionalInformation))
-                                        {
+                                    {
                                         <span class="value">@Html.Raw(hotel.AdditionalInformation)</span><br />
-                                        }
+                                    }
                                 </div>
                             </div><br />
                         </text>
                     }
 
                 </div>
-                <div>@Model.Name Coupons</div>
-                <div>@Model.Name Results</div>
+                <div>@Model.Name Pictures</div>
+                <div>@Model.Name Calendar</div>
             </div>
 
 

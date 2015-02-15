@@ -359,6 +359,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage", "Manage Team Pages");
             this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage", "Manage Event Pages");
             this.AddOrUpdatePluginLocaleResource("Admin.EventPage.BackToList", "Back to list");
+            this.AddOrUpdatePluginLocaleResource("BusinessPages.HoursOfOperationText", "Hours of Operation");
 
 
             // Update core locales. do not remove core locales during uninstall

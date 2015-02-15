@@ -45,45 +45,45 @@ app.controller('EventPageController', ['$rootScope', '$scope', '$http', '$attrs'
             $scope.InvitedCustomers.push(data[i]);
     });
 
-    $http({
-        url: '/EventPage/GetInvited',
-        method: 'POST',
-        data: { eventPageId: $scope.eventPageId },
-    }).success(function (data, status, headers, config) {
-        if (data != "") $scope.InvitedCustomers = data;
-    }).error(function (data, status, headers, config) {
-        alert('error occured.');
-    });
+    //$http({
+    //    url: '/EventPage/GetInvited',
+    //    method: 'POST',
+    //    data: { eventPageId: $scope.eventPageId },
+    //}).success(function (data, status, headers, config) {
+    //    if (data != "") $scope.InvitedCustomers = data;
+    //}).error(function (data, status, headers, config) {
+    //    alert('error occured.');
+    //});
 
-    $http({
-        url: '/EventPage/GetGoing',
-        method: 'POST',
-        data: { eventPageId: $scope.eventPageId },
-    }).success(function (data, status, headers, config) {
-        if (data != "") $scope.GoingCustomers = data;
-    }).error(function (data, status, headers, config){
-        alert('error occured.');
-    });
+    //$http({
+    //    url: '/EventPage/GetGoing',
+    //    method: 'POST',
+    //    data: { eventPageId: $scope.eventPageId },
+    //}).success(function (data, status, headers, config) {
+    //    if (data != "") $scope.GoingCustomers = data;
+    //}).error(function (data, status, headers, config){
+    //    alert('error occured.');
+    //});
 
-    $http({
-        url: '/EventPage/GetMaybe',
-        method: 'POST',
-        data: { eventPageId: $scope.eventPageId },
-    }).success(function (data, status, headers, config) {
-        if (data != "") $scope.MaybeCustomers = data;
-    }).error(function (data, status, headers, config) {
-        alert('error occured.');
-    });
+    //$http({
+    //    url: '/EventPage/GetMaybe',
+    //    method: 'POST',
+    //    data: { eventPageId: $scope.eventPageId },
+    //}).success(function (data, status, headers, config) {
+    //    if (data != "") $scope.MaybeCustomers = data;
+    //}).error(function (data, status, headers, config) {
+    //    alert('error occured.');
+    //});
 
-    $http({
-        url: '/EventPage/GetNotGoing',
-        method: 'POST',
-        data: { eventPageId: $scope.eventPageId },
-    }).success(function (data, status, headers, config) {
-        if (data != "") $scope.NotGoingCustomers = data;
-    }).error(function (data, status, headers, config) {
-        alert('error occured.');
-    });
+    //$http({
+    //    url: '/EventPage/GetNotGoing',
+    //    method: 'POST',
+    //    data: { eventPageId: $scope.eventPageId },
+    //}).success(function (data, status, headers, config) {
+    //    if (data != "") $scope.NotGoingCustomers = data;
+    //}).error(function (data, status, headers, config) {
+    //    alert('error occured.');
+    //});
 
     
 
@@ -184,17 +184,17 @@ app.controller('EventPageButtonsController', ['$rootScope', '$scope', '$http', '
         };
         
 
-        $http({
-            url: '/EventPage/GetCustomerAttendanceStatus',
-            method: 'POST',
-            data: { eventPageId: $scope.eventPageId },
-        }).success(function (data, status, headers, config) {
-            $scope.CustomerAttendanceStatusId = data.AttendanceStatusId;
-            PreviousCustomerAttendanceStatusId = data.AttendanceStatusId;
-            updateStatusText(data.AttendanceStatusId);
-        }).error(function (data, status, headers, config) {
-            alert('error occured.');
-        });
+        //$http({
+        //    url: '/EventPage/GetCustomerAttendanceStatus',
+        //    method: 'POST',
+        //    data: { eventPageId: $scope.eventPageId },
+        //}).success(function (data, status, headers, config) {
+        //    $scope.CustomerAttendanceStatusId = data.AttendanceStatusId;
+        //    PreviousCustomerAttendanceStatusId = data.AttendanceStatusId;
+        //    updateStatusText(data.AttendanceStatusId);
+        //}).error(function (data, status, headers, config) {
+        //    alert('error occured.');
+        //});
 
 
         $scope.setGoing = function () {
