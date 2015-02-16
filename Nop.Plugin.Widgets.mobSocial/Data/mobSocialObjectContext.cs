@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.Entity;
+
 using System.Data.Entity.Infrastructure;
+using Mob.Core;
 using Nop.Core;
 using Nop.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
@@ -12,7 +14,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
     {
         public MobSocialObjectContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
-            this.DropPluginTable<EventPageAttendance>();
+
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -89,30 +91,33 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 Database.ExecuteSqlCommand(dbScript);
 
                 // DROP Tables
-                this.DropPluginTable<EventPageAttendance>();
-                this.DropPluginTable<EventPagePicture>();
-                this.DropPluginTable<EventPageHotel>();
-                this.DropPluginTable<BusinessPage>();
-                this.DropPluginTable<BusinessPageCoupon>();
-                this.DropPluginTable<BusinessPagePicture>();
-                this.DropPluginTable<EventPage>();
-                this.DropPluginTable<GroupPageMember>();
-                this.DropPluginTable<CustomerTimeline>();
-                //this.DropPluginTable"('CustomerAlbumPictureLike>();
-                this.DropPluginTable<CustomerProfile>();
-                this.DropPluginTable<CustomerAlbumPicture>();
-                this.DropPluginTable<CustomerAlbum>();
-                this.DropPluginTable<CustomerVideoLike>();
-                this.DropPluginTable<CustomerVideo>();
-                this.DropPluginTable<CustomerVideoAlbum>();
-                this.DropPluginTable<GroupPage>();
-                this.DropPluginTable<TeamPage>();
-                this.DropPluginTable<CustomerSkateMove>();
-                this.DropPluginTable<SkateMove>();
-                this.DropPluginTable<CustomerFriend>();
-                this.DropPluginTable<PictureTag>();
-                this.DropPluginTable<Notification>();
-                this.DropPluginTable<CustomerProfileView>();
+
+
+
+                this.DropPluginTable(this.GetTableName<EventPageAttendance>());
+                this.DropPluginTable(this.GetTableName<EventPagePicture>());
+                this.DropPluginTable(this.GetTableName<EventPageHotel>());
+                this.DropPluginTable(this.GetTableName<BusinessPage>());
+                this.DropPluginTable(this.GetTableName<BusinessPageCoupon>());
+                this.DropPluginTable(this.GetTableName<BusinessPagePicture>());
+                this.DropPluginTable(this.GetTableName<EventPage>());
+                this.DropPluginTable(this.GetTableName<GroupPageMember>());
+                this.DropPluginTable(this.GetTableName<CustomerTimeline>());
+                //this.DropPluginTable"('CustomerAlbumPictureLike>());
+                this.DropPluginTable(this.GetTableName<CustomerProfile>());
+                this.DropPluginTable(this.GetTableName<CustomerAlbumPicture>());
+                this.DropPluginTable(this.GetTableName<CustomerAlbum>());
+                this.DropPluginTable(this.GetTableName<CustomerVideoLike>());
+                this.DropPluginTable(this.GetTableName<CustomerVideo>());
+                this.DropPluginTable(this.GetTableName<CustomerVideoAlbum>());
+                this.DropPluginTable(this.GetTableName<GroupPage>());
+                this.DropPluginTable(this.GetTableName<TeamPage>());
+                this.DropPluginTable(this.GetTableName<CustomerSkateMove>());
+                this.DropPluginTable(this.GetTableName<SkateMove>());
+                this.DropPluginTable(this.GetTableName<CustomerFriend>());
+                this.DropPluginTable(this.GetTableName<PictureTag>());
+                this.DropPluginTable(this.GetTableName<Notification>());
+                this.DropPluginTable(this.GetTableName<CustomerProfileView>());
 
                 SaveChanges();
             }
