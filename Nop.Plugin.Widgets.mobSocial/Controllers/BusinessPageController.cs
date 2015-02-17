@@ -23,6 +23,7 @@ using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using System.Linq;
+using System.Web;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -528,6 +529,28 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             return Json(models, JsonRequestBehavior.AllowGet);
         }
+
+
+
+
+        public ActionResult AddPicture()
+        {
+
+            if (!_customerSettings.AllowViewingProfiles)
+            {
+                return RedirectToRoute("HomePage");
+            }
+
+            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/AddPicture.cshtml");
+        }
+
+
+        public void UploadFile(HttpFileCollection files)
+        {
+            
+        }
+
+
 
 
     }

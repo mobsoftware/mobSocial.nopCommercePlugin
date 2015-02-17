@@ -13,6 +13,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
     /// </summary>
     public static class ModelUtil
     {
-        public static string ContentPath { get { return "~/Plugins/Widgets.mobSocial/Content/mobSocial"; } }
+        public static string ContentPathMobSocial { get { return "~/Plugins/Widgets.mobSocial/Content/mobSocial"; } }
+        public static string ContentPath { get { return "~/Plugins/Widgets.mobSocial/Content"; } }
     }
 }

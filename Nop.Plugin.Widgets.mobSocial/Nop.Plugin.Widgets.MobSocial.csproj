@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -172,7 +172,19 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
+    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.js" />
+    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.js" />
+    <Content Include="Content\angular-file-upload-1.1.5\license.txt" />
+    <Content Include="Content\angular-file-upload-1.1.5\src\intro.js" />
+    <Content Include="Content\angular-file-upload-1.1.5\src\module.js" />
+    <Content Include="Content\angular-file-upload-1.1.5\src\outro.js" />
     <Content Include="Content\mobSocial\business-pages.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\ngthumb.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\file-upload.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\my-health.js">
@@ -286,6 +298,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Themes\mobSocial\Installation.txt" />
+    <None Include="Content\angular-file-upload-1.1.5\.jshintrc" />
+    <None Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.map" />
+    <None Include="Content\angular-file-upload-1.1.5\bower.json" />
+    <None Include="Content\angular-file-upload-1.1.5\Gruntfile.coffee" />
+    <None Include="Content\angular-file-upload-1.1.5\package.json" />
+    <None Include="Content\angular-file-upload-1.1.5\README.md" />
     <None Include="packages.config" />
     <Content Include="Views\mobSocial\BusinessPage\Search.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -402,6 +420,9 @@
     <Content Include="Views\mobSocial\MyHealth.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\BusinessPage\AddPicture.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt">
@@ -409,24 +430,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Libraries\Nop.Core\Nop.Core.csproj">
-      <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
-      <Name>Nop.Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Libraries\Nop.Data\Nop.Data.csproj">
       <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
       <Name>Nop.Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Libraries\Nop.Services\Nop.Services.csproj">
-      <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
-      <Name>Nop.Services</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
-      <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
-      <Name>Nop.Web.Framework</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
@@ -434,10 +440,21 @@
       <Name>Nop.Admin</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Nop.Web.csproj">
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Libraries\Nop.Core\Nop.Core.csproj">
+      <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
+      <Name>Nop.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Libraries\Nop.Services\Nop.Services.csproj">
+      <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
+      <Name>Nop.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+      <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
+      <Name>Nop.Web.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Presentation\Nop.Web\Nop.Web.csproj">
       <Project>{4f1f649c-1020-45be-a487-f416d9297ff3}</Project>
       <Name>Nop.Web</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
@@ -485,41 +502,11 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Web.Mvc">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.Razor">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.Routing" />
-    <Reference Include="System.Web.WebPages">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Serialization" />
-    <Reference Include="WebGrease">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

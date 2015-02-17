@@ -91,33 +91,30 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 Database.ExecuteSqlCommand(dbScript);
 
                 // DROP Tables
-
-
-
-                this.DropPluginTable(this.GetTableName<EventPageAttendance>());
-                this.DropPluginTable(this.GetTableName<EventPagePicture>());
-                this.DropPluginTable(this.GetTableName<EventPageHotel>());
-                this.DropPluginTable(this.GetTableName<BusinessPage>());
-                this.DropPluginTable(this.GetTableName<BusinessPageCoupon>());
-                this.DropPluginTable(this.GetTableName<BusinessPagePicture>());
-                this.DropPluginTable(this.GetTableName<EventPage>());
-                this.DropPluginTable(this.GetTableName<GroupPageMember>());
-                this.DropPluginTable(this.GetTableName<CustomerTimeline>());
+                this.DropTable<EventPageAttendance>();
+                this.DropTable<EventPagePicture>();
+                this.DropTable<EventPageHotel>();
+                this.DropTable<BusinessPage>();
+                this.DropTable<BusinessPageCoupon>();
+                this.DropTable<BusinessPagePicture>();
+                this.DropTable<EventPage>();
+                this.DropTable<GroupPageMember>();
+                this.DropTable<CustomerTimeline>();
                 //this.DropPluginTable"('CustomerAlbumPictureLike>());
-                this.DropPluginTable(this.GetTableName<CustomerProfile>());
-                this.DropPluginTable(this.GetTableName<CustomerAlbumPicture>());
-                this.DropPluginTable(this.GetTableName<CustomerAlbum>());
-                this.DropPluginTable(this.GetTableName<CustomerVideoLike>());
-                this.DropPluginTable(this.GetTableName<CustomerVideo>());
-                this.DropPluginTable(this.GetTableName<CustomerVideoAlbum>());
-                this.DropPluginTable(this.GetTableName<GroupPage>());
-                this.DropPluginTable(this.GetTableName<TeamPage>());
-                this.DropPluginTable(this.GetTableName<CustomerSkateMove>());
-                this.DropPluginTable(this.GetTableName<SkateMove>());
-                this.DropPluginTable(this.GetTableName<CustomerFriend>());
-                this.DropPluginTable(this.GetTableName<PictureTag>());
-                this.DropPluginTable(this.GetTableName<Notification>());
-                this.DropPluginTable(this.GetTableName<CustomerProfileView>());
+                this.DropTable<CustomerProfile>();
+                this.DropTable<CustomerAlbumPicture>();
+                this.DropTable<CustomerAlbum>();
+                this.DropTable<CustomerVideoLike>();
+                this.DropTable<CustomerVideo>();
+                this.DropTable<CustomerVideoAlbum>();
+                this.DropTable<GroupPage>();
+                this.DropTable<TeamPage>();
+                this.DropTable<CustomerSkateMove>();
+                this.DropTable<SkateMove>();
+                this.DropTable<CustomerFriend>();
+                this.DropTable<PictureTag>();
+                this.DropTable<Notification>();
+                this.DropTable<CustomerProfileView>();
 
                 SaveChanges();
             }
@@ -128,28 +125,37 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
         }
 
+
+
+
+
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
-            return base.Set<TEntity>();
+            throw new NotImplementedException();
         }
 
-        public System.Collections.Generic.IList<TEntity> ExecuteStoredProcedureList<TEntity>(string commandText,
-                                                                                             params object[] parameters)
-            where TEntity : BaseEntity, new()
+        public System.Collections.Generic.IList<TEntity> ExecuteStoredProcedureList<TEntity>(string commandText, params object[] parameters) where TEntity : BaseEntity, new()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public System.Collections.Generic.IEnumerable<TElement> SqlQuery<TElement>(string sql,
-                                                                                   params object[] parameters)
+        public System.Collections.Generic.IEnumerable<TElement> SqlQuery<TElement>(string sql, params object[] parameters)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public int ExecuteSqlCommand(string sql, bool ensureTransaction,  int? timeout = null, params object[] parameters)
+        public int ExecuteSqlCommand(string sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 
 }
+
+
+
+
+
+
+
+

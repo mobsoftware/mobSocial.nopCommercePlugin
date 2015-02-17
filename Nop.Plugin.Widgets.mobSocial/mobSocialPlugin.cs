@@ -11,8 +11,8 @@ using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Tasks;
-using Nop.Web.Framework.Web;
 using Nop.Web.Framework.Menu;
+using SiteMapNode = System.Web.SiteMapNode;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -257,11 +257,11 @@ namespace Nop.Plugin.Widgets.MobSocial
             return true;
         }
 
-        public SiteMapNode BuildMenuItem()
+        public Nop.Web.Framework.Menu.SiteMapNode BuildMenuItem()
         {
 
 
-            var menuItem = new SiteMapNode()
+            var menuItem = new Nop.Web.Framework.Menu.SiteMapNode()
             {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
                 ControllerName = "TeamPage",
@@ -270,7 +270,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                 RouteValues = new RouteValueDictionary() { { "area", null } },
             };
 
-            var manageTeamSubMenu = new SiteMapNode()
+            var manageTeamSubMenu = new Nop.Web.Framework.Menu.SiteMapNode()
             {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
                 ControllerName = "TeamPage",
@@ -282,7 +282,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
 
-            var manageEventsSubMenu = new SiteMapNode()
+            var manageEventsSubMenu = new Nop.Web.Framework.Menu.SiteMapNode()
             {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
                 ControllerName = "ManageEventPage",
@@ -433,5 +433,8 @@ namespace Nop.Plugin.Widgets.MobSocial
         }
 
         #endregion
+
+
+       
     }
 }
