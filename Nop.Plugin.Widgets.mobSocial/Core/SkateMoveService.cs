@@ -27,14 +27,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         /// <summary>
         /// Object context
         /// </summary>
-        private readonly IRepository<GroupPage> _groupPageRepository;
-        private readonly IRepository<GroupPageMember> _groupPageMemberRepository;
-        private readonly IRepository<CustomerFriend> _customerFriendRepository;
-
-
-
         private ICacheManager _cacheManager;
-        private IProductService _productService;
         private readonly IRepository<SkateMove> _skateMoveRepository;
         private readonly IRepository<CustomerSkateMove> _customerSkateMoveRepository;
 

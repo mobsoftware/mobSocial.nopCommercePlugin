@@ -23,7 +23,8 @@ app
             uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
                 console.info('onWhenAddingFileFailed', item, filter, options);
             };
-            uploader.onAfterAddingFile = function(fileItem) {
+            uploader.onAfterAddingFile = function (fileItem) {
+                alert(fileItem);
                 console.info('onAfterAddingFile', fileItem);
             };
             uploader.onAfterAddingAll = function(addedFileItems) {

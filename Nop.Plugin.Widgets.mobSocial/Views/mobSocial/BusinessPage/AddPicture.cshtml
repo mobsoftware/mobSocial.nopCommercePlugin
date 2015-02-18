@@ -23,7 +23,7 @@
 
 <div ng-app="app">
 
-    <div ng-controller="FileUploadController" url="./UploadFile" nv-file-drop uploader="uploader" filters="queueLimit, customFilter" class="ng-scope">
+    <div ng-controller="FileUploadController" url="./UploadFile/1/name" nv-file-drop uploader="uploader" filters="queueLimit, customFilter" class="ng-scope">
 
         <div class="col-md-3">
 
@@ -120,6 +120,9 @@
                         <span class="glyphicon glyphicon-trash"></span> Remove all
                     </button>
                 </div>
+
+
+                <span ng-repeat="id in uploader.ids"></span>
 
             </div>
 

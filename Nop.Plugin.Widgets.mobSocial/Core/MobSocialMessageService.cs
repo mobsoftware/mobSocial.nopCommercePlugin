@@ -37,33 +37,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         /// <summary>
         /// Object context
         /// </summary>
-        private readonly IRepository<GroupPage> _groupPageRepository;
-
-        private readonly IRepository<GroupPageMember> _groupPageMemberRepository;
-        private readonly IRepository<CustomerFriend> _customerFriendRepository;
-        private readonly IRepository<TeamPage> _teamPageRepository;
-
-
-        private ICacheManager _cacheManager;
-        private readonly IWorkContext _workContext;
         private readonly IMessageTemplateService _messageTemplateService;
         private readonly IStoreService _storeService;
         private readonly IMessageTokenProvider _messageTokenProvider;
         private readonly ILanguageService _languageService;
         private readonly IStoreContext _storeContext;
-        private readonly ICustomerService _customerService;
         private readonly IEventPublisher _eventPublisher;
         private readonly ITokenizer _tokenizer;
         private readonly IQueuedEmailService _queuedEmailService;
         private readonly IEmailAccountService _emailAccountService;
         private readonly EmailAccountSettings _emailAccountSettings;
-        private readonly IWorkflowMessageService _workflowMessageService;
-        private readonly IProductService _productService;
-        private readonly IOrderService _orderService;
-        private ILocalizationService _localizationService;
-        private MessageTemplatesSettings _messageTemplateSettings;
-        private CatalogSettings _catalogSettings;
-        private IProductAttributeParser _productAttributeParser;
+        private readonly ILocalizationService _localizationService;
+        private readonly MessageTemplatesSettings _messageTemplateSettings;
+        private readonly CatalogSettings _catalogSettings;
+        private readonly IProductAttributeParser _productAttributeParser;
 
         #endregion
 
@@ -73,15 +60,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         /// Ctor
         /// </summary>
         /// <param name="context">Object context</param>
-        public MobSocialMessageService(IWorkContext workContext, IMessageTemplateService messageTemplateService,
+        public MobSocialMessageService(IMessageTemplateService messageTemplateService,
                                            IStoreService storeService, IMessageTokenProvider messageTokenProvider,
                                            ILanguageService languageService,
-                                           IStoreContext storeContext, ICustomerService customerService,
+                                           IStoreContext storeContext,
                                            IEventPublisher eventPublisher,
                                            ITokenizer tokenizer, IQueuedEmailService queuedEmailService,
-                                           IOrderService orderService, IProductService productService,
                                            IEmailAccountService emailAccountService,
-                                           INotificationService notificationService,
                                            EmailAccountSettings emailAccountSettings,
                                            ILocalizationService localizationService, 
                                            MessageTemplatesSettings messageTemplateSettings,
@@ -89,17 +74,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                                            IProductAttributeParser productAttributeParser
             )
         {
-            _workContext = workContext;
             _messageTemplateService = messageTemplateService;
             _storeService = storeService;
             _messageTokenProvider = messageTokenProvider;
             _languageService = languageService;
             _storeContext = storeContext;
-            _customerService = customerService;
             _eventPublisher = eventPublisher;
             _tokenizer = tokenizer;
-            _productService = productService;
-            _orderService = orderService;
             _queuedEmailService = queuedEmailService;
             _emailAccountService = emailAccountService;
             _emailAccountSettings = emailAccountSettings;
