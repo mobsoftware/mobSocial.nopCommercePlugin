@@ -546,7 +546,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         [HttpPost]
-        public void UploadFile(IEnumerable<HttpPostedFileBase> files)
+        public void UploadFile(IEnumerable<HttpPostedFileBase> file)
         {
             if (true)
             {

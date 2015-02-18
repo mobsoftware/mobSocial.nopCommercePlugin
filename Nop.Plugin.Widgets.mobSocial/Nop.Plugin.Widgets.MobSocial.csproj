@@ -172,12 +172,24 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
-    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.js" />
-    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.js" />
-    <Content Include="Content\angular-file-upload-1.1.5\license.txt" />
-    <Content Include="Content\angular-file-upload-1.1.5\src\intro.js" />
-    <Content Include="Content\angular-file-upload-1.1.5\src\module.js" />
-    <Content Include="Content\angular-file-upload-1.1.5\src\outro.js" />
+    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-file-upload-1.1.5\license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-file-upload-1.1.5\src\intro.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-file-upload-1.1.5\src\module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-file-upload-1.1.5\src\outro.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\business-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -299,11 +311,21 @@
     </Content>
     <Content Include="Themes\mobSocial\Installation.txt" />
     <None Include="Content\angular-file-upload-1.1.5\.jshintrc" />
-    <None Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.map" />
-    <None Include="Content\angular-file-upload-1.1.5\bower.json" />
-    <None Include="Content\angular-file-upload-1.1.5\Gruntfile.coffee" />
-    <None Include="Content\angular-file-upload-1.1.5\package.json" />
-    <None Include="Content\angular-file-upload-1.1.5\README.md" />
+    <None Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\angular-file-upload-1.1.5\bower.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\angular-file-upload-1.1.5\Gruntfile.coffee">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\angular-file-upload-1.1.5\package.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\angular-file-upload-1.1.5\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <Content Include="Views\mobSocial\BusinessPage\Search.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

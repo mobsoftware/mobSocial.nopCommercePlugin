@@ -4,10 +4,9 @@ app.requires.push('angularFileUpload');
 
 app
     .controller('FileUploadController', [
-        '$scope', 'FileUploader', function($scope, FileUploader) {
+        '$scope', '$attrs', 'FileUploader', function ($scope, $attrs, FileUploader) {
 
-            var model = JSON.parse($attrs.model);
-            var url = model.url;
+            var url = $attrs.url;
             var uploader = $scope.uploader = new FileUploader({ url: url });
 
             // FILTERS

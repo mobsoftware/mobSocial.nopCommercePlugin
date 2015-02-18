@@ -1,15 +1,14 @@
 ﻿@using Nop.Plugin.Widgets.MobSocial.Models;
 
-@model BusinessPageModel
 
 @using Nop.Web.Framework.UI
 @{
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
 
-    Html.AppendTitleParts(Model.Name);
+    //Html.AppendTitleParts(Model.Name);
 
-    Html.AppendMetaDescriptionParts(Model.MetaDescription);
-    Html.AppendMetaKeywordParts(Model.MetaKeywords);
+    //Html.AppendMetaDescriptionParts(Model.MetaDescription);
+    //Html.AppendMetaKeywordParts(Model.MetaKeywords);
 
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/business-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/file-upload.js");
