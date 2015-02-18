@@ -126,15 +126,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         }
 
 
+       
 
-
+        public string CreateDatabaseScript()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.CreateDatabaseScript();
+        }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
-            throw new NotImplementedException();
+            return base.Set<TEntity>();
         }
 
-        public System.Collections.Generic.IList<TEntity> ExecuteStoredProcedureList<TEntity>(string commandText, params object[] parameters) where TEntity : BaseEntity, new()
+
+        public System.Collections.Generic.IList<TEntity> ExecuteStoredProcedureList<TEntity>(string commandText, params object[] parameters) where TEntity : Nop.Core.BaseEntity, new()
         {
             throw new NotImplementedException();
         }
