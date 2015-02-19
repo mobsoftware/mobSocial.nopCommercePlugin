@@ -156,7 +156,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.FullSizeImageUrl = _pictureService.GetDefaultPictureUrl();
             }
 
+
+            // security
+            //TODO: Trust community to update.
+            model.CanEdit = _workContext.IsAdmin;
+
             return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/Index.cshtml", model);
+
         }
 
         [HttpPost]

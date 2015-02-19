@@ -21,6 +21,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public List<BusinessPageCouponModel> Coupons { get; set; }
         public BusinessPageCouponModel AddCouponModel { get; set; }
 
+
+        public bool CanEdit { get; set; }
     }
 
    

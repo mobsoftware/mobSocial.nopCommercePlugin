@@ -48,10 +48,14 @@
 
     <div style="position: relative;">
         <a href="@Model.FullSizeImageUrl" title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
-            <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture" />
+            <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture"/>
 
         </a>
-        <a class="editProfilePictureButton" href="BusinessPage/AddPicture/@Model.Id/BusinessPage" target="new">Edit Picture</a>
+
+        @if (Model.CanEdit)
+        {
+            <a class="editProfilePictureButton" href="BusinessPage/AddPicture/@Model.Id/BusinessPage" target="new">Edit Picture</a>
+        }
     </div>
 
     <script type="text/javascript">
