@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="CategoryExtensions.cs" />
+    <Compile Include="PictureUtility.cs" />
     <Compile Include="INameSupported.cs" />
     <Compile Include="FileUtility.cs" />
     <Compile Include="LicensingService.cs" />

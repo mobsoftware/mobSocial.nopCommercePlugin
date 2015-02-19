@@ -101,6 +101,14 @@ namespace Nop.Plugin.Widgets.MobSocial
 
            );
 
+            routes.MapLocalizedRoute("BusinessPageAddPicture",
+               "BusinessPage/AddPicture/{entityId}/{entityName}",
+               new { controller = "BusinessPage", action = "AddPicture" },
+               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+
+          );
+
 
 
             // admin routes

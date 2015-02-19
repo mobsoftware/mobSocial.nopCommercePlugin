@@ -24,6 +24,7 @@ using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
 using System.Linq;
 using System.Web;
+using Mob.Core;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -549,7 +550,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-        public ActionResult AddPicture()
+        public ActionResult AddPicture(int entityId, string entityName)
         {
 
             if (!_customerSettings.AllowViewingProfiles)
@@ -557,7 +558,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return RedirectToRoute("HomePage");
             }
 
-            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/AddPicture.cshtml");
+
+            var addPictureModel = new AddPictureModel()
+            {
+                EntityId = entityId,
+                EntityName = entityName,
+                DisplayOrder = 1
+            };
+
+            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/AddPicture.cshtml", addPictureModel);
         }
 
 
@@ -589,53 +598,41 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (!String.IsNullOrEmpty(fileExtension))
                     fileExtension = fileExtension.ToLowerInvariant();
 
-                //contentType is not always available 
-                //that's why we manually update it here
-                //http://www.sfsu.edu/training/mimetype.htm
+                
                 if (String.IsNullOrEmpty(contentType))
                 {
-                    switch (fileExtension)
-                    {
-                        case ".bmp":
-                            contentType = "image/bmp";
-                            break;
-                        case ".gif":
-                            contentType = "image/gif";
-                            break;
-                        case ".jpeg":
-                        case ".jpg":
-                        case ".jpe":
-                        case ".jfif":
-                        case ".pjpeg":
-                        case ".pjp":
-                            contentType = "image/jpeg";
-                            break;
-                        case ".png":
-                            contentType = "image/png";
-                            break;
-                        case ".tiff":
-                        case ".tif":
-                            contentType = "image/tiff";
-                            break;
-                        default:
-                            break;
-                    }
+                    contentType = PictureUtility.GetContentType(fileExtension);
                 }
-
-
 
                 var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
 
 
+                var firstBusinessPagePicture = _businessPageService.GetFirstPicture(entityId);
+
+                if (firstBusinessPagePicture == null)
+                {
+                    var businessPagePicture = new BusinessPagePicture()
+                    {
+                        BusinessPageId = entityId,
+                        DateCreated = DateTime.Now,
+                        DateUpdated = DateTime.Now,
+                        DisplayOrder = 1,
+                        PictureId = picture.Id
+                    };
+                    _businessPageService.InsertPicture(businessPagePicture);
+                }
+                else
+                {
+                    firstBusinessPagePicture.BusinessPageId = entityId;
+                    firstBusinessPagePicture.DateCreated = DateTime.Now;
+                    firstBusinessPagePicture.DateUpdated = DateTime.Now;
+                    firstBusinessPagePicture.DisplayOrder = 1;
+                    firstBusinessPagePicture.PictureId = picture.Id;
+                    _businessPageService.UpdatePicture(firstBusinessPagePicture);
+                }
 
             }
 
-
-
         }
-
-
-
-
     }
 }

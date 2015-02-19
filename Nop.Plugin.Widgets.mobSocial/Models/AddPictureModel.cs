@@ -19,5 +19,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         //[NopResourceDisplayName("Admin.Catalog.Products.Pictures.Fields.DisplayOrder")]
         public int DisplayOrder { get; set; }
 
+
+        public int EntityId { get; set; }
+
+        public string EntityName { get; set; }
     }
 }

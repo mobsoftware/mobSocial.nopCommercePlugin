@@ -51,7 +51,7 @@
             <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture" />
 
         </a>
-        <a class="editProfilePictureButton" href="BusinessPage/AddPicture" target="new">Edit Picture</a>
+        <a class="editProfilePictureButton" href="BusinessPage/AddPicture/@Model.Id/BusinessPage" target="new">Edit Picture</a>
     </div>
 
     <script type="text/javascript">
@@ -75,7 +75,7 @@
     <ul>
         <li>
             <span class="hours-of-operation-day-of-week"><b>Friday</b></span> <br />
-            <span class="hours-of-operation-label"> Super Skate 7pm - 11pm </span> <a href="#"><i class="fa fa-ticket"></i> <span class="buy-tickets-text">Buy tickets</span></a>
+            <span class="hours-of-operation-label"> Super Skate 7pm - 11pm </span> <a href="#"><i class="fa fa-ticket"></i></a>
         </li>
     </ul>
 
