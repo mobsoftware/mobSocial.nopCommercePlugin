@@ -2,8 +2,11 @@
 using System.Linq;
 using System.Web.Mvc;
 using Nop.Core;
+using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
+using Nop.Core.Domain.Forums;
+using Nop.Core.Domain.News;
 using Nop.Services.Catalog;
 using Nop.Services.Topics;
 using Nop.Services.Seo;
@@ -20,13 +23,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private ICustomerService _customerService;
         private IEventPageService _eventPageService;
 
-        public SitemapGenerator(IStoreContext storeContext,
-            ICategoryService categoryService, IProductService productService,
-            IManufacturerService manufacturerService, ITopicService topicService,
-            CommonSettings commonSettings, IEventPageService eventPageService, 
-            ICustomerService customerService
-            ) : base(storeContext, categoryService, 
-            productService, manufacturerService, topicService, commonSettings)
+        public SitemapGenerator(IStoreContext storeContext, ICategoryService categoryService, IProductService productService, IManufacturerService manufacturerService, ITopicService topicService, CommonSettings commonSettings, IEventPageService eventPageService, ICustomerService customerService, BlogSettings blogSettings, NewsSettings newsSettings, ForumSettings forumSettings) : base(storeContext, categoryService, 
+            productService, manufacturerService, topicService, commonSettings, 
+            blogSettings, newsSettings, forumSettings)
         {
             _customerService = customerService;
             _eventPageService = eventPageService;

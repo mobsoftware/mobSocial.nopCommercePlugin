@@ -44,6 +44,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             );
 
 
+
+
             
 
 
@@ -88,6 +90,25 @@ namespace Nop.Plugin.Widgets.MobSocial
                            "BusinessPage/BusinessPageSearchAutoComplete",
                            new { controller = "BusinessPage", action = "BusinessPageSearchAutoComplete" },
                            new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" });
+
+
+            //TODO: Change to new PictureController
+            routes.MapLocalizedRoute("BusinessPageUploadFile",
+                "BusinessPage/UploadFile/{entityId}/{entityName}",
+                new { controller = "BusinessPage", action = "UploadFile" },
+                new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+
+           );
+
+            routes.MapLocalizedRoute("BusinessPageAddPicture",
+               "BusinessPage/AddPicture/{entityId}/{entityName}",
+               new { controller = "BusinessPage", action = "AddPicture" },
+               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+
+          );
+
 
 
             // admin routes

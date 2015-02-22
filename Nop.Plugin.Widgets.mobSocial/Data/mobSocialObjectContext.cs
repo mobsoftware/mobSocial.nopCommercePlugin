@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.Entity;
+
 using System.Data.Entity.Infrastructure;
+using Mob.Core;
 using Nop.Core;
 using Nop.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
@@ -12,7 +14,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
     {
         public MobSocialObjectContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
-            this.DropPluginTable<EventPageAttendance>();
+
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -89,30 +91,30 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 Database.ExecuteSqlCommand(dbScript);
 
                 // DROP Tables
-                this.DropPluginTable<EventPageAttendance>();
-                this.DropPluginTable<EventPagePicture>();
-                this.DropPluginTable<EventPageHotel>();
-                this.DropPluginTable<BusinessPage>();
-                this.DropPluginTable<BusinessPageCoupon>();
-                this.DropPluginTable<BusinessPagePicture>();
-                this.DropPluginTable<EventPage>();
-                this.DropPluginTable<GroupPageMember>();
-                this.DropPluginTable<CustomerTimeline>();
-                //this.DropPluginTable"('CustomerAlbumPictureLike>();
-                this.DropPluginTable<CustomerProfile>();
-                this.DropPluginTable<CustomerAlbumPicture>();
-                this.DropPluginTable<CustomerAlbum>();
-                this.DropPluginTable<CustomerVideoLike>();
-                this.DropPluginTable<CustomerVideo>();
-                this.DropPluginTable<CustomerVideoAlbum>();
-                this.DropPluginTable<GroupPage>();
-                this.DropPluginTable<TeamPage>();
-                this.DropPluginTable<CustomerSkateMove>();
-                this.DropPluginTable<SkateMove>();
-                this.DropPluginTable<CustomerFriend>();
-                this.DropPluginTable<PictureTag>();
-                this.DropPluginTable<Notification>();
-                this.DropPluginTable<CustomerProfileView>();
+                this.DropTable<EventPageAttendance>();
+                this.DropTable<EventPagePicture>();
+                this.DropTable<EventPageHotel>();
+                this.DropTable<BusinessPage>();
+                this.DropTable<BusinessPageCoupon>();
+                this.DropTable<BusinessPagePicture>();
+                this.DropTable<EventPage>();
+                this.DropTable<GroupPageMember>();
+                this.DropTable<CustomerTimeline>();
+                //this.DropPluginTable"('CustomerAlbumPictureLike>());
+                this.DropTable<CustomerProfile>();
+                this.DropTable<CustomerAlbumPicture>();
+                this.DropTable<CustomerAlbum>();
+                this.DropTable<CustomerVideoLike>();
+                this.DropTable<CustomerVideo>();
+                this.DropTable<CustomerVideoAlbum>();
+                this.DropTable<GroupPage>();
+                this.DropTable<TeamPage>();
+                this.DropTable<CustomerSkateMove>();
+                this.DropTable<SkateMove>();
+                this.DropTable<CustomerFriend>();
+                this.DropTable<PictureTag>();
+                this.DropTable<Notification>();
+                this.DropTable<CustomerProfileView>();
 
                 SaveChanges();
             }
@@ -123,28 +125,42 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
         }
 
+
+       
+
+        public string CreateDatabaseScript()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.CreateDatabaseScript();
+        }
+
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
             return base.Set<TEntity>();
         }
 
-        public System.Collections.Generic.IList<TEntity> ExecuteStoredProcedureList<TEntity>(string commandText,
-                                                                                             params object[] parameters)
-            where TEntity : BaseEntity, new()
+
+        public System.Collections.Generic.IList<TEntity> ExecuteStoredProcedureList<TEntity>(string commandText, params object[] parameters) where TEntity : Nop.Core.BaseEntity, new()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public System.Collections.Generic.IEnumerable<TElement> SqlQuery<TElement>(string sql,
-                                                                                   params object[] parameters)
+        public System.Collections.Generic.IEnumerable<TElement> SqlQuery<TElement>(string sql, params object[] parameters)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public int ExecuteSqlCommand(string sql, bool ensureTransaction,  int? timeout = null, params object[] parameters)
+        public int ExecuteSqlCommand(string sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 
 }
+
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Forums;
@@ -21,8 +22,9 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
-using Nop.Plugin.Widgets.MobSocial.Models;
 using System.Linq;
+using System.Web;
+using Mob.Core;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -116,7 +118,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             };
 
 
-            foreach(var coupon in entity.Coupons)
+            foreach (var coupon in entity.Coupons)
             {
                 model.Coupons.Add(new BusinessPageCouponModel
                 {
@@ -125,10 +127,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     Title = coupon.Title,
                     Disclaimer = coupon.Disclaimer,
                     DisplayOrder = coupon.DisplayOrder
-                });                                          
+                });
             }
-            
-            foreach(var picture in entity.Pictures)
+
+            foreach (var picture in entity.Pictures)
             {
                 model.Pictures.Add(new PictureModel
                 {
@@ -139,7 +141,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     DateCreated = picture.DateCreated,
                     DateUpdated = picture.DateUpdated,
                     PictureUrl = _pictureService.GetPictureUrl(picture.PictureId, 200),
-                });  
+                });
             }
 
 
@@ -152,11 +154,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 model.MainPictureUrl = _pictureService.GetDefaultPictureUrl(200);
                 model.FullSizeImageUrl = _pictureService.GetDefaultPictureUrl();
-            }  
+            }
+
+
+            // security
+            //TODO: Trust community to update.
+            model.CanEdit = _workContext.IsAdmin;
 
             return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/Index.cshtml", model);
+
         }
-        
+
         [HttpPost]
         public ActionResult GetGoing(int eventPageId)
         {
@@ -164,29 +172,30 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var going = _eventPageAttendanceService.GetAllGoing(eventPageId);
 
 
-            if(going.Count == 0)
+            if (going.Count == 0)
                 return Json(null);
 
-            var goingCustomers = _customerService.GetCustomersByIds(going.Select(x=>x.CustomerId).ToArray());
+            var goingCustomers = _customerService.GetCustomersByIds(going.Select(x => x.CustomerId).ToArray());
 
             var models = new List<object>();
 
-            foreach(var customer in goingCustomers)
+            foreach (var customer in goingCustomers)
             {
-                 models.Add(new
-                    {
-                        CustomerId = customer.Id,
-                        FullName = customer.GetFullName(),
-                        PictureUrl = _pictureService.GetPictureUrl(
-                                customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                                _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+                models.Add(new
+                {
+                    CustomerId = customer.Id,
+                    FullName = customer.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                        customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
 
-                    });
+                });
             }
 
             return Json(models);
-           
+
         }
 
         [HttpPost]
@@ -210,9 +219,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     CustomerId = customer.Id,
                     FullName = customer.GetFullName(),
                     PictureUrl = _pictureService.GetPictureUrl(
-                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+                        customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
 
                 });
             }
@@ -242,9 +252,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     CustomerId = customer.Id,
                     FullName = customer.GetFullName(),
                     PictureUrl = _pictureService.GetPictureUrl(
-                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+                        customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
 
                 });
             }
@@ -275,9 +286,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     CustomerId = customer.Id,
                     FullName = customer.GetFullName(),
                     PictureUrl = _pictureService.GetPictureUrl(
-                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+                        customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
 
                 });
             }
@@ -292,7 +304,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public ActionResult InviteFriends(int eventPageId, int[] customerIds)
         {
 
-           if (_workContext.CurrentCustomer.IsGuest())
+            if (_workContext.CurrentCustomer.IsGuest())
                 return Json(new {redirect = Url.RouteUrl("Login")}, JsonRequestBehavior.AllowGet);
 
 
@@ -307,9 +319,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     CustomerId = customer.Id,
                     FullName = customer.GetFullName(),
                     PictureUrl = _pictureService.GetPictureUrl(
-                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+                        customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
 
                 });
             }
@@ -330,8 +343,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(null);
 
             var uninvitedFriendsAsCustomers = _customerService.GetCustomersByIds(
-                uninvitedFriends.Select(x => (x.ToCustomerId == customerId) 
-                    ? x.FromCustomerId 
+                uninvitedFriends.Select(x => (x.ToCustomerId == customerId)
+                    ? x.FromCustomerId
                     : x.ToCustomerId)
                     .ToArray());
 
@@ -344,9 +357,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     CustomerId = customer.Id,
                     FullName = customer.GetFullName(),
                     PictureUrl = _pictureService.GetPictureUrl(
-                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+                        customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
 
                 });
             }
@@ -362,7 +376,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public ActionResult GetAttendance(int start, int count, int attendanceStatusId)
         {
 
-            if (Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
+            if (Enum.IsDefined(typeof (AttendanceStatus), attendanceStatusId))
                 return Json(null);
 
 
@@ -372,19 +386,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             switch (attendanceStatusId)
             {
-                case (int)AttendanceStatus.Invited:
+                case (int) AttendanceStatus.Invited:
                     attendanceStatusName = AttendanceStatus.Invited.ToString();
                     attendances = _eventPageAttendanceService.GetInvited(start, count);
                     break;
-                case (int)AttendanceStatus.Going:
+                case (int) AttendanceStatus.Going:
                     attendanceStatusName = AttendanceStatus.Going.ToString();
                     attendances = _eventPageAttendanceService.GetGoing(start, count);
                     break;
-                case (int)AttendanceStatus.Maybe:
+                case (int) AttendanceStatus.Maybe:
                     attendanceStatusName = AttendanceStatus.Maybe.ToString();
                     attendances = _eventPageAttendanceService.GetMaybies(start, count);
                     break;
-                case (int)AttendanceStatus.NotGoing:
+                case (int) AttendanceStatus.NotGoing:
                     attendanceStatusName = AttendanceStatus.NotGoing.ToString();
                     attendances = _eventPageAttendanceService.GetNotGoing(start, count);
                     break;
@@ -395,24 +409,26 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             var models = new List<object>();
 
-            foreach(var customer in customers)
+            foreach (var customer in customers)
             {
                 models.Add(new
                 {
-                    
+
                     FullName = customer.GetFullName(),
                     PictureUrl = _pictureService.GetPictureUrl(
-                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }),
+                        customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
 
                 });
             }
 
-            return Json(new { 
+            return Json(new
+            {
 
                 AttendanceStatusName = attendanceStatusName,
-                Customers = models 
+                Customers = models
             });
         }
 
@@ -426,8 +442,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var customerAttendanceStatus =
                 _eventPageAttendanceService.GetCustomerAttendanceStatus(customerId, eventPageId);
 
-            var attendanceStatusId = (customerAttendanceStatus == null) 
-                ? (int)AttendanceStatus.None : (int)customerAttendanceStatus.AttendanceStatusId;
+            var attendanceStatusId = (customerAttendanceStatus == null)
+                ? (int) AttendanceStatus.None
+                : (int) customerAttendanceStatus.AttendanceStatusId;
 
             return Json(new
             {
@@ -443,19 +460,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public ActionResult UpdateAttendanceStatus(int eventPageId, int attendanceStatusId)
         {
             if (_workContext.CurrentCustomer.IsGuest())
-                return Json(new { redirect = Url.RouteUrl("Login") }, JsonRequestBehavior.AllowGet);
+                return Json(new {redirect = Url.RouteUrl("Login")}, JsonRequestBehavior.AllowGet);
 
-                
+
 
             try
             {
-                if (!Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
+                if (!Enum.IsDefined(typeof (AttendanceStatus), attendanceStatusId))
                     throw new ApplicationException("Invalid attendance status.");
 
 
                 var customerId = _workContext.CurrentCustomer.Id;
                 var customerAttendanceStatus =
-                      _eventPageAttendanceService.GetCustomerAttendanceStatus(eventPageId, customerId);
+                    _eventPageAttendanceService.GetCustomerAttendanceStatus(eventPageId, customerId);
                 var previousAttendanceStatusId = attendanceStatusId;
 
                 if (customerAttendanceStatus == null) // new attendance
@@ -478,7 +495,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     _eventPageAttendanceService.Update(customerAttendanceStatus);
                 }
 
-                return Json(new {
+                return Json(new
+                {
                     PreviousAttendanceStatusId = previousAttendanceStatusId,
                     EventPageAttendanceId = customerAttendanceStatus.Id,
                     EventPageId = eventPageId,
@@ -486,9 +504,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     AttendanceStatusId = attendanceStatusId,
                     FullName = _workContext.CurrentCustomer.GetFullName(),
                     PictureUrl = _pictureService.GetPictureUrl(
-                            _workContext.CurrentCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled, defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = _workContext.CurrentCustomer.GetSeName(0) }),
+                        _workContext.CurrentCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
+                        defaultPictureType: PictureType.Avatar),
+                    ProfileUrl =
+                        Url.RouteUrl("CustomerProfileUrl", new {SeName = _workContext.CurrentCustomer.GetSeName(0)}),
                 });
 
             }
@@ -498,7 +518,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
         }
 
-       
+
         public ActionResult BusinessPageSearchAutoComplete(string term)
         {
             if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.EventPageSearchTermMinimumLength)
@@ -512,15 +532,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             foreach (var item in items)
             {
                 var entityPicture = _businessPageService.GetFirstPicture(item.Id);
-                var defaultPicture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
+                var defaultPicture = (entityPicture != null)
+                    ? _pictureService.GetPictureById(entityPicture.PictureId)
+                    : null;
 
                 models.Add(new
                 {
 
                     DisplayName = item.Name,
-                    Url = Url.RouteUrl("BusinessPageUrl", new { SeName = item.GetSeName() }),
+                    Url = Url.RouteUrl("BusinessPageUrl", new {SeName = item.GetSeName()}),
                     PictureUrl = _pictureService.GetPictureUrl(defaultPicture, 50, true),
-                    EventStartsText = "Starts " + item.StartDate.ToString("MMMM d, yyyy") + " at " + item.StartDate.ToString("hh:mmtt"),
+                    EventStartsText =
+                        "Starts " + item.StartDate.ToString("MMMM d, yyyy") + " at " +
+                        item.StartDate.ToString("hh:mmtt"),
                 });
 
 
@@ -530,5 +554,91 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
 
+
+
+        public ActionResult AddPicture(int entityId, string entityName)
+        {
+
+            if (!_customerSettings.AllowViewingProfiles)
+            {
+                return RedirectToRoute("HomePage");
+            }
+
+
+            var addPictureModel = new AddPictureModel()
+            {
+                EntityId = entityId,
+                EntityName = entityName,
+                DisplayOrder = 1
+            };
+
+            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/AddPicture.cshtml", addPictureModel);
+        }
+
+
+        [HttpPost]
+        public void UploadFile(int entityId, string entityName, IEnumerable<HttpPostedFileBase> file)
+        {
+            //if (!_permissionService.Authorize(StandardPermissionProvider.UploadPictures))
+            //    return Json(new { success = false, error = "You do not have required permissions" }, "text/plain");
+            var files = file.ToList();
+            foreach (var fi in files)
+            {
+                //we process it distinct ways based on a browser
+                //find more info here http://stackoverflow.com/questions/4884920/mvc3-valums-ajax-file-upload
+                Stream stream = null;
+                var fileName = "";
+                var contentType = "";
+
+                if (file == null)
+                    throw new ArgumentException("No file uploaded");
+
+                stream = fi.InputStream;
+                fileName = Path.GetFileName(fi.FileName);
+                contentType = fi.ContentType;
+
+                var fileBinary = new byte[stream.Length];
+                stream.Read(fileBinary, 0, fileBinary.Length);
+
+                var fileExtension = Path.GetExtension(fileName);
+                if (!String.IsNullOrEmpty(fileExtension))
+                    fileExtension = fileExtension.ToLowerInvariant();
+
+                
+                if (String.IsNullOrEmpty(contentType))
+                {
+                    contentType = PictureUtility.GetContentType(fileExtension);
+                }
+
+                var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
+
+
+                var firstBusinessPagePicture = _businessPageService.GetFirstPicture(entityId);
+
+                if (firstBusinessPagePicture == null)
+                {
+                    var businessPagePicture = new BusinessPagePicture()
+                    {
+                        BusinessPageId = entityId,
+                        DateCreated = DateTime.Now,
+                        DateUpdated = DateTime.Now,
+                        DisplayOrder = 1,
+                        PictureId = picture.Id
+                    };
+                    _businessPageService.InsertPicture(businessPagePicture);
+                }
+                else
+                {
+                    firstBusinessPagePicture.BusinessPageId = entityId;
+                    firstBusinessPagePicture.DateCreated = DateTime.Now;
+                    firstBusinessPagePicture.DateUpdated = DateTime.Now;
+                    firstBusinessPagePicture.DisplayOrder = 1;
+                    firstBusinessPagePicture.PictureId = picture.Id;
+                    _businessPageService.UpdatePicture(firstBusinessPagePicture);
+                }
+
+            }
+
+        }
     }
 }
