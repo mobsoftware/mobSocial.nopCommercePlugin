@@ -21,19 +21,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     {
 
         private ICustomerService _customerService;
-        private readonly IBusinessPageService _businessPageService;
         private IEventPageService _eventPageService;
 
-        public SitemapGenerator(IStoreContext storeContext, ICategoryService categoryService, 
-            IProductService productService, IManufacturerService manufacturerService, ITopicService topicService, 
-            CommonSettings commonSettings, IEventPageService eventPageService, ICustomerService customerService,
-            IBusinessPageService businessPageService,
-            BlogSettings blogSettings, NewsSettings newsSettings, ForumSettings forumSettings) : base(storeContext, categoryService, 
+        public SitemapGenerator(IStoreContext storeContext, ICategoryService categoryService, IProductService productService, IManufacturerService manufacturerService, ITopicService topicService, CommonSettings commonSettings, IEventPageService eventPageService, ICustomerService customerService, BlogSettings blogSettings, NewsSettings newsSettings, ForumSettings forumSettings) : base(storeContext, categoryService, 
             productService, manufacturerService, topicService, commonSettings, 
             blogSettings, newsSettings, forumSettings)
         {
             _customerService = customerService;
-            _businessPageService = businessPageService;
             _eventPageService = eventPageService;
         }
 
@@ -51,7 +45,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             //{
             WriteEventPages(urlHelper);
             WriteProfilePages(urlHelper);
-            WriteBusinessPages(urlHelper);
             //}
 
         }
@@ -71,8 +64,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         }
 
-
-
         private void WriteProfilePages(UrlHelper urlHelper)
         {
             var customers = _customerService.GetAllCustomers();
@@ -85,27 +76,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
                 if (url != null)
                 {
+                    var updateFrequency = UpdateFrequency.Weekly;
                     var updateTime = customer.LastActivityDateUtc;
-                    WriteUrlLocation(url, UpdateFrequency.Weekly, updateTime);
+                    WriteUrlLocation(url, updateFrequency, updateTime);
                 }
 
-            }
-
-        }
-
-        private void WriteBusinessPages(UrlHelper urlHelper)
-        {
-            var businessPages = _businessPageService.GetAll();
-
-            foreach (var businessPage in businessPages)
-            {
-                var url = urlHelper.RouteUrl("BusinessPageUrl", new { SeName = businessPage.GetSeName(0) }, "http");
-
-                if (url != null)
-                {
-                    var updateTime = businessPage.DateUpdated;
-                    WriteUrlLocation(url, UpdateFrequency.Weekly, updateTime);
-                }
             }
 
         }
