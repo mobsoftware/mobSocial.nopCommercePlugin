@@ -33,7 +33,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     [NopHttpsRequirement(SslRequirement.No)]
     public partial class BusinessPageController : BasePublicController
     {
-        private readonly IForumService _forumService;
         private readonly ILocalizationService _localizationService;
         private readonly IPictureService _pictureService;
         private readonly ICountryService _countryService;
@@ -47,7 +46,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IEventPageAttendanceService _eventPageAttendanceService;
         private readonly IWorkContext _workContext;
         private readonly IMobSocialService _mobSocialService;
-
+        private readonly IStateProvinceService _stateProvinceService;
 
 
         public BusinessPageController(IForumService forumService, ILocalizationService localizationService,
@@ -56,9 +55,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             ForumSettings forumSettings, CustomerSettings customerSettings,
             MediaSettings mediaSettings, IBusinessPageService businessPageService,
             mobSocialSettings mobSocialSettings, IEventPageAttendanceService eventPageAttendanceService,
-            IMobSocialService mobSocialService, IWorkContext workContext)
+            IMobSocialService mobSocialService, IWorkContext workContext, IStateProvinceService stateProvinceService)
         {
-            _forumService = forumService;
             _localizationService = localizationService;
             _pictureService = pictureService;
             _countryService = countryService;
@@ -72,6 +70,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mobSocialSettings = mobSocialSettings;
             _mobSocialService = mobSocialService;
             _workContext = workContext;
+            _stateProvinceService = stateProvinceService;
         }
 
         public ActionResult Index(int? id, int? page)
@@ -640,5 +639,41 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        public ActionResult Search()
+        {
+
+            
+
+            var states = _stateProvinceService.GetStateProvincesByCountryId(1).ToList();
+
+            var model = new BusinessPageSearchModel();
+
+            model.AvailableStates.Add(new SelectListItem
+            {
+                Text = _localizationService.GetResource("Admin.Address.SelectState"),
+                Value = "0"
+            });
+
+            foreach (var state in states)
+            {
+                model.AvailableStates.Add(new SelectListItem
+                {
+                    Text = state.Name,
+                    Value = state.Id.ToString(),
+                    Selected = (state.Id == model.StateProvinceId)
+                });
+            }
+
+
+
+            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/Search.cshtml", model); 
+
+            
+        }
+
+
     }
 }

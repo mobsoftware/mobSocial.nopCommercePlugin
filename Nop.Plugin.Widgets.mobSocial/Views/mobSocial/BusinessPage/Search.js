@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('#eventSearchButton').click(function () {
+    $('#searchButton').click(function () {
 
     });
 });

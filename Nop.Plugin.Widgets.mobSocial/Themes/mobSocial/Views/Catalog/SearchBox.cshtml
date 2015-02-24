@@ -32,7 +32,7 @@
                 <script type="text/javascript">
                     $(function() {
 
-                       
+
                         $("#small-searchterms").focus(function() {
                             if (this.value == '@T("Search.SearchBox.Tooltip")') {
                                 this.value = '';
@@ -77,8 +77,10 @@
                                 $('#small-searchterms').autocomplete(eventSearchOptions)
                                     .data("ui-autocomplete")._renderItem = renderEventItem;
                             } else if (searchType == "@T("SearchDropdown.BusinessPageSearchText")") {
-                                    $('#small-searchterms').autocomplete(businessPageSearchOptions)
+                                $('#small-searchterms').autocomplete(businessPageSearchOptions)
                                         .data("ui-autocomplete")._renderItem = renderBusinessPageItem;
+                                $('#small-searchterms').autocomplete(businessPageSearchOptions)
+                                        .data("ui-autocomplete")._renderMenu = renderBusinessPageMenu;
                             }
                         };
 
@@ -127,26 +129,26 @@
                             }
                         };
 
-                    var businessPageSearchOptions = {
-                        delay: 500,
-                        minLength: @(Model.SearchTermMinimumLength.ToString()),
-                        source: '@(RouteTable.Routes["BusinessPageSearchAutoComplete"] == null ? "" : Url.RouteUrl("BusinessPageSearchAutoComplete"))',
-                        select: function(event, ui) {
-                            $("#small-searchterms").val(ui.item.Name);
-                            setLocation(ui.item.Name);
-                            return false;
-                        },
-                        open: function() {
-                            $('.ui-menu').css({
-                                border: '1px solid #333333',
-                                'border-radius': '0px',
-                                width: 300
-                            });
-                        }
-                    };
+                        var businessPageSearchOptions = {
+                            delay: 500,
+                            minLength: @(Model.SearchTermMinimumLength.ToString()),
+                            source: '@(RouteTable.Routes["BusinessPageSearchAutoComplete"] == null ? "" : Url.RouteUrl("BusinessPageSearchAutoComplete"))',
+                            select: function(event, ui) {
+                                $("#small-searchterms").val(ui.item.Name);
+                                setLocation(ui.item.Name);
+                                return false;
+                            },
+                            open: function() {
+                                $('.ui-menu').css({
+                                    border: '1px solid #333333',
+                                    'border-radius': '0px',
+                                    width: 300
+                                });
+                            }
+                        };
 
-                        
-                        
+
+
 
 
                         var peopleSearchOptions = {
@@ -199,6 +201,22 @@
                                     '"></div><div class="details"><span class="title">' + t + '</span><br /><span class="subtitle">' + item.EventStartsText + '</span></div></a>')
                                 .appendTo(ul);
                         };
+
+
+
+                        function renderBusinessPageMenu( ul, items ) {
+                            var that = this;
+                            $.each( items, function( index, item ) {
+                                that._renderItemData( ul, item );
+                            });
+
+                            $(ul).parent().append('<a href="BusinessPage/Search">Search Business Pages</a>');
+
+
+                            $( ul ).find( "li:odd" ).addClass( "odd" );
+                        }
+
+
 
                         function renderBusinessPageItem(ul, item) {
                             var t = item.DisplayName;

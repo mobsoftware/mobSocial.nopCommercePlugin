@@ -77,6 +77,7 @@
     <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\AddPictureModel.cs" />
+    <Compile Include="Models\BusinessPageSearchModel.cs" />
     <Compile Include="Models\ModelUtil.cs" />
     <Compile Include="Models\BasePageModel.cs" />
     <Compile Include="Models\BusinessPageCouponModel.cs" />
@@ -436,13 +437,13 @@
     <Content Include="Views\mobSocial\BusinessPage\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\BusinessPage\Search.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\mobSocial\MyHealth.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\BusinessPage\AddPicture.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\BusinessPage\Search.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
