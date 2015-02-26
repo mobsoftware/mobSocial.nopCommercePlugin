@@ -40,7 +40,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             throw new NotImplementedException();
         }
 
-        public override CustomerProfile GetFirstPicture(int entityId)
+        public override CustomerProfile GetFirstEntityPicture(int entityId)
         {
             throw new NotImplementedException();
         }
@@ -62,6 +62,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
 
 
+
+        public override Picture GetFirstPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

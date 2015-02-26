@@ -48,7 +48,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             throw new NotImplementedException();
         }
 
-        public override TeamPage GetFirstPicture(int entityId)
+        public override TeamPage GetFirstEntityPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Picture GetFirstPicture(int entityId)
         {
             throw new NotImplementedException();
         }

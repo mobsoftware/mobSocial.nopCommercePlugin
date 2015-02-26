@@ -20,15 +20,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             //Map the additional properties
             Property(m => m.Name);
-            Property(m => m.LocationAddress1);
-            Property(m => m.LocationAddress2);
-            Property(m => m.LocationCity);
-            Property(m => m.LocationState);
-            Property(m => m.LocationZipPostalCode);
-            Property(m => m.LocationCountry);
-            Property(m => m.LocationPhone);
-            Property(m => m.LocationWebsite);
-            Property(m => m.LocationEmail);
+            Property(m => m.Address1);
+            Property(m => m.Address2);
+            Property(m => m.City);
+            Property(m => m.StateProvinceId);
+            Property(m => m.ZipPostalCode);
+            Property(m => m.CountryId);
+            Property(m => m.Phone);
+            Property(m => m.Website);
+            Property(m => m.Email);
             Property(m => m.StartDate);
             Property(m => m.EndDate);
             Property(m => m.Description);

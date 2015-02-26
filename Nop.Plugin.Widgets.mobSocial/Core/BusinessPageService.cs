@@ -24,6 +24,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     {
         private MediaSettings _nopMediaSettings;
         private IUrlRecordService _urlRecordService;
+        private readonly IPictureService _pictureService;
         private IWorkContext _workContext;
 
         public BusinessPageService(ISettingService settingService, IWebHelper webHelper,
@@ -32,10 +33,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             IRepository<BusinessPagePicture> entityPictureRepository,
             MediaSettings mediaSettings,
             IUrlRecordService urlRecordService,
+            IPictureService pictureService,
             IWorkContext workContext) : base(entityRepository, entityPictureRepository, workContext, urlRecordService)
         {
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
+            _pictureService = pictureService;
             _workContext = workContext;
         }
 
@@ -43,7 +46,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public override List<BusinessPage> GetAll(string term, int count)
         {
             // TODO: Later make a stored procedure.
-            return base.Repository.Table
+            return Repository.Table
                 .Where(x => x.Name.ToLower().Contains(term.ToLower()))
                 .Take(count)
                 .ToList();
@@ -52,19 +55,40 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         public override List<BusinessPagePicture> GetAllPictures(int entityId)
         {
-            return base.PictureRepository.Table
+            return PictureRepository.Table
                 .Where(x => x.BusinessPageId == entityId)
                 .ToList();
         }
 
-        public override BusinessPagePicture GetFirstPicture(int entityId)
+        public override BusinessPagePicture GetFirstEntityPicture(int entityId)
         {
-            return base.PictureRepository.Table
-                .Where(x => x.BusinessPageId == entityId)
-                .FirstOrDefault();
+            return PictureRepository.Table.FirstOrDefault(x => x.BusinessPageId == entityId);
                 
         }
 
+        public override Picture GetFirstPicture(int entityId)
+        {
+            var entityPicture = PictureRepository.Table.FirstOrDefault(x => x.BusinessPageId == entityId);
+            var picture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
+            return picture;
+        }
+
+
+
+        public List<BusinessPage> Search(string nameKeyword, int? stateProvinceId)
+        {
+            var searchQuery = Repository.Table;
+
+            if(!string.IsNullOrEmpty(nameKeyword))
+               searchQuery = searchQuery.Where(x => x.Name.ToLower().Contains(nameKeyword));
+
+            if(stateProvinceId.HasValue)
+                searchQuery = searchQuery.Where(x => x.StateProvinceId == stateProvinceId);
+
+            var searchResults = searchQuery.ToList();
+
+            return searchResults;
+        }
 
     }
 

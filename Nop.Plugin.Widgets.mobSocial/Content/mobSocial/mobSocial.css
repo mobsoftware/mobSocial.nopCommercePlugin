@@ -347,6 +347,42 @@
 /*** END EVENT PAGE STYLES ***/
 
 
+/*** SEARCH PAGE STYLES ***/
+
+.search-result-item {
+    
+    width: 100%;
+    display: inline-block;
+    min-height: 50px;
+    border: 1px solid black;
+    
+}
+
+    .search-result-item .right {
+        display: inline-block;
+    }
+
+    .search-result-item .left {
+        vertical-align: top;
+        display: inline-block;
+    }
+
+        .search-result-item .left .thumbnail {
+			vertical-align: top;
+            min-width: 50px;
+            min-height: 50px;
+        }
+
+        .search-result-item .right .title {
+        }
+
+        .search-result-item .right .subtitle {
+            color: #999;
+        }
+
+
+/*** END SEARCH PAGE STYLES ***/
+
 
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/

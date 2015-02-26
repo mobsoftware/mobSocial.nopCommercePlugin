@@ -97,16 +97,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                LocationName = entity.LocationName,
-                LocationAddress1 = entity.LocationAddress1,
-                LocationAddress2 = entity.LocationAddress2,
-                LocationCity = entity.LocationCity,
-                LocationState = entity.LocationState,
-                LocationZipPostalCode = entity.LocationZipPostalCode,
-                LocationCountry = entity.LocationCountry,
-                LocationPhone = entity.LocationPhone,
-                LocationEmail = entity.LocationEmail,
-                LocationWebsite = entity.LocationWebsite,
+                Address1 = entity.Address1,
+                Address2 = entity.Address2,
+                City = entity.City,
+                StateProvinceId = entity.StateProvinceId,
+                ZipPostalCode = entity.ZipPostalCode,
+                CountryId = entity.CountryId,
+                Phone = entity.Phone,
+                Email = entity.Email,
+                Website = entity.Website,
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
                 Description = entity.Description,
@@ -530,7 +529,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             foreach (var item in items)
             {
-                var entityPicture = _businessPageService.GetFirstPicture(item.Id);
+                var entityPicture = _businessPageService.GetFirstEntityPicture(item.Id);
                 var defaultPicture = (entityPicture != null)
                     ? _pictureService.GetPictureById(entityPicture.PictureId)
                     : null;
@@ -612,7 +611,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
 
 
-                var firstBusinessPagePicture = _businessPageService.GetFirstPicture(entityId);
+                var firstBusinessPagePicture = _businessPageService.GetFirstEntityPicture(entityId);
 
                 if (firstBusinessPagePicture == null)
                 {
@@ -672,6 +671,31 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/Search.cshtml", model); 
 
             
+        }
+
+
+        [HttpPost]
+        public ActionResult Search(string nameKeyword, int? stateProvinceId)
+        {
+            var businessResults = _businessPageService.Search(nameKeyword, stateProvinceId);
+
+            var results = new List<object>();
+            foreach (var item in businessResults)
+            {
+
+                var state = _stateProvinceService.GetStateProvinceById(item.StateProvinceId);
+                var picture = _businessPageService.GetFirstPicture(item.Id);
+
+                results.Add(new
+                {
+                    Title = item.Name,
+                    Subtitle = item.Address1 + " " + item.City + ", " + state.Abbreviation,
+                    Url = Url.RouteUrl("BusinessPageUrl", new {SeName = item.GetSeName()}),
+                    Thumbnail = _pictureService.GetPictureUrl(picture, 50)
+                });
+            }
+
+            return Json(results);
         }
 
 

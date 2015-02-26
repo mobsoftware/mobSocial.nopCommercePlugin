@@ -11,6 +11,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     /// </summary>
     public interface IBusinessPageService : IBaseService<BusinessPage, BusinessPagePicture>
     {
+        List<BusinessPage> Search(string nameKeyword, int? stateProvinceId);
     }
 
 }

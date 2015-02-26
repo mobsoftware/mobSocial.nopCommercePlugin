@@ -44,7 +44,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             throw new NotImplementedException();
         }
 
-        public override Notification GetFirstPicture(int entityId)
+        public override Notification GetFirstEntityPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Picture GetFirstPicture(int entityId)
         {
             throw new NotImplementedException();
         }

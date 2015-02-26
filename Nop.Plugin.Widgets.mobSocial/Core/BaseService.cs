@@ -10,6 +10,7 @@ using System;
 using Nop.Services.Seo;
 using Nop.Core.Domain.Seo;
 using Mob.Core;
+using Nop.Core.Domain.Media;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -144,11 +145,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public abstract List<P> GetAllPictures(int entityId);
 
         /// <summary>
+        /// Gets the first entity picture for the specified entity from EntityPicture table
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        public abstract P GetFirstEntityPicture(int entityId);
+
+        /// <summary>
         /// Gets the first picture for the specified entity
         /// </summary>
         /// <param name="entityId"></param>
         /// <returns></returns>
-        public abstract P GetFirstPicture(int entityId);
+        public abstract Picture GetFirstPicture(int entityId);
 
         #endregion
 
@@ -189,6 +197,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         #endregion
 
 
+
+
+        
     }
 
 }

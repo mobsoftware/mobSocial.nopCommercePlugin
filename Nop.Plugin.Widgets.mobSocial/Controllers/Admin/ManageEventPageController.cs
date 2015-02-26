@@ -84,7 +84,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 
             foreach(var entity in entities)
             {
-                var entityPicture = _eventPageService.GetFirstPicture(entity.Id);
+                var entityPicture = _eventPageService.GetFirstEntityPicture(entity.Id);
                 var defaultPicture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
 
                 var model = new {
@@ -151,15 +151,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 Name = item.Name,
                 SeName = item.GetSeName(_workContext.WorkingLanguage.Id),
                 LocationName = item.LocationName,
-                LocationAddress1 = item.LocationAddress1,
-                LocationAddress2 = item.LocationAddress2,
-                LocationCity = item.LocationCity,
+                Address1 = item.LocationAddress1,
+                Address2 = item.LocationAddress2,
+                City = item.LocationCity,
                 LocationState = item.LocationState,
-                LocationZipPostalCode = item.LocationZipPostalCode,
+                ZipPostalCode = item.LocationZipPostalCode,
                 LocationCountry = item.LocationCountry,
-                LocationPhone = item.LocationPhone,
-                LocationWebsite = item.LocationWebsite,
-                LocationEmail = item.LocationEmail,
+                Phone = item.LocationPhone,
+                Website = item.LocationWebsite,
+                Email = item.LocationEmail,
                 StartDate = item.StartDate,
                 EndDate = item.EndDate,
                 Description = item.Description,
@@ -188,12 +188,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                     LocationName = model.LocationName,
                     LocationAddress1 = model.LocationAddress1,
                     LocationAddress2 = model.LocationAddress2,
-                    LocationCity = model.LocationCity,
+                    LocationCity = model.City,
                     LocationState = model.LocationState,
-                    LocationZipPostalCode = model.LocationZipPostalCode,
-                    LocationPhone = model.LocationPhone,
-                    LocationWebsite = model.LocationWebsite,
-                    LocationEmail = model.LocationEmail,
+                    LocationZipPostalCode = model.ZipPostalCode,
+                    LocationPhone = model.Phone,
+                    LocationWebsite = model.Website,
+                    LocationEmail = model.Email,
                     LocationCountry = model.LocationCountry,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
@@ -248,15 +248,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
 
                 item.Name = model.Name;
                 item.LocationName = model.LocationName;
-                item.LocationAddress1 = model.LocationAddress1;
-                item.LocationAddress2 = model.LocationAddress2;
-                item.LocationCity = model.LocationCity;
+                item.LocationAddress1 = model.Address1;
+                item.LocationAddress2 = model.Address2;
+                item.LocationCity = model.City;
                 item.LocationState = model.LocationState;
-                item.LocationZipPostalCode = model.LocationZipPostalCode;
+                item.LocationZipPostalCode = model.ZipPostalCode;
                 item.LocationCountry = model.LocationCountry;
-                item.LocationPhone = model.LocationPhone;
-                item.LocationWebsite = model.LocationWebsite;
-                item.LocationEmail = model.LocationEmail;
+                item.LocationPhone = model.Phone;
+                item.LocationWebsite = model.Website;
+                item.LocationEmail = model.Email;
                 item.StartDate = model.StartDate;
                 item.EndDate = model.EndDate;
                 item.Description = model.Description;

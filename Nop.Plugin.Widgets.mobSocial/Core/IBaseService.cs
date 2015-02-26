@@ -4,6 +4,7 @@ using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Controllers;
 using Nop.Core;
+using Nop.Core.Domain.Media;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -28,12 +29,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
 
         List<P> GetAllPictures(int entityId);
-        P GetFirstPicture(int entityId);
+        P GetFirstEntityPicture(int entityId);
 
-
-
-
-        
+        Picture GetFirstPicture(int entityId);
 
     }
 

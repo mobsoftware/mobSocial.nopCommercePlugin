@@ -61,11 +61,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 .ToList();
         }
 
-        public override EventPagePicture GetFirstPicture(int entityId)
+        public override EventPagePicture GetFirstEntityPicture(int entityId)
         {
-            return base.PictureRepository.Table
-                .Where(x => x.EventPageId == entityId)
-                .FirstOrDefault();
+            return base.PictureRepository.Table.FirstOrDefault(x => x.EventPageId == entityId);
                 
         }
         
@@ -74,6 +72,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return base.Repository.Table.Where(x => x.EndDate >= DateTime.Now || !x.EndDate.HasValue).ToList();
         }
 
+
+        public override Picture GetFirstPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -18,6 +18,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public List<EventPageHotelModel> Hotels { get; set; }
         public EventPageHotelModel AddHotelModel { get; set; }
+        public string LocationName { get; set; }
+        public string LocationState { get; set; }
+        public string LocationCountry { get; set; }
+        public string LocationCity { get; set; }
+        public string LocationAddress1 { get; set; }
+        public string LocationAddress2 { get; set; }
     }
 
    

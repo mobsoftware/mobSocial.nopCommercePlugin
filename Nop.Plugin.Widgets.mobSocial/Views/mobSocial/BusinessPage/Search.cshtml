@@ -8,6 +8,7 @@
 
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/business-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/business-pages-search.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
@@ -15,48 +16,83 @@
 
 }
 
+
+
+
 @section left {
+    <div ng-controller="BusinessPageSearchCriteriaController">
+        <table>
 
-    <table>
-
-        <tr>
-            <td class="adminTitle">
-                Name
-            </td>
-            <td class="adminData">
-                <input type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => Model.CountryId):
-            </td>
-            <td class="adminData">
-                @Html.DropDownList("CountryId", Model.AvailableCountries)
-                @Html.ValidationMessageFor(model => model.CountryId)
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.StateProvinceId):
-            </td>
-            <td class="adminData">
-                @Html.DropDownList("StateProvinceId", Model.AvailableStates)
-                @Html.ValidationMessageFor(model => model.StateProvinceId)
-            </td>
-        </tr>
-    </table>
-
+            <tr>
+                <td class="adminTitle">
+                    Name
+                </td>
+                <td class="adminData">
+                    <input type="text" ng-model="name" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.NopLabelFor(model => Model.CountryId):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("CountryId", Model.AvailableCountries)
+                    @Html.ValidationMessageFor(model => model.CountryId)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.NopLabelFor(model => model.StateProvinceId):
+                </td>
+                <td class="adminData">
+                    @Html.DropDownList("StateProvinceId", Model.AvailableStates, new
+               {
+                   ngModel = "stateProvinceId",
+               })
+                    @Html.ValidationMessageFor(model => model.StateProvinceId)
+                </td>
+            </tr>
+        </table>
+    </div>
 }
 
 @section right {
-    
+
+
+
+
 
 }
 
-<div class="event-center-content">
 
-    Business Page Results
+<div ng-controller="BusinessPageSearchController">
+    <div class="event-center-content">
+
+        @T("BusinessPage.SearchResultsHeaderText")
+        <br />
+        <div ng-repeat="item in results" class="search-result-item">
+
+            <div>
+                <a href="{{item.Url}}">
+
+                    <div class="left">
+                        <img src="{{item.ThumbnailUrl}}" title="{{item.Title}}" class="thumbnail" />
+                    </div>
+
+                    <div class="right">
+                        <span class="title">{{item.Title}}</span><br />
+                        <span class="subtitle">{{item.Subtitle}}</span>
+                    </div>
+
+                </a>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
 
 </div>
 

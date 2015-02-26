@@ -51,12 +51,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             throw new NotImplementedException();
         }
 
-        public override BusinessPageCoupon GetFirstPicture(int entityId)
+        public override BusinessPageCoupon GetFirstEntityPicture(int entityId)
         {
             throw new NotImplementedException();
 
         }
 
+
+        public override Picture GetFirstPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

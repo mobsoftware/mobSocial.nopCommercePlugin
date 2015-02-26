@@ -99,11 +99,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 LocationAddress2 = entity.LocationAddress2,
                 LocationCity = entity.LocationCity,
                 LocationState = entity.LocationState,
-                LocationZipPostalCode = entity.LocationZipPostalCode,
+                ZipPostalCode = entity.LocationZipPostalCode,
                 LocationCountry = entity.LocationCountry,
-                LocationPhone = entity.LocationPhone,
-                LocationEmail = entity.LocationEmail,
-                LocationWebsite = entity.LocationWebsite,
+                Phone = entity.LocationPhone,
+                Email = entity.LocationEmail,
+                Website = entity.LocationWebsite,
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
                 Description = entity.Description,
@@ -516,7 +516,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             foreach (var item in items)
             {
-                var entityPicture = _eventPageService.GetFirstPicture(item.Id);
+                var entityPicture = _eventPageService.GetFirstEntityPicture(item.Id);
                 var defaultPicture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
 
                 models.Add(new

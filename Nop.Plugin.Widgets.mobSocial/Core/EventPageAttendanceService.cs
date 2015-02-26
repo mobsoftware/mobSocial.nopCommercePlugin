@@ -167,7 +167,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             throw new NotImplementedException();
         }
 
-        public override EventPageAttendance GetFirstPicture(int entityId)
+        public override EventPageAttendance GetFirstEntityPicture(int entityId)
         {
             throw new NotImplementedException();
         }
@@ -179,7 +179,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
 
 
-        
+
+
+        public override Picture GetFirstPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

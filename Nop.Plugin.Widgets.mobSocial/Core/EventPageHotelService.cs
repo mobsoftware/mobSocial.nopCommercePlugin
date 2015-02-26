@@ -54,12 +54,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             throw new NotImplementedException();
         }
 
-        public override EventPageHotel GetFirstPicture(int entityId)
+        public override EventPageHotel GetFirstEntityPicture(int entityId)
         {
             throw new NotImplementedException();
 
         }
 
+
+        public override Picture GetFirstPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
