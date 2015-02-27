@@ -58,11 +58,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         }
 
-
-
-
-
-
         public override Picture GetFirstPicture(int entityId)
         {
             throw new NotImplementedException();

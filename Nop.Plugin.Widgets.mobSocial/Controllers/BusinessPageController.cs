@@ -719,9 +719,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         [HttpPost]
-        public ActionResult Search(string nameKeyword, int? stateProvinceId, int? countryId)
+        public ActionResult Search(string nameKeyword, string city, int? stateProvinceId, int? countryId)
         {
-            var businessResults = _businessPageService.Search(nameKeyword, stateProvinceId, countryId);
+            var businessResults = _businessPageService.Search(nameKeyword, city, stateProvinceId, countryId);
 
             var results = new List<object>();
             foreach (var item in businessResults)

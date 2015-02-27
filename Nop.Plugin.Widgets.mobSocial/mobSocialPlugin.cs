@@ -176,7 +176,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 EventPageAttendanceThumbnailSize = 25,
                 UninvitedFriendsNumberOfResults = 20,
                 CustomerProfileUpdateViewCountAfterNumberOfSeconds = 180, // 3 minutes,
-                FacebookWebsiteAppId = "1234567890123456"
+                FacebookWebsiteAppId = "1234567890123456",
+                BusinessPageSearchUrl = "BusinessSearch",
             };
 
 

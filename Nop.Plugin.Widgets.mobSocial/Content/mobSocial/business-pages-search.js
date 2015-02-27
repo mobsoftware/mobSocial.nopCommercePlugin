@@ -1,6 +1,6 @@
 ﻿app
     .controller('BusinessPageSearchCriteriaController', [
-        '$rootScope', '$scope', '$http', '$attrs', '$filter', function ($rootScope, $scope, $http, $attrs, $filter) {
+        '$rootScope', '$scope', '$http', '$attrs', '$filter', function($rootScope, $scope, $http, $attrs, $filter) {
 
             // For testing
             //$scope.results = [
@@ -12,75 +12,87 @@
             //    }
             //];
 
+
             $scope.name = '';
+            $scope.city = '';
+            $scope.country = null;
+            $scope.stateProvince = null;
+
             $scope.countries = [];
             $scope.states = [];
-            $scope.stateProvinceId = null;
-            $scope.countryId = null;
 
+            $scope.$watch('country', function() {
 
-            $scope.$watch('countryId', function () {
-
-                if ($scope.countryId === null) {
+                if ($scope.country == null || $scope.country.Id == null) {
+                    $scope.stateProvince = null;
                     $scope.states = [];
                     return;
                 }
 
-
-                var data = { countryId: $scope.countryId };
+                var data = { countryId: $scope.country.Id };
 
                 $http({
-                    url: 'GetStateProvinces',
+                    url: 'BusinessPage/GetStateProvinces',
                     method: "POST",
                     data: data,
-                }).success(function (data, status, headers, config) {
+                }).success(function(data, status, headers, config) {
+                    var firstItem = { Id: null, Name: 'Select a State' };
+                    data.unshift(firstItem);
                     $scope.states = data;
-                }).error(function (data, status, headers, config) {
+                }).error(function(data, status, headers, config) {
                     alert('An error has occured retrieving state data.');
                 });
+
             });
 
 
-            $scope.$watchGroup(['name', 'stateProvinceId', 'countryId'], function () {
+            $scope.$watchGroup(['name', 'city', 'stateProvince', 'country'], function() {
                 $rootScope.$broadcast('BusinessPageSearch.SearchCriteriaChanged', {
-                    name: $scope.name, stateProvinceId: $scope.stateProvinceId, countryId:
-    $scope.countryId
+                    name: $scope.name,
+                    city: $scope.city,
+                    stateProvince: $scope.stateProvince,
+                    country: $scope.country
                 });
             });
-
-
 
 
             $http({
-                url: 'GetAllCountries',
-                method: "POST",
-            }).success(function (data, status, headers, config) {
+                url: 'BusinessPage/GetAllCountries',
+                method: "POST"
+            }).success(function(data, status, headers, config) {
+                var firstItem = { Id: null, Name: 'Select a Country' };
+                data.unshift(firstItem);
                 $scope.countries = data;
-            }).error(function (data, status, headers, config) {
+            }).error(function(data, status, headers, config) {
                 alert('An error has occured retrieving country data.');
             });
 
         }
     ])
-
     .controller('BusinessPageSearchController', [
-        '$rootScope', '$scope', '$http', '$attrs', '$filter', function ($rootScope, $scope, $http, $attrs, $filter) {
+        '$rootScope', '$scope', '$http', '$attrs', '$filter', function($rootScope, $scope, $http, $attrs, $filter) {
 
             $scope.results = [];
 
-            $rootScope.$on('BusinessPageSearch.SearchCriteriaChanged', function (event, data) {
+            $rootScope.$on('BusinessPageSearch.SearchCriteriaChanged', function(event, data) {
 
-                var data = { nameKeyword: data.name, stateProvinceId: data.stateProvinceId, countryId: data.countryId };
+                var data = {
+                    nameKeyword: data.name,
+                    city: data.city,
+                    stateProvinceId: (data.stateProvince == null) ? null : data.stateProvince.Id,
+                    countryId: (data.country == null) ? null : data.country.Id
+                };
 
                 $http({
-                    url: 'Search',
+                    url: 'BusinessPageSearch',
                     method: "POST",
                     data: data,
-                }).success(function (data, status, headers, config) {
+                }).success(function(data, status, headers, config) {
                     $scope.results = data;
-                }).error(function (data, status, headers, config) {
+                }).error(function(data, status, headers, config) {
                     alert('An error has occured retrieving results.');
                 });
             });
 
-        }]);
+        }
+    ]);

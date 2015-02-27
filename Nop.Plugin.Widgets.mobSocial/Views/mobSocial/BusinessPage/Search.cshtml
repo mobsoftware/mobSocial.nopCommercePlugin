@@ -25,7 +25,6 @@
         <br />
         <br />
         <table>
-
             <tr>
                 <td class="adminTitle">
                     Name<br />
@@ -34,18 +33,20 @@
             </tr>
             <tr>
                 <td class="adminTitle">
+                    City<br />
+                    <input type="text" ng-model="city" />
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
                     Country<br />
-                    <select class="country-input" ng-model="countryId">
-                        <option ng-repeat="item in countries" value="{{item.Id}}">{{item.Name}}</option>
-                    </select>
+                    <select class="country-input" ng-model="country" ng-options="item.Name for item in countries"></select>
                 </td>
             </tr>
             <tr>
                 <td class="adminTitle">
                     State / province<br />
-                    <select class="state-input" ng-model="stateProvinceId">
-                        <option ng-repeat="item in states" value="{{item.Id}}">{{item.Name}}</option>
-                    </select>
+                    <select class="state-input" ng-model="stateProvince" ng-options="item.Name for item in states">></select>
                 </td>
             </tr>
         </table>

@@ -75,12 +75,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
 
 
-        public List<BusinessPage> Search(string nameKeyword, int? stateProvinceId, int? countryId)
+        public List<BusinessPage> Search(string nameKeyword, string city, int? stateProvinceId, int? countryId)
         {
             var searchQuery = Repository.Table;
 
             if(!string.IsNullOrEmpty(nameKeyword))
                searchQuery = searchQuery.Where(x => x.Name.ToLower().Contains(nameKeyword));
+
+            if (!string.IsNullOrEmpty(city))
+                searchQuery = searchQuery.Where(x => x.City.ToLower().Contains(city));
 
             if (stateProvinceId.HasValue)
                 searchQuery = searchQuery.Where(x => x.StateProvinceId == stateProvinceId);

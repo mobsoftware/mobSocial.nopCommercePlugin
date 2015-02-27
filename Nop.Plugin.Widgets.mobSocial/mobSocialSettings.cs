@@ -34,5 +34,6 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public string FacebookWebsiteAppId { get; set; }
 
+        public string BusinessPageSearchUrl { get; set; }
     }
 }
