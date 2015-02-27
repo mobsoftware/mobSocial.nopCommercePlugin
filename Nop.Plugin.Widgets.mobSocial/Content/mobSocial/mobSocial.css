@@ -354,9 +354,16 @@
     width: 100%;
     display: inline-block;
     min-height: 50px;
-    border: 1px solid black;
+    border: 1px solid rgb(230, 230, 230);
+    background-color: none;
     
 }
+
+.search-result-item :hover {
+	background-color: rgb(242, 242, 242);
+	cursor: pointer;
+}
+
 
     .search-result-item .right {
         display: inline-block;
@@ -374,11 +381,48 @@
         }
 
         .search-result-item .right .title {
+            font-size: 1.1em;
         }
 
         .search-result-item .right .subtitle {
             color: #999;
         }
+
+
+.search-criteria-header {
+    margin-top: 12px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.search-results-header {
+    font-weight: bold;
+
+}
+
+.search-criteria
+{
+
+}
+
+
+.search-criteria td
+{
+    padding-top: 5px;
+}
+
+.search-criteria .state-input {
+    width:198px;
+}
+
+
+.search-criteria .country-input {
+    width:198px;
+}
+
+.search-results-header {
+    font-weight: bold;
+}
 
 
 /*** END SEARCH PAGE STYLES ***/

@@ -13,10 +13,51 @@
             //];
 
             $scope.name = '';
+            $scope.countries = [];
+            $scope.states = [];
             $scope.stateProvinceId = null;
+            $scope.countryId = null;
 
-            $scope.$watchGroup(['name', 'stateProvinceId'], function () {
-                $rootScope.$broadcast('BusinessPageSearch.SearchCriteriaChanged', { name: $scope.name, stateProvinceId: $scope.stateProvinceId });
+
+            $scope.$watch('countryId', function () {
+
+                if ($scope.countryId === null) {
+                    $scope.states = [];
+                    return;
+                }
+
+
+                var data = { countryId: $scope.countryId };
+
+                $http({
+                    url: 'GetStateProvinces',
+                    method: "POST",
+                    data: data,
+                }).success(function (data, status, headers, config) {
+                    $scope.states = data;
+                }).error(function (data, status, headers, config) {
+                    alert('An error has occured retrieving state data.');
+                });
+            });
+
+
+            $scope.$watchGroup(['name', 'stateProvinceId', 'countryId'], function () {
+                $rootScope.$broadcast('BusinessPageSearch.SearchCriteriaChanged', {
+                    name: $scope.name, stateProvinceId: $scope.stateProvinceId, countryId:
+    $scope.countryId
+                });
+            });
+
+
+
+
+            $http({
+                url: 'GetAllCountries',
+                method: "POST",
+            }).success(function (data, status, headers, config) {
+                $scope.countries = data;
+            }).error(function (data, status, headers, config) {
+                alert('An error has occured retrieving country data.');
             });
 
         }
@@ -29,7 +70,7 @@
 
             $rootScope.$on('BusinessPageSearch.SearchCriteriaChanged', function (event, data) {
 
-                var data = { nameKeyword: data.name, stateProvinceId: data.stateProvinceId };
+                var data = { nameKeyword: data.name, stateProvinceId: data.stateProvinceId, countryId: data.countryId };
 
                 $http({
                     url: 'Search',

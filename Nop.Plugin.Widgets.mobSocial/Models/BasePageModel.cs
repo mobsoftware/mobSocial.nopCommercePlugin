@@ -20,6 +20,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public string Address2 { get; set; }
         public int StateProvinceId { get; set; }
         public string City { get; set; }
+        public string State { get; set; }
         public string ZipPostalCode { get; set; }
         public int CountryId { get; set; }
         public string Phone { get; set; }

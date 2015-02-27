@@ -100,6 +100,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 Address1 = entity.Address1,
                 Address2 = entity.Address2,
                 City = entity.City,
+                State = (entity.StateProvinceId != null) ? _stateProvinceService.GetStateProvinceById(entity.StateProvinceId).Name : string.Empty,
                 StateProvinceId = entity.StateProvinceId,
                 ZipPostalCode = entity.ZipPostalCode,
                 CountryId = entity.CountryId,
@@ -667,6 +668,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
 
+            var countries = _countryService.GetAllCountries();
+
+            model.AvailableCountries.Add(new SelectListItem
+            {
+                Text = _localizationService.GetResource("Admin.Address.SelectCountry"),
+                Value = "0"
+            });
+
+            foreach (var country in countries)
+            {
+                model.AvailableCountries.Add(new SelectListItem
+                {
+                    Text = country.Name,
+                    Value = country.Id.ToString(),
+                    Selected = (country.Id == model.StateProvinceId)
+                });
+            }
+
+
 
             return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/Search.cshtml", model); 
 
@@ -675,9 +695,33 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         [HttpPost]
-        public ActionResult Search(string nameKeyword, int? stateProvinceId)
+        public ActionResult GetAllCountries()
         {
-            var businessResults = _businessPageService.Search(nameKeyword, stateProvinceId);
+
+            var countries = _countryService.GetAllCountries().ToList();
+            var model = new List<object>();
+            countries.ForEach(x => model.Add(new { Id = x.Id, Name = x.Name }));
+ 
+            return Json(model);
+        }
+
+
+        [HttpPost]
+        public ActionResult GetStateProvinces(int countryId)
+        {
+            var states = _stateProvinceService.GetStateProvincesByCountryId(countryId).ToList();
+            var model = new List<object>();
+            states.ForEach(x => model.Add(new { Id = x.Id, Name = x.Name }));
+            return Json(model);
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult Search(string nameKeyword, int? stateProvinceId, int? countryId)
+        {
+            var businessResults = _businessPageService.Search(nameKeyword, stateProvinceId, countryId);
 
             var results = new List<object>();
             foreach (var item in businessResults)
@@ -691,7 +735,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     Title = item.Name,
                     Subtitle = item.Address1 + " " + item.City + ", " + state.Abbreviation,
                     Url = Url.RouteUrl("BusinessPageUrl", new {SeName = item.GetSeName()}),
-                    Thumbnail = _pictureService.GetPictureUrl(picture, 50)
+                    ThumbnailUrl = _pictureService.GetPictureUrl(picture, 75)
                 });
             }
 

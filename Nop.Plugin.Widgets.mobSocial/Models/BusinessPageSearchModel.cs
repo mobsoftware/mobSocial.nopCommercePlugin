@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Nop.Web.Framework;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
@@ -12,7 +13,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         }
 
         public bool StateProvinceEnabled { get; set; }
+        [NopResourceDisplayName("Address.Fields.Country")]
         public int CountryId { get; set; }
+        [NopResourceDisplayName("Address.Fields.StateProvince")]
         public int StateProvinceId { get; set; }
 
         public IList<SelectListItem> AvailableStates { get; set; }

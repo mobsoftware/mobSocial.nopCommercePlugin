@@ -73,7 +73,7 @@
 
 
 
-    @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })*@
+    @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })
     <br />
     <span>@T("BusinessPage.HoursOfOperationText")</span><br />
     <ul>
@@ -81,7 +81,7 @@
             <span class="hours-of-operation-day-of-week"><b>Friday</b></span> <br />
             <span class="hours-of-operation-label"> Super Skate 7pm - 11pm </span> <a href="#"><i class="fa fa-ticket"></i></a>
         </li>
-    </ul>
+    </ul>*@
 
     @*@Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })*@
 
@@ -94,106 +94,27 @@
 
 
     <div class="hotel-information-block">
-        <span class="title">@(Model.LocationName)</span><br />
+        <span class="title">@(Model.Name)</span><br />
         <div class="hotel-information">
-            <span class="value">@Model.LocationAddress1 @Model.LocationAddress2</span><br />
-            <span class="value">@(Model.LocationCity), @Model.LocationState @Model.LocationZipPostalCode</span><br />
-            @if (!string.IsNullOrEmpty(Model.LocationCountry))
+            <span class="value">@Model.Address1 @Model.Address2</span><br />
+            <span class="value">@(Model.City), @Model.State @Model.ZipPostalCode</span><br />
+           
+            @if (!string.IsNullOrEmpty(Model.Phone))
             {
-                <span class="value">@Model.LocationCountry</span><br />
+                <span class="value">@Model.Phone</span><br />
             }
-            @if (!string.IsNullOrEmpty(Model.LocationPhone))
+           
+            @if (!string.IsNullOrEmpty(Model.Email))
             {
-                <span class="value">@Model.LocationPhone</span><br />
-            }
-            @if (!string.IsNullOrEmpty(Model.LocationWebsite))
-            {
-                <span class="value"><a href="http://@(Model.LocationWebsite)" target="_new">@Model.LocationWebsite</a></span><br />
-            }
-            @if (!string.IsNullOrEmpty(Model.LocationEmail))
-            {
-                <span class="value">@Model.LocationEmail</span><br />
+                <span class="value">@Model.Email</span><br />
             }
         </div>
-    </div><br /><br />
-
-    <div ng-controller="EventPageButtonsController" model='{ "eventPageId":"@Model.Id" }'>
-
-
-        @*<button ng-click="inviteFriendsDialog('inviteFriendsDialog', 493)" ng-click="getUninvitedFriends(true)" class="fa fa-envelope"> Invite</button>
-             <button id="goingButton" ng-click="setGoing()">Going</button>
-            <button id="goingButton" ng-click="setMaybe()">Maybe</button>
-                 <button id="goingButton" ng-click="setNotGoing()">Not Going</button>*@
-
-        <div id="inviteFriendsDialog" when-scrolled="getUninvitedFriends(false)" title="Invite Friends" style="display: none; height: 277px;  overflow-x:
-
-                                                                                                         auto;">
-            <div ng-click="updateInvitation(customer)" class="friend-block" ng-class="{ 'highlight-block': customer.IsInvited == true }" ng-repeat="customer
-
-in uninvitedFriends">
-                <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" /><br />
-                <span style="font-size: 7pt; ">{{customer.FullName}}</span><br />
-                <input type="checkbox" ng-model="customer.IsInvited" style="pointer-events: none" />
-            </div>
-            @*<button ng-click="inviteFriends()">Invite</button>*@
-        </div>
-
     </div>
-
-
-
-    <br /><br />
-
-
-
-
-
 }
 
 
 @section right {
-    <div class="event-page-attendance" ng-controller="EventPageController" model='{ "eventPageId":"@Model.Id" }'>
-
-
-        <span class="title">Invited ({{InvitedCustomers.length}})</span><br />
-
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in InvitedCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
-        </div>
-
-        <span class="title" ng-show="GoingCustomers.length > 0">Going ({{GoingCustomers.length}})</span><br />
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in GoingCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
-        </div>
-
-        <span class="title" ng-show="MaybeCustomers.length > 0">Maybe ({{MaybeCustomers.length}})</span><br />
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in MaybeCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
-        </div>
-
-        <span class="title" ng-show="NotGoingCustomers.length > 0">Not Going ({{NotGoingCustomers.length}})</span><br />
-        <div class="event-page-attendance-block">
-            <span class="evene-page-attendance-customer-block" ng-repeat="customer in NotGoingCustomers">
-                <a href="{{customer.ProfileUrl}}">
-                    <img src="{{customer.PictureUrl}}" title="{{customer.FullName}}" />
-                </a>
-            </span>
-        </div>
-
-
-    </div>
+    
 
 }
 

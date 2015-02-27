@@ -20,36 +20,32 @@
 
 
 @section left {
-    <div ng-controller="BusinessPageSearchCriteriaController">
+    <div class="search-criteria" ng-controller="BusinessPageSearchCriteriaController">
+        <span class="search-criteria-header">@T("BusinessPage.SearchCriteriaHeaderText")</span>
+        <br />
+        <br />
         <table>
 
             <tr>
                 <td class="adminTitle">
-                    Name
-                </td>
-                <td class="adminData">
+                    Name<br />
                     <input type="text" ng-model="name" />
                 </td>
             </tr>
             <tr>
                 <td class="adminTitle">
-                    @Html.NopLabelFor(model => Model.CountryId):
-                </td>
-                <td class="adminData">
-                    @Html.DropDownList("CountryId", Model.AvailableCountries)
-                    @Html.ValidationMessageFor(model => model.CountryId)
+                    Country<br />
+                    <select class="country-input" ng-model="countryId">
+                        <option ng-repeat="item in countries" value="{{item.Id}}">{{item.Name}}</option>
+                    </select>
                 </td>
             </tr>
             <tr>
                 <td class="adminTitle">
-                    @Html.NopLabelFor(model => model.StateProvinceId):
-                </td>
-                <td class="adminData">
-                    @Html.DropDownList("StateProvinceId", Model.AvailableStates, new
-               {
-                   ngModel = "stateProvinceId",
-               })
-                    @Html.ValidationMessageFor(model => model.StateProvinceId)
+                    State / province<br />
+                    <select class="state-input" ng-model="stateProvinceId">
+                        <option ng-repeat="item in states" value="{{item.Id}}">{{item.Name}}</option>
+                    </select>
                 </td>
             </tr>
         </table>
@@ -68,7 +64,8 @@
 <div ng-controller="BusinessPageSearchController">
     <div class="event-center-content">
 
-        @T("BusinessPage.SearchResultsHeaderText")
+        <span class="search-results-header">@T("BusinessPage.SearchResultsHeaderText")</span>
+        <br />
         <br />
         <div ng-repeat="item in results" class="search-result-item">
 
