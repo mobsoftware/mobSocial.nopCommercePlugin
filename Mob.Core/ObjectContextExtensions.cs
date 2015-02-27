@@ -44,6 +44,9 @@ namespace Mob.Core
             if (String.IsNullOrEmpty(tableName))
                 throw new ArgumentNullException("tableName");
 
+            tableName = RemoveSchema(tableName);
+
+
             //drop the table
             if (context.Database.SqlQuery<int>("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = {0}", tableName).Any<int>())
             {
@@ -52,6 +55,25 @@ namespace Mob.Core
             }
             context.SaveChanges();
         }
+
+
+        private static string RemoveSchema(string tableName)
+        {
+            tableName = tableName
+                .Replace("[", string.Empty)
+                .Replace("]", string.Empty);
+
+            var endIndex = tableName.IndexOf('.');
+
+            if (endIndex < 0)
+                return tableName;
+
+            var tableNameLessSchema = tableName.Remove(0, endIndex + 1);
+
+            return tableNameLessSchema;
+
+        }
+
 
     }
 }

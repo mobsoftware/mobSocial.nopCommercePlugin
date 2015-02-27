@@ -94,10 +94,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<EventPageAttendance>();
                 this.DropTable<EventPagePicture>();
                 this.DropTable<EventPageHotel>();
-                this.DropTable<BusinessPage>();
+                this.DropTable<EventPage>();
                 this.DropTable<BusinessPageCoupon>();
                 this.DropTable<BusinessPagePicture>();
-                this.DropTable<EventPage>();
+                this.DropTable<BusinessPage>();
                 this.DropTable<GroupPageMember>();
                 this.DropTable<CustomerTimeline>();
                 //this.DropPluginTable"('CustomerAlbumPictureLike>());
