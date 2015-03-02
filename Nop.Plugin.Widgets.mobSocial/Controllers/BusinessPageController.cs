@@ -525,27 +525,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             var items = _businessPageService.GetAll(term, _mobSocialSettings.EventPageSearchAutoCompleteNumberOfResults);
 
-
             var models = new List<object>();
-
             foreach (var item in items)
             {
-                var entityPicture = _businessPageService.GetFirstEntityPicture(item.Id);
-                var defaultPicture = (entityPicture != null)
-                    ? _pictureService.GetPictureById(entityPicture.PictureId)
-                    : null;
+                var picture = _businessPageService.GetFirstPicture(item.Id);
+                var state = _stateProvinceService.GetStateProvinceById(item.StateProvinceId);
+                var stateName = (state != null) ? state.Name : string.Empty;
 
                 models.Add(new
                 {
-
                     DisplayName = item.Name,
                     Url = Url.RouteUrl("BusinessPageUrl", new {SeName = item.GetSeName()}),
-                    PictureUrl = _pictureService.GetPictureUrl(defaultPicture, 50, true),
-                    EventStartsText =
-                        "Starts " + item.StartDate.ToString("MMMM d, yyyy") + " at " +
-                        item.StartDate.ToString("hh:mmtt"),
+                    PictureUrl = _pictureService.GetPictureUrl(picture, 50, true),
+                    Subtitle = item.Address1 + " " + item.City + ", " + state.Name,
                 });
-
 
             }
 
