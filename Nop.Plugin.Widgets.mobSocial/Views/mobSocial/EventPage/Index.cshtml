@@ -61,22 +61,22 @@
         <span class="title">@(Model.LocationName)</span><br />
         <div class="hotel-information">
             <span class="value">@Model.LocationAddress1 @Model.LocationAddress2</span><br />
-            <span class="value">@(Model.LocationCity), @Model.LocationState @Model.LocationZipPostalCode</span><br />
+            <span class="value">@(Model.LocationCity), @Model.LocationState @Model.ZipPostalCode</span><br />
             @if (!string.IsNullOrEmpty(Model.LocationCountry))
             {
                 <span class="value">@Model.LocationCountry</span><br />
             }
-            @if (!string.IsNullOrEmpty(Model.LocationPhone))
+            @if (!string.IsNullOrEmpty(Model.Phone))
             {
-                <span class="value">@Model.LocationPhone</span><br />
+                <span class="value">@Model.Phone</span><br />
             }
-            @if (!string.IsNullOrEmpty(Model.LocationWebsite))
+            @if (!string.IsNullOrEmpty(Model.Website))
             {
-                <span class="value"><a href="http://@(Model.LocationWebsite)" target="_new">@Model.LocationWebsite</a></span><br />
+                <span class="value"><a href="http://@(Model.Website)" target="_new">@Model.Website</a></span><br />
             }
-            @if (!string.IsNullOrEmpty(Model.LocationEmail))
+            @if (!string.IsNullOrEmpty(Model.Email))
             {
-                <span class="value">@Model.LocationEmail</span><br />
+                <span class="value">@Model.Email</span><br />
             }
         </div>
     </div><br /><br />
