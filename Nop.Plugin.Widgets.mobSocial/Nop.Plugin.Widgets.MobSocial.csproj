@@ -353,6 +353,7 @@
     <Content Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml">
       <SubType>
       </SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\EventPage\Search.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -417,10 +418,13 @@
     <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
+    <None Include="Themes\mobSocial\Views\Shared\Head.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml">
       <SubType>
       </SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

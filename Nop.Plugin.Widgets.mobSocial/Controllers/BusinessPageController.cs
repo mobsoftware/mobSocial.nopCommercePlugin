@@ -721,12 +721,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
 
                 var state = _stateProvinceService.GetStateProvinceById(item.StateProvinceId);
+                var stateAbbreviation = (state != null) ? state.Abbreviation : string.Empty;
+
                 var picture = _businessPageService.GetFirstPicture(item.Id);
 
                 results.Add(new
                 {
                     Title = item.Name,
-                    Subtitle = item.Address1 + " " + item.City + ", " + state.Abbreviation,
+                    Subtitle = item.Address1 + " " + item.City + ", " + stateAbbreviation,
                     Url = Url.RouteUrl("BusinessPageUrl", new {SeName = item.GetSeName()}),
                     ThumbnailUrl = _pictureService.GetPictureUrl(picture, 75)
                 });
