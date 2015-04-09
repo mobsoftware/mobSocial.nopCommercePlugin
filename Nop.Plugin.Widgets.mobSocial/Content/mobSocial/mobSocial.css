@@ -430,7 +430,6 @@
 
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/
-.product-grid .product-item .picture { overflow:visible; }
 .master-wrapper-main .center-3 { overflow:visible; }
 /*** END OVERRIDE NOPCOMMERCE STYLES ***/
 
@@ -465,6 +464,17 @@
     .block-popular-tags { display: none; }
     .block-newsletter .title { text-align: center; }
 
+    /* Categories on Home Page */
+    
+    .home-page-category-grid .category-item { width: 130px; }
+
+    /* Featured Products on Home Page */
+    .home-page-product-grid .title { margin: 0px;  }
+    .product-grid { padding-left: 5px; }
+    .product-grid .product-item { width: 130px; margin-right: 10px; }
+    .product-grid .item-box { float: left !important; }
+    .product-grid .product-item .picture img { margin: 5px 0px; }
+  
     /* Event Pages */
     .event-page-attendance-block { width: 100%; }
 
