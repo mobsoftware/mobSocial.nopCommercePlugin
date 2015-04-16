@@ -193,6 +193,9 @@
     <Content Include="Content\angular-file-upload-1.1.5\src\outro.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\mob-video.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\business-pages-search.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -217,6 +220,9 @@
     <Content Include="Content\ie6.css" />
     <Content Include="Content\ie7.css" />
     <Content Include="Content\mobSocial\customer-video-albums.js" />
+    <Content Include="Content\mobSocial\RTCMultiConnection.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\styles.css" />
     <Content Include="Content\styles.rtl.css" />
     <Content Include="license.txt">
@@ -225,8 +231,12 @@
     <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Scripts\jquery.signalR-1.2.2.js" />
-    <Content Include="Scripts\jquery.signalR-1.2.2.min.js" />
+    <Content Include="Content\mobSocial\jquery.signalR-1.2.2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\jquery.signalR-1.2.2.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
