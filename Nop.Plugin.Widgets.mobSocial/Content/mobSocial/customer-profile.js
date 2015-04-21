@@ -57,6 +57,10 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
 
     };
 
+    $scope.editProfilePicture = function () {
+        alert('new way to edit profile picture!');
+    };
+
 
 }]);
 

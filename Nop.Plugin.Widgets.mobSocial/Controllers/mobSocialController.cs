@@ -853,6 +853,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             bool avatarEnabled = false;
             string avatarUrl = _pictureService.GetDefaultPictureUrl(_mediaSettings.AvatarPictureSize, PictureType.Avatar);
             string fullSizeAvatarUrl = _pictureService.GetDefaultPictureUrl(0, PictureType.Avatar);
+            var isCurrentUser = _workContext.CurrentCustomer.Id == customerId;
 
             if (_customerSettings.AllowCustomersToUploadAvatars)
             {
@@ -874,16 +875,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
             var model = new ProfilePictureModel()
-                {
-                    AvatarEnabled = avatarEnabled,
-                    AvatarUrl = avatarUrl,
-                    FullSizeAvatarUrl = fullSizeAvatarUrl 
-                };
-
+            {
+                CanEdit = isCurrentUser && _customerSettings.AllowCustomersToUploadAvatars,
+                AvatarEnabled = avatarEnabled,
+                AvatarUrl = avatarUrl,
+                FullSizeAvatarUrl = fullSizeAvatarUrl 
+            };
 
             return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_ProfilePicture.cshtml", model);
-
-
 
         }
 /*
