@@ -31,6 +31,31 @@
 
 <div class="profile-info-box">
 
+    Room name
+    <input id="broadcastName" type="hidden" value="myRoom" /><br />
+
+    <!-- Patent for streaming video to social network profiles, events, business pages, or any social network screen -->
+    <div id="videoMessage" style="
+    position: absolute;
+    top: 784px;
+    left: 460px;
+    font-size: 1.5em;
+    text-align: center;
+    font-weight: bold;
+    color: rgb(208, 208, 208);
+    cursor: pointer;
+">Bruce is now broadcasting!<br>Click to watch<br />Sign in to watch</div>
+    <br /><br /><br /><br /><br /><br /><br /><br />
+    <div id="profileVideoStream" style="
+    width:300px; height:300px;
+    border: 1px solid black;
+    background-color: transparent;
+    cursor: pointer;
+"></div>
+
+    <button id="viewBroadcast">View Broadcast</button><br /><br />
+
+
 
     @if (Model.LocationEnabled)
     {
@@ -70,32 +95,6 @@
     <div class="clear">
     </div>
 
-    Room name
-    <input id="broadcastName" type="hidden" value="myRoom" /><br />
-
-    <!-- Patent for streaming video to social network profiles, events, business pages, or any social network screen -->
-    <div id="videoMessage" style="
-    position: absolute;
-    top: 784px;
-    left: 460px;
-    font-size: 1.5em;
-    text-align: center;
-    font-weight: bold;
-    color: rgb(208, 208, 208);
-    cursor: pointer;
-">Bruce is now broadcasting!<br>Click to watch<br />Sign in to watch</div>
-    <br /><br /><br /><br /><br /><br /><br /><br />
-    <div id="profileVideoStream" style="
-    width:300px; height:300px;
-    border: 1px solid black;
-    background-color: transparent;
-    cursor: pointer;
-" />
-
-
-    <button id="startBroadcast">Start Broadcast</button><br /><br />
-    <button id="viewBroadcast">View Broadcast</button><br /><br />
-
 
 </div>
 
@@ -105,34 +104,5 @@
     Html.AddScriptParts("~/signalr/hubs");
     Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/mob-video.js");
 }
-
-
-<script type="text/javascript">
-    $(function () {
-        var hub = $.connection.messagingHub;
-        $.support.cors = true;
-        $.connection.hub.url = '/signalr/hubs';
-        $.connection.hub.start().done(function () {
-
-            var message = JSON.stringify({
-                message: 'hello',
-                channel: '1'
-            });
-
-            hub.server.send(message);
-        });;
-
-        hub.client.onMessageReceived = function (message) {
-            alert(message);
-
-            var message = JSON.parse(message);
-            if (onMessageCallbacks[message.channel]) {
-                onMessageCallbacks[message.channel](message.message);
-            }
-        };
-
-    });
-</script>
-
 
 

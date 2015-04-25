@@ -6,10 +6,23 @@ var connection = new RTCMultiConnection();
 // Customize session
 connection.session = { audio: true, video: true, oneway: true };
 
+
+var streamId = 0;
+var videoElement = null;
+
 // on getting local or remote media stream
 connection.onstream = function (e) {
-    $(e.mediaElement).width(300).height(300);
-    $('#profileVideoStream').html(e.mediaElement);
+
+    videoElement = e.mediaElement;
+    $(videoElement).width(300).height(300);
+    $('#profileVideoStream').html(videoElement);
+
+    $(videoElement).unbind('pause').bind('pause', videoPaused);
+
+    streamId = e.streamid;
+    connection.streams[streamId].startRecording({ audio: true, video: true });
+
+
 };
 
 var sessions = {};
@@ -58,10 +71,32 @@ connection.openSignalingChannel = function (config) {
 connection.connect();
 
 
+function videoPaused(e)
+{
+
+    connection.streams[streamId].stopRecording(function (blobs) {
+        var video = document.createElement('video');
+        video.controls = true;
+        video.src = URL.createObjectURL(blobs.video);
+        video.play();
+        $('body').append(video);
+
+        var mediaElement = document.createElement('audio');
+        mediaElement.src = URL.createObjectURL(blobs.audio);
+        mediaElement.controls = true;
+        $('body').append(mediaElement);
+
+
+    });
+}
+
+
 $(function () {
 
     $('#profileVideoStream').unbind('click').click(function () {
-        connection.open($('#broadcastName').val());
+        if (streamId == 0) {
+            connection.open($('#broadcastName').val());
+        }
     });
 
 
@@ -69,5 +104,7 @@ $(function () {
         console.log('connecting to room ' + $('#roomName').val());
         connection.join($('#roomName').val())
     });
+
+    
 
 });
