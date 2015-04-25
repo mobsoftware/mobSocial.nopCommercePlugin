@@ -6,6 +6,11 @@
             <a href="@Model.FullSizeAvatarUrl" id="main-img-lightbox-anchor-1">
                 <img id="main-event-img-1" class="avatar-img" src="@Model.AvatarUrl" itemprop="image" />
             </a>
+
+            @if (Model.CanEdit)
+            {
+                <button id="editProfilePicture" ng-click="editProfilePicture()"><i class="fa fa-camera"></i> Edit</button>
+            }
         </div>
 
     
