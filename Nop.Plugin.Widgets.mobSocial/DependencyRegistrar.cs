@@ -138,10 +138,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
             builder.RegisterType<BusinessPageService>().As<IBusinessPageService>().InstancePerRequest();
             builder.RegisterType<BusinessPageCouponService>().As<IBusinessPageCouponService>().InstancePerRequest();
-            builder.RegisterType<TeamPageService>().AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>().InstancePerRequest();
             builder.RegisterType<CustomerTimelineService>().As<CustomerTimelineService>().InstancePerRequest();
             builder.RegisterType<CustomerProfileService>().As<CustomerProfileService>().InstancePerRequest();
+            builder.RegisterType<TeamPageService>().As<TeamPageService>().InstancePerRequest();
             builder.RegisterType<NotificationService>().As<INotificationService>().InstancePerRequest();
             
             // Override any NopCommerce Services below:

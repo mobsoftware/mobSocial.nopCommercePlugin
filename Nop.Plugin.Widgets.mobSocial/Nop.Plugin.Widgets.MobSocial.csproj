@@ -227,7 +227,7 @@
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery.signalR-1.2.2.js" />
     <Content Include="Scripts\jquery.signalR-1.2.2.min.js" />
-    <Content Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
+    <Content Include="Views\mobSocial\Admin\ManageTeamPage\List.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml">
@@ -440,9 +440,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.SEO.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\_ViewStart.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Tickets.cshtml">
