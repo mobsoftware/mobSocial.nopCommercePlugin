@@ -14,6 +14,7 @@ using Nop.Services.Security;
 using Nop.Web.Controllers;
 using Nop.Web.Framework;
 using Nop.Web.Models.Profile;
+using Nop.Services.Customers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -22,14 +23,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     {
         private readonly CustomerProfileService _customerProfileService;
         private readonly CustomerProfileViewService _customerProfileViewService;
+        private readonly ICustomerService _customerService;
+        private readonly IMobSocialService _mobSocialService;
         private readonly IWorkContext _workContext;
 
         public CustomerProfileController(CustomerProfileService customerProfileService,
             CustomerProfileViewService customerProfileViewService,
+            ICustomerService customerService,
+            IMobSocialService mobSocialService,
             IWorkContext workContext)
         {
             _customerProfileService = customerProfileService;
             _customerProfileViewService = customerProfileViewService;
+            _customerService = customerService;
+            _mobSocialService = mobSocialService;
             _workContext = workContext;
         }
 
@@ -39,13 +46,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _customerProfileViewService.IncrementViewCount(customerId);
 
             var profile = _customerProfileService.GetByCustomerId(customerId);
-
+            
             var customerProfile = new CustomerProfileModel()
             {
                 CustomerId = customerId,
                 Views = _customerProfileViewService.GetViewCount(customerId),
                 FriendCount = _customerProfileService.GetFriendCount(customerId),
-                IsLoggedInUsersProfile = _workContext.CurrentCustomer.Id == customerId
+                IsLoggedInUsersProfile = _workContext.CurrentCustomer.Id == customerId,
+                IsFriend = _mobSocialService.GetFriendRequestStatus(_workContext.CurrentCustomer.Id, customerId) == FriendStatus.Friends
             };
 
             if (profile != null)

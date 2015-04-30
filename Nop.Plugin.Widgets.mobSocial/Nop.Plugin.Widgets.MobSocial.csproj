@@ -194,7 +194,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\mob-live-video.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\mob-live-video.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

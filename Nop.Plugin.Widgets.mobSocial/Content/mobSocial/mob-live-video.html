@@ -1,1 +1,29 @@
 ﻿<!--<video style="width:300px; height:300px"></video>-->
+
+<div ng-controller="mobBroadcastController">
+
+    Room name
+    <input id="broadcastName" type="hidden" value="myRoom" /><br />
+
+    <!-- Patent for streaming video to social network profiles, events, business pages, or any social network screen -->
+    <div id="videoMessage" style="
+    position: absolute;
+    top: 784px;
+    left: 460px;
+    font-size: 1.5em;
+    text-align: center;
+    font-weight: bold;
+    color: rgb(208, 208, 208);
+    cursor: pointer;">
+        Bruce is now broadcasting!<br />Click to watch<br />Sign in to watch
+    </div>
+    <br /><br /><br /><br /><br /><br /><br /><br />
+    <div id="profileVideoStream" style="
+    width:300px; height:300px;
+    border: 1px solid black;
+    cursor: pointer;
+" ng-click="startBroadcast()"></div>
+
+    <button id="viewBroadcast" ng-show="canViewBroadcast">View Broadcast</button><br /><br />
+</div>
+

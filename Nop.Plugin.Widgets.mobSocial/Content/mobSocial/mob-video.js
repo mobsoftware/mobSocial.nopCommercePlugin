@@ -71,8 +71,7 @@ connection.openSignalingChannel = function (config) {
 connection.connect();
 
 
-function videoPaused(e)
-{
+function videoPaused(e) {
 
     connection.streams[streamId].stopRecording(function (blobs) {
         var video = document.createElement('video');
@@ -91,13 +90,29 @@ function videoPaused(e)
 }
 
 
-$(function () {
+app
+    .controller('mobBroadcastController', ['$rootScope', '$scope', '$http', '$attrs',
+        function ($rootScope, $scope, $http, $attrs) {
 
-    $('#profileVideoStream').unbind('click').click(function () {
-        if (streamId == 0) {
-            connection.open($('#broadcastName').val());
+            $scope.canViewBroadcast = $scope.parent.customerProfile.IsFriend;
+
+            $scope.startBroadcast = function () {
+                if (streamId == 0) {
+                    connection.open($('#broadcastName').val());
+                }
+            };
+
+            
         }
-    });
+
+
+    ]);
+
+
+
+
+
+$(function () {
 
 
     $('#joinRoomButton').unbind('click').click(function () {
@@ -105,6 +120,6 @@ $(function () {
         connection.join($('#roomName').val())
     });
 
-    
+
 
 });
