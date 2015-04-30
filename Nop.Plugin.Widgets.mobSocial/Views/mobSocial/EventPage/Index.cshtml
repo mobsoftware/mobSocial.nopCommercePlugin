@@ -11,12 +11,12 @@
     Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
 
-    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/event-pages.js");
-    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/event-pages/event-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
 
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
-    Html.AddCssFileParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/easy-responsive-tabs.css");
+    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
 
 
 }

@@ -1,4 +1,5 @@
-﻿var app = angular.module('mobSocialApp', []);
+﻿var app = angular.module('mobSocialApp', [])
+    .constant('rootUrl','./Plugins/Widgets.mobSocial/Content/mobSocial');
 
 
 app.directive('whenScrolled', function () {
@@ -36,7 +37,7 @@ app.directive('contenteditable', function () {
     };
 });
 
-
+// TODO: Move directives into their own files (e.g. my-widget.directive.js)
 app.factory('dialogService', function () {
     return {
         open: function (elementId, minWidth, dialogButtons) {

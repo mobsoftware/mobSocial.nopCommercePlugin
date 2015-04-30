@@ -193,10 +193,19 @@
     <Content Include="Content\angular-file-upload-1.1.5\src\outro.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\business-pages-search.js">
+    <Content Include="Content\mobSocial\mob-live-video.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\mob-live-video.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\business-pages.js">
+    <Content Include="Content\mobSocial\mob-video.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\business-pages\business-pages-search.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\business-pages\business-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\ngthumb.js">
@@ -205,7 +214,7 @@
     <Content Include="Content\mobSocial\file-upload.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\my-health.js">
+    <Content Include="Content\mobSocial\profile-pages\my-health.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\easy-responsive-tabs.css">
@@ -216,7 +225,10 @@
     </Content>
     <Content Include="Content\ie6.css" />
     <Content Include="Content\ie7.css" />
-    <Content Include="Content\mobSocial\customer-video-albums.js" />
+    <Content Include="Content\mobSocial\profile-pages\customer-video-albums.js" />
+    <Content Include="Content\mobSocial\RTCMultiConnection.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\styles.css" />
     <Content Include="Content\styles.rtl.css" />
     <Content Include="license.txt">
@@ -225,8 +237,13 @@
     <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Scripts\jquery.signalR-1.2.2.js" />
-    <Content Include="Scripts\jquery.signalR-1.2.2.min.js" />
+    <Content Include="Content\mobSocial\jquery.signalR-1.2.2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\jquery.signalR-1.2.2.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+   
     <Content Include="Views\mobSocial\Admin\ManageTeamPage\List.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -257,10 +274,10 @@
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\customer-profile.js">
+    <Content Include="Content\mobSocial\profile-pages\customer-profile.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\event-pages.js">
+    <Content Include="Content\mobSocial\event-pages\event-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\fonts\fontawesome-webfont.svg">
@@ -299,10 +316,7 @@
     <Content Include="Content\mobSocial\common.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\customer-albums.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\customer-friend-block.js">
+    <Content Include="Content\mobSocial\profile-pages\customer-albums.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\font-awesome.min.css">

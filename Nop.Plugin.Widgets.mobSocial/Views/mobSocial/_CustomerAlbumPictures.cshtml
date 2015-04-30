@@ -1,9 +1,11 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerAlbumModel
+﻿@using Nop.Plugin.Widgets.MobSocial.Models;
+
+@model CustomerAlbumModel
 
 @{
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
     
-    Html.AddScriptParts(ResourceLocation.Foot, "~/Plugins/Widgets.mobSocial/Content/mobSocial/customer-albums.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/profile-pages/customer-albums.js");
     Html.AddScriptParts("~/Scripts/jquery.fancybox-1.3.4.pack.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
 }

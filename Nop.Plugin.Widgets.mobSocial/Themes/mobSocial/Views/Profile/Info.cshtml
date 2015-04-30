@@ -1,8 +1,6 @@
 ﻿@model ProfileInfoModel
 @using Nop.Web.Models.Profile;
-
 @using Nop.Web.Models.Customer;
-
 <style type="text/css">
     .ui-widget-header {
         background: white;
@@ -12,8 +10,8 @@
         border-left: none;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
-
     }
+
     .ui-widget-content {
         border: none;
     }
@@ -25,52 +23,63 @@
     .profile-page .profile-info-box {
         background: none;
     }
-    
+
     .ui-tabs .ui-tabs-nav {
-        padding: 0px 0px 0px 0px !important;        
+        padding: 0px 0px 0px 0px !important;
     }
 </style>
 
-
 <div class="profile-info-box">
-    
-        
-        @if (Model.LocationEnabled)
-        {            
-            <div class="profile-stat">
-                @T("Profile.Country"): <span class="profile-stat-value">@Model.Location</span>
-            </div>  
-        }
-        
-        @Html.Widget("profile_page_info_userdetails")
 
     
-    
-        
-        @if (Model.TotalPostsEnabled)
-        {
-            <div class="profile-stat">
-                @T("Profile.TotalPosts"): <span class="profile-stat-value">@Model.TotalPosts</span>
-            </div>         
-        }
-        @if (Model.JoinDateEnabled)
-        {        
-            <div class="profile-stat">
-                @T("Profile.JoinDate"): <span class="profile-stat-value">@Model.JoinDate</span>
-            </div>
-        }
-        @if (Model.DateOfBirthEnabled)
-        {
-            
-            var bday = DateTime.Parse(Model.DateOfBirth).ToString("MMMM dd");
-            
-            
-            <div class="profile-stat">
-                @T("Profile.DateOfBirth"): <span class="profile-stat-value">@bday</span>
-            </div>
-        }
-        @Html.Widget("profile_page_info_userstats")
-    
+
+
+    @if (Model.LocationEnabled)
+    {
+        <div class="profile-stat">
+            @T("Profile.Country"): <span class="profile-stat-value">@Model.Location</span>
+        </div>
+    }
+
+    @Html.Widget("profile_page_info_userdetails")
+
+
+
+    @if (Model.TotalPostsEnabled)
+    {
+        <div class="profile-stat">
+            @T("Profile.TotalPosts"): <span class="profile-stat-value">@Model.TotalPosts</span>
+        </div>
+    }
+    @if (Model.JoinDateEnabled)
+    {
+        <div class="profile-stat">
+            @T("Profile.JoinDate"): <span class="profile-stat-value">@Model.JoinDate</span>
+        </div>
+    }
+    @if (Model.DateOfBirthEnabled)
+    {
+
+        var bday = DateTime.Parse(Model.DateOfBirth).ToString("MMMM dd");
+
+
+        <div class="profile-stat">
+            @T("Profile.DateOfBirth"): <span class="profile-stat-value">@bday</span>
+        </div>
+    }
+    @Html.Widget("profile_page_info_userstats")
+
     <div class="clear">
     </div>
+
+
 </div>
+
+@{
+    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/RTCMultiConnection.js");
+    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/jquery.signalr-1.2.2.js");
+    Html.AddScriptParts("~/signalr/hubs");
+    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/mob-video.js");
+}
+
+

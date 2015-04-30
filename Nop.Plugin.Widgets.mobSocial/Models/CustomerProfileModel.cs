@@ -13,5 +13,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public DateTime UpdatedDate { get; set; }
         public int Views { get; set; }
         public int FriendCount { get; set; }
+        public bool IsFriend { get; set; }
     }
 }
