@@ -432,6 +432,21 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             };
             _messageTemplateService.InsertMessageTemplate(productReviewNotification);
+
+
+
+            var someoneSentYouASongNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.SomeoneSentYouASongNotification",
+                Subject = "%Friend.FirstName% sent you a song!",
+                Body = "<a href=\"%Store.URL%\">Log in</a> to %Friend.FirstName%'s song to you.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+            _messageTemplateService.InsertMessageTemplate(someoneSentYouASongNotification);
+
+
         }
 
         #endregion
