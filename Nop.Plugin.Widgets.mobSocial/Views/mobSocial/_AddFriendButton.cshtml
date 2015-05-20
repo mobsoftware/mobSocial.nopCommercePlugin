@@ -9,44 +9,40 @@
 @if (Model.ShowAddFriendButton || Model.ShowFriendRequestSent)
 {
     <div class="addFriendContainer">
-        
+
         <div id="add-friend-button-container" class="profile-stat @(Model.ShowAddFriendButton ? "show" : "hide")">
-            <div class="send-pm-box">
-                <a href="#" class="add-friend-button pm-link-button" data-toCustomerId="@Model.CustomerProfileId"> @(T("MobSocial.AddFriendButtonText").Text)</a>
-            </div>
-        </div>    
-        
-        <div id="friend-request-sent-container" data-friendCustomerId="@Model.CustomerProfileId" class="profile-stat @(Model.ShowFriendRequestSent ? "show" : "hide")">
-            <div class="send-pm-box">
+            <button class="add-friend-button pm-link-button" data-tocustomerid="@Model.CustomerProfileId"><i class="fa fa-user-plus"></i>asdf @(T("MobSocial.AddFriendButtonText").Text)</button>
+        </div>
+
+        <div id="friend-request-sent-container" data-friendcustomerid="@Model.CustomerProfileId" class="profile-stat @(Model.ShowFriendRequestSent ? "show" : "hide")">
+            <button>
                 <i class="fa fa-check"></i>
                 <span id="friend-request-sent" class="friend-request-sent-label">@T("MobSocial.FriendRequestSentLabel")&nbsp;</span>
-            </div>
+            </button>
         </div>
-        
-    </div>    
-    
+
+    </div>
+
 }
 else if (Model.ShowFriendsButton)
 {
     <div class="profile-stat">
-        <div class="send-pm-box">
+        <button>
             <i class="fa fa-check"></i>
-            <span id="friends-button" class="friend-button" >@T("MobSocial.FriendsLabelText")</span>
-        </div>
-    </div>   
+            <span id="friends-button" class="friend-button">@T("MobSocial.FriendsLabelText")</span>
+        </button>
+    </div>
 }
 else if (Model.ShowConfirmFriendButton)
 {
-    <div class="profile-stat" data-showConfirmButton="true" data-friendCustomerId="@Model.CustomerProfileId">
-        <div class="send-pm-box">
-            <span class="confirm-friend-button friend-button" data-friendCustomerId="@Model.CustomerProfileId" >@T("MobSocial.ConfirmFriendButtonText")</span>
+    <div class="profile-stat" data-showconfirmbutton="true" data-friendcustomerid="@Model.CustomerProfileId">
+        <button>
+            <span class="confirm-friend-button friend-button" data-friendcustomerid="@Model.CustomerProfileId">@T("MobSocial.ConfirmFriendButtonText")</span>
             <i class="fa fa-check confirmed-friend-button"></i>
             <span class="confirmed-friend-button friend-button">Confirmed</span>
-        </div>
-    </div>   
+        </button>
+    </div>
 }
-
-
 
 
 

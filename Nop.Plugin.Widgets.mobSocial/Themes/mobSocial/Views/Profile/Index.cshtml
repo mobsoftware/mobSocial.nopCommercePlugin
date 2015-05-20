@@ -19,7 +19,7 @@
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/mob-live-video.directive.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
-    
+
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
 
@@ -45,20 +45,21 @@
     <div class="clear"></div>
     <div class="profile-left">
 
-     
+
         @Html.Action("ProfilePicture", "MobSocial", new { customerId = Model.CustomerProfileId })
         <div><span style="text-align: right;">{{(customerProfile.Views > 1) ? customerProfile.Views + ' views' : customerProfile.Views + ' view'}}</span></div>
         <br />
         @Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })
-        <br />
-        <br />
-        <div class="send-pm-box"><a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a></div>
 
-        <div class="profile-stat">
-            <div class="send-pm-box">&nbsp;<i class="fa fa-envelope"></i> @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })</div>
-        </div>
-        <br />
-        <br />
+
+        <button onclick="sendRequestViaMultiFriendSelector()"><i class="fa fa-paper-plane"></i> Invite Friends</button>
+
+        <button onclick='document.location="sendpm/@(Model.CustomerProfileId)"'>
+            <i class="fa fa-envelope"></i> @T("MobSocial.MessageButtonText")
+        </button>
+
+        <button><i class="fa fa-music"></i> Send Song</button>
+
         <br />
         <br />
 
@@ -89,6 +90,7 @@
                     <li><i class="fa fa-clock-o"></i> Timeline</li>
                     <li><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</li>
                     <li><i class="fa fa-picture-o"></i> Pictures</li>
+                    <li><i class="fa fa-music"></i> Songs</li>
                     <li><i class="fa fa-video-camera"></i> Videos</li>
                     <li><i class="fa fa-group"></i> Friends</li>
                     @if (Model.ForumsEnabled)
@@ -113,6 +115,22 @@
                     </div>
                     <div>
                         @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId })
+                    </div>
+                    <div>
+                        <div>
+                            <span>Favorite Songs</span><br />
+                            &nbsp;<ol>
+                                <li><i class="fa fa-play"></i> Alpha by Jennifer Lopez | <button>Buy</button><br /></li>
+                                <li><i class="fa fa-play"></i> Alpha by Jennifer Lopez | <button>Buy</button><br /></li>
+                            </ol>
+                            <br /><br /><br />
+
+                            <span>Songs received</span><br /><br />
+                            <ul>
+                                <li><i class="fa fa-play"></i> Alpha by Jennifer Lopez | from <a href="#">John Smith</a> | Received 5/20/2015 <button>Buy</button><br /></li>
+                                <li><i class="fa fa-play"></i> Adore by Myley Cyrus | from <a href="#">John Smith</a> | Received 5/20/2015 <button>Buy</button><br /></li>
+                            </ul>
+                        </div>
                     </div>
                     <div>
                     </div>
