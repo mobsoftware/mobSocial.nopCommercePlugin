@@ -23,13 +23,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
     
         public TeamPageService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger, IEventPublisher eventPublisher,
-            IRepository<TeamPage> eventPageRepository,
-            IRepository<TeamPage> eventPagePictureRepository,
+            IRepository<TeamPage> teamPageRepository,
+            IRepository<TeamPage> teamPagePictureRepository,
             IUrlRecordService urlRecordService,
-            IWorkContext workContext) : base(eventPageRepository, eventPagePictureRepository, workContext, urlRecordService)
+            IWorkContext workContext) : base(teamPageRepository, teamPagePictureRepository, workContext, urlRecordService)
         {
         }
-
 
 
         public override List<TeamPage> GetAll(string term, int count)
@@ -39,9 +38,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 .Where(x => x.Name.ToLower().Contains(termLowerCase))
                 .Take(count)
                 .ToList();
-
         }
-
 
         public override List<TeamPage> GetAllPictures(int entityId)
         {

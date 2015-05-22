@@ -14,13 +14,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
     {
         
         #region Fields
-        private readonly ITeamPageService _teamPageService;
+        private readonly TeamPageService _teamPageService;
         private readonly IPermissionService _permissionService;
         #endregion
 
         #region Constructors
 
-        public TeamPageController(IPermissionService permissionService, ITeamPageService teamPageService)
+        public TeamPageController(IPermissionService permissionService, TeamPageService teamPageService)
         {
             _permissionService = permissionService;
             _teamPageService = teamPageService;
@@ -77,7 +77,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
         [AdminAuthorize]
         public ActionResult Index()
         {
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/TeamPage/Index.chstml");
+            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageTeamPage/List.cshtml");
         }
        
         #endregion

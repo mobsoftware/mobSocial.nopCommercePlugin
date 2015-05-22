@@ -259,7 +259,46 @@
     <Content Include="Content\mobSocial\jquery.signalR-1.2.2.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\Admin\TeamPage\Index.cshtml">
+    <Content Include="Themes\mobSocial\Content\ie6.css" />
+    <Content Include="Themes\mobSocial\Content\ie7.css" />
+    <Content Include="Themes\mobSocial\Content\images\ajax_loader_large.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ajax_loader_small.gif" />
+    <Content Include="Themes\mobSocial\Content\images\arrow-up.png" />
+    <Content Include="Themes\mobSocial\Content\images\bbeditor-button-bg.gif" />
+    <Content Include="Themes\mobSocial\Content\images\bullet-left.gif" />
+    <Content Include="Themes\mobSocial\Content\images\bullet-right.gif" />
+    <Content Include="Themes\mobSocial\Content\images\download-sample-bg.gif" />
+    <Content Include="Themes\mobSocial\Content\images\forum-footer-bg.gif" />
+    <Content Include="Themes\mobSocial\Content\images\forum-header-bg.gif" />
+    <Content Include="Themes\mobSocial\Content\images\free-shipping.png" />
+    <Content Include="Themes\mobSocial\Content\images\ico-arrow-r.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-close-notification-bar.png" />
+    <Content Include="Themes\mobSocial\Content\images\ico-delete.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-edit.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-forum-post-add.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-forum-post-high.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-forum-post.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-forum-watch.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-forum.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-move-topic.gif" />
+    <Content Include="Themes\mobSocial\Content\images\ico-pm.png" />
+    <Content Include="Themes\mobSocial\Content\images\ico-rss.gif" />
+    <Content Include="Themes\mobSocial\Content\images\logo.gif" />
+    <Content Include="Themes\mobSocial\Content\images\mobile-menu-collapse.png" />
+    <Content Include="Themes\mobSocial\Content\images\mobile-menu-expand.png" />
+    <Content Include="Themes\mobSocial\Content\images\progress-step-active.gif" />
+    <Content Include="Themes\mobSocial\Content\images\progress-step-inactive.gif" />
+    <Content Include="Themes\mobSocial\Content\images\star-x-active.png" />
+    <Content Include="Themes\mobSocial\Content\images\star-x-inactive.png" />
+    <Content Include="Themes\mobSocial\Content\images\top-menu-background.png" />
+    <Content Include="Themes\mobSocial\Content\images\top-menu-divider.png" />
+    <Content Include="Themes\mobSocial\Content\images\top-menu-list-image-hover.png" />
+    <Content Include="Themes\mobSocial\Content\images\top-menu-list-image.png" />
+    <Content Include="Themes\mobSocial\Content\images\top-menu-triangle.png" />
+    <Content Include="Themes\mobSocial\Content\responsive.css" />
+    <Content Include="Themes\mobSocial\Content\styles.css" />
+    <Content Include="Themes\mobSocial\Content\styles.rtl.css" />
+    <Content Include="Views\mobSocial\Admin\ManageTeamPage\List.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml">
@@ -469,9 +508,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.SEO.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\_ViewStart.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Tickets.cshtml">
