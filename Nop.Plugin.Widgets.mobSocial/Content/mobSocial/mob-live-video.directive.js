@@ -2,7 +2,7 @@
     .directive('mobLiveVideo', ['rootUrl', function (rootUrl) {
         return {
             restrict: 'E',
-            customer: '=customer',
-            templateUrl: rootUrl + '/mob-live-video.html'
+            scope: { customer: '=' },
+            templateUrl: rootUrl + '/mob-live-video.template.html'
         }
     }]);

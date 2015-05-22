@@ -285,6 +285,9 @@
 
 
 /*** BEGIN DIALOG STYLES ***/
+
+.ui-dialog { border: 1px solid #cccccc; }
+
 .dialog-confirm {
     text-align: left;
 }
@@ -445,6 +448,13 @@
 
 
 /*** END RESPONSIVE TABS ***/
+
+/** MOBSOCIAL SONG LIST WIDGET */
+.song-play-button { line-height:25px; width:300px; list-style:none; }
+.song-item { line-height:25px; width:300px; list-style:none; }
+.song-title { display:inline-block; width:200px; }
+.song-buy-button { cursor:pointer; }
+/** END MOBSOCIAL SONG LIST WIDGET */
 
 
 /*=====================================================

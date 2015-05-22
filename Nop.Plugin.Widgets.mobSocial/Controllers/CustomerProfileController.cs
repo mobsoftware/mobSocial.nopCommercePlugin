@@ -24,6 +24,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly CustomerProfileService _customerProfileService;
         private readonly CustomerProfileViewService _customerProfileViewService;
         private readonly ICustomerService _customerService;
+        private readonly ICustomerFavoriteSongService _customerFavoriteSongService;
         private readonly IMobSocialService _mobSocialService;
         private readonly IWorkContext _workContext;
 
@@ -31,11 +32,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             CustomerProfileViewService customerProfileViewService,
             ICustomerService customerService,
             IMobSocialService mobSocialService,
+            ICustomerFavoriteSongService customerFavoriteSongService,
             IWorkContext workContext)
         {
             _customerProfileService = customerProfileService;
             _customerProfileViewService = customerProfileViewService;
             _customerService = customerService;
+            _customerFavoriteSongService = customerFavoriteSongService;
             _mobSocialService = mobSocialService;
             _workContext = workContext;
         }
@@ -53,7 +56,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 Views = _customerProfileViewService.GetViewCount(customerId),
                 FriendCount = _customerProfileService.GetFriendCount(customerId),
                 IsLoggedInUsersProfile = _workContext.CurrentCustomer.Id == customerId,
-                IsFriend = _mobSocialService.GetFriendRequestStatus(_workContext.CurrentCustomer.Id, customerId) == FriendStatus.Friends
+                IsFriend = _mobSocialService.GetFriendRequestStatus(_workContext.CurrentCustomer.Id, customerId) == FriendStatus.Friends,
+                FavoriteSongs = _customerFavoriteSongService.GetTop10(customerId)
             };
 
             if (profile != null)

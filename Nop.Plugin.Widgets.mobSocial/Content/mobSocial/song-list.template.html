@@ -1,0 +1,29 @@
+﻿<div>
+    <h2>{{songListName}}</h2>
+    {{customer}}
+
+    <ul>
+        <li class="song-item" ng-repeat="song in customer.FavoriteSongs">
+            <span>{{$$index}}</span>
+            <button class="song-play-button" title="Play {{song.title}}"><i class="fa fa-play"></i></button>
+            <span class="song-title">{{song.title}}</span>
+            <button class="song-buy-button" title="Buy Now">Buy</button>
+        </li>
+    </ul>
+
+
+
+    <button ng-click="addFavoriteSong()">Song</button>
+</div>
+
+<div id="addFavoriteSongDialog" title="Add Favorite Song" style="display:none;">
+
+    Search: <input id="searchTerm" type="text" auto-complete /><br />
+
+    Selected Song: <span id="selectedSong"></span>
+
+</div>
+
+
+
+

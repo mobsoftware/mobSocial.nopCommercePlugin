@@ -94,7 +94,7 @@ app
     .controller('mobBroadcastController', ['$rootScope', '$scope', '$http', '$attrs',
         function ($rootScope, $scope, $http, $attrs) {
 
-            $scope.canViewBroadcast = $scope.parent.customerProfile.IsFriend;
+            $scope.canViewBroadcast = $scope.$parent.customerProfile.IsFriend;
 
             $scope.startBroadcast = function () {
                 if (streamId == 0) {

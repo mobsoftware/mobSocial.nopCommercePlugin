@@ -58,7 +58,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new CustomerProfileMap());
 
             modelBuilder.Configurations.Add(new NotificationMap());
-            
+
+            modelBuilder.Configurations.Add(new CustomerFavoriteSongMap());
 
 
 
@@ -99,6 +100,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<BusinessPagePicture>();
                 this.DropTable<BusinessPage>();
                 this.DropTable<GroupPageMember>();
+                this.DropTable<CustomerFavoriteSong>();
                 this.DropTable<CustomerTimeline>();
                 //this.DropPluginTable"('CustomerAlbumPictureLike>());
                 this.DropTable<CustomerProfile>();

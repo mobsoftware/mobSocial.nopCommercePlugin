@@ -1,5 +1,7 @@
-﻿using Nop.Web.Framework.Mvc;
+﻿using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Web.Framework.Mvc;
 using System;
+using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {
@@ -14,5 +16,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public int Views { get; set; }
         public int FriendCount { get; set; }
         public bool IsFriend { get; set; }
+
+        public List<CustomerFavoriteSong> FavoriteSongs { get; set; }
     }
 }
