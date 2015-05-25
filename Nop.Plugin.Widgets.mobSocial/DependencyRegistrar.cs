@@ -148,6 +148,9 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<TeamPageService>().As<TeamPageService>().InstancePerRequest();
             builder.RegisterType<NotificationService>().As<INotificationService>().InstancePerRequest();
             builder.RegisterType<CustomerFavoriteSongService>().As<ICustomerFavoriteSongService>().InstancePerRequest();
+            builder.RegisterType<EchoNestMusicService>().As<IMusicService>().InstancePerRequest();
+            builder.RegisterType<MusicApiCredentials>().As<IOAuthCredentials>().InstancePerRequest();
+            builder.RegisterType<MusicApiUri>().As<IApiUri>().InstancePerRequest();
             
 
 

@@ -27,12 +27,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly ICustomerFavoriteSongService _customerFavoriteSongService;
         private readonly IMobSocialService _mobSocialService;
         private readonly IWorkContext _workContext;
+        private readonly IMusicService _musicService;
 
         public CustomerProfileController(CustomerProfileService customerProfileService,
             CustomerProfileViewService customerProfileViewService,
             ICustomerService customerService,
             IMobSocialService mobSocialService,
             ICustomerFavoriteSongService customerFavoriteSongService,
+            IMusicService musicService,
             IWorkContext workContext)
         {
             _customerProfileService = customerProfileService;
@@ -40,12 +42,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _customerService = customerService;
             _customerFavoriteSongService = customerFavoriteSongService;
             _mobSocialService = mobSocialService;
+            _musicService = musicService;
             _workContext = workContext;
         }
 
         public JsonResult GetCustomerProfile(int customerId)
         {
-      
+
             _customerProfileViewService.IncrementViewCount(customerId);
 
             var profile = _customerProfileService.GetByCustomerId(customerId);

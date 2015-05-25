@@ -36,16 +36,23 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MusicController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\ICustomerFavoriteSongService.cs" />
+    <Compile Include="Core\IApiUri.cs" />
+    <Compile Include="Core\IOAuthCredentials.cs" />
+    <Compile Include="Core\MusicApiUri.cs" />
+    <Compile Include="Core\MusicApiCredentials.cs" />
     <Compile Include="Core\CustomerFavoriteSongService.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
     <Compile Include="Core\BusinessPageCouponService.cs" />
     <Compile Include="Core\BusinessPageService.cs" />
+    <Compile Include="Core\EchoNestMusicService .cs" />
     <Compile Include="Core\IBusinessPageCouponService.cs" />
+    <Compile Include="Core\IMusicService.cs" />
     <Compile Include="Core\IBusinessPageService.cs" />
     <Compile Include="Core\NotificationService.cs" />
     <Compile Include="Core\INotificationService.cs" />
@@ -603,13 +610,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OAuth">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\OAuth.1.0.3\lib\net40\OAuth.dll</HintPath>
+    </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="SevenDigital.Api.Schema">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\SevenDigital.Api.Schema.1.0.0\lib\portable-net4+sl4+wp71+windows8\SevenDigital.Api.Schema.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
