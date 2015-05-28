@@ -33,6 +33,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         Picture GetFirstPicture(int entityId);
 
+
+        void UpdateDisplayOrder(int id, int newDisplayOrder);
+
+
     }
 
 }

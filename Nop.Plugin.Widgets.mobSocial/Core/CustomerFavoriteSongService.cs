@@ -16,6 +16,7 @@ using System.Linq;
 using Nop.Services.Seo;
 using Nop.Core.Domain.Seo;
 using System.Collections.Generic;
+using Mob.Core;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
@@ -25,6 +26,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private MediaSettings _nopMediaSettings;
         private IUrlRecordService _urlRecordService;
         private readonly IPictureService _pictureService;
+        private IOAuthService _oAuthService;
         private IWorkContext _workContext;
 
         public CustomerFavoriteSongService(ISettingService settingService, IWebHelper webHelper,
@@ -34,22 +36,35 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             MediaSettings mediaSettings,
             IUrlRecordService urlRecordService,
             IPictureService pictureService,
+            IOAuthService oAuthService,
             IWorkContext workContext) : base(entityRepository, entityPictureRepository, workContext, urlRecordService)
         {
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
             _pictureService = pictureService;
             _workContext = workContext;
+            _oAuthService = oAuthService;
         }
 
 
         public List<CustomerFavoriteSong> GetTop10(int customerId)
         {
-            return Repository.Table
+            var top10FavoriteSongs = Repository.Table
                 .Where(x => x.CustomerId == customerId)
                 .OrderBy(x => x.DisplayOrder)
                 .Take(10)
                 .ToList();
+
+            var oAuthBase = new OAuthBase();
+            
+            top10FavoriteSongs.ForEach(
+                    x => oAuthBase.GetSignedUrl(x.PreviewUrl, 
+                        _oAuthService.ConsumerKey, 
+                        _oAuthService.ConsumerSecret));
+            
+
+            return top10FavoriteSongs;
+
         }
 
         /// <summary>
@@ -87,8 +102,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-
-
+        public void UpdateFavoriteSongOrder(int favoriteSongId, int displayOrder)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

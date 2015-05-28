@@ -1,9 +1,10 @@
 ﻿using System;
 using Nop.Core;
+using Mob.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class CustomerFavoriteSong : BaseEntity
+    public class CustomerFavoriteSong : BaseEntity, ISortableSupported
     {
         public int CustomerId { get; set; }
         public int TrackId { get; set; }

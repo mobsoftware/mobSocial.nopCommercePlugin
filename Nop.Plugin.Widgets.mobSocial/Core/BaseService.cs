@@ -162,7 +162,23 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
 
 
+        #region SortableOperations
+        public void UpdateDisplayOrder(int id, int newDisplayOrder)
+        {
+            T entity = GetById(id);
 
+            var sortableEntity = (ISortableSupported)entity;
+
+            var oldDisplayOrder = sortableEntity.DisplayOrder;
+
+            var items = _repository.Table
+                .Where(x => ((ISortableSupported)x).DisplayOrder >= oldDisplayOrder)
+                .ToList();
+
+            sortableEntity.DisplayOrder = newDisplayOrder;
+
+        }
+        #endregion
 
 
         #region Helper Methods

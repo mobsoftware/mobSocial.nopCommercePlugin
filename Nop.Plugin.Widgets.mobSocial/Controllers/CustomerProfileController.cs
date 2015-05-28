@@ -108,7 +108,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
 
+        [HttpPost]
+        public void AddFavoriteSong(CustomerFavoriteSong favoriteSong)
+        {
+            _customerFavoriteSongService.Insert(favoriteSong);
+        }
 
+        [HttpPost]
+        public void UpdateFavoriteSongOrder(int favoriteSongId, int displayOrder)
+        {
+            _customerFavoriteSongService.UpdateFavoriteSongOrder(favoriteSongId, displayOrder);
+        }
 
 
 
