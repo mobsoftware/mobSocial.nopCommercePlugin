@@ -151,6 +151,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<EchoNestMusicService>().As<IMusicService>().InstancePerRequest();
             builder.RegisterType<MusicApiCredentials>().As<IOAuthCredentials>().InstancePerRequest();
             builder.RegisterType<MusicApiUri>().As<IApiUri>().InstancePerRequest();
+            builder.RegisterType<OAuthService>().As<IOAuthService>().InstancePerRequest();
             
 
 
