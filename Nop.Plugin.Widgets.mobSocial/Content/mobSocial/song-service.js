@@ -1,32 +1,26 @@
 ﻿app.factory('autoCompleteDataService', ['$http', function ($http) {
     return {
-        getSource: function (request, response) {
+        getSource: function (term) {
 
-            if (request == '' || request == null) {
+            if (term == '' || term == null) {
                 return;
             }
 
-            var url = 'http://developer.echonest.com/api/v4/artist/suggest?api_key=DQFW7ZCMHBBLMLVFE&name=' + request.term + '&results=5';
-            console.log(url);
-            console.log(request.term);
+            var url = 'http://developer.echonest.com/api/v4/song/search?api_key=DQFW7ZCMHBBLMLVFE&format=json&results=5&title=' + term;
 
-            $http.get(url).
-                    success(function (data, status, headers, config) {
+            var getAutoCompleteData = $http.get(url).then(function (data) {
 
-                        var artistNames = [];
+                var items =
+                     $.map(data.data.response.songs, function (item) {
+                         return item;
+                     });
 
-                        response($.map(data.response.artists, function (item) {
-                            return {
-                                label: item.name,
-                                value: item.name
-                            }
-                        }));
+                var results = { items: items };
 
+                return results;
+            });
 
-                    }).
-                        error(function (data, status, headers, config) {
-                            alert('error happned');
-                        });
+            return getAutoCompleteData;
 
 
         }

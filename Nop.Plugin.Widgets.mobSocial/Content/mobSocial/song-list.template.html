@@ -1,6 +1,5 @@
 ﻿<div>
     <h2>{{songListName}}</h2>
-    {{customer}}
 
     <ul>
         <li class="song-item" ng-repeat="song in customer.FavoriteSongs">
@@ -13,12 +12,17 @@
 
 
 
-    <button ng-click="openAddFavoriteSongDialog()">Song</button>
+    <button ng-click="openAddFavoriteSongDialog()">Add Song</button>
 </div>
 
-<div id="addFavoriteSongDialog" title="Add Favorite Song" style="display:none;">
+<div id="addFavoriteSongDialog" title="Add Favorite Song" style="display:none;" ng-controller="favoriteSongController">
 
-    Search: <input id="searchTerm" type="text" auto-complete /><br />
+    Search:  <input type="text"
+                    auto-complete
+                    min-length="3"
+                    http-service="httpSupplierService"
+                    render-item="songRender"
+                    on-select="songSelect" />
 
     Selected Song: <span id="selectedSong"></span>
 
