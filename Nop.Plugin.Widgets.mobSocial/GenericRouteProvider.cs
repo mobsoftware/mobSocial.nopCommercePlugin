@@ -40,6 +40,13 @@ namespace Nop.Plugin.Widgets.MobSocial
                            new { controller = "BusinessPage", action = "Index" },
                            new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" });
 
+            routes.MapLocalizedRoute("ArtistPageUrl",
+              "{SeName}",
+              new { controller = "ArtistPage", action = "Index" },
+              new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+              );
+
+
         }
 
         public int Priority

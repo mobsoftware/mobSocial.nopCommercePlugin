@@ -35,5 +35,13 @@ namespace Nop.Plugin.Widgets.MobSocial
         public string FacebookWebsiteAppId { get; set; }
 
         public string BusinessPageSearchUrl { get; set; }
+
+        public string EchonestAPIKey { get; set; }
+
+        public int ArtistPageMainImageSize { get; set; }
+
+        public int ArtistPageThumbnailSize { get; set; }
+
+        public string SevenDigitalPartnerId { get; set; }
     }
 }

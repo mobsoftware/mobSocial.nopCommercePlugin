@@ -427,6 +427,177 @@
 
 /*** END SEARCH PAGE STYLES ***/
 
+/*** ARTIST PAGE STYLES ***/
+p.artist-spec-item
+{
+    padding:10px 0;
+}
+p.artist-spec-item label{
+    color:gray;
+    padding-right:15px;
+}
+
+.text-center
+{
+    text-align:center;
+}
+h1.text-center, h2.text-center
+{
+    padding:10px 0;
+}
+.artist-block
+{
+    float:left;
+    width:200px;
+    text-align:center;
+    min-height:200px;
+    margin:5px;
+}
+
+.artist-block .artist-image{
+    display:block;
+    width:200px;
+    height:200px;
+}
+.artist-block .artist-image img
+{
+    width:100%;
+    height:100%;
+}
+.artist-block .artist-title
+{
+
+}
+
+.artist-row
+{
+    margin:10px 0;
+    width:100%;
+    clear:both;
+    overflow:hidden;
+}
+.artist-row .artist-image
+{
+    float:left;
+    width:100px;
+    margin-right:20px;
+}
+.artist-row .artist-image img
+{
+    max-width:100%;
+}
+.artist-row .artist-title
+{
+    float:left;
+    width:500px;
+}
+.artist-row .artist-title .artist-name
+{
+    font-size:20px;
+}
+
+.control-group input, .control-group select, .control-group textarea{
+    padding:5px;
+    width:300px;
+}
+.control-group textarea
+{
+    width:300px;
+    height:100px;
+}
+table.table-form .control-group{
+    padding:5px 0;
+}
+
+.song-block
+{
+    float:left;
+    width:190px;
+    padding:5px;
+}
+.song-block.playing
+{
+    background-color:#eee;
+}
+.song-block .song-image
+{
+    float:left;
+    width:70px;
+
+}
+.song-block .song-image img
+{
+    max-width:100%;
+
+}
+.song-block .song-title
+{
+    float:left;
+    width:110px;
+    padding-left:10px;
+}
+.song-block .song-title .song-name
+{
+    font-size:13px;
+    font-weight:bold;
+    display:block;
+}
+
+.manager-block
+{
+    text-align:center;
+    float:left;
+    margin:10px;
+}
+.manager-block .manager-title
+{
+    font-size:15px;
+}
+.manager-block .manager-image{
+
+}
+.manager-block .manager-image img
+{
+    width:100px;
+    height:100px;
+}
+.manager-block .actions
+{
+    font-size:10px;
+}
+.angucomplete-dropdown {
+    overflow-y: auto;
+    max-height: 200px; 
+}
+ .editable-click {
+        color: black;
+        border-bottom: none;
+    }
+
+ .artist-left-content{
+     float:left;
+     width:200px;
+
+ }
+ .artist-right-content{
+     float:left;
+     width:700px;
+     margin-left:10px;
+ }
+@media screen and (max-width:480px) {
+    .artist-left-content{
+     clear:both;
+     
+
+ }
+ .artist-right-content{
+     float:left;
+     width:100%;
+     margin-left:0;
+ }
+
+}
+/***END ARTIST PAGE STYLES*/
 
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/

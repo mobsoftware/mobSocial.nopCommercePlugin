@@ -178,6 +178,10 @@ namespace Nop.Plugin.Widgets.MobSocial
                 CustomerProfileUpdateViewCountAfterNumberOfSeconds = 180, // 3 minutes,
                 FacebookWebsiteAppId = "1234567890123456",
                 BusinessPageSearchUrl = "BusinessSearch",
+                ArtistPageMainImageSize= 300,
+                ArtistPageThumbnailSize = 150,
+                EchonestAPIKey = "DQFW7ZCMHBBLMLVFE",
+                SevenDigitalPartnerId = "9378"
             };
 
 
