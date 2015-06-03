@@ -1,0 +1,97 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Models;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
+
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
+
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
+
+}
+
+@section left
+{
+    @*todo Add account navigation back
+        @Html.Partial("~/Views/Customer/MyAccountNavigation.cshtml", null, new ViewDataDictionary())*@
+
+    @Html.Action("PublicInfo", "SocialNetworkNavigation", new { widgetZone = "account_navigation_after" })
+
+}
+<div class="page account-page order-list-page" data-ng-controller="ArtistPagesMyPagesController">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - My Artist Pages</h1>
+    </div>
+
+    <div class="page-body">
+        <div class="artist-pages" id="tabs">
+            <ul class="resp-tabs-list">
+                <li><i class="fa fa-info"></i> My Pages</li>
+                <li><i class="fa fa-user"></i> Pages I can manage</li>
+            </ul>
+            <div class="resp-tabs-container">
+                <div>
+                    <div class="clear">
+                    </div>
+                    <div style="text-align:right"><a href="@Url.RouteUrl("ArtistsPage", new { action = "Editor" })">Create New Page</a></div>
+                    <div class="clear">
+                    </div>
+                    <div ng-show="Artists.length == 0">You have not created any page</div>
+                    <div ng-hide="Artists.length == 0">
+                        <div class="search-filters">
+                            <table class="table-form">
+                                <tr>
+                                    <td>
+                                        Search : <input type="text" data-ng-model="Search" />
+                                    </td>
+                                    <td>
+                                        Jump To Page: <select data-ng-model="Page" data-ng-options="i for i in PageOptions"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div data-ng-repeat="artist in Artists">
+                            <div class="artist-row">
+                                <div class="artist-image">
+                                    <img data-ng-src="{{artist.MainPictureUrl}}" />
+                                </div>
+                                <div class="artist-title">
+                                    <a class="artist-name" href="/{{artist.SeName}}">{{artist.Name}}</a>
+                                    <div class="actions">
+                                        <a href="/{{artist.SeName}}">View</a> | <a href="" ng-click="DeleteArtist(artist.Id)">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div ng-show="AsManagerArtists.length == 0">You are not managing any page</div>
+                    <div ng-hide="AsManagerArtists.length == 0">
+                        <div data-ng-repeat="artist in AsManagerArtists">
+                            <div class="artist-row">
+                                <div class="artist-image">
+                                    <img data-ng-src="{{artist.MainPictureUrl}}" />
+                                </div>
+                                <div class="artist-title">
+                                    <a class="artist-name" href="/{{artist.SeName}}">{{artist.Name}}</a>
+                                    <div class="actions">
+                                        <a href="/{{artist.SeName}}">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#tabs").easyResponsiveTabs();
+            });
+        </script>
+    </div>
+</div>

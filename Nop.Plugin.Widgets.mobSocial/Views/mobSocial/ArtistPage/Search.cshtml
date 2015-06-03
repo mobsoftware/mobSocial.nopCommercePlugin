@@ -1,0 +1,41 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Models;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
+    
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-page-search.js");
+    
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+
+}
+
+<div class="artist-left-content">
+    <div data-ng-controller="ArtistPageSearchCriteriaController">
+        <table class="table-form">
+            <tr>
+                <td>
+                    Search Term: <input data-ng-model="term" type="text" required />
+                    <input type="hidden" data-ng-model="page" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" data-ng-model="searchDescription" /> Search Descriptions
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Results per page: <select data-ng-model="count" ng-options="val for val in [15, 30, 50]"></select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="artist-right-content">
+    <div data-ng-controller="ArtistPageSearchController">
+        <div data-ng-repeat="artist in results">
+            @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/ArtistBlock.cshtml")
+        </div>
+    </div>
+</div>

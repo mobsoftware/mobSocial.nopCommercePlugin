@@ -58,10 +58,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new CustomerProfileMap());
 
             modelBuilder.Configurations.Add(new NotificationMap());
-
+            
             modelBuilder.Configurations.Add(new CustomerFavoriteSongMap());
 
-
+            modelBuilder.Configurations.Add(new ArtistPageMap());
+            modelBuilder.Configurations.Add(new ArtistPagePictureMap());
+            modelBuilder.Configurations.Add(new ArtistPageManagerMap());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -88,7 +90,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 // uninstall regardless of errors
 
                 // Remove Url Records
-                var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage'; ";
+                var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage' OR EntityName = 'ArtistPage'; ";
                 Database.ExecuteSqlCommand(dbScript);
 
                 // DROP Tables
@@ -118,6 +120,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<Notification>();
                 this.DropTable<CustomerProfileView>();
 
+                this.DropTable<ArtistPagePicture>();
+                this.DropTable<ArtistPageManager>();
+
+                this.DropTable<ArtistPage>();
+                
                 SaveChanges();
             }
             catch (Exception)

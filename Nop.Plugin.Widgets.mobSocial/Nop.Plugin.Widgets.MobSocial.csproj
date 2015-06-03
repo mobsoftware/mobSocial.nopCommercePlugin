@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,13 +29,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\MusicController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
@@ -48,17 +49,31 @@
     <Compile Include="Core\MusicApiUri.cs" />
     <Compile Include="Core\MusicApiCredentials.cs" />
     <Compile Include="Core\CustomerFavoriteSongService.cs" />
+    <Compile Include="Core\ArtistPageAPIService.cs" />
+    <Compile Include="Core\ArtistPageManagerService.cs" />
+    <Compile Include="Core\ArtistPageService.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
     <Compile Include="Core\BusinessPageCouponService.cs" />
     <Compile Include="Core\BusinessPageService.cs" />
     <Compile Include="Core\EchoNestMusicService .cs" />
+    <Compile Include="Core\IApiUri.cs" />
+    <Compile Include="Core\IArtistPageAPIService.cs" />
+    <Compile Include="Core\IArtistPageManagerService.cs" />
+    <Compile Include="Core\IArtistPageService.cs" />
     <Compile Include="Core\IBusinessPageCouponService.cs" />
     <Compile Include="Core\IMusicService.cs" />
     <Compile Include="Core\IBusinessPageService.cs" />
+    <Compile Include="Core\IMusicService.cs" />
+    <Compile Include="Core\IOAuthCredentials.cs" />
+    <Compile Include="Core\MusicApiCredentials.cs" />
+    <Compile Include="Core\MusicApiUri.cs" />
     <Compile Include="Core\NotificationService.cs" />
     <Compile Include="Core\INotificationService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
+    <Compile Include="Data\ArtistPageManagerMap.cs" />
+    <Compile Include="Data\ArtistPageMap.cs" />
+    <Compile Include="Data\ArtistPagePictureMap.cs" />
     <Compile Include="Data\CustomerFavoriteSongMap.cs" />
     <Compile Include="Data\CustomerProfileMap.cs" />
     <Compile Include="Data\BusinessPageCouponMap.cs" />
@@ -67,6 +82,9 @@
     <Compile Include="Data\NotificationMap.cs" />
     <Compile Include="Data\PictureTagMap.cs" />
     <Compile Include="Data\CustomerTimelineMap.cs" />
+    <Compile Include="Domain\ArtistPage.cs" />
+    <Compile Include="Domain\ArtistPageManager.cs" />
+    <Compile Include="Domain\ArtistPagePicture.cs" />
     <Compile Include="Domain\BusinessPageCoupon.cs" />
     <Compile Include="Domain\BusinessPagePicture.cs" />
     <Compile Include="Domain\CustomerFavoriteSong.cs" />
@@ -75,6 +93,7 @@
     <Compile Include="Domain\Notification.cs" />
     <Compile Include="Domain\PictureTag.cs" />
     <Compile Include="Domain\CustomerTimeline.cs" />
+    <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Hubs\MessagingHub.cs" />
     <Compile Include="Hubs\AudioVideoHub.cs" />
     <Compile Include="Models\Admin\EventPageListModel.cs" />
@@ -92,6 +111,7 @@
     <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\AddPictureModel.cs" />
+    <Compile Include="Models\ArtistPageModel.cs" />
     <Compile Include="Models\BusinessPageSearchModel.cs" />
     <Compile Include="Models\ModelUtil.cs" />
     <Compile Include="Models\BasePageModel.cs" />
@@ -188,6 +208,15 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
+    <Content Include="Content\angucomplete-alt\angucomplete-alt.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angucomplete-alt\angucomplete-alt.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-audio\js\angular.audio.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -228,6 +257,25 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\mob-live-video.template.html">
+    <Content Include="Content\angular-xeditable\css\xeditable.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-xeditable\js\xeditable.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-xeditable\js\xeditable.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\artist-pages\artist-page-search.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\artist-pages\artist-pages.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\artist-pages\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\mob-live-video.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\mob-live-video.directive.js">
@@ -546,6 +594,25 @@
     <Content Include="Views\mobSocial\BusinessPage\Search.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\ArtistPage\Editor.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\ArtistPage\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\ArtistPage\ArtistBlock.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\ArtistPage\Search.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\ArtistPage\MyPages.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\ArtistPage\PictureEditor.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt">
@@ -553,65 +620,78 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Libraries\Nop.Data\Nop.Data.csproj">
+    <ProjectReference Include="..\..\Libraries\Nop.Data\Nop.Data.csproj">
       <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
       <Name>Nop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
       <Name>Nop.Admin</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Libraries\Nop.Core\Nop.Core.csproj">
+    <ProjectReference Include="..\..\Libraries\Nop.Core\Nop.Core.csproj">
       <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
       <Name>Nop.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Libraries\Nop.Services\Nop.Services.csproj">
+    <ProjectReference Include="..\..\Libraries\Nop.Services\Nop.Services.csproj">
       <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
       <Name>Nop.Services</Name>
+      <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>Nop.Web.Framework</Name>
+      <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Downloads\nopCommerce_3.50_Source\Presentation\Nop.Web\Nop.Web.csproj">
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj">
       <Project>{4f1f649c-1020-45be-a487-f416d9297ff3}</Project>
       <Name>Nop.Web</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServerCompact">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.AspNet.SignalR.Core.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Owin">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.AspNet.SignalR.Owin.1.2.2\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Owin.1.2.2\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.AspNet.SignalR.SystemWeb.1.2.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.SystemWeb.1.2.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.Owin.Host.SystemWeb.1.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.1.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -619,13 +699,15 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="OAuth">
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\OAuth.1.0.3\lib\net40\OAuth.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SevenDigital.Api.Schema">
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\SevenDigital.Api.Schema.1.0.0\lib\portable-net4+sl4+wp71+windows8\SevenDigital.Api.Schema.dll</HintPath>
@@ -636,16 +718,17 @@
     </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <Private>False</Private>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Mvc">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>

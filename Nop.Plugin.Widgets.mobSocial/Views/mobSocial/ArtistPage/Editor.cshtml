@@ -1,0 +1,76 @@
+﻿@model ArtistPageModel
+@using Nop.Plugin.Widgets.MobSocial.Models;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+ /*   Html.AppendTitleParts(Model.Name);
+
+    Html.AppendMetaDescriptionParts(Model.MetaDescription);
+    Html.AppendMetaKeywordParts(Model.MetaKeywords);*/
+
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
+
+}
+
+<div data-ng-controller="ArtistPageController">
+    <div ng-show="recordSaved">
+        Page created successfully. Click <a href="{{newPageUrl}}">here</a> to go to the page
+    </div>
+    <form name="createArtistForm" ng-show="!recordSaved">
+        
+        <table class="table-form">
+            <tr>
+                <td style="text-align:center;" colspan="2"><h1>Create Artist Page</h1></td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;padding-right:2px;">
+                    <img ng-src="{{artist.ImageUrl}}" />
+                </td>
+                <td>
+                    <div class="control-group">
+                        <label class="control-label" for="name">Artist Name</label><br />
+                        <input type="text" name="name" id="name" data-ng-model="artist.Name" data-ng-blur="IsArtistNameAvailable()" required />
+                        <span ng-show="createArtistForm.name.$invalid && createArtistForm.name.$dirty">Name is required</span>
+                        <span ng-show="createArtistForm.name.$valid">
+                            <span ng-show="artist.nameAvailable && createArtistForm.name.$valid"><i class="fa fa-check"></i> Artist Name Available</span>
+                            <span ng-show="!artist.nameAvailable || !createArtistForm.name.$valid"><i class="fa fa-times"></i> Not Available</span>
+                        </span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="description">Biography</label><br />
+                        <textarea name="description" id="description" data-ng-model="artist.Description"></textarea>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="shortdescription">Short Description</label><br />
+                        <textarea name="shortdescription" id="shortdescription" data-ng-model="artist.ShortDescription"></textarea>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="dob">Date Of Birth</label><br />
+                        <input type="text" name="DateOfBirth" id="dob" data-ng-model="artist.DateOfBirth" />
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="hometown">Home Town</label><br />
+                        <input type="text" name="HomeTown" id="hometown" data-ng-model="artist.HomeTown" />
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="active_since">Active Since</label><br />
+                        <input type="text" name="ActiveSince" id="active_since" data-ng-model="artist.ActiveSince" />
+                    </div>
+                    <input type="hidden" name="RemoteEntityId" data-ng-model="artist.RemoteEntityId" />
+                    <input type="hidden" name="RemoteEntityName" data-ng-model="artist.RemoteEntityName" />
+                    <div class="control-group">
+                        <input type="button" ng-click="SaveArtist()" value="Create Page" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+       
+    </form>
+       
+    
+</div>

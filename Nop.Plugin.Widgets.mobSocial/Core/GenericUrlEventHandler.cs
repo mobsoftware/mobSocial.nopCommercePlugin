@@ -36,7 +36,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 eventMessage.RouteData.Values["id"] = eventMessage.UrlRecord.EntityId;
                 eventMessage.RouteData.Values["SeName"] = eventMessage.UrlRecord.Slug;
             }
-
+            else if (eventMessage.UrlRecord.EntityName == "ArtistPage")
+            {
+                eventMessage.RouteData.Values["controller"] = "ArtistPage";
+                eventMessage.RouteData.Values["action"] = "Index";
+                eventMessage.RouteData.Values["id"] = eventMessage.UrlRecord.EntityId;
+                eventMessage.RouteData.Values["SeName"] = eventMessage.UrlRecord.Slug;
+            }
         }
     }
 

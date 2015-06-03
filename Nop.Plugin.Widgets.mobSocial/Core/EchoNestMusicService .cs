@@ -59,7 +59,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         public string GetTrackAffiliateUrl(int trackId)
         {
-            throw new NotImplementedException();
+            var url = "https://instant.7digital.com/purchase/track/" + trackId.ToString() + "?partner=" + _mobSocialSettings.SevenDigitalPartnerId;
+            return url;
         }
 
         public object SearchSongs(string term)

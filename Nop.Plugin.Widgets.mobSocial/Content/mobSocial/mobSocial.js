@@ -1,4 +1,4 @@
-﻿var app = angular.module('mobSocialApp', [])
+﻿var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt'])
     .constant('rootUrl','./Plugins/Widgets.mobSocial/Content/mobSocial');
 
 

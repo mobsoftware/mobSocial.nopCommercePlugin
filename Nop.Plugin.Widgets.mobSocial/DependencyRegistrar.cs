@@ -129,6 +129,17 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<EfRepository<CustomerFavoriteSong>>().As<IRepository<CustomerFavoriteSong>>()
             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
             .InstancePerRequest();
+            builder.RegisterType<EfRepository<ArtistPage>>().As<IRepository<ArtistPage>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<ArtistPageManager>>().As<IRepository<ArtistPageManager>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<ArtistPagePicture>>().As<IRepository<ArtistPagePicture>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
 
 
             // Service Injection
@@ -155,6 +166,9 @@ namespace Nop.Plugin.Widgets.MobSocial
             
 
 
+            builder.RegisterType<ArtistPageService>().As<IArtistPageService>().InstancePerRequest();
+            builder.RegisterType<ArtistPageAPIService>().As<IArtistPageAPIService>().InstancePerRequest();
+            builder.RegisterType<ArtistPageManagerService>().As<IArtistPageManagerService>().InstancePerRequest();
             // Override any NopCommerce Services below:
             builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 
