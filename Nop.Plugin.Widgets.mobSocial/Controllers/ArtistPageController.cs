@@ -151,13 +151,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public ActionResult GetRelatedArtists(int ArtistId)
         {
             var artistPage = _artistPageService.GetById(ArtistId);
+            var model = new List<object>();
             if (artistPage == null || string.IsNullOrEmpty(artistPage.RemoteEntityId)) //if it's not a remote artist means some user has created it. so no related artists
-                return new NullJsonResult();
+                return Json(model);
 
             var relatedArtistsRemoteCollection = _artistPageApiService.GetRelatedArtists(artistPage.RemoteEntityId);
             if (relatedArtistsRemoteCollection == null)
-                return new NullJsonResult();
-            var model = new List<object>();
+                return Json(model);
+            
 
             //get all the remote entity ids from the remote collection. We'll see those ids in our database to find matches
             //we'll deserialize the list to get the object items
@@ -188,7 +189,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             foreach (var ra in relatedArtistsInDB)
             {
                 var imageUrl = "";
-                if (ra.Pictures.Count > 0)
+                if (ra.Pictures != null && ra.Pictures.Count > 0)
                     imageUrl = _pictureService.GetPictureUrl(ra.Pictures.First().PictureId, _mobSocialSettings.ArtistPageThumbnailSize);
 
                 model.Add(new {
@@ -214,7 +215,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //get songs from remote server
             var songs = _artistPageApiService.GetArtistSongs(ArtistName);
             if(songs == null)
-                return new NullJsonResult();
+                return Json(model);
             
             foreach (string songJson in songs)
             {
@@ -383,7 +384,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
         /// <summary>
         /// Returns artists pages for logged in user
-        /// </summary>      
+        /// </summary>
+        [Authorize]
         public ActionResult MyArtistPages()
         {
             return View(ControllerUtil.MobSocialViewsFolder + "/ArtistPage/MyPages.cshtml");
@@ -395,7 +397,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (!_workContext.CurrentCustomer.IsRegistered())
                 return InvokeHttp404();
             int totalPages;
-            var artistPages = _artistPageService.GetArtistPagesByPageOwner(_workContext.CurrentCustomer.Id, out totalPages, Search, Count, Page);
+            IList<ArtistPage> artistPages;
+            artistPages = _artistPageService.GetArtistPagesByPageOwner(_workContext.CurrentCustomer.Id, out totalPages, Search, Count, Page, _workContext.CurrentCustomer.IsAdmin() /*orphan pages for administrator*/);
+
+
             var dataList = new List<object>();
 
             foreach (var artist in artistPages)
@@ -470,6 +475,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// <summary>
         /// Loads the artist editor page
         /// </summary>
+        [Authorize]
         public ActionResult Editor(int ArtistPageId = 0)
         {
             ArtistPageModel model = null;
@@ -627,13 +633,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             //first lets find out if current user can actually play around with this page
             var artistPage = _artistPageService.GetById(ArtistPageId);
+            var model = new List<object>();
             if (CanDelete(artistPage))
             {
                 //so the current user is actually admin or the page owner. let's find friends
                 //only friends can become page managers
 
                 var friends = _mobSocialService.GetFriends(_workContext.CurrentCustomer.Id);
-                var model = new List<object>();
+                
                 foreach (var friend in friends)
                 {
                     var friendId = (friend.FromCustomerId == _workContext.CurrentCustomer.Id) ? friend.ToCustomerId : friend.FromCustomerId;
@@ -658,7 +665,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(model);
 
             }
-            return new NullJsonResult();
+            return Json(model);
         }
 
         [HttpPost]
@@ -666,12 +673,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             //first lets find out if current user can actually play around with this page
             var artistPage = _artistPageService.GetById(ArtistPageId);
+            var model = new List<object>();
             if (CanDelete(artistPage))
             {
                 //so the current user is actually admin or the page owner. let's find managers
 
                 var managers = _artistPageManagerService.GetPageManagers(ArtistPageId);
-                var model = new List<object>();
+                
                 foreach (var manager in managers)
                 {
 
@@ -696,7 +704,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(model);
 
             }
-            return new NullJsonResult();
+            return Json(model);
         }
 
         [HttpPost]
@@ -933,10 +941,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             if (string.IsNullOrEmpty(artistJson))
                 return null;
-
+            
             var artist = (JObject)JsonConvert.DeserializeObject(artistJson);
             ArtistPage artistPage = new ArtistPage() {
-                PageOwnerId = _workContext.CurrentCustomer.Id,
+                PageOwnerId = _workContext.CurrentCustomer.IsAdmin() ? _workContext.CurrentCustomer.Id : 0,
                 Biography = artist["Description"].ToString(),
                 Name = artist["Name"].ToString(),
                 Gender = artist["Gender"].ToString(),

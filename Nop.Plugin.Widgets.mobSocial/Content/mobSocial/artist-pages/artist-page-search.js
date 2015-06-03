@@ -4,12 +4,17 @@
     $scope.count = 15;
     $scope.page = 1;
     $scope.$watchGroup(['term', 'searchDescription', 'count'], function () {
-        $rootScope.$broadcast('ArtistPageSearch.SearchCriteriaChanged', {
-            term: $scope.term,
-            searchDescriptions: $scope.searchDescriptions,
-            count: $scope.count,
-            page: $scope.page
-        });
+        //clear any timer on new change
+        clearTimeout($scope.searchTimer);
+        $scope.searchTimer = setTimeout(function () {
+            $rootScope.$broadcast('ArtistPageSearch.SearchCriteriaChanged', {
+                term: $scope.term,
+                searchDescriptions: $scope.searchDescriptions,
+                count: $scope.count,
+                page: $scope.page
+            });
+        }, 300);
+        
     });
 }]);
 

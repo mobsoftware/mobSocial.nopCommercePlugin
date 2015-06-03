@@ -48,10 +48,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return base.Repository.Table.Where(x => x.Name.ToLower() == Name.ToLower()).FirstOrDefault();
         }
 
-        public IList<ArtistPage> GetArtistPagesByPageOwner(int PageOwnerId, string SearchTerm = "", int Count = 15, int Page = 1)
+        public IList<ArtistPage> GetArtistPagesByPageOwner(int PageOwnerId, string SearchTerm = "", int Count = 15, int Page = 1, bool IncludeOrphan = false)
         {
             int totalCount;
-            return GetArtistPagesByPageOwner(PageOwnerId, out totalCount, SearchTerm, Count, Page);
+            return GetArtistPagesByPageOwner(PageOwnerId, out totalCount, SearchTerm, Count, Page, IncludeOrphan);
         }
 
        
@@ -62,17 +62,23 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
-        public IList<ArtistPage> GetArtistPagesByPageOwner(int PageOwnerId, out int TotalPages, string SearchTerm = "", int Count = 15, int Page = 1)
+        public IList<ArtistPage> GetArtistPagesByPageOwner(int PageOwnerId, out int TotalPages, string SearchTerm = "", int Count = 15, int Page = 1, bool IncludeOrphan = false)
         {
             var artistPageRows = base.Repository.Table;
-            if (SearchTerm != "")
+            if (IncludeOrphan)
             {
-                artistPageRows = artistPageRows.Where(x => x.PageOwnerId == PageOwnerId && x.Name.Contains(SearchTerm));
+                artistPageRows = artistPageRows.Where(x => x.PageOwnerId == PageOwnerId || x.PageOwnerId == 0);
             }
             else
             {
-                artistPageRows = base.Repository.Table.Where(x => x.PageOwnerId == PageOwnerId);
+                artistPageRows = artistPageRows.Where(x => x.PageOwnerId == PageOwnerId);
+
             }
+            if (SearchTerm != "")
+            {
+                artistPageRows = artistPageRows.Where(x=> x.Name.Contains(SearchTerm));
+            }
+          
             TotalPages = int.Parse(Math.Ceiling((decimal)artistPageRows.Count() / Count).ToString());
             return artistPageRows.OrderByDescending(x => x.Id).Skip(Count * (Page - 1)).Take(Count).ToList();
         }
