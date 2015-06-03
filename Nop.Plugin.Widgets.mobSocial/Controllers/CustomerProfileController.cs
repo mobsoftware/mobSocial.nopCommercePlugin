@@ -111,6 +111,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [HttpPost]
         public void AddFavoriteSong(CustomerFavoriteSong favoriteSong)
         {
+            var dateTimeNow = DateTime.Now;
+            favoriteSong.DateCreated = dateTimeNow;
+            favoriteSong.DateUpdated = dateTimeNow;
+
             _customerFavoriteSongService.Insert(favoriteSong);
         }
 

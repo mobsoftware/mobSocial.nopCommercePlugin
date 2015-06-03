@@ -42,6 +42,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return InvokeHttp404();
         }
 
+
+        public JsonResult ()
+        {
+            //seems that no entity was found
+            return InvokeHttp404();
+        }
+        
+       
+
         #endregion
 
     }
