@@ -132,6 +132,12 @@ namespace Nop.Plugin.Widgets.MobSocial
                 new[] {"Nop.Plugin.Widgets.MobSocial.Admin.Controllers"}
                 );
 
+            routes.MapLocalizedRoute("MusicSearch",
+                "Music",
+                new { controller = "ArtistPage", action = "Search" },
+                new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+                );
+
             
             routes.MapLocalizedRoute("ArtistsPage",
                 "artists/{action}",

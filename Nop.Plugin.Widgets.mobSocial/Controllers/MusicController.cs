@@ -34,24 +34,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         #endregion
 
-        #region Methods
-        
-        public ActionResult GenericUrl()
-        {
-            //seems that no entity was found
-            return InvokeHttp404();
-        }
-
-
-        public JsonResult ()
-        {
-            //seems that no entity was found
-            return InvokeHttp404();
-        }
-        
-       
-
-        #endregion
+      
 
     }
 }

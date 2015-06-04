@@ -2,17 +2,21 @@
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
     Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
-    
+
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-page-search.js");
-    
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
-
 }
 
 <div class="artist-left-content">
     <div data-ng-controller="ArtistPageSearchCriteriaController">
         <table class="table-form">
+            <tr>
+                <td>
+                    <h2>Music Search</h2>
+                    <br /><br />
+                </td>
+            </tr>
             <tr>
                 <td>
                     Search Term: <input data-ng-model="term" type="text" required />
@@ -22,6 +26,7 @@
             <tr>
                 <td>
                     <input type="checkbox" data-ng-model="searchDescription" /> Search Descriptions
+                    <br /><br />
                 </td>
             </tr>
             <tr>

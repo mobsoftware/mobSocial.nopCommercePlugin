@@ -180,8 +180,14 @@ namespace Nop.Plugin.Widgets.MobSocial
                 BusinessPageSearchUrl = "BusinessSearch",
                 ArtistPageMainImageSize= 300,
                 ArtistPageThumbnailSize = 150,
+                // Would you like to replace the api key with your own? 
+                // Find more info here by contacting us at info@skatemob.com
                 EchonestAPIKey = "DQFW7ZCMHBBLMLVFE",
+                // Would you like to replace the partner id with your own? 
+                // Find more info here by contacting us at info@skatemob.com
                 SevenDigitalPartnerId = "9378"
+
+                
             };
 
 

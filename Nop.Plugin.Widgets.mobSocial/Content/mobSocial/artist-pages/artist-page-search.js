@@ -32,7 +32,7 @@ app.controller("ArtistPageSearchController", ['$rootScope','$scope', '$http', fu
             page: data.page
         };
         $http({
-            url: 'Search',
+            url: 'Music',
             method: "POST",
             data: data,
         }).success(function (data, status, headers, config) {
