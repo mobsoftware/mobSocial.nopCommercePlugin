@@ -11,7 +11,7 @@
     <div class="addFriendContainer">
 
         <div id="add-friend-button-container" class="profile-stat @(Model.ShowAddFriendButton ? "show" : "hide")">
-            <button class="add-friend-button pm-link-button" data-tocustomerid="@Model.CustomerProfileId"><i class="fa fa-user-plus"></i>asdf @(T("MobSocial.AddFriendButtonText").Text)</button>
+            <button class="add-friend-button pm-link-button" data-tocustomerid="@Model.CustomerProfileId"><i class="fa fa-user-plus"></i> @(T("MobSocial.AddFriendButtonText").Text)</button>
         </div>
 
         <div id="friend-request-sent-container" data-friendcustomerid="@Model.CustomerProfileId" class="profile-stat @(Model.ShowFriendRequestSent ? "show" : "hide")">
