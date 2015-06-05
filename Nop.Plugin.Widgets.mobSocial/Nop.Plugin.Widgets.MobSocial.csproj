@@ -41,7 +41,7 @@
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
-    <Compile Include="Controllers\ICustomerFavoriteSongService.cs" />
+    <Compile Include="Core\ICustomerFavoriteSongService.cs" />
     <Compile Include="Core\IApiUri.cs" />
     <Compile Include="Core\IOAuthService.cs" />
     <Compile Include="Core\OAuthService.cs" />
