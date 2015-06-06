@@ -46,6 +46,11 @@ namespace Nop.Plugin.Widgets.MobSocial
               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
               );
 
+            routes.MapLocalizedRoute("SongUrl",
+             "{SeName}",
+             new { controller = "Song", action = "Index" },
+             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+             );
 
         }
 

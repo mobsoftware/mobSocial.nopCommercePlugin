@@ -18,5 +18,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         IList<string> SearchArtists(string Term, int Count = 15, int Page = 1);
 
         IList<string> GetArtistSongs(string ArtistName, int Count = 15, int Page = 1);
+
+        string GetRemoteSong(string RemoteEntityId);
+
+        IList<string> SearchSongs(string Term, string Artist = "", int Count = 15, int Page = 1);
+
+
     }
 }

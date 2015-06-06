@@ -146,42 +146,6 @@ app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio',  func
         });
     }
     $scope.GetArtistSongs();
-
-    $scope.activeTrack = null;
-
-    $scope.PlayPause = function (TrackId) {
-        //first check if its a pause action
-        if ($scope.audio) {
-
-            if ($scope.activeTrack == TrackId) {
-                if ($scope.audio.paused)
-                    $scope.audio.play();
-                else
-                    $scope.audio.pause();
-
-                return;
-            }
-            $scope.audio.pause();//pause any active track
-            $scope.activeTrack = null;
-        }
-        //first lets go to our server to get the preview url
-        $http.post("/artists/GetArtistSongPreviewUrl", { TrackId: TrackId })
-                 .success(function (data, status, headers, config) {
-                     if (data.Success) {
-                         //so we got the url lets put ngaudio in action
-                         $scope.audio = ngAudio.load(data.PreviewUrl);
-                         
-                         if ($scope.audio.error) {
-                             alert("Error loading sound");
-                         }
-                         else {
-                             $scope.activeTrack = TrackId;
-                             $scope.audio.play();
-
-                         }
-                     }
-       });
-    }
    
 }]);
 

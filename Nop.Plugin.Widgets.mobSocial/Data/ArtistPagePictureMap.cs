@@ -19,7 +19,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
             Property(m => m.PictureId);
             Property(m => m.DisplayOrder);
-
+            Property(m => m.ArtistPageId);
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();
         }

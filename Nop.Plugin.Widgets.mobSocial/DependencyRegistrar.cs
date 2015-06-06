@@ -142,6 +142,14 @@ namespace Nop.Plugin.Widgets.MobSocial
             .InstancePerRequest();
 
 
+            builder.RegisterType<EfRepository<Song>>().As<IRepository<Song>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<SongPicture>>().As<IRepository<SongPicture>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
             // Service Injection
             builder.RegisterGeneric(typeof(BaseService<,>)).As(typeof(IBaseService<,>)).InstancePerLifetimeScope();
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
@@ -158,7 +166,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<CustomerProfileService>().As<CustomerProfileService>().InstancePerRequest();
             builder.RegisterType<TeamPageService>().As<TeamPageService>().InstancePerRequest();
             builder.RegisterType<NotificationService>().As<INotificationService>().InstancePerRequest();
-            builder.RegisterType<CustomerFavoriteSongService>().As<ICustomerFavoriteSongService>().InstancePerRequest();
+            //builder.RegisterType<CustomerFavoriteSongService>().As<ICustomerFavoriteSongService>().InstancePerRequest();
             builder.RegisterType<EchoNestMusicService>().As<IMusicService>().InstancePerRequest();
             builder.RegisterType<MusicApiCredentials>().As<IOAuthCredentials>().InstancePerRequest();
             builder.RegisterType<MusicApiUri>().As<IApiUri>().InstancePerRequest();
@@ -169,6 +177,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<ArtistPageService>().As<IArtistPageService>().InstancePerRequest();
             builder.RegisterType<ArtistPageAPIService>().As<IArtistPageAPIService>().InstancePerRequest();
             builder.RegisterType<ArtistPageManagerService>().As<IArtistPageManagerService>().InstancePerRequest();
+            builder.RegisterType<SongService>().As<ISongService>().InstancePerRequest();
             // Override any NopCommerce Services below:
             builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 

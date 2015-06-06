@@ -100,7 +100,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public IList<string> SearchArtists(string Term, int Count = 15, int Page = 1)
         {
             //TODO: Use a dedicated cache system for our artist page
-            string CACHE_KEY = string.Format("MOBSOCIAL_SEARCH_{0}_COUNT_{1}_PAGE_{2}", Term, Count, Page);
+            string CACHE_KEY = string.Format("MOBSOCIAL_ARTIST_SEARCH_{0}_COUNT_{1}_PAGE_{2}", Term, Count, Page);
             return _cacheManager.Get(CACHE_KEY, 24 * 60, () => //cache for 24 hours
             {
                 //http://developer.echonest.com/docs/v4/artist.html#search
@@ -125,7 +125,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         public IList<string> GetArtistSongs(string ArtistName, int Count = 15, int Page = 1)
         {
-            //http://developer.echonest.com/docs/v4/song.html#search
+           /* //http://developer.echonest.com/docs/v4/song.html#search
             var apiUrl = GetAPIUrl("song/search", string.Format("artist={0}&bucket=id:7digital-US&bucket=tracks&start={1}&results={2}", ArtistName, (Count * (Page - 1)), Count));
 
             var responseBytes = HttpHelper.ExecuteGET(apiUrl);
@@ -148,11 +148,63 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                     
                 }
                 
-            }
+            }*/
+            var songsResults = SearchSongs("", ArtistName, Count, Page);
             return songsResults;
         }
+        public string GetRemoteSong(string RemoteEntityId)
+        {
+            throw new NotImplementedException();
+        }
 
+        public IList<string> SearchSongs(string Term, string Artist = "", int Count = 15, int Page = 1)
+        {            
+            //TODO: Use a dedicated cache system for our song page
+            string CACHE_KEY = string.Format("MOBSOCIAL_SONGS_SEARCH_{0}_{1}_COUNT_{2}_PAGE_{3}", Term, Artist, Count, Page);
+            return _cacheManager.Get(CACHE_KEY, 24 * 60, () => //cache for 24 hours
+            {
+                //generate parameters string
+                List<string> parameters = new List<string>() {
+                    "bucket=id:7digital-US",
+                    "bucket=tracks",
+                    string.Format("start={0}", (Count * (Page - 1))),
+                    string.Format("results={0}", Count)
+                };
 
+                if (!string.IsNullOrWhiteSpace(Term))
+                    parameters.Add(string.Format("title={0}", Term));
+                if (!string.IsNullOrWhiteSpace(Artist))
+                    parameters.Add(string.Format("artist={0}", Artist));
+
+                //http://developer.echonest.com/docs/v4/song.html#search
+                var apiUrl = GetAPIUrl("song/search", string.Join("&", parameters));
+
+                var responseBytes = HttpHelper.ExecuteGET(apiUrl);
+                if (responseBytes == null || responseBytes.Length == 0)
+                    return null;
+                var jsonObject = (JObject)JsonConvert.DeserializeObject(Encoding.ASCII.GetString(responseBytes));
+                var songsResults = new List<string>();
+
+                for (int index = 0; index < jsonObject["response"]["songs"].Count(); index++)
+                {
+                    var song = jsonObject["response"]["songs"][index];
+                    if (song["tracks"] != null && song["tracks"].Count() > 0)
+                    {
+                        //only songs which have tracks should be taken
+                        for (int subindex = 0; subindex < song["tracks"].Count(); subindex++)
+                        {
+                            var track = song["tracks"][subindex];
+                            songsResults.Add(ParseEchonestTrack(track, song["title"].ToString()));
+                        }
+
+                    }
+
+                }
+                return songsResults;
+            });   
+        }
+
+        #region Parsers
         /// <summary>
         /// Parses echonest json artist data to a generic artist json data. Can have different implementation for a different API
         /// </summary>
@@ -170,13 +222,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             }
 
             string years_active = "";
-            if (artist["years_active"]!=null && artist["years_active"].Count() > 0)
+            if (artist["years_active"] != null && artist["years_active"].Count() > 0)
             {
                 years_active = artist["years_active"][0]["start"].ToString(); //first year in sequence
             }
 
             string biography = "";
-            if (artist["biographies"] !=null && artist["biographies"].Count() > 0)
+            if (artist["biographies"] != null && artist["biographies"].Count() > 0)
             {
                 //find first data biography
                 biography = artist["biographies"][0]["text"].ToString();
@@ -240,20 +292,23 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                 id = track["id"].ToString();
             }
 
-            var responseObject = JObject.FromObject(new
-                  {
-                      Id = id,
-                      Name = title,
-                      ImageUrl = imageUrl,
-                      PreviewUrl = previewUrl,
-                      ForeignId = foreignId,
-                      TrackId = foreignId.Split(':')[2],  //7digital-US:track:3890387
-                      ReleaseId = foreignReleaseId.Split(':')[2]
-                  });
+            var responseObject = JObject.FromObject(new {
+                RemoteEntityId = id,
+                Name = title,
+                ImageUrl = imageUrl,
+                PreviewUrl = previewUrl,
+                ForeignId = foreignId,
+                TrackId = foreignId.Split(':')[2],  //7digital-US:track:3890387
+                ReleaseId = foreignReleaseId.Split(':')[2]
+            });
 
             return responseObject.ToString(Formatting.None);
         }
 
 
+        #endregion
+
+      
+       
     }
 }

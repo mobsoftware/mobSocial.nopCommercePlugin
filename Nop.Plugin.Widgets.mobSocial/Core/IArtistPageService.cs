@@ -22,5 +22,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         IList<ArtistPage> SearchArtists(string Term, out int TotalPages, int Count = 15, int Page = 1, bool SearchDescriptions = false);
 
+        
+
     }
 }
