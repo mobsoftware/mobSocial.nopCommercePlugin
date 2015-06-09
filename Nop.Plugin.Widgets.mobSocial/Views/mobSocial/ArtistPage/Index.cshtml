@@ -10,6 +10,7 @@
     Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
     var json = Json.Encode(Model);
@@ -34,16 +35,7 @@
         <div data-ng-repeat="song in songs">
             @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
         </div>
-        <div class="song-block {{ audio && activeTrack == song.TrackId && !audio.paused ? 'playing' : 'paused' }}" data-ng-repeat="song in songs">
-            <div class="song-image">
-                <img ng-src="{{song.ImageUrl}}" />
-            </div>
-            <div class="song-title">
-                <a class="song-name">{{song.Name}}</a>
-                <a href="" mob-preview-song-button trackid="{{song.TrackId}}">Play</a>|
-                <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a>
-            </div>
-        </div>
+       
     </div>
 </div>
 <div class="artist-right-content">

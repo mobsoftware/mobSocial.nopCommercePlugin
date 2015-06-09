@@ -170,7 +170,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             //remote -songs dynamic page creation
             routes.MapLocalizedRoute("SongRemote",
                   "remote-song/{remoteEntityId}",
-                  new { controller = "Song", action = "RemoteArtist" },
+                  new { controller = "Song", action = "RemoteSong" },
                   new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
                   );
 

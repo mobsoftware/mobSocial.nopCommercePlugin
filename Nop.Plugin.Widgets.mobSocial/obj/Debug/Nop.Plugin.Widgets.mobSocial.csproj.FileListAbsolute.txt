@@ -214,9 +214,9 @@ F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\angular-xeditable\css\xeditable.css
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\angular-xeditable\js\xeditable.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\angular-xeditable\js\xeditable.min.js
+F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\share-song-button.directive.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\artist-pages\artist-page-search.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\artist-pages\artist-pages.js
-F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\artist-pages\styles.css
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\mob-live-video.directive.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\mob-preview-song-button.directive.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\mob-video.js
@@ -228,6 +228,7 @@ F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\easy-responsive-tabs.css
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\easyResponsiveTabs.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\RTCMultiConnection.js
+F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\song-pages\song-pages.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\license.txt
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\jquery.signalR-1.2.2.js
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\mobSocial\jquery.signalR-1.2.2.min.js
@@ -303,6 +304,8 @@ F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Views\mobSocial\ArtistPage\PictureEditor.cshtml
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Views\mobSocial\SongPage\Index.cshtml
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Views\mobSocial\SongPage\SongBlock.cshtml
+F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Views\mobSocial\SongPage\ShareSong.cshtml
+F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Views\mobSocial\SongPage\SharedSongs.cshtml
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\angular-file-upload-1.1.5\angular-file-upload.min.map
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\angular-file-upload-1.1.5\bower.json
 F:\Websites\Testing\nopCommerce_3.50_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\Content\angular-file-upload-1.1.5\Gruntfile.coffee

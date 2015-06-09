@@ -231,12 +231,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
 
                 model.Add(new {
+                    Id = song["RemoteEntityId"].ToString(),
                     Name = song["Name"].ToString(),
+                    SeName = song["RemoteEntityId"].ToString(),
                     ImageUrl = song["ImageUrl"].ToString(),
                     PreviewUrl = previewUrl,
                     ForeignId = song["ForeignId"].ToString(),
                     TrackId = song["TrackId"].ToString(),
-                    AffiliateUrl = affiliateUrl
+                    AffiliateUrl = affiliateUrl,
+                    RemoteSong = true
                 });
             }
             return Json(model);
@@ -963,21 +966,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 var imageUrl = artist["ImageUrl"].ToString();
                 var imageBytes = HttpHelper.ExecuteGET(imageUrl);
-                var fileExtension = Path.GetExtension(imageUrl);
-                if (!String.IsNullOrEmpty(fileExtension))
-                    fileExtension = fileExtension.ToLowerInvariant();
+                if (imageBytes != null)
+                {
+                    var fileExtension = Path.GetExtension(imageUrl);
+                    if (!String.IsNullOrEmpty(fileExtension))
+                        fileExtension = fileExtension.ToLowerInvariant();
 
-                var contentType = PictureUtility.GetContentType(fileExtension);
-                
-                var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false), true);
-                var artistPicture = new ArtistPagePicture() {
-                    ArtistPageId = artistPage.Id,
-                    DateCreated = DateTime.Now,
-                    DateUpdated = DateTime.Now,
-                    DisplayOrder = 1,
-                    PictureId = picture.Id
-                };
-                _artistPageService.InsertPicture(artistPicture);
+                    var contentType = PictureUtility.GetContentType(fileExtension);
+
+                    var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false), true);
+                    var artistPicture = new ArtistPagePicture() {
+                        ArtistPageId = artistPage.Id,
+                        DateCreated = DateTime.Now,
+                        DateUpdated = DateTime.Now,
+                        DisplayOrder = 1,
+                        PictureId = picture.Id
+                    };
+                    _artistPageService.InsertPicture(artistPicture);
+                }
+               
             }
             return artistPage;
         }

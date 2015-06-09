@@ -1,15 +1,21 @@
 ﻿<div class="song-block {{ audio && activeTrack == song.TrackId && !audio.paused ? 'playing' : 'paused' }}">
+    
     <div class="song-image">
         <img ng-src="{{song.ImageUrl}}" />
     </div>
     <div class="song-title" ng-if="!song.RemoteSong">
         <a class="song-name" href="/{{song.SeName}}">{{song.Name}}</a>
         <a href="" mob-preview-song-button trackid="{{song.TrackId}}">Play</a> |
-        <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a>
+        <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a> |
+        <a href="" share-song-button trackid="{{song.Id}}">Share</a>
     </div>
     <div class="song-title" ng-if="song.RemoteSong">
         <a class="song-name" href="/remote-song/{{song.SeName}}">{{song.Name}}</a>
         <a href="" mob-preview-song-button trackid="{{song.TrackId}}">Play</a> |
-        <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a>
+        <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a> |
+        <a href="" share-song-button trackid="0" remotetrackid="{{song.Id}}">Share</a>
+    </div>
+    <div class="song-title" ng-show="song.SenderUrl">
+        Shared by: <a href="/{{song.SenderUrl}}">{{song.SenderName}}</a>
     </div>
 </div>

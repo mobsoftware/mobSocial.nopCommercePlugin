@@ -4,6 +4,7 @@
     Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
 
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-page-search.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
 }
@@ -44,6 +45,7 @@
 </div>
 <div class="artist-right-content">
     <div data-ng-controller="ArtistPageSearchController">
+        <div ng-show="searching">Searching for '{{term}}'</div>
         <div ng-if="searchType == 'Artists'">
             <h1 ng-if="results.length > 0">Showing artists for '{{term}}'</h1>
             <div data-ng-repeat="artist in results">

@@ -31,6 +31,7 @@ app.controller("ArtistPageSearchController", ['$rootScope','$scope', '$http', fu
         {
             return;
         }
+        $scope.searching = true;
         $scope.term = data.term;
         $scope.searchType = data.searchType;
         $scope.results = [];
@@ -40,9 +41,11 @@ app.controller("ArtistPageSearchController", ['$rootScope','$scope', '$http', fu
             data: data,
         }).success(function (data, status, headers, config) {
             $scope.results = data;
+            $scope.searching = false;
 
         }).error(function (data, status, headers, config) {
             alert('An error has occured retrieving results.');
+            $scope.searching = false;
         });
 
     });

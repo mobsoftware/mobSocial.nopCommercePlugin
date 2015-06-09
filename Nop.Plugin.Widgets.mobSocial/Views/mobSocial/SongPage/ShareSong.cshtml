@@ -1,0 +1,33 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.SongModel
+
+<div data-ng-controller="ShareSongController">
+    <div ng-show="!shared">
+        Song Name: <a href="/@Model.SeName">@Model.Name</a><br /><br/>
+        Share with:
+        <angucomplete-alt id="customer-autocomplete" placeholder="Type name of a friend or a user..."
+                          selected-object="customerSelected"
+                          local-data="eligibleManagers"
+                          remote-api-handler="searchAPI"
+                          minlength="1"
+                          pause="100"
+                          image-field="PictureUrl"
+                          title-field="DisplayName"
+                          input-class="form-control form-control-small"></angucomplete-alt>
+
+        <div ng-repeat="c in receivers">
+            <div class="selected-receiver">
+                {{c.DisplayName}}
+                <a ng-click="remove(c.Id)"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="clearfix clear"></div>
+        
+        <button ng-show="receivers.length > 0 && !processing" type="button" ng-click="ShareSong('@Model.Id', '@Model.RemoteEntityId')">
+            <i class="fa fa-share"></i> Share
+        </button>
+        <div ng-show="processing">Please wait...</div>
+    </div>
+    <div ng-show="shared">
+        Song shared successfully.
+    </div>
+</div>

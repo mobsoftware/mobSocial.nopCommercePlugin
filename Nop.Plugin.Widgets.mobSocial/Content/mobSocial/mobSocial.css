@@ -1,4 +1,7 @@
-﻿.profile-page .page-body {
+﻿.clear, .clearfix{
+    clear:both;
+}
+.profile-page .page-body {
     margin-top: 10px;
 }
 
@@ -526,11 +529,13 @@ table.table-form .control-group{
 {
     float:left;
     width:70px;
+    height:70px;
 
 }
 .song-block .song-image img
 {
-    max-width:100%;
+    width:100%;
+    height:100%;
 
 }
 .song-block .song-title
@@ -544,6 +549,13 @@ table.table-form .control-group{
     font-size:13px;
     font-weight:bold;
     display:block;
+}
+.selected-receiver {
+  background-color: #eee;
+  float: left;
+  padding: 3px;
+  border-radius: 2px;
+  margin: 3px;
 }
 
 .manager-block

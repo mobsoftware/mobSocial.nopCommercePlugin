@@ -124,37 +124,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
         public IList<string> GetArtistSongs(string ArtistName, int Count = 15, int Page = 1)
-        {
-           /* //http://developer.echonest.com/docs/v4/song.html#search
-            var apiUrl = GetAPIUrl("song/search", string.Format("artist={0}&bucket=id:7digital-US&bucket=tracks&start={1}&results={2}", ArtistName, (Count * (Page - 1)), Count));
-
-            var responseBytes = HttpHelper.ExecuteGET(apiUrl);
-            if (responseBytes == null || responseBytes.Length == 0)
-                return null;
-            var jsonObject = (JObject)JsonConvert.DeserializeObject(Encoding.ASCII.GetString(responseBytes));
-            var songsResults = new List<string>();
-
-            for (int index = 0; index < jsonObject["response"]["songs"].Count(); index++)
-            {
-                var song = jsonObject["response"]["songs"][index];
-                if(song["tracks"] != null && song["tracks"].Count() > 0)
-                {
-                    //only songs which have tracks should be taken
-                    for (int subindex = 0; subindex < song["tracks"].Count(); subindex++)
-                    {
-                        var track = song["tracks"][subindex];
-                        songsResults.Add(ParseEchonestTrack(track, song["title"].ToString()));
-                    }
-                    
-                }
-                
-            }*/
+        {          
             var songsResults = SearchSongs("", ArtistName, Count, Page);
             return songsResults;
         }
         public string GetRemoteSong(string RemoteEntityId)
         {
-            throw new NotImplementedException();
+            //http://developer.echonest.com/docs/v4/song.html#profile
+            var apiUrl = GetAPIUrl("song/profile", string.Format("track_id={0}&bucket=id:7digital-US&bucket=tracks", RemoteEntityId));
+
+            var responseBytes = HttpHelper.ExecuteGET(apiUrl);
+            if (responseBytes == null || responseBytes.Length == 0)
+                return null;
+            var jsonObject = (JObject)JsonConvert.DeserializeObject(Encoding.ASCII.GetString(responseBytes));
+
+            var song = jsonObject["response"]["songs"][0]["tracks"][0];
+            return ParseEchonestTrack(song, jsonObject["response"]["songs"][0]);
         }
 
         public IList<string> SearchSongs(string Term, string Artist = "", int Count = 15, int Page = 1)
@@ -194,7 +179,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                         for (int subindex = 0; subindex < song["tracks"].Count(); subindex++)
                         {
                             var track = song["tracks"][subindex];
-                            songsResults.Add(ParseEchonestTrack(track, song["title"].ToString()));
+                            songsResults.Add(ParseEchonestTrack(track, song));
                         }
 
                     }
@@ -258,14 +243,23 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         /// <summary>
         /// Parses echonest json track data to a generic track json data. Can have different implementation for a different API
         /// </summary>        
-        string ParseEchonestTrack(JToken track, string title)
+        string ParseEchonestTrack(JToken track, JToken song)
         {
+            string title = song["title"].ToString();
             string imageUrl = "";
             string previewUrl = "";
             string foreignId = "::";//safe initialization: TODO: put a check below for the same
             string foreignReleaseId = "::";
 
             string id = track["id"].ToString();
+            string artist_id = song["artist_id"].ToString();
+            string artist_name = "";
+
+            if (song["artist_name"] != null)
+            {
+                artist_name = song["artist_name"].ToString();
+            }
+
             if (track["release_image"] != null)
             {
                 imageUrl = track["release_image"].ToString();
@@ -294,12 +288,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             var responseObject = JObject.FromObject(new {
                 RemoteEntityId = id,
+                RemoteSourceName = "Echonest",
                 Name = title,
                 ImageUrl = imageUrl,
                 PreviewUrl = previewUrl,
                 ForeignId = foreignId,
                 TrackId = foreignId.Split(':')[2],  //7digital-US:track:3890387
-                ReleaseId = foreignReleaseId.Split(':')[2]
+                ReleaseId = foreignReleaseId.Split(':')[2],
+                ArtistId = artist_id,
+                Description = "",
+                ArtistName = artist_name
             });
 
             return responseObject.ToString(Formatting.None);

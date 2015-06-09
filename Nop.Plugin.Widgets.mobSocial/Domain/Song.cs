@@ -19,10 +19,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string RemoteSourceName { get; set; }
         public string PreviewUrl { get; set; }
         public string TrackId { get; set; }
-        public int ArtistId { get; set; }
-
-        [ForeignKey("ArtistId")]
-        public virtual ArtistPage Artist { get; set; }
+        public string RemoteArtistId { get; set; }
 
         public virtual IList<SongPicture> Pictures { get; set; }
     }

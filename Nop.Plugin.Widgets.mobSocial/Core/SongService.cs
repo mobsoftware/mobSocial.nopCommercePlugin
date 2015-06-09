@@ -87,7 +87,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             if (SearchArtists)
             {
 
-                listSongs = listSongs.Union(songRows.Where(x => x.Artist.Name.Contains(Term))).ToList();
+                //TODO: To be implemented
             }          
 
             TotalPages = int.Parse(Math.Ceiling((decimal)listSongs.Count() / Count).ToString());
