@@ -26,7 +26,8 @@
         var data = {
             TrackId: TrackId,
             RemoteTrackId: RemoteTrackId,
-            CustomerIds: []
+            CustomerIds: [],
+            Message :$scope.Message
         };
         for (var i = 0; i < $scope.receivers.length; i++) {
             data.CustomerIds.push($scope.receivers[i].Id);
@@ -82,4 +83,45 @@ app.controller("SongsPagesSharedSongController", ['$scope', '$http', function ($
                  });
     }
     $scope.GetSharedSongs($scope.SharedSongsPage, $scope.SharedSongCount);
+}]);
+
+app.controller("SongPageDisplayController", ['$scope', '$http', function ($scope, $http) {
+    $scope.song = songModel;
+
+  
+    $scope.UpdateSong = function (key, data) {
+        var obj = "key=" + key + "&value=" + data + "&id=" + $scope.song.Id;
+        var config = {
+            url: "/songs/UpdateSongData/",
+            method: 'POST',
+            data: obj,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        };
+        $http(config).success(function (data, status, headers, config) { });
+    }
+
+    $scope.DeleteSong = function () {
+        if (confirm("Are you sure you wish to delete this song page?")) {
+            $http.post("/songs/DeleteSong", { SongId: $scope.song.Id })
+                  .success(function (data, status, headers, config) {
+                      if (data.Success) {
+                          alert("Page deleted successfully.");
+                          window.location.href = "/songs/SharedSongs";
+                      }
+                  });
+        }
+    }
+    $scope.songsLoaded = false;
+    $scope.SimilarSongs = [];
+    $scope.GetSimilarSongs = function () {
+        $http.post("/songs/GetSimilarSongs", { RemoteTrackId: $scope.song.RemoteEntityId, Count: 5 })
+                .success(function (data, status, headers, config) {
+                    $scope.SimilarSongs = data;
+                    $scope.songsLoaded = true;
+                });
+    }
+    $scope.GetSimilarSongs();
+
 }]);

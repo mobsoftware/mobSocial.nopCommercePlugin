@@ -20,18 +20,29 @@
             <tr>
                 <td>
                     Search:<br />
-                    <select data-ng-model="searchType" ng-options="type for type in searchTypes track by type"></select>
+                    <select data-ng-model="searchType" ng-options="type for type in searchTypes track by type"></select><br/><br/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    Search Term: <input data-ng-model="term" type="text" required />
+                    Search Term: <input data-ng-model="term" type="text" required /><br/>
                     <input type="hidden" data-ng-model="page" />
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="checkbox" data-ng-model="searchDescription" /> Search Descriptions
+                    <br />
+                    
+                </td>
+            </tr>
+            <tr ng-show="searchType == 'Songs'">
+                <td>
+                    <input type="checkbox" data-ng-model="searchArtists" /> Restrict to artist
+                    <br />
+                    <div ng-show="searchArtists">
+                        Artist: <input type="text" data-ng-model="artistName" />
+                    </div>
                     <br /><br />
                 </td>
             </tr>
@@ -46,6 +57,7 @@
 <div class="artist-right-content">
     <div data-ng-controller="ArtistPageSearchController">
         <div ng-show="searching">Searching for '{{term}}'</div>
+        <div ng-show="!searching && results.length == 0">Nothing found for '{{term}}' with selected filters. Please try again by changing the filters.</div>
         <div ng-if="searchType == 'Artists'">
             <h1 ng-if="results.length > 0">Showing artists for '{{term}}'</h1>
             <div data-ng-repeat="artist in results">

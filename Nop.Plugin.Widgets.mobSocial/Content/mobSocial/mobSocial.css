@@ -550,6 +550,19 @@ table.table-form .control-group{
     font-weight:bold;
     display:block;
 }
+.song-page-action-links
+{
+    border-top:solid 1px #ccc;
+    padding:10px 0;
+    margin:5px 0;
+    text-align:center;
+    font-size:15px;
+}
+.song-page-action-links a, .song-page-action-links a:hover{
+    cursor:pointer;
+    text-decoration:none;
+    margin:0 5px;
+}
 .selected-receiver {
   background-color: #eee;
   float: left;
@@ -598,6 +611,11 @@ table.table-form .control-group{
      float:left;
      width:700px;
      margin-left:10px;
+ }
+ .message-text{
+       clear: both;
+  background-color: #eee;
+  padding: 10px;
  }
 @media screen and (max-width:480px) {
     .artist-left-content{

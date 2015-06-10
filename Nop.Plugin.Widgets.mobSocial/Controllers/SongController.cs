@@ -92,13 +92,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             if (song == null)
                 return InvokeHttp404(); //not found
-
+            string affiliateUrl = "";
+            int trackId;
+            if (int.TryParse(song.TrackId, out trackId))
+                affiliateUrl = _musicService.GetTrackAffiliateUrl(trackId);
             var model = new SongModel() {
                 Description = song.Description,               
                 Name = song.Name,
                 RemoteEntityId = song.RemoteEntityId,
-                RemoteSourceName = song.RemoteSourceName,                
-                Id = song.Id
+                RemoteSourceName = song.RemoteSourceName,  
+                TrackId = song.TrackId,
+                Id = song.Id,
+                AffiliateUrl = affiliateUrl
+                
             };
 
             //images for artist
@@ -166,7 +172,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false)
+        public ActionResult Search(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
         {
             //we search for artists both in our database as well as the remote api
             var model = new List<object>();
@@ -206,7 +212,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (dbSongs.Count() < Count)
             {
                 //we need more records to show. lets go remote and import some records from there
-                var remoteSongs = _artistPageApiService.SearchSongs(Term, string.Empty /*artist name*/, Count - dbSongs.Count());
+                var remoteSongs = _artistPageApiService.SearchSongs(Term, SearchArtists ? ArtistName : string.Empty /*artist name*/, Count - dbSongs.Count());
                 if (remoteSongs != null)
                 {
                     var remoteSongsDeserialized = new List<JObject>();
@@ -250,6 +256,42 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(model);
         }
 
+        /// <summary>
+        /// Gets the similar songs to a given song
+        /// </summary>
+        [HttpPost]
+        public ActionResult GetSimilarSongs(string RemoteTrackId, int Count = 5)
+        {
+            
+            var model = new List<object>();
+
+            var remoteSongs = _artistPageApiService.GetSimilarSongs(RemoteTrackId, Count);
+            if (remoteSongs == null)
+                return Json(model);
+
+            foreach (var songJson in remoteSongs)
+            {
+                var song = (JObject)JsonConvert.DeserializeObject(songJson);
+                string affiliateUrl = "";
+                int iTrackId;
+                if (int.TryParse(song["TrackId"].ToString(), out iTrackId))
+                {
+                    affiliateUrl = _musicService.GetTrackAffiliateUrl(iTrackId);
+                }
+
+
+                model.Add(new {
+                    Name = song["Name"].ToString(),
+                    Id = song["RemoteEntityId"].ToString(),
+                    ImageUrl = song["ImageUrl"].ToString(),
+                    SeName =  song["RemoteEntityId"].ToString(),
+                    TrackId = song["TrackId"].ToString(),
+                    AffiliateUrl = affiliateUrl,
+                    RemoteSong = true
+                });
+            }
+            return Json(model);
+        }
         /// <summary>
         /// Generic method for all inline updates
         /// </summary>
@@ -297,6 +339,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         public ActionResult ShareSong(int TrackId, string RemoteTrackId = "")
         {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+            {
+                //ask user to login if he is logged out
+                return View(ControllerUtil.MobSocialViewsFolder + "/_MustLogin.cshtml", "/Music");
+            }
             //check if song exists
             var song = _songService.GetById(TrackId);
             SongModel model;
@@ -340,7 +387,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
         [HttpPost]
-        public ActionResult ShareSong(int TrackId, int[] CustomerIds, string RemoteTrackId = "")
+        public ActionResult ShareSong(int TrackId, int[] CustomerIds, string Message = "", string RemoteTrackId = "")
         {
             if(CustomerIds == null)
                 return Json(new { Success = false, Message = "Failed" });
@@ -373,7 +420,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         var sharedSong = new SharedSong() {
                             CustomerId = CustomerId,
                             SenderId = _workContext.CurrentCustomer.Id,
-                            SongId = song.Id
+                            SongId = song.Id,
+                            Message = Message,
+                            SharedOn = DateTime.Now
                         };
                         _sharedSongService.Insert(sharedSong);
                         //send the notification to the customer
@@ -423,6 +472,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     smodel.Add(new {
                         Name = song.Name,
                         Id = song.Id,
+                        Message = rs.Message,
                         ImageUrl = imageUrl,
                         SeName = song.GetSeName(_workContext.WorkingLanguage.Id, true, false),
                         TrackId = song.TrackId,
@@ -509,10 +559,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 //the logged in user can delete the page. lets delete the associated things now
                 while (song.Pictures.Count() != 0)
                 {
-                    foreach (var artistpicture in song.Pictures)
+                    foreach (var songpicture in song.Pictures)
                     {
-                        var picture = _pictureService.GetPictureById(artistpicture.PictureId);
-                        _songService.DeletePicture(artistpicture);
+                        var picture = _pictureService.GetPictureById(songpicture.PictureId);
+                        _songService.DeletePicture(songpicture);
                         _pictureService.DeletePicture(picture);
                         //collection modified. so better break the loop and let it run agian.
 

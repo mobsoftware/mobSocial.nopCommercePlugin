@@ -189,6 +189,36 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             });   
         }
 
+        public IList<string> GetSimilarSongs(string TrackId, int Count = 5)
+        {
+            //http://developer.echonest.com/docs/v4/basic.html#basic
+            var apiUrl = GetAPIUrl("playlist/basic", string.Format("track_id={0}&results={1}&bucket=id:7digital-US&bucket=tracks&type=song-radio", TrackId, Count));
+
+            var responseBytes = HttpHelper.ExecuteGET(apiUrl);
+            if (responseBytes == null || responseBytes.Length == 0)
+                return null;
+            var jsonObject = (JObject)JsonConvert.DeserializeObject(Encoding.ASCII.GetString(responseBytes));
+            var songsResults = new List<string>();
+
+            for (int index = 0; index < jsonObject["response"]["songs"].Count(); index++)
+            {
+                var song = jsonObject["response"]["songs"][index];
+                if (song["tracks"] != null && song["tracks"].Count() > 0)
+                {
+                    //only songs which have tracks should be taken
+                    for (int subindex = 0; subindex < song["tracks"].Count(); subindex++)
+                    {
+                        var track = song["tracks"][subindex];
+                        songsResults.Add(ParseEchonestTrack(track, song));
+                    }
+
+                }
+
+            }
+            return songsResults;
+        }
+
+
         #region Parsers
         /// <summary>
         /// Parses echonest json artist data to a generic artist json data. Can have different implementation for a different API
@@ -306,7 +336,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         #endregion
 
+
+
+
+
       
-       
     }
 }

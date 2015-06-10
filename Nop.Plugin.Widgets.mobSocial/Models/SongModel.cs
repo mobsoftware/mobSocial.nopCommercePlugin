@@ -12,9 +12,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         {
 
         }
-
+        public string TrackId { get; set; }
         public string RemoteSourceName { get; set; }
-        public string RemoteEntityId { get; set; }        
+        public string RemoteEntityId { get; set; }
+        public string AffiliateUrl { get; set; }
 
         public bool CanEdit { get; set; }
         public bool CanDelete { get; set; }

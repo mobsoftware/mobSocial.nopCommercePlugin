@@ -17,6 +17,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             HasKey(x => x.Id);
             Property(x => x.SenderId);
             Property(x => x.CustomerId);
+            Property(x => x.Message);
+
+            Property(x => x.SharedOn);
             Property(x => x.SongId);
         }
     }
