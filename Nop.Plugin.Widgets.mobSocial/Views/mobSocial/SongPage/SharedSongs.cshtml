@@ -44,9 +44,23 @@
                             </table>
                         </div>
                         <hr />
-                        <div data-ng-repeat="song in ReceivedSongs">
-                           @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
-                        </div>
+                        <table>
+                            <tr data-ng-repeat="song in ReceivedSongs">
+                                <td>
+                                    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")                                   
+                                </td>
+                                <td style="vertical-align:top">
+                                    <div class="message-text">
+                                        Shared by: <a href="/{{song.SenderUrl}}">{{song.SenderName}}</a><br />
+                                        <div ng-show="song.Message != ''">
+                                            <a href="/{{song.SenderUrl}}">{{song.SenderName}}</a> wrote: {{song.Message}}
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
                     </div>
 
                 </div>

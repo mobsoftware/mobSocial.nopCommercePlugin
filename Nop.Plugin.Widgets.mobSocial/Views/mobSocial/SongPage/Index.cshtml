@@ -19,4 +19,90 @@
     var songModel = @Html.Raw(json);
 </script>
 
+<div data-ng-controller="SongPageDisplayController">
+    <div class="artist-left-content">
+        <div class="artist-page-image">
+            <img src="@Model.MainPictureUrl" style="width:100%" />
+            @if (Model.CanEdit)
+            {
+                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/PictureEditor.cshtml", Model)
+            }
+        </div>
+        <div class="song-page-action-links">
+            <a>
+                <i class="fa fa-music"></i> <span mob-preview-song-button trackid="{{song.TrackId}}">Play</span>
+            </a>
+            <a href="{{song.AffiliateUrl}}" target="_blank">
+                <i class="fa fa-download"></i> Buy
+            </a>
+            <a href="" share-song-button trackid="{{song.Id}}">
+                <i class="fa fa-share"></i> Share
+            </a>
+        </div>
+        <div class="similar-songs">
+            <h2 class="text-center">Similar Songs</h2>
+            <div ng-hide="songsLoaded">Loading...</div>
+            <div data-ng-repeat="song in SimilarSongs">
+                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
+            </div>
+        </div>
+    </div>
+    <div class="artist-right-content">
+        <div id="page-display-container">
+            <div class="page-title">
+                <h1>
+                    @if (Model.CanEdit)
+                    {
+                        <a href="#" editable-text="song.Name" onbeforesave="UpdateSong('Name', $data)">{{ song.Name || 'empty' }}</a>
+
+                    }
+                    else
+                    {
+
+                        <text>{{ song.Name}}</text>
+                    }
+                </h1>
+
+            </div>
+            <div id="tabs">
+                <ul class="resp-tabs-list">
+                    <li><i class="fa fa-tags"></i> About</li>
+                    @if (Model.CanDelete)
+                    {
+                        <li><i class="fa fa-times"></i> Delete Page</li>
+                    }
+                </ul>
+
+                <div class="resp-tabs-container">
+                    <div>
+                        @if (Model.CanEdit)
+                        {
+                            <span href="#" editable-textarea="song.Description" onbeforesave="UpdateSong('Description', $data)" e-rows="7" e-cols="40">
+                                {{ song.Description || 'no description' }}
+                            </span>
+                        }
+                        else
+                        {
+                            <text >{{song.Description || 'No Description Available'}}</text>
+                        }
+                    </div>
+                    @if (Model.CanDelete)
+                    {
+
+                        <div>
+                            Deleting a song page will delete all the data associated with song. Are you sure you wish to delete this page?<br />
+                            <input type="button" ng-click="DeleteSong()" value="Delete Page" />
+                        </div>
+                    }
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#tabs").easyResponsiveTabs();
+                });
+            </script>
+
+        </div>
+    </div>
+</div>
 

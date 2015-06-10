@@ -124,12 +124,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
                 this.DropTable<ArtistPagePicture>();
                 this.DropTable<ArtistPageManager>();
-                this.DropTable<SharedSong>();
-                this.DropTable<ArtistPage>();
-
+                this.DropTable<SharedSong>();   
                 this.DropTable<SongPicture>();
                 this.DropTable<Song>();
-
+                this.DropTable<ArtistPage>();
                 SaveChanges();
             }
             catch (Exception)

@@ -1,0 +1,14 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.SongModel
+@using Nop.Plugin.Widgets.MobSocial.Models;
+@{
+    Layout = "";
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/file-upload.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
+}
+<h1 class="text-center">Change Picture</h1>
+<div ng-controller="FileUploadController" url="~/songs/UploadPicture/@Model.Id" nv-file-drop uploader="uploader" filters="queueLimit, customFilter" class="ng-scope">
+    <input type="file" nv-file-select="" uploader="uploader">
+    <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+        <i class="fa fa-upload"></i> Upload
+    </button>
+</div>

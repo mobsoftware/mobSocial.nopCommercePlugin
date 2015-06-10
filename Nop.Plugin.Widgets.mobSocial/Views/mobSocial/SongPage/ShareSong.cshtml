@@ -2,7 +2,10 @@
 
 <div data-ng-controller="ShareSongController">
     <div ng-show="!shared">
-        Song Name: <a href="/@Model.SeName">@Model.Name</a><br /><br/>
+        @if (!string.IsNullOrEmpty(Model.Name))
+        {
+        <text>Song Name: <a href="/@Model.SeName">@Model.Name</a><br /><br /></text>
+        }
         Share with:
         <angucomplete-alt id="customer-autocomplete" placeholder="Type name of a friend or a user..."
                           selected-object="customerSelected"
@@ -21,7 +24,8 @@
             </div>
         </div>
         <div class="clearfix clear"></div>
-        
+        Brief Message:
+        <textarea ng-model="Message" cols="50" rows="10"></textarea><br/>
         <button ng-show="receivers.length > 0 && !processing" type="button" ng-click="ShareSong('@Model.Id', '@Model.RemoteEntityId')">
             <i class="fa fa-share"></i> Share
         </button>
