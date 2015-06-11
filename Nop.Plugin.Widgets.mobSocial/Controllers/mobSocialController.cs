@@ -193,7 +193,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 50),
 
                         ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = c.GetSeName(0) }),
-
+                        Id = c.Id
                     });
 
 

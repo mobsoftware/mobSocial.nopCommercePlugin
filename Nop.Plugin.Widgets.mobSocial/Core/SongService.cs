@@ -19,6 +19,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private IUrlRecordService _urlRecordService;
         private IWorkContext _workContext;
         private IPictureService _pictureService;
+        private IRepository<ArtistPage> _artistPageRepository;
         #endregion
 
         #region Constructor
@@ -27,6 +28,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
           ILogger logger,
           IRepository<Song> songRepository,
           IRepository<SongPicture> songPictureRepository,
+          IRepository<ArtistPage> artistPageRepository,
           IUrlRecordService urlRecordService,
           IWorkContext workContext,
           IPictureService pictureService)
@@ -35,6 +37,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _urlRecordService = urlRecordService;
             _workContext = workContext;
             _pictureService = pictureService;
+            _artistPageRepository = artistPageRepository;
         }
         #endregion
       
@@ -66,13 +69,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return picture;
         }
 
-        public IList<Song> SearchSongs(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false)
+        public IList<Song> SearchSongs(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
         {
             int totalCount;
-            return SearchSongs(Term, out totalCount, Count, Page, SearchDescriptions, SearchArtists);
+            return SearchSongs(Term, out totalCount, Count, Page, SearchDescriptions, SearchArtists, ArtistName);
         }
 
-        public IList<Song> SearchSongs(string Term, out int TotalPages, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false)
+        public IList<Song> SearchSongs(string Term, out int TotalPages, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
         {
             var songRows = base.Repository.Table.OrderBy(x => x.Id).AsQueryable();
             var listSongs = new List<Song>();
@@ -87,7 +90,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             if (SearchArtists)
             {
 
-                listSongs = listSongs.Union(songRows.Where(x => x.Artist.Name.Contains(Term))).ToList();
+               //we first get all the remote artist ids which contain our artist name in their artist name column
+               var remoteArtistIds = _artistPageRepository.Table.Where(x => x.Name.Contains(ArtistName)).Select(x => x.RemoteEntityId);
+
+              //now filter those rows which belong to these artists only
+               listSongs = listSongs.Where(x => remoteArtistIds.Contains(x.RemoteArtistId)).ToList();
             }          
 
             TotalPages = int.Parse(Math.Ceiling((decimal)listSongs.Count() / Count).ToString());

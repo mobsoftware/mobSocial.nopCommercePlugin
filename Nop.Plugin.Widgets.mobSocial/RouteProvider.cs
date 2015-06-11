@@ -170,7 +170,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             //remote -songs dynamic page creation
             routes.MapLocalizedRoute("SongRemote",
                   "remote-song/{remoteEntityId}",
-                  new { controller = "Song", action = "RemoteArtist" },
+                  new { controller = "Song", action = "RemoteSong" },
                   new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
                   );
 
@@ -187,6 +187,13 @@ namespace Nop.Plugin.Widgets.MobSocial
                new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
                );
 
+            routes.MapLocalizedRoute("SongPageUploadPicture",
+               "songs/UploadPicture/{SongId}",
+               new { controller = "Song", action = "UploadPicture" },
+               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+
+               );
 
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             routes.MapHubs();

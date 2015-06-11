@@ -23,6 +23,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         IList<string> SearchSongs(string Term, string Artist = "", int Count = 15, int Page = 1);
 
-
+        IList<string> GetSimilarSongs(string TrackId, int Count = 5);
     }
 }

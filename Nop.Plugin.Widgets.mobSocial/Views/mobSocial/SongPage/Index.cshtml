@@ -1,4 +1,4 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.ArtistPageModel
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.SongModel
 @using Nop.Plugin.Widgets.MobSocial.Models;
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
@@ -6,201 +6,102 @@
 
     Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
-    
+
     Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
     var json = Json.Encode(Model);
 
 }
 <script>
-    var artistModel = @Html.Raw(json);
+    var songModel = @Html.Raw(json);
 </script>
 
-
-<div class="artist-left-content">
-    <div class="artist-page-image">
-        <img src="@Model.MainPictureUrl" style="width:100%" />
-        @if (Model.CanEdit)
-        {
-            @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/PictureEditor.cshtml", Model)
-        }
-    </div>
-    <div data-ng-controller="ArtistPageSongsController">
-        <h2 class="text-center">Artist Songs</h2>
-        <div ng-hide="songsLoaded">Loading...</div>
-        <div class="song-block {{ audio && activeTrack == song.TrackId && !audio.paused ? 'playing' : 'paused' }}" data-ng-repeat="song in songs">
-            <div class="song-image">
-                <img ng-src="{{song.ImageUrl}}" />
+<div data-ng-controller="SongPageDisplayController">
+    <div class="artist-left-content">
+        <div class="artist-page-image">
+            <img src="@Model.MainPictureUrl" style="width:100%" />
+            @if (Model.CanEdit)
+            {
+                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/PictureEditor.cshtml", Model)
+            }
+        </div>
+        <div class="song-page-action-links">
+            <a>
+                <i class="fa fa-music"></i> <span mob-preview-song-button trackid="{{song.TrackId}}">Play</span>
+            </a>
+            <a href="{{song.AffiliateUrl}}" target="_blank">
+                <i class="fa fa-download"></i> Buy
+            </a>
+            <a href="" share-song-button trackid="{{song.Id}}">
+                <i class="fa fa-share"></i> Share
+            </a>
+        </div>
+        <div class="similar-songs">
+            <h2 class="text-center">Similar Songs</h2>
+            <div ng-hide="songsLoaded">Loading...</div>
+            <div data-ng-repeat="song in SimilarSongs">
+                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
             </div>
-            <div class="song-title">
-                <a class="song-name">{{song.Name}}</a>
-                <a href="" ng-click="PlayPause(song.TrackId)">{{ audio && activeTrack == song.TrackId && !audio.paused ? "Pause" : "Play" }}</a> |
-                <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a>
-            </div>
-
         </div>
     </div>
-</div>
-<div class="artist-right-content">
-    <div id="page-display-container" data-ng-controller="ArtistPageDisplayController">
-        <div class="page-title">
-            <h1>
-                @if (Model.CanEdit)
-                {
-                    <a href="#" editable-text="artist.Name" onbeforesave="UpdateArtist('Name', $data)">{{ artist.Name || 'empty' }}</a>
-
-                }
-                else
-                {
-
-                    <text>{{ artist.Name}}</text>
-                }
-            </h1>
-
-
-
-        </div>
-
-        <div id="tabs">
-            <ul class="resp-tabs-list">
-                <li><i class="fa fa-info"></i> Biography</li>
-                <li><i class="fa fa-tags"></i> About</li>
-                @if (Model.CanDelete)
-                {
-                    <li><i class="fa fa-users"></i> Page Managers</li>
-                    <li><i class="fa fa-times"></i> Delete Page</li>
-                }
-            </ul>
-
-
-
-            <div class="resp-tabs-container">
-                <div>
+    <div class="artist-right-content">
+        <div id="page-display-container">
+            <div class="page-title">
+                <h1>
                     @if (Model.CanEdit)
                     {
-                        <span href="#" editable-textarea="artist.Description" onbeforesave="UpdateArtist('Description', $data)" e-rows="7" e-cols="40">
-                            {{ artist.Description || 'no description' }}
-                        </span>
+                        <a href="#" editable-text="song.Name" onbeforesave="UpdateSong('Name', $data)">{{ song.Name || 'empty' }}</a>
+
                     }
                     else
                     {
-                        <text >{{artist.Description}}</text>
+
+                        <text>{{ song.Name}}</text>
                     }
+                </h1>
 
-                </div>
-                <div>
-                    <p class="artist-spec-item">
-                        @if (Model.CanEdit)
-                        {
-                            <label>Gender:</label><a href="#" editable-text="artist.Gender" onbeforesave="UpdateArtist('Gender', $data)">{{ artist.Gender || 'enter gender'}}</a>
+            </div>
+            <div id="tabs">
+                <ul class="resp-tabs-list">
+                    <li><i class="fa fa-tags"></i> About</li>
+                    @if (Model.CanDelete)
+                    {
+                        <li><i class="fa fa-times"></i> Delete Page</li>
+                    }
+                </ul>
 
-                        }
-                        else
-                        {
-                            <label>Gender:</label><text>{{ artist.Gender || '-'}}</text>
-                        }
-                    </p>
-                    <p class="artist-spec-item">
-                        @if (Model.CanEdit)
-                        {
-                            <label>HomeTown:</label><a href="#" editable-text="artist.HomeTown" onbeforesave="UpdateArtist('HomeTown', $data)">{{ artist.HomeTown || 'enter hometown'}}</a>
-
-                        }
-                        else
-                        {
-                            <label>HomeTown:</label><text>{{ artist.HomeTown || '-'}}</text>
-                        }
-                    </p>
-                    <p class="artist-spec-item">
-                        @if (Model.CanEdit)
-                        {
-                            <label>Short Description:</label><a href="#" editable-textarea="artist.ShortDescription" onbeforesave="UpdateArtist('ShortDescription', $data)">{{ artist.ShortDescription || 'edit short description'}}</a>
-
-                        }
-                        else
-                        {
-                            <label>Gender:</label><text>{{ artist.ShortDescription || ''}}</text>
-                        }
-                    </p>
-
-                </div>
-
-                @if (Model.CanDelete)
-                {
-
+                <div class="resp-tabs-container">
                     <div>
-                        <table class="table-form">
-                            <tr>
-                                <td>
-                                    <p>
-                                        Type the name of a friend to add as page manager of this page.
-                                    </p>
-                                    <div class="control-group">
-                                        <angucomplete-alt id="friend-autocomplete" placeholder="Type name of a friend..."
-                                                          selected-object="newPageManager"
-                                                          local-data="eligibleManagers"
-                                                          search-fields="CustomerDisplayName"
-                                                          minlength="1"
-                                                          pause="100"
-                                                          image-field="ProfileImageUrl"
-                                                          title-field="CustomerDisplayName"
-                                                          input-class="form-control form-control-small"></angucomplete-alt>
-                                        <input ng-show="newPageManager!=null" type="button" ng-click="AddPageManager()" value="Add as page manager" />
+                        @if (Model.CanEdit)
+                        {
+                            <span href="#" editable-textarea="song.Description" onbeforesave="UpdateSong('Description', $data)" e-rows="7" e-cols="40">
+                                {{ song.Description || 'no description' }}
+                            </span>
+                        }
+                        else
+                        {
+                            <text >{{song.Description || 'No Description Available'}}</text>
+                        }
+                    </div>
+                    @if (Model.CanDelete)
+                    {
 
-
-
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <br />
-                        <h1 class="text-center">Current Managers</h1>
-                        <div class="manager-list">
-                            <div ng-hide="managersLoaded">Loading...</div>
-                            <div ng-show="managers.length == 0">There are no managers for this page</div>
-                            <div class="manager-block" ng-repeat="manager in managers">
-                                <div class="manager-image">
-                                    <img ng-src="{{manager.ProfileImageUrl}}" />
-                                </div>
-                                <div class="manager-title">
-                                    <a href="{{manager.ProfileUrl}}">{{manager.CustomerDisplayName}}</a>
-                                    <div class="actions">
-                                        <a href="" ng-click="DeletePageManager(manager.Id)"><i class="fa fa-times"></i> Remove as Manager</a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div>
+                            Deleting a song page will delete all the data associated with song. Are you sure you wish to delete this page?<br />
+                            <input type="button" ng-click="DeleteSong()" value="Delete Page" />
                         </div>
-                        <script>
-                            window.onload = function(){
-                                angular.element(document.getElementById('page-display-container')).scope().GetEligibleManagers();
-
-                            }
-                        </script>
-
-                    </div>
-                    <div>
-                        Deleting an artist page will delete all the data associated with artist. Are you sure you wish to delete this page?<br />
-                        <input type="button" ng-click="DeleteArtist()" value="Delete Page" />
-
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#tabs").easyResponsiveTabs();
-            });
-        </script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#tabs").easyResponsiveTabs();
+                });
+            </script>
 
-        <div class="related-artists">
-            <h2 class="text-center">You may also like</h2>
-            <div ng-hide="relatedArtistsLoaded">Loading...</div>
-            <div data-ng-repeat="artist in relatedArtists">
-                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/ArtistBlock.cshtml")
-            </div>
         </div>
     </div>
 </div>

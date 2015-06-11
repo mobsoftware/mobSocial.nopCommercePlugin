@@ -150,6 +150,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
             .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<SharedSong>>().As<IRepository<SharedSong>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
             // Service Injection
             builder.RegisterGeneric(typeof(BaseService<,>)).As(typeof(IBaseService<,>)).InstancePerLifetimeScope();
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
@@ -178,6 +182,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<ArtistPageAPIService>().As<IArtistPageAPIService>().InstancePerRequest();
             builder.RegisterType<ArtistPageManagerService>().As<IArtistPageManagerService>().InstancePerRequest();
             builder.RegisterType<SongService>().As<ISongService>().InstancePerRequest();
+            builder.RegisterType<SharedSongService>().As<ISharedSongService>().InstancePerRequest();
             // Override any NopCommerce Services below:
             builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 

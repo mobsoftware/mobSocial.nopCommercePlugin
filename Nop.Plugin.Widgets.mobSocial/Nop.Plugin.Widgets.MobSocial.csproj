@@ -63,9 +63,14 @@
     <Compile Include="Core\IBusinessPageCouponService.cs" />
     <Compile Include="Core\IBusinessPageService.cs" />
     <Compile Include="Core\IMusicService.cs" />
+    <Compile Include="Core\IOAuthCredentials.cs" />
+    <Compile Include="Core\IOAuthService.cs" />
+    <Compile Include="Core\ISharedSongService.cs" />
     <Compile Include="Core\ISongService.cs" />
     <Compile Include="Core\NotificationService.cs" />
     <Compile Include="Core\INotificationService.cs" />
+    <Compile Include="Core\OAuthService.cs" />
+    <Compile Include="Core\SharedSongService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Core\SongService.cs" />
     <Compile Include="Data\ArtistPageManagerMap.cs" />
@@ -76,6 +81,7 @@
     <Compile Include="Data\BusinessPageCouponMap.cs" />
     <Compile Include="Data\BusinessPageMap.cs" />
     <Compile Include="Data\BusinessPagePictureMap.cs" />
+    <Compile Include="Data\SharedSongMap.cs" />
     <Compile Include="Data\NotificationMap.cs" />
     <Compile Include="Data\PictureTagMap.cs" />
     <Compile Include="Data\CustomerTimelineMap.cs" />
@@ -89,6 +95,7 @@
     <Compile Include="Domain\CustomerFavoriteSong.cs" />
     <Compile Include="Domain\CustomerProfile.cs" />
     <Compile Include="Domain\BusinessPage.cs" />
+    <Compile Include="Domain\SharedSong.cs" />
     <Compile Include="Domain\Notification.cs" />
     <Compile Include="Domain\PictureTag.cs" />
     <Compile Include="Domain\CustomerTimeline.cs" />
@@ -244,6 +251,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\angular-xeditable\js\xeditable.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\share-song-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\artist-pages\artist-page-search.js">
@@ -611,6 +621,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\SongPage\SongBlock.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\SongPage\ShareSong.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\SongPage\SharedSongs.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\SongPage\PictureEditor.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_MustLogin.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\Web.config" />

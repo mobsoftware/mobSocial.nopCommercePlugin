@@ -45,7 +45,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             }
             else if (eventMessage.UrlRecord.EntityName == "Song")
             {
-                eventMessage.RouteData.Values["controller"] = "Music";
+                eventMessage.RouteData.Values["controller"] = "Song";
                 eventMessage.RouteData.Values["action"] = "Index";
                 eventMessage.RouteData.Values["id"] = eventMessage.UrlRecord.EntityId;
                 eventMessage.RouteData.Values["SeName"] = eventMessage.UrlRecord.Slug;

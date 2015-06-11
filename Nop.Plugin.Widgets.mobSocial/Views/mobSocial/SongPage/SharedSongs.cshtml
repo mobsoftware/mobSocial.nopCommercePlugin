@@ -1,0 +1,105 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Models;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
+
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
+
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
+
+}
+
+@section left
+{
+    @*todo Add account navigation back
+        @Html.Partial("~/Views/Customer/MyAccountNavigation.cshtml", null, new ViewDataDictionary())*@
+
+    @Html.Action("PublicInfo", "SocialNetworkNavigation", new { widgetZone = "account_navigation_after" })
+
+}
+<div class="page account-page order-list-page" data-ng-controller="SongsPagesSharedSongController">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - Shared Songs</h1>
+    </div>
+
+    <div class="page-body">
+        <div class="artist-pages" id="tabs">
+            <ul class="resp-tabs-list">
+                <li><i class="fa fa-reply"></i> Received Songs</li>
+                <li><i class="fa fa-share"></i> Shared Songs</li>
+            </ul>
+            <div class="resp-tabs-container">
+                <div>                   
+                    <div ng-show="ReceivedSongs.length == 0">You have not received any song</div>
+                    <div ng-hide="ReceivedSongs.length == 0">
+                        <div class="search-filters">
+                            <table class="table-form">
+                                <tr>                                    
+                                    <td>
+                                        Jump To Page: <select data-ng-model="ReceivedSongsPage" data-ng-options="i for i in PageOptions"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr />
+                        <table>
+                            <tr data-ng-repeat="song in ReceivedSongs">
+                                <td>
+                                    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")                                   
+                                </td>
+                                <td style="vertical-align:top">
+                                    <div class="message-text">
+                                        Shared by: <a href="/{{song.SenderUrl}}">{{song.SenderName}}</a><br />
+                                        <div ng-show="song.Message != ''">
+                                            <a href="/{{song.SenderUrl}}">{{song.SenderName}}</a> wrote: {{song.Message}}
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </div>
+
+                </div>
+                <div>
+                    <div ng-show="SharedSongs.length == 0">You have not shared any song</div>
+                    <div ng-hide="SharedSongs.length == 0">
+                        <div class="search-filters">
+                            <table class="table-form">
+                                <tr>
+                                    <td>
+                                        Jump To Page: <select data-ng-model="SharedSongsPage" data-ng-options="i for i in PageOptions"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr />
+                        <table>
+                            <tr data-ng-repeat="song in SharedSongs">
+                                <td valign="top">
+                                    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
+                                </td>
+                                <td style="vertical-align:top;">
+                                    Shared with {{song.SharedWith.length}} {{song.SharedWith.length == 1 ? 'person' : 'people'}}
+                                    (<span data-ng-repeat="customer in song.SharedWith track by $index">
+                                         {{$index > 0 ? ', ' : ''}}<a href="/{{customer.Url}}">{{customer.Name}}</a> 
+                                    </span>)
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#tabs").easyResponsiveTabs();
+            });
+        </script>
+    </div>
+</div>
