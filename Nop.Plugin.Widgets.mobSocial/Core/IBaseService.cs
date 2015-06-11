@@ -16,6 +16,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         void Insert(T entity);
         void Delete(T entity);
+        void LogicalDelete(int id);
         void Update(T entity);
         T GetById(int id);
         List<T> GetAll();

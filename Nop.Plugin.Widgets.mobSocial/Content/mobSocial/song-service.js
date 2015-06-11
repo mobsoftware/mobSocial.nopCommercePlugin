@@ -6,19 +6,17 @@
                 return;
             }
 
-            var url = 'http://developer.echonest.com/api/v4/song/search?api_key=DQFW7ZCMHBBLMLVFE&format=json&results=5&title=' + term;
+            var url = '/Song/Search'
+            var data = { Term: term };
 
-            var getAutoCompleteData = $http.get(url).then(function (data) {
-
-                var items =
-                     $.map(data.data.response.songs, function (item) {
-                         return item;
-                     });
-
-                var results = { items: items };
-
-                return results;
-            });
+            var getAutoCompleteData = $http.post(url, data)
+                .success(function (data, status, headers, config) {
+                    var items = { items: data };
+                    return items;
+                })
+                .error(function (data, status, headers, config) {
+                    alert('An error occurec retrieving songs');
+                });
 
             return getAutoCompleteData;
 

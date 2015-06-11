@@ -6,6 +6,7 @@ app
            scope: {
                httpService: "=",
                renderItem: '=',
+               renderItemUi: '=',
                ngModel: '=',
                minLength: '=',
                onSelect: '='
@@ -15,7 +16,7 @@ app
                    source: function (request, response) {
                        $scope.httpService(request.term).then(function (data) {
                            response(
-                             $.map(data.items, function (item) {
+                             $.map(data.data, function (item) {
                                  return $scope.renderItem(item);
                              }
                              )
@@ -32,6 +33,7 @@ app
 
                    }
                })
+               .data("ui-autocomplete")._renderItem = $scope.renderItemUi
                ;
            }
        };

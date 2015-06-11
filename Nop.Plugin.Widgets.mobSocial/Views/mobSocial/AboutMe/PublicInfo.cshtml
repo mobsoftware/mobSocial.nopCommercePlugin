@@ -31,8 +31,8 @@
     <div contenteditable
          class="aboutme-text"
          ng-model="customerProfile.AboutMe"
-         ng-class="{ 'editable': customerProfile.IsLoggedInUsersProfile }"
-         iseditable="{{customerProfile.IsLoggedInUsersProfile}}"
+         ng-class="{ 'editable': customerProfile.IsSelf }"
+         iseditable="{{customerProfile.IsSelf}}"
          ng-blur="updateCustomerProfile()"
          placeholder="Click to edit"
          title="Click to edit">
@@ -46,8 +46,8 @@
     <div contenteditable
          class="website-text"
          ng-model="customerProfile.Website"
-         ng-class="{ 'editable': customerProfile.IsLoggedInUsersProfile }"
-         iseditable="{{customerProfile.IsLoggedInUsersProfile}}"
+         ng-class="{ 'editable': customerProfile.IsSelf }"
+         iseditable="{{customerProfile.IsSelf}}"
          ng-blur="updateCustomerProfile()"
          placeholder="Click to edit"
          title="Click to edit">

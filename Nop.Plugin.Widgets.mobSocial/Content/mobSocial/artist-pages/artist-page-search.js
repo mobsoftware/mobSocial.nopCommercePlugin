@@ -3,7 +3,12 @@
     $scope.searchDescriptions = false;
     $scope.count = 15;
     $scope.page = 1;
-    $scope.$watchGroup(['term', 'searchDescription', 'count'], function () {
+    $scope.searchTypes = [
+        "Songs", "Artists"
+    ];
+    $scope.searchType = 'Songs';
+
+    $scope.$watchGroup(['term', 'searchDescription', 'count', 'searchType'], function () {
         //clear any timer on new change
         clearTimeout($scope.searchTimer);
         $scope.searchTimer = setTimeout(function () {
@@ -11,7 +16,8 @@
                 term: $scope.term,
                 searchDescriptions: $scope.searchDescriptions,
                 count: $scope.count,
-                page: $scope.page
+                page: $scope.page,
+                searchType : $scope.searchType
             });
         }, 300);
         
@@ -25,14 +31,11 @@ app.controller("ArtistPageSearchController", ['$rootScope','$scope', '$http', fu
         {
             return;
         }
-        var searchData = {
-            term: data.term,
-            searchDescriptions: data.searchDescriptions,
-            count: data.count,
-            page: data.page
-        };
+        $scope.term = data.term;
+        $scope.searchType = data.searchType;
+        $scope.results = [];
         $http({
-            url: 'Music',
+            url: data.searchType == 'Artists' ? 'ArtistSearch' : 'SongSearch',
             method: "POST",
             data: data,
         }).success(function (data, status, headers, config) {

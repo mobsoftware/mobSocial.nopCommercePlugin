@@ -4,9 +4,14 @@
     <ul>
         <li class="song-item" ng-repeat="song in customer.FavoriteSongs">
             <span>{{$$index}}</span>
-            <button class="song-play-button" title="Play {{song.title}}"><i class="fa fa-play"></i></button>
-            <span class="song-title">{{song.title}}</span>
-            <button class="song-buy-button" title="Buy Now">Buy</button>
+
+            <img class="song-image" src="" style="width:30px; height:30px; vertical-align:middle;" />
+            <span class="song-title">{{song.Title}}</span>
+            <a href="" mob-preview-song-button trackid="{{song.TrackId}}">Play</a> |
+            <a href="{{song.AffiliateUrl}}">Buy</a>
+            <span ng-show="{{customer.IsSelf}}"> | 
+            <a ng-click="DeleteSong(song)">Delete</a></span>
+
         </li>
     </ul>
 
@@ -22,6 +27,7 @@
                     min-length="3"
                     http-service="httpSupplierService"
                     render-item="songRender"
+                    render-item-ui="songRenderItemUi"
                     on-select="songSelect" />
 
     Selected Song: <span id="selectedSong"></span>

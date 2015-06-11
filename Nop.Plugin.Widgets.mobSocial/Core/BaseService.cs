@@ -15,7 +15,7 @@ using Nop.Core.Domain.Media;
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
     /// <summary>
-    /// Generic base service to standardize Service APIs
+    /// Generic base service to standardize domain Service APIs
     /// </summary>
     public abstract class BaseService<T, P> : IBaseService<T,P> where T : BaseEntity where P : BaseEntity
     {
@@ -87,6 +87,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
 
         }
+
         public void Delete(T entity)
         {
             if (entity is ISlugSupported && entity is INameSupported)
@@ -103,6 +104,26 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _repository.Delete(entity);
 
         }
+
+        public void LogicalDelete(int id)
+        {
+            var dbEntity = _repository.GetById(id);
+            if (dbEntity is ILogicalDeleteSupported)
+            {
+                var entity = (ILogicalDeleteSupported)dbEntity;
+                entity.IsDeleted = true;
+                _repository.Update((T)entity);
+                // Should we delete the slug? 
+                // Possibly add property to ISlugSupported to determine if delete slug on logic delete
+            }
+            else
+            {
+                throw new ApplicationException("Logical Delete is not supported for the entity: " + typeof(T).Name);
+            }
+
+
+        }
+
         public T GetById(int id)
         {
             return _repository.GetById(id);
@@ -159,8 +180,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public abstract Picture GetFirstPicture(int entityId);
 
         #endregion
-
-
 
         #region SortableOperations
         public void UpdateDisplayOrder(int id, int newDisplayOrder)

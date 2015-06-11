@@ -7,7 +7,6 @@
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-page-search.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
 }
-
 <div class="artist-left-content">
     <div data-ng-controller="ArtistPageSearchCriteriaController">
         <table class="table-form">
@@ -15,6 +14,12 @@
                 <td>
                     <h2>Music Search</h2>
                     <br />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Search:<br />
+                    <select data-ng-model="searchType" ng-options="type for type in searchTypes track by type"></select>
                 </td>
             </tr>
             <tr>
@@ -39,8 +44,19 @@
 </div>
 <div class="artist-right-content">
     <div data-ng-controller="ArtistPageSearchController">
-        <div data-ng-repeat="artist in results">
-            @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/ArtistBlock.cshtml")
+        <div ng-if="searchType == 'Artists'">
+            <h1 ng-if="results.length > 0">Showing artists for '{{term}}'</h1>
+            <div data-ng-repeat="artist in results">
+                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/ArtistBlock.cshtml")
+            </div>
         </div>
+        <div ng-if="searchType == 'Songs'">
+            
+            <h1 ng-if="results.length > 0">Showing songs for '{{term}}'</h1>
+            <div data-ng-repeat="song in results">
+                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
+            </div>
+        </div>
+
     </div>
 </div>

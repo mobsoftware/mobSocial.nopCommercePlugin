@@ -21,11 +21,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         public ArtistPageService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger, 
-            IRepository<ArtistPage> eventPageRepository,
-            IRepository<ArtistPagePicture> eventPagePictureRepository,
+            IRepository<ArtistPage> artistPageRepository,
+            IRepository<ArtistPagePicture> artistPagePictureRepository,
             IUrlRecordService urlRecordService,
             IWorkContext workContext,
-            IPictureService pictureService) : base(eventPageRepository, eventPagePictureRepository, workContext, urlRecordService)
+            IPictureService pictureService) : base(artistPageRepository, artistPagePictureRepository, workContext, urlRecordService)
         {
             _urlRecordService = urlRecordService;
             _workContext = workContext;

@@ -15,15 +15,11 @@
 	            $scope.SaveSong = function (item) {
 	                var url = './CustomerProfile/AddFavoriteSong';
 
-
-
 	                var favoriteSong = {
-	                    CustomerId: 1,
-	                    TrackId: 1,
-	                    Title: null,
-	                    ArtistId: 1,
-	                    ArtistName: 'testartistname',
-	                    PreviewUrl: 'http://test'
+	                    CustomerId: $scope.customer.CustomerId,
+	                    TrackId: item.TrackId,
+	                    Title: item.Name,
+	                    PreviewUrl: item.PreviewUrl
 	                };
 
 	                var url = './CustomerProfile/AddFavoriteSong';
@@ -32,24 +28,27 @@
 	                //profileService.AddFavoriteSong(favoriteSong);
 	            };
 
+	            $scope.DeleteSong = function (song) {
 
+	                var url = './CustomerProfile/DeleteFavoriteSong';
+	                var data = { id: song.Id };
 
+	                $http.post(url, data)
+			        .success(function (data, status, headers, config) {
+			            var index = $scope.customer.FavoriteSongs.indexOf(song);
+			            $scope.customer.FavoriteSongs.splice(index, 1);
+			        })
+                    .error(function (data, status, headers, config) {
+                        alert('An error occured deleting song.');
+                    });
+	            };
 
 	            $scope.openAddFavoriteSongDialog = function () {
 	                $('#addFavoriteSongDialog').dialog({
-
-
-
-
-
 	                    buttons: {
 	                        'Add': function () {
-
-
 	                            $scope.SaveSong($scope.ngModel);
-
 	                            $(this).dialog("close");
-
 	                        },
 	                        Cancel: function () {
 	                            $(this).dialog("close");

@@ -8,20 +8,22 @@ using System.Threading.Tasks;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
-    public class ArtistPagePictureMap : EntityTypeConfiguration<ArtistPagePicture>
+    public class SongPictureMap : EntityTypeConfiguration<SongPicture>
     {
-        public ArtistPagePictureMap()
+        public SongPictureMap()
         {
-            ToTable("ArtistPagePicture");
+            ToTable("SongPicture");
 
             //Map the primary key
             HasKey(m => m.Id);
 
             Property(m => m.PictureId);
             Property(m => m.DisplayOrder);
-            Property(m => m.ArtistPageId);
+            Property(m => m.SongId);
             Property(m => m.DateCreated).HasColumnType("datetime2");
             Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();
         }
+       
+            
     }
 }

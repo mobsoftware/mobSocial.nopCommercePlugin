@@ -58,7 +58,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 CustomerId = customerId,
                 Views = _customerProfileViewService.GetViewCount(customerId),
                 FriendCount = _customerProfileService.GetFriendCount(customerId),
-                IsLoggedInUsersProfile = _workContext.CurrentCustomer.Id == customerId,
+                IsSelf = _workContext.CurrentCustomer.Id == customerId,
                 IsFriend = _mobSocialService.GetFriendRequestStatus(_workContext.CurrentCustomer.Id, customerId) == FriendStatus.Friends,
                 FavoriteSongs = _customerFavoriteSongService.GetTop10(customerId)
             };
@@ -103,7 +103,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 _customerProfileService.Update(profile);
                 return;
             }
-                
+            
 
         }
 
@@ -112,11 +112,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public void AddFavoriteSong(CustomerFavoriteSong favoriteSong)
         {
             var dateTimeNow = DateTime.Now;
+            favoriteSong.DisplayOrder = 0;
             favoriteSong.DateCreated = dateTimeNow;
             favoriteSong.DateUpdated = dateTimeNow;
 
             _customerFavoriteSongService.Insert(favoriteSong);
         }
+
+        [HttpPost]
+        public void DeleteFavoriteSong(int id)
+        {
+            _customerFavoriteSongService.LogicalDelete(id);
+        }
+
 
         [HttpPost]
         public void UpdateFavoriteSongOrder(int favoriteSongId, int displayOrder)

@@ -31,18 +31,16 @@
     <div data-ng-controller="ArtistPageSongsController">
         <h2 class="text-center">Artist Songs</h2>
         <div ng-hide="songsLoaded">Loading...</div>
-        <div data-ng-repeat="song in songs">
-            @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
-        </div>
         <div class="song-block {{ audio && activeTrack == song.TrackId && !audio.paused ? 'playing' : 'paused' }}" data-ng-repeat="song in songs">
             <div class="song-image">
                 <img ng-src="{{song.ImageUrl}}" />
             </div>
             <div class="song-title">
                 <a class="song-name">{{song.Name}}</a>
-                <a href="" mob-preview-song-button trackid="{{song.TrackId}}">Play</a>|
+                <a href="" ng-click="PlayPause(song.TrackId)">{{ audio && activeTrack == song.TrackId && !audio.paused ? "Pause" : "Play" }}</a> |
                 <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a>
             </div>
+
         </div>
     </div>
 </div>
