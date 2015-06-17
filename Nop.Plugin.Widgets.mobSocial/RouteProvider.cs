@@ -192,9 +192,21 @@ namespace Nop.Plugin.Widgets.MobSocial
                new { controller = "Song", action = "UploadPicture" },
                new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
+               );
+
+            routes.MapLocalizedRoute("SongPageUploadSong",
+               "songs/UploadSong/{SongId}",
+               new { controller = "Song", action = "UploadSong" },
+               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                );
 
+            routes.MapLocalizedRoute("SongPageEditor",
+              "songs/SongEditor/{ArtistPageId}",
+              new { controller = "Song", action = "SongEditor" },
+              new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+              );
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             routes.MapHubs();
         }

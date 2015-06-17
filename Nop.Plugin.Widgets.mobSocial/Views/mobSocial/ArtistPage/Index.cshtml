@@ -6,12 +6,16 @@
 
     Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
-    
+
     Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/fileupload.directive.js");
+
+
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
     var json = Json.Encode(Model);
 
@@ -23,19 +27,32 @@
 
 <div class="artist-left-content">
     <div class="artist-page-image">
-        <img src="@Model.MainPictureUrl" style="width:100%" />
+        <img src="@Model.MainPictureUrl" id="artist-page-image" style="width:100%" />
         @if (Model.CanEdit)
         {
-            @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/PictureEditor.cshtml", Model)
+            var uploadUrl = "/artists/UploadPicture/" + Model.Id;
+            <button file-upload-button
+                    id="profilepicture"
+                    fieldname="profilepicture"
+                    imagesrc="artist-page-image"
+                    url="@uploadUrl">
+                <i class="fa fa-upload"></i> Upload
+            </button>
         }
+
     </div>
     <div data-ng-controller="ArtistPageSongsController">
         <h2 class="text-center">Artist Songs</h2>
+        @if (Model.CanEdit)
+        {
+            <button ng-click="GotoSongEditor()"><i class="fa fa-music"></i> Add Song</button>
+        }
         <div ng-hide="songsLoaded">Loading...</div>
+        <div ng-show="songs.length == 0">No songs found</div>
         <div data-ng-repeat="song in songs">
             @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
         </div>
-       
+        
     </div>
 </div>
 <div class="artist-right-content">

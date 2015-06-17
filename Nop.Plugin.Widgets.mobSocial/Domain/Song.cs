@@ -1,5 +1,6 @@
 ﻿using Mob.Core;
 using Nop.Core;
+using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Seo;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string PreviewUrl { get; set; }
         public string TrackId { get; set; }
         public string RemoteArtistId { get; set; }
+        public int? ArtistPageId { get; set; }
+        public int AssociatedProductId { get; set; }
+        public bool Published { get; set; }
 
         public virtual IList<SongPicture> Pictures { get; set; }
+        public virtual ArtistPage ArtistPage { get; set; }
     }
 }

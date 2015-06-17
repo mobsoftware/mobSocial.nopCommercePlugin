@@ -24,6 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web;
+using Nop.Services.Catalog;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -45,6 +46,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IArtistPageAPIService _artistPageApiService;
         private readonly IArtistPageManagerService _artistPageManagerService;
         private readonly IMusicService _musicService;
+        private readonly IDownloadService _downloadService;
+        private readonly IProductService _productService;
 
         public ArtistPageController(ILocalizationService localizationService,
             IPictureService pictureService,
@@ -58,7 +61,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IMusicService musicService,
             mobSocialSettings mobSocialSettings,
             IMobSocialService mobSocialService,
-            IWorkContext workContext)
+            IWorkContext workContext,
+            IDownloadService downloadService,
+            IProductService productService)
         {
             _localizationService = localizationService;
             _pictureService = pictureService;
@@ -73,6 +78,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _artistPageApiService = artistPageApiService;
             _artistPageManagerService = artistPageManagerService;
             _musicService = musicService;
+            _downloadService = downloadService;
+            _productService = productService;
         }
 
         #endregion
@@ -113,6 +120,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             if (model.Pictures.Count > 0)
                 model.MainPictureUrl = model.Pictures[0].PictureUrl;
+            else
+                model.MainPictureUrl = _pictureService.GetDefaultPictureUrl();
 
             model.CanEdit = CanEdit(artist);
             model.CanDelete = CanDelete(artist);
@@ -245,7 +254,37 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(model);
 
         }
+        [HttpPost]
+        public ActionResult GetArtistSongsByArtistPage(int ArtistPageId)
+        {
+            //check if artist page exists
+            var artistPage = _artistPageService.GetById(ArtistPageId);
+            if (artistPage == null)
+                return null;
+            var model = new List<object>();
+            foreach (var song in artistPage.Songs)
+            {
+                var product = _productService.GetProductById(song.AssociatedProductId);
+                if (product == null) //no associated product. may be a remote artist..what say?
+                    continue;
 
+                var download = _downloadService.GetDownloadById(product.SampleDownloadId);
+                model.Add(new
+                {
+                    Id = song.Id,
+                    Name = song.Name,
+                    SeName = song.GetSeName(_workContext.WorkingLanguage.Id, true, false),
+                    ImageUrl = song.Pictures.Count > 0 ? _pictureService.GetPictureUrl(song.Pictures.First().PictureId) : _pictureService.GetDefaultPictureUrl(),
+                    PreviewUrl = song.PreviewUrl,
+                    TrackId = song.Id,
+                    DownloadId = download == null ? 0 : download.Id,
+                    AssociatedProductId = product.Id,
+                    RemoteSong = false
+                });
+            }
+            return Json(model);
+
+        }
         [HttpPost]
         public ActionResult GetArtistSongPreviewUrl(string TrackId)
         {
@@ -280,7 +319,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (dba.Pictures.Count > 0)
                     imageUrl = _pictureService.GetPictureUrl(dba.Pictures.First().PictureId, _mobSocialSettings.ArtistPageThumbnailSize, true);
                 else
-                    imageUrl = _pictureService.GetPictureUrl(0, _mobSocialSettings.ArtistPageThumbnailSize, true);
+                    imageUrl = _pictureService.GetDefaultPictureUrl();
 
                 model.Add(new {
                     Name = dba.Name,
@@ -420,7 +459,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     RemoteSourceName = artist.RemoteSourceName,
                     Id = artist.Id,
                     SeName = artist.GetSeName(_workContext.WorkingLanguage.Id, true, false),
-                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : "" 
+                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : _pictureService.GetDefaultPictureUrl() 
                 };                
               
 
@@ -462,7 +501,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     RemoteSourceName = artist.RemoteSourceName,
                     Id = artist.Id,
                     SeName = artist.GetSeName(_workContext.WorkingLanguage.Id, true, false),
-                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : ""
+                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : _pictureService.GetDefaultPictureUrl()
                 };
 
 
@@ -814,6 +853,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(new { Success = false, Message = "Unauthorized" });
 
             var files = file.ToList();
+            var newImageUrl = "";
             foreach (var fi in files)
             {
                 Stream stream = null;
@@ -847,14 +887,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                 if (firstArtistPagePicture == null)
                 {
-                    var artistPagePicture = new ArtistPagePicture() {                        
+                    firstArtistPagePicture = new ArtistPagePicture() {                        
                         ArtistPageId = ArtistPageId,
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
                         DisplayOrder = 1,
                         PictureId = picture.Id
                     };
-                    _artistPageService.InsertPicture(artistPagePicture);
+                    _artistPageService.InsertPicture(firstArtistPagePicture);
                 }
                 else
                 {
@@ -865,10 +905,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     firstArtistPagePicture.PictureId = picture.Id;
                     _artistPageService.UpdatePicture(firstArtistPagePicture);
                 }
+                newImageUrl = _pictureService.GetPictureUrl(firstArtistPagePicture.PictureId, 0, true);
 
             }
 
-            return Json(new { Success = true });
+            return Json(new { Success = true, Url = newImageUrl });
         }
         #endregion
 

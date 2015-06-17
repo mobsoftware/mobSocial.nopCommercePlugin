@@ -138,8 +138,24 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
 
 app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio',  function ($scope, $http, ngAudio) {
     $scope.artist = artistModel;
+    var params = null;
+    var url = "";
+
+    if($scope.artist.RemoteEntityId == null)
+    {
+        url = "/artists/GetArtistSongsByArtistPage";
+        params = {
+            ArtistPageId: $scope.artist.Id
+        };
+    }
+    else {
+        url = "/artists/GetArtistSongs";
+        params = {
+            ArtistName: $scope.artist.Name
+        };
+    }
     $scope.GetArtistSongs = function () {
-        $http.post("/artists/GetArtistSongs", { ArtistName:$scope.artist.Name })
+        $http.post(url, params)
                   .success(function (data, status, headers, config) {
                       $scope.songs = data;
                       $scope.songsLoaded = true;
@@ -147,6 +163,9 @@ app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio',  func
     }
     $scope.GetArtistSongs();
    
+    $scope.GotoSongEditor = function(){
+        window.location.href = "/songs/SongEditor/" + $scope.artist.Id;
+    }
 }]);
 
 

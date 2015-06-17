@@ -21,6 +21,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.TrackId);
             Property(x => x.RemoteEntityId);
             Property(x => x.RemoteSourceName);
+            Property(x => x.ArtistPageId);
+            Property(x => x.AssociatedProductId);
+            Property(x => x.Published);
         }
     }
 }

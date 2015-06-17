@@ -88,7 +88,10 @@ app.controller("SongsPagesSharedSongController", ['$scope', '$http', function ($
 app.controller("SongPageDisplayController", ['$scope', '$http', function ($scope, $http) {
     $scope.song = songModel;
 
-  
+    $scope.statuses = [
+         { value: 1, text: 'Yes' },
+        { value: 0, text: 'No' }
+    ];
     $scope.UpdateSong = function (key, data) {
         var obj = "key=" + key + "&value=" + data + "&id=" + $scope.song.Id;
         var config = {
@@ -124,4 +127,32 @@ app.controller("SongPageDisplayController", ['$scope', '$http', function ($scope
     }
     $scope.GetSimilarSongs();
 
+}]);
+
+app.controller("SongPageEditorController", ['$scope', '$http', function ($scope, $http) {
+    $scope.song = songModel;
+    $scope.songFormValid = false;
+    $scope.$watch('createSongForm.$valid', function (newVal) {
+        $scope.songFormValid = newVal;
+    });
+
+    $scope.SaveSong = function () {
+        if ($scope.songFormValid) {
+            var song = {
+                Name: $scope.song.Name,
+                Description: $scope.song.Description,
+                Price: $scope.song.Price,
+                ArtistPageId: $scope.song.ArtistPageId
+            };
+            $http.post("/songs/SaveSong", song)
+                   .success(function (data, status, headers, config) {
+                       $scope.recordSaved = data.Success;
+                       window.location.href = data.RedirectTo;
+                   })
+                   .error(function () {
+                       alert("An error occured");
+                   });
+        }
+
+    };
 }]);

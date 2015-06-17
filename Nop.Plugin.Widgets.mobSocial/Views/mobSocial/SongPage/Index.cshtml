@@ -12,7 +12,13 @@
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
+    
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial +"/fileupload.directive.js");
+
+        
     var json = Json.Encode(Model);
+    
 
 }
 <script>
@@ -22,19 +28,28 @@
 <div data-ng-controller="SongPageDisplayController">
     <div class="artist-left-content">
         <div class="artist-page-image">
-            <img src="@Model.MainPictureUrl" style="width:100%" />
+            <img src="@Model.MainPictureUrl" id="song-page-image" style="width:100%" />
             @if (Model.CanEdit)
             {
-                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/PictureEditor.cshtml", Model)
+                var uploadUrl = "/songs/UploadPicture/" + Model.Id;
+                <button file-upload-button
+                        id="profilepicture"
+                        fieldname="profilepicture"
+                        imagesrc="song-page-image"
+                        uploadtype="image"
+                        url="@uploadUrl">
+                    <i class="fa fa-upload"></i> Upload Image
+                </button>
             }
         </div>
+        
         <div class="song-page-action-links">
             <a>
-                <i class="fa fa-music"></i> <span mob-preview-song-button trackid="{{song.TrackId}}">Play</span>
+                <i class="fa fa-music"></i> <span mob-preview-song-button trackid="{{song.TrackId}}" songid="{{song.Id}}" previewurl="{{song.PreviewUrl}}">Play</span>
             </a>
-            <a href="{{song.AffiliateUrl}}" target="_blank">
+            <a buy-song-button affiliateurl="{{song.AffiliateUrl}}" productid="{{song.AssociatedProductId}}">
                 <i class="fa fa-download"></i> Buy
-            </a>
+            </a>          
             <a href="" share-song-button trackid="{{song.Id}}">
                 <i class="fa fa-share"></i> Share
             </a>
@@ -42,6 +57,7 @@
         <div class="similar-songs">
             <h2 class="text-center">Similar Songs</h2>
             <div ng-hide="songsLoaded">Loading...</div>
+            <div ng-show="SimilarSongs.length == 0">No similar songs found</div>
             <div data-ng-repeat="song in SimilarSongs">
                 @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
             </div>
@@ -67,6 +83,10 @@
             <div id="tabs">
                 <ul class="resp-tabs-list">
                     <li><i class="fa fa-tags"></i> About</li>
+                    @if (Model.CanEdit)
+                    {
+                        <li><i class="fa fa-music"></i> Song Files</li>
+                    }
                     @if (Model.CanDelete)
                     {
                         <li><i class="fa fa-times"></i> Delete Page</li>
@@ -86,6 +106,52 @@
                             <text >{{song.Description || 'No Description Available'}}</text>
                         }
                     </div>
+                    @if (Model.CanEdit)
+                    {
+                        <div>
+                            <table class="table-form">
+                                <tr>
+                                    <td>
+                                        <label>Song File:</label><br/>                                        
+                                        <button file-upload-button
+                                                id="songfile"
+                                                fieldname="SongFile"
+                                                extraData ='{"SongId": {{song.Id}}, "FieldName": "SongFile"}'
+                                                uploadtype="music"
+                                                url="/songs/UploadSongFile">
+                                            <i class="fa fa-upload"></i> Upload Song File
+                                        </button><br/>
+                                        <em>
+                                            Note: You may only upload songs that you own and that are not protected by another's copyright or international treaty
+                                        </em>
+                                        <br /><br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>Song File Sample:</label><br />                                     
+                                        <button file-upload-button
+                                                id="songsamplefile"
+                                                fieldname="SampleFile"
+                                                extradata='{"SongId": {{song.Id}}, "FieldName": "SampleFile"}'
+                                                uploadtype="music"
+                                                url="/songs/UploadSongFile">
+                                            <i class="fa fa-upload"></i> Upload Sample Song File
+                                        </button>
+                                        <br /><br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>Publish:</label><br /><br />
+                                        <span href="#" editable-select="song.Published" value="{{song.Published ? '1' : '0'}}" e-ng-options="s.value as s.text for s in statuses" onbeforesave="UpdateSong('Published', $data)" e-rows="7" e-cols="40">
+                                            {{ song.Published ? 'Published' : 'Not Published' || 'Not Published' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
                     @if (Model.CanDelete)
                     {
 
