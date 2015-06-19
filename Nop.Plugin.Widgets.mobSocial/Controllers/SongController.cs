@@ -140,6 +140,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.CanEdit = CanEdit(song);
             model.CanDelete = CanDelete(song);
 
+            //seo
+            model.MetaTitle = model.Name;
+            model.MetaKeywords = model.Name;
+            model.MetaDescription = string.IsNullOrWhiteSpace(model.Description) ? model.Name : model.Description;
             return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/Index.cshtml", model);
         }
 
@@ -778,7 +782,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                 
                 //and now that we have the song with us. let's send the preview and product id to the client
-                return Json(new { Success = true, PreviewUrl = songFile.DownloadUrl, ProductId = product.Id });
+                return Json(new { Success = true, PreviewUrl = song.PreviewUrl, ProductId = product.Id });
 
             }
             else
@@ -822,7 +826,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 CreatedOnUtc = DateTime.UtcNow,
                 UpdatedOnUtc = DateTime.UtcNow,
                 OrderMaximumQuantity = 1,
-                OrderMinimumQuantity = 1                
+                OrderMinimumQuantity = 1,
+                DownloadActivationType = DownloadActivationType.WhenOrderIsPaid
             };
 
             _productService.InsertProduct(product);

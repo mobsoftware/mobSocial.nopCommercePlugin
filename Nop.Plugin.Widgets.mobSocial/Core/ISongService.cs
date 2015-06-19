@@ -14,5 +14,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         IList<Song> SearchSongs(string Term, out int TotalPages, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "");
 
         Song GetSongByRemoteEntityId(string RemoteEntityId);
+
+        Song GetSongByProductId(int ProductId);
     }
 }

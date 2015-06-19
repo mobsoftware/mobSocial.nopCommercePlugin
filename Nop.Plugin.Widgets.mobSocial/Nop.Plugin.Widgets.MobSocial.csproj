@@ -113,6 +113,7 @@
     <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\AddPictureModel.cs" />
+    <Compile Include="Models\PurchasedSongModel.cs" />
     <Compile Include="Models\SongModel.cs" />
     <Compile Include="Models\ArtistPageModel.cs" />
     <Compile Include="Models\BusinessPageSearchModel.cs" />

@@ -25,6 +25,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web;
 using Nop.Services.Catalog;
+using Nop.Services.Orders;
+using Nop.Core.Domain.Payments;
+using Nop.Core.Domain.Tax;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -48,6 +51,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IMusicService _musicService;
         private readonly IDownloadService _downloadService;
         private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
+        private readonly IStoreContext _storeContext;
+        private readonly TaxSettings _taxSettings;
+        private readonly ISongService _songService;
+        private readonly IPriceFormatter _priceFormatter;
 
         public ArtistPageController(ILocalizationService localizationService,
             IPictureService pictureService,
@@ -63,7 +71,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IMobSocialService mobSocialService,
             IWorkContext workContext,
             IDownloadService downloadService,
-            IProductService productService)
+            IProductService productService,
+            IOrderService orderService,
+            IStoreContext storeContext,
+            TaxSettings taxSettings,
+            ISongService songService,
+            IPriceFormatter priceFormatter)
         {
             _localizationService = localizationService;
             _pictureService = pictureService;
@@ -80,6 +93,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _musicService = musicService;
             _downloadService = downloadService;
             _productService = productService;
+            _orderService = orderService;
+            _storeContext = storeContext;
+            _taxSettings = taxSettings;
+            _songService = songService;
+            _priceFormatter = priceFormatter;
         }
 
         #endregion
@@ -297,6 +315,65 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(new { Success = false, Message = "Invalid Track Id" });
         }
 
+        /// <summary>
+        /// Gets all the purchased songs of artist
+        /// </summary>
+        public ActionResult GetPurchasedSongs(int ArtistPageId, int Count = 15, int Page = 1)
+        {
+            var artistPage = _artistPageService.GetById(ArtistPageId);
+            var modelList = new List<object>();
+            int totalPages = 0, totalSales = 0;
+            decimal totalGross = 0, totalFee = 0, totalNet = 0;
+            if (artistPage != null && CanDelete(artistPage))
+            {
+                var customerOrderItems = _orderService.GetAllOrderItems(null, null, null, null, null, PaymentStatus.Paid, null, true);
+                var artistPageSongProductIds = artistPage.Songs.Select(x => x.AssociatedProductId);
+                //let's get the purchased items
+                var purchasedItems = customerOrderItems.Where(x => artistPageSongProductIds.Contains(x.Product.Id));
+                
+                //summary
+                totalSales = purchasedItems.Count();
+                totalPages = Convert.ToInt32(Math.Ceiling((decimal)purchasedItems.Count() / Count));
+                totalGross = purchasedItems.Sum(x => _taxSettings.PricesIncludeTax ? x.PriceInclTax : x.PriceExclTax);
+                totalFee = (totalGross * _mobSocialSettings.PurchasedSongFeePercentage) / 100;
+                totalNet = totalGross - totalFee;
+
+                //pagination
+                purchasedItems = purchasedItems.Skip(Count * (Page - 1)).Take(Count);
+
+                foreach (var pi in purchasedItems)
+                {
+                    var song = _songService.GetSongByProductId(pi.Product.Id);
+                    var grossPrice = _taxSettings.PricesIncludeTax ? pi.PriceInclTax : pi.PriceExclTax;
+                    var feeAmount = (grossPrice * _mobSocialSettings.PurchasedSongFeePercentage) / 100;
+                    var netPrice = grossPrice - feeAmount;
+                    
+                    //add new object to collection
+                    modelList.Add(new
+                    {
+                        SongName = pi.Product.Name,
+                        PurchasedOn = _dateTimeHelper.ConvertToUserTime( pi.Order.CreatedOnUtc,DateTimeKind.Utc).ToString(),
+                        OrderId = pi.Order.Id,
+                        PreviewUrl = song.PreviewUrl,
+                        SellPrice = _priceFormatter.FormatPrice(grossPrice,true, _workContext.WorkingCurrency),
+                        FeeAmount = _priceFormatter.FormatPrice(feeAmount, true, _workContext.WorkingCurrency),
+                        NetPrice = _priceFormatter.FormatPrice(netPrice, true, _workContext.WorkingCurrency),
+                        SeName = song.GetSeName(_workContext.WorkingLanguage.Id, true, false)
+                    });
+                }
+            }
+            var model = new {
+                Songs = modelList,
+                Page = Page,
+                Count = Count,
+                TotalPages = totalPages,
+                TotalSellPrice = _priceFormatter.FormatPrice(totalGross, true, _workContext.WorkingCurrency),
+                TotalFeeAmount = _priceFormatter.FormatPrice(totalFee, true, _workContext.WorkingCurrency),
+                TotalNetPrice = _priceFormatter.FormatPrice(totalNet, true, _workContext.WorkingCurrency),
+                TotalSales = totalSales
+            };
+            return Json(model);
+        }
 
         public ActionResult Search()
         {

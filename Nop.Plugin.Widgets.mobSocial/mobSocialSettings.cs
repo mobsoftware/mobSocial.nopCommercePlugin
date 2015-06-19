@@ -47,5 +47,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int SongFileMaximumUploadSize { get; set; }
 
         public int SongFileSampleMaximumUploadSize { get; set; }
+
+        public int PurchasedSongFeePercentage { get; set; }
     }
 }

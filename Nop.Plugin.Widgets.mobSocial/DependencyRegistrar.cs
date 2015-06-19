@@ -141,6 +141,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
             .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<ArtistPagePayment>>().As<IRepository<ArtistPagePayment>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
 
             builder.RegisterType<EfRepository<Song>>().As<IRepository<Song>>()
             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))

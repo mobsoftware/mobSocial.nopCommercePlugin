@@ -190,8 +190,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 // Find more info here by contacting us at info@skatemob.com
                 SevenDigitalPartnerId = "9378",
                 SongFileMaximumUploadSize = _config.MaxRequestLength,
-                SongFileSampleMaximumUploadSize = _config.MaxRequestLength
-                
+                SongFileSampleMaximumUploadSize = _config.MaxRequestLength,
+                PurchasedSongFeePercentage = 30
                 
             };
 
@@ -377,6 +377,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.AddOrUpdatePluginLocaleResource("Admin.EventPage.BackToList", "Back to list");
             this.AddOrUpdatePluginLocaleResource("BusinessPages.HoursOfOperationText", "Hours of Operation");
             this.AddOrUpdatePluginLocaleResource("BusinessPages.HeaderMenuName", "Businesses");
+            this.AddOrUpdatePluginLocaleResource("ArtistPages.SendPaymentMessageText", "When my song purchases reach $10 net amount, send payment to:");
 
 
             // Update core locales. do not remove core locales during uninstall

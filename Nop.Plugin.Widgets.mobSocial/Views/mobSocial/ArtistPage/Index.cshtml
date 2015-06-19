@@ -82,7 +82,9 @@
                 @if (Model.CanDelete)
                 {
                     <li><i class="fa fa-users"></i> Page Managers</li>
-                    <li><i class="fa fa-times"></i> Delete Page</li>
+                    <li><i class="fa fa-music"></i> Purchased Songs</li>
+                    <li><i class="fa fa-paypal"></i> Payments</li>
+                    <li><i class="fa fa-times"></i> Delete</li>
                 }
             </ul>
 
@@ -141,7 +143,7 @@
 
                 @if (Model.CanDelete)
                 {
-
+                    <!--begin page managers-->
                     <div>
                         <table class="table-form">
                             <tr>
@@ -192,11 +194,135 @@
                         </script>
 
                     </div>
+                    <!--end page managers-->
+
+                    <!--begin purchased songs-->
+                    <div>
+                        
+                        <table class="data-table">
+                            <tr>
+                                <td class="a-right" colspan="5">
+                                    Jump To Page: <select data-ng-model="PurchasedSongsPage" data-ng-options="i for i in PageOptions"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Song Name</th>
+                                <th>Purchased On</th>
+                                <th>Gross Amount</th>
+                                <th>Fee</th>
+                                <th>Net Amount</th>
+                            </tr>
+                            <tr ng-show="!PurchasedSongsLoaded">
+                                <td class="a-center" colspan="5">Loading...</td>
+                            </tr>
+                            <tr ng-repeat="song in PurchasedSongs">
+                                <td>{{song.SongName}}</td>
+                                <td>{{song.PurchasedOn}}</td>
+                                <td>{{song.SellPrice}}</td>
+                                <td>{{song.FeeAmount}}</td>
+                                <td>{{song.NetPrice}}</td>
+                            </tr>
+                           
+                        </table><br/>
+                       <table width="100%">
+                           <tr>
+                               <td colspan="5" class="a-right">
+                                   <table style="float:right">
+                                       <tr>
+                                           <td class="a-left" style="width:110px"><strong>Summary</strong></td>
+                                           <td class="a-right"></td>
+                                       </tr>
+                                       <tr>
+                                           <td class="a-left"><strong>Total Sales:</strong></td>
+                                           <td class="a-right">{{TotalSales}}</td>
+                                       </tr>
+                                       <tr>
+                                           <td class="a-left"><strong>Total Sell Price:</strong></td>
+                                           <td class="a-right">{{TotalSellPrice}}</td>
+                                       </tr>
+                                       <tr>
+                                           <td class="a-left"><strong>Total Fee:</strong></td>
+                                           <td class="a-right">{{TotalFeeAmount}}</td>
+                                       </tr>
+                                       <tr>
+                                           <td class="a-left"><strong>Total Net Price:</strong></td>
+                                           <td class="a-right">{{TotalNetPrice}}</td>
+                                       </tr>
+                                   </table>
+
+
+                               </td>
+
+                           </tr>
+                       </table>
+                    </div>
+                    <!--end purchased songs-->
+                    
+                    
+                    <!--begin payments page-->
+                    <div>
+                        <p>@T("ArtistPages.SendPaymentMessageText")</p>
+                        <table class="table-form">
+                            <tr>
+                                <td>
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">Payment Type</label><br />
+                                        <select data-ng-model="PaymentOption" data-ng-options="item.value as item.text for item in PaymentOptions"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div ng-if="PaymentOption == 'paypal'">
+                                        <div class="control-group">
+                                            <label class="control-label" for="paypalemail">Paypal Email</label><br />
+                                            <input ng-model="PaypalEmail" id="paypalemail"/>
+                                        </div>
+                                    </div>
+                                    <div ng-if="PaymentOption == 'bankaccount'">
+                                        <div class="control-group">
+                                            <label class="control-label" for="bankname">Bank Name</label><br />
+                                            <input ng-model="BankName" id="bankname" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="routingnumber">Routing Number</label><br />
+                                            <input ng-model="RoutingNumber" id="routingnumber" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="accountnumber">Account Number</label><br />
+                                            <input ng-model="AccountNumber" id="accountnumber" />
+                                        </div>
+                                    </div>
+                                    <div ng-if="PaymentOption == 'sendcheck'">
+                                        <div class="control-group">
+                                            <label class="control-label" for="payableto">Payable To</label><br />
+                                            <input ng-model="PayableTo" id="payableto" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="address">Address</label><br />
+                                            <input ng-model="PayableTo" id="address" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="city">City</label><br />
+                                            <input ng-model="City" id="city" />
+                                        </div>
+                                    </div>
+                                    <div ng-show="PaymentOption">
+                                        <input type="button" value="Save" ng-click="" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--end payments page-->
+                    
+                    <!--begin delete page-->
                     <div>
                         Deleting an artist page will delete all the data associated with artist. Are you sure you wish to delete this page?<br />
                         <input type="button" ng-click="DeleteArtist()" value="Delete Page" />
 
                     </div>
+                    <!--end delete page-->
                 }
             </div>
         </div>
