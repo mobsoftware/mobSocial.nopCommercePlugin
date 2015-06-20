@@ -77,7 +77,8 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
                      $scope.managersLoaded = true;
                  });
     };
-    $scope.GetManagers();
+    if ($scope.artist.CanDelete)
+        $scope.GetManagers();
 
     $scope.GetEligibleManagers = function () {
         $http.post("/artists/GetEligibleManagers", {ArtistPageId: $scope.artist.Id})
@@ -133,13 +134,78 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
         }
        
     }
+    $scope.PurchasedSongsPage = 1;
+    $scope.PurchasedSongsCount = 15;
+    $scope.GetPurchasedSongs = function () {
+        $http.post("/artists/GetPurchasedSongs", { ArtistPageId: $scope.artist.Id, Page : $scope.PurchasedSongsPage, Count: $scope.PurchasedSongsCount })
+                .success(function (data, status, headers, config) {
+                    $scope.PurchasedSongs = data.Songs;
+                    $scope.PurchasedSongsLoaded = true;
+
+                    $scope.TotalPages = data.TotalPages;
+                    $scope.TotalSales = data.TotalSales;
+                    $scope.TotalSellPrice = data.TotalSellPrice;
+                    $scope.TotalNetPrice = data.TotalNetPrice;
+                    $scope.TotalFeeAmount = data.TotalFeeAmount;
+
+                    $scope.PageOptions = [];
+                    for (var i = 1; i <= data.TotalPages; i++)
+                        $scope.PageOptions.push(i);
+
+                });
+    }
+    if ($scope.artist.CanDelete)
+        $scope.GetPurchasedSongs();
+
+
+    $scope.PaymentTypes = [
+        { value: '1', text: 'Paypal' },
+        { value: '2', text: 'Bank Account' },
+        { value: '3', text: 'Send Check' },
+    ];
+    $scope.GetPaymentMethod = function () {
+        $http.post("/artists/GetPaymentMethod", { ArtistPageId: $scope.artist.Id})
+              .success(function (data, status, headers, config) {
+                  $scope.PaymentMethod = data.PaymentMethod;
+              });
+    }
+    if ($scope.artist.CanDelete)
+        $scope.GetPaymentMethod();
+
+
+    $scope.SavePaymentMethod = function () {
+        $http.post("/artists/SavePaymentMethod", $scope.PaymentMethod)
+             .success(function (data, status, headers, config) {
+                 $scope.PaymentMethodSaved = data.Success;
+                 if (!data.Success) {
+                     alert("Failed to save payment method");
+                 }
+             });
+    }
+
 
 }]);
 
 app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio',  function ($scope, $http, ngAudio) {
     $scope.artist = artistModel;
+    var params = null;
+    var url = "";
+
+    if($scope.artist.RemoteEntityId == null)
+    {
+        url = "/artists/GetArtistSongsByArtistPage";
+        params = {
+            ArtistPageId: $scope.artist.Id
+        };
+    }
+    else {
+        url = "/artists/GetArtistSongs";
+        params = {
+            ArtistName: $scope.artist.Name
+        };
+    }
     $scope.GetArtistSongs = function () {
-        $http.post("/artists/GetArtistSongs", { ArtistName:$scope.artist.Name })
+        $http.post(url, params)
                   .success(function (data, status, headers, config) {
                       $scope.songs = data;
                       $scope.songsLoaded = true;
@@ -147,6 +213,9 @@ app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio',  func
     }
     $scope.GetArtistSongs();
    
+    $scope.GotoSongEditor = function(){
+        window.location.href = "/songs/SongEditor/" + $scope.artist.Id;
+    }
 }]);
 
 

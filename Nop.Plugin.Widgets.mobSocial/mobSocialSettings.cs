@@ -43,5 +43,11 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int ArtistPageThumbnailSize { get; set; }
 
         public string SevenDigitalPartnerId { get; set; }
+
+        public int SongFileMaximumUploadSize { get; set; }
+
+        public int SongFileSampleMaximumUploadSize { get; set; }
+
+        public int PurchasedSongFeePercentage { get; set; }
     }
 }

@@ -12,6 +12,10 @@
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/fileupload.directive.js");
+
+
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
     var json = Json.Encode(Model);
 
@@ -23,15 +27,28 @@
 
 <div class="artist-left-content">
     <div class="artist-page-image">
-        <img src="@Model.MainPictureUrl" style="width:100%" />
+        <img src="@Model.MainPictureUrl" id="artist-page-image" style="width:100%" />
         @if (Model.CanEdit)
         {
-            @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/PictureEditor.cshtml", Model)
+            var uploadUrl = "/artists/UploadPicture/" + Model.Id;
+            <button file-upload-button
+                    id="profilepicture"
+                    fieldname="profilepicture"
+                    imagesrc="artist-page-image"
+                    url="@uploadUrl">
+                <i class="fa fa-upload"></i> Upload
+            </button>
         }
+
     </div>
     <div data-ng-controller="ArtistPageSongsController">
         <h2 class="text-center">Artist Songs</h2>
+        @if (Model.CanEdit)
+        {
+            <button ng-click="GotoSongEditor()"><i class="fa fa-music"></i> Add Song</button>
+        }
         <div ng-hide="songsLoaded">Loading...</div>
+        <div ng-show="songs.length == 0">No songs found</div>
         <div data-ng-repeat="song in songs">
             @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
         </div>
@@ -65,7 +82,9 @@
                 @if (Model.CanDelete)
                 {
                     <li><i class="fa fa-users"></i> Page Managers</li>
-                    <li><i class="fa fa-times"></i> Delete Page</li>
+                    <li><i class="fa fa-music"></i> Purchased Songs</li>
+                    <li><i class="fa fa-paypal"></i> Payments</li>
+                    <li><i class="fa fa-times"></i> Delete</li>
                 }
             </ul>
 
@@ -124,7 +143,7 @@
 
                 @if (Model.CanDelete)
                 {
-
+                    <!--begin page managers-->
                     <div>
                         <table class="table-form">
                             <tr>
@@ -175,11 +194,138 @@
                         </script>
 
                     </div>
+                    <!--end page managers-->
+
+                    <!--begin purchased songs-->
+                    <div>
+                        <div class="a-center" ng-show="PurchasedSongs.length == 0">No songs have been purchased so far</div>
+                        <table class="data-table" ng-show="PurchasedSongs.length > 0">
+                            <tr>
+                                <td class="a-right" colspan="5">
+                                    Jump To Page: <select data-ng-model="PurchasedSongsPage" data-ng-options="i for i in PageOptions"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Song Name</th>
+                                <th>Purchased On</th>
+                                <th>Gross Amount</th>
+                                <th>Fee</th>
+                                <th>Net Amount</th>
+                            </tr>
+                            <tr ng-show="!PurchasedSongsLoaded">
+                                <td class="a-center" colspan="5">Loading...</td>
+                            </tr>
+                            <tr ng-repeat="song in PurchasedSongs">
+                                <td>{{song.SongName}}</td>
+                                <td>{{song.PurchasedOn}}</td>
+                                <td>{{song.SellPrice}}</td>
+                                <td>{{song.FeeAmount}}</td>
+                                <td>{{song.NetPrice}}</td>
+                            </tr>
+                           
+                        </table><br/>
+                        <table width="100%" ng-show="PurchasedSongs.length > 0">
+                            <tr>
+                                <td colspan="5" class="a-right">
+                                    <table style="float:right">
+                                        <tr>
+                                            <td class="a-left" style="width:110px"><strong>Summary</strong></td>
+                                            <td class="a-right"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Sales:</strong></td>
+                                            <td class="a-right">{{TotalSales}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Sell Price:</strong></td>
+                                            <td class="a-right">{{TotalSellPrice}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Fee:</strong></td>
+                                            <td class="a-right">{{TotalFeeAmount}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Net Price:</strong></td>
+                                            <td class="a-right">{{TotalNetPrice}}</td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <!--end purchased songs-->
+                    
+                    
+                    <!--begin payments page-->
+                    <div>
+                        <p>@T("ArtistPages.SendPaymentMessageText")</p>
+                        <strong ng-show="PaymentMethodSaved">Payment Method saved successfully</strong>
+                        <table class="table-form">
+                            <tr>
+                                <td>
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">Payment Type</label><br />
+                                        <select data-ng-model="PaymentMethod.PaymentTypeId" value="{{PaymentMethod.PaymentTypeId}}" >
+                                            <option ng-repeat="item in PaymentTypes" value="{{item.value}}">{{item.text}}</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div ng-if="PaymentMethod.PaymentTypeId == '1'">
+                                        <div class="control-group">
+                                            <label class="control-label" for="paypalemail">Paypal Email</label><br />
+                                            <input ng-model="PaymentMethod.PaypalEmail" id="paypalemail" />
+                                        </div>
+                                    </div>
+                                    <div ng-if="PaymentMethod.PaymentTypeId == '2'">
+                                        <div class="control-group">
+                                            <label class="control-label" for="bankname">Bank Name</label><br />
+                                            <input ng-model="PaymentMethod.BankName" id="bankname" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="routingnumber">Routing Number</label><br />
+                                            <input ng-model="PaymentMethod.RoutingNumber" id="routingnumber" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="accountnumber">Account Number</label><br />
+                                            <input ng-model="PaymentMethod.AccountNumber" id="accountnumber" />
+                                        </div>
+                                    </div>
+                                    <div ng-if="PaymentMethod.PaymentTypeId == '3'">
+                                        <div class="control-group">
+                                            <label class="control-label" for="payableto">Payable To</label><br />
+                                            <input ng-model="PaymentMethod.PayableTo" id="payableto" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="address">Address</label><br />
+                                            <input ng-model="PaymentMethod.Address" id="address" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="city">City</label><br />
+                                            <input ng-model="PaymentMethod.City" id="city" />
+                                        </div>
+                                    </div>
+                                    <div ng-show="PaymentMethod.PaymentTypeId">
+                                        <input type="button" value="Save" ng-click="SavePaymentMethod()" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--end payments page-->
+                    
+                    <!--begin delete page-->
                     <div>
                         Deleting an artist page will delete all the data associated with artist. Are you sure you wish to delete this page?<br />
                         <input type="button" ng-click="DeleteArtist()" value="Delete Page" />
 
                     </div>
+                    <!--end delete page-->
                 }
             </div>
         </div>

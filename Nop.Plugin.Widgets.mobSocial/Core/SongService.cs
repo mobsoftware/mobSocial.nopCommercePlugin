@@ -106,5 +106,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         {
             return base.Repository.Table.Where(x => RemoteEntityId.Contains(x.RemoteEntityId)).FirstOrDefault();
         }
+
+
+
+
+        public Song GetSongByProductId(int ProductId)
+        {
+            return base.Repository.Table.Where(x => x.AssociatedProductId == ProductId).FirstOrDefault();
+        }
     }
 }

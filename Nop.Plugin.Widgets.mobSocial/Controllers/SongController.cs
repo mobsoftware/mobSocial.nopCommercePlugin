@@ -23,7 +23,8 @@ using System.Web;
 using Mob.Core;
 using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Core.Infrastructure;
-
+using Nop.Services.Catalog;
+using Nop.Core.Domain.Catalog;
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     [NopHttpsRequirement(SslRequirement.No)]
@@ -46,6 +47,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IMobSocialMessageService _mobsocialMessageService;
         private readonly ISharedSongService _sharedSongService;
         private readonly IStoreContext _storeContext;
+        private readonly IProductService _productService;
+        private readonly IDownloadService _downloadService;
+        private readonly IPriceFormatter _priceFormatter;
 
         public SongController(ILocalizationService localizationService,
             IPictureService pictureService,
@@ -62,7 +66,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IWorkContext workContext,
             IMobSocialMessageService mobsocialMessageService,
             ISharedSongService sharedSongService,
-            IStoreContext storeContext)
+            IStoreContext storeContext,
+            IProductService productService,
+            IDownloadService downloadService,
+            IPriceFormatter priceFormatter)
         {
             _localizationService = localizationService;
             _pictureService = pictureService;
@@ -80,6 +87,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mobsocialMessageService = mobsocialMessageService;
             _sharedSongService = sharedSongService;
             _storeContext = storeContext;
+            _productService = productService;
+            _downloadService = downloadService;
+            _priceFormatter = priceFormatter;
         }
 
         #endregion
@@ -89,24 +99,31 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             var song = _songService.GetById(Id);
 
-            if (song == null)
+            if (song == null || (!CanEdit(song) && !song.Published))
                 return InvokeHttp404(); //not found
+            
             string affiliateUrl = "";
             int trackId;
             if (int.TryParse(song.TrackId, out trackId))
                 affiliateUrl = _musicService.GetTrackAffiliateUrl(trackId);
+
+            var product = _productService.GetProductById(song.AssociatedProductId);
             var model = new SongModel() {
                 Description = song.Description,               
                 Name = song.Name,
                 RemoteEntityId = song.RemoteEntityId,
-                RemoteSourceName = song.RemoteSourceName,                
+                RemoteSourceName = song.RemoteSourceName,  
                 TrackId = song.TrackId,
                 Id = song.Id,
-                AffiliateUrl = affiliateUrl
-                
+                AffiliateUrl = affiliateUrl,
+                PreviewUrl = song.PreviewUrl,
+                AssociatedProductId = song.AssociatedProductId,
+                Published = song.Published,
+                Price = product != null ? product.Price : 0,
+                FormattedPrice =  product != null ? _priceFormatter.FormatPrice(product.Price, true, _workContext.WorkingCurrency) : ""
             };
 
-            //images for artist
+            //images for song
             foreach (var picture in song.Pictures)
             {
                 model.Pictures.Add(new PictureModel {
@@ -121,10 +138,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             if (model.Pictures.Count > 0)
                 model.MainPictureUrl = model.Pictures[0].PictureUrl;
+            else
+                model.MainPictureUrl = _pictureService.GetDefaultPictureUrl();
 
             model.CanEdit = CanEdit(song);
             model.CanDelete = CanDelete(song);
 
+            //seo
+            model.MetaTitle = model.Name;
+            model.MetaKeywords = model.Name;
+            model.MetaDescription = string.IsNullOrWhiteSpace(model.Description) ? model.Name : model.Description;
             return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/Index.cshtml", model);
         }
 
@@ -159,13 +182,26 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         
         [HttpPost]
-        public ActionResult GetSongPreviewUrl(string TrackId)
+        public ActionResult GetSongPreviewUrl(string TrackId, int SongId = 0)
         {
             int iTrackId;
             if (int.TryParse(TrackId, out iTrackId))
             {
                 var previewUrl = _musicService.GetTrackPreviewUrl(iTrackId);
                 return Json(new { Success = true, PreviewUrl = previewUrl });
+            }
+            else
+            {
+                if (SongId == 0)
+                {
+                    return Json(new { Success = false, Message = "Invalid Song Id" });
+                }
+                //this might be a song in our db let's find the song
+                var song = _songService.GetById(SongId);
+                if (song != null)
+                {
+                    return Json(new { Success = true, PreviewUrl = song.PreviewUrl });
+                }
             }
             return Json(new { Success = false, Message = "Invalid Track Id" });
         }
@@ -186,7 +222,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (dbs.Pictures.Count > 0)
                     imageUrl = _pictureService.GetPictureUrl(dbs.Pictures.First().PictureId, _mobSocialSettings.ArtistPageThumbnailSize, true);
                 else
-                    imageUrl = _pictureService.GetPictureUrl(0, _mobSocialSettings.ArtistPageThumbnailSize, true);
+                    imageUrl = _pictureService.GetDefaultPictureUrl();
 
                 string affiliateUrl = "";
                 int iTrackId;
@@ -268,7 +304,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             var remoteSongs = _artistPageApiService.GetSimilarSongs(RemoteTrackId, Count);
             if (remoteSongs == null)
-            return Json(model);
+                return Json(model);
 
             foreach (var songJson in remoteSongs)
             {
@@ -278,14 +314,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (int.TryParse(song["TrackId"].ToString(), out iTrackId))
                 {
                     affiliateUrl = _musicService.GetTrackAffiliateUrl(iTrackId);
-        }
+                }
 
 
                 model.Add(new {
                     Name = song["Name"].ToString(),
                     Id = song["RemoteEntityId"].ToString(),
                     ImageUrl = song["ImageUrl"].ToString(),
-                    SeName =  song["RemoteEntityId"].ToString(),
+                    SeName = song["RemoteEntityId"].ToString(),
                     TrackId = song["TrackId"].ToString(),
                     AffiliateUrl = affiliateUrl,
                     RemoteSong = true
@@ -293,6 +329,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             return Json(model);
         }
+
         /// <summary>
         /// Generic method for all inline updates
         /// </summary>
@@ -321,6 +358,27 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         case "Description":
                             song.Description = value;
                             break;                       
+                        case "Published":
+                        case "Price":
+                            var product = _productService.GetProductById(song.AssociatedProductId);
+                            if (key == "Published")
+                            {
+                                song.Published = value == "1" ? true : false;
+                                product.Published = song.Published;
+                            }
+                            else
+                            {
+                                decimal priceDecimal;
+                                if (decimal.TryParse(value, out priceDecimal))
+                                {
+                                    //for pricing, we need to get the product 
+                                    product.Price = priceDecimal;
+                                    
+                                }
+                            }
+                            _productService.UpdateProduct(product);
+                            break;
+                        
                     }
                     _songService.Update(song);
                     return Json(new { success = true });
@@ -342,6 +400,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             if (!_workContext.CurrentCustomer.IsRegistered())
             {
+
                 //ask user to login if he is logged out
                 return View(ControllerUtil.MobSocialViewsFolder + "_MustLogin.cshtml");
             }
@@ -369,7 +428,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     Id = 0,
                     RemoteEntityId = RemoteTrackId,
                     RemoteSourceName = "",
-      
+
                 };
             }
             else
@@ -383,14 +442,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                 };
             }
-
+            
             return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/ShareSong.cshtml", model);
 
         }
+
         [HttpPost]
         public ActionResult ShareSong(int TrackId, int[] CustomerIds, string Message = "", string RemoteTrackId = "")
         {
-            if(CustomerIds == null)
+            if (CustomerIds == null)
                 return Json(new { Success = false, Message = "Failed" });
 
             //check if song exists
@@ -466,7 +526,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     if (song.Pictures.Count > 0)
                         imageUrl = _pictureService.GetPictureUrl(song.Pictures.First().PictureId, _mobSocialSettings.ArtistPageThumbnailSize, true);
                     else
-                        imageUrl = _pictureService.GetPictureUrl(0, _mobSocialSettings.ArtistPageThumbnailSize, true);
+                        imageUrl = _pictureService.GetDefaultPictureUrl();
 
                     var sender = _customerService.GetCustomerById(rs.SenderId);
 
@@ -525,7 +585,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         if (song.Pictures.Count > 0)
                             imageUrl = _pictureService.GetPictureUrl(song.Pictures.First().PictureId, _mobSocialSettings.ArtistPageThumbnailSize, true);
                         else
-                            imageUrl = _pictureService.GetPictureUrl(0, _mobSocialSettings.ArtistPageThumbnailSize, true);
+                            imageUrl = _pictureService.GetDefaultPictureUrl();
 
                         smodel.Add(new {
                             Name = song.Name,
@@ -590,6 +650,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(new { Success = false, Message = "Unauthorized" });
 
             var files = file.ToList();
+            var imageUrl = "";
+
+            var product = _productService.GetProductById(song.AssociatedProductId);
             foreach (var fi in files)
             {
                 Stream stream = null;
@@ -641,11 +704,162 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     firstSongPicture.PictureId = picture.Id;
                     _songService.UpdatePicture(firstSongPicture);
                 }
+                //add the same picture to product as well
+                product.ProductPictures.Add(new ProductPicture() {
+                    PictureId = firstSongPicture.PictureId,
+                    ProductId = product.Id
+                });
+                imageUrl = _pictureService.GetPictureUrl(firstSongPicture.PictureId, 0, true);
 
             }
 
-            return Json(new { Success = true });
+            return Json(new { Success = true, Url = imageUrl });
         }
+
+        /// <summary>
+        /// Generic method for handling song uploads. Handles samples and actual song uploading
+        /// </summary>        
+        [HttpPost]
+        public ActionResult UploadSongFile(int SongId, string FieldName, HttpPostedFileBase File)
+        {
+            //lets get the song first
+            var song = _songService.GetById(SongId);
+            if (CanEdit(song) && (FieldName == "SongFile" || FieldName == "SampleFile"))
+            {
+                //ok so user can edit the song. let's see if it's a sample file or product file
+                if (FieldName == "SongFile")
+                {
+                    //size check
+                    if (File.ContentLength > _mobSocialSettings.SongFileMaximumUploadSize * 1024)
+                    {
+                        return Json(new { Success = false, Message = "Maximum allowed file size is " + _mobSocialSettings.SongFileMaximumUploadSize + "KB" });
+                    }
+
+                }
+                else if (FieldName == "SampleFile")
+                {
+                    //size check
+                    if (File.ContentLength > _mobSocialSettings.SongFileSampleMaximumUploadSize * 1024)
+                    {
+                        return Json(new { Success = false, Message = "Maximum allowed file size is " + _mobSocialSettings.SongFileSampleMaximumUploadSize + "KB" });
+                    }
+                }
+                //we are here so files are good to download
+                //save the downloaded files
+                var songFile = new Download() {
+                    ContentType = File.ContentType,
+                    DownloadGuid = Guid.NewGuid(),
+                    Filename = Path.GetFileNameWithoutExtension(File.FileName),
+                    Extension = Path.GetExtension(File.FileName),
+                    IsNew = true,
+                    UseDownloadUrl = false,
+                    DownloadBinary = File.GetDownloadBits(),
+                    DownloadUrl = ""
+                };
+                _downloadService.InsertDownload(songFile);
+
+                //now let's find the associated downloadable product and change it's download
+                var product = _productService.GetProductById(song.AssociatedProductId);
+                int oldDownloadId;
+                if (FieldName == "SongFile")
+                {
+                    oldDownloadId = product.DownloadId;
+                    product.DownloadId = songFile.Id;
+                    product.IsDownload = true;
+                }
+                else
+                {
+                    oldDownloadId = product.SampleDownloadId;
+                    product.SampleDownloadId = songFile.Id;
+                    product.HasSampleDownload = true;
+                    //set preview url of song
+
+                    song.PreviewUrl = Url.RouteUrl("GetSampleDownload", new { productId = product.Id  });
+                    _songService.Update(song);
+                }
+
+                //save the product now
+                _productService.UpdateProduct(product);
+
+                //delete the old download to clean up
+                var download = _downloadService.GetDownloadById(oldDownloadId);
+                if(download != null)
+                 _downloadService.DeleteDownload(download);
+
+                
+                //and now that we have the song with us. let's send the preview and product id to the client
+                return Json(new { Success = true, PreviewUrl = song.PreviewUrl, ProductId = product.Id });
+
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
+            }
+
+
+        }
+
+        [Authorize]
+        public ActionResult SongEditor(int ArtistPageId)
+        {
+            if (ArtistPageId == 0)
+                return RedirectToRoute("HomePage");
+
+            var model = new SongModel() {
+                ArtistPageId = ArtistPageId,
+                DateCreated = DateTime.Now,
+                DateUpdated = DateTime.Now
+            };
+            return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/SongEditor.cshtml", model);
+            }
+
+        [HttpPost]
+        public ActionResult SaveSong(SongModel model)
+        {
+            if (!ModelState.IsValid)
+            return Json(new { Success = true });
+
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return InvokeHttp404();
+
+            //every song should be mapped to a downloadable product. downloads are added using upload song action from song page
+            var product = new Product() {
+                Name = model.Name,
+                Price = model.Price,
+                IsDownload = true,
+                UnlimitedDownloads = true,
+                ProductType = ProductType.SimpleProduct,
+                CreatedOnUtc = DateTime.UtcNow,
+                UpdatedOnUtc = DateTime.UtcNow,
+                OrderMaximumQuantity = 1,
+                OrderMinimumQuantity = 1,
+                DownloadActivationType = DownloadActivationType.WhenOrderIsPaid
+            };
+
+            _productService.InsertProduct(product);
+
+            //now that product has been saved, let's create a song
+            var song = new Song() {
+                ArtistPageId = model.ArtistPageId,
+                Description = model.Description,
+                AssociatedProductId = product.Id,
+                RemoteEntityId = "",
+                RemoteArtistId = "",
+                RemoteSourceName = "",
+                PageOwnerId = _workContext.CurrentCustomer.Id,
+                Name = model.Name,
+                Published = false                
+            };
+            _songService.Insert(song);
+
+            return Json(
+                new {
+                    Success = true,
+                    RedirectTo = Url.RouteUrl("SongUrl", new { SeName = song.GetSeName(_workContext.WorkingLanguage.Id, true, false) })
+                });
+        }
+
+
         #endregion
 
         #region Utilities
@@ -685,7 +899,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return _workContext.CurrentCustomer.Id == Song.PageOwnerId //page owner
                 || _workContext.CurrentCustomer.IsAdmin(); //administrator
         }
-
+        
         [NonAction]
         Song SaveRemoteSongToDB(string songJson)
         {
@@ -702,7 +916,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 RemoteSourceName = song["RemoteSourceName"].ToString(),
                 PreviewUrl = song["PreviewUrl"].ToString(),
                 TrackId = song["TrackId"].ToString(),
-                RemoteArtistId = song["ArtistId"].ToString()
+                RemoteArtistId = song["ArtistId"].ToString(),
+                Published = true
             };
 
             _songService.Insert(songPage);
@@ -716,20 +931,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var imageBytes = HttpHelper.ExecuteGET(imageUrl);
                 if (imageBytes != null)
                 {
-                var fileExtension = Path.GetExtension(imageUrl);
-                if (!String.IsNullOrEmpty(fileExtension))
-                    fileExtension = fileExtension.ToLowerInvariant();
+                    var fileExtension = Path.GetExtension(imageUrl);
+                    if (!String.IsNullOrEmpty(fileExtension))
+                        fileExtension = fileExtension.ToLowerInvariant();
 
-                var contentType = PictureUtility.GetContentType(fileExtension);
+                    var contentType = PictureUtility.GetContentType(fileExtension);
 
                     var picture = _pictureService.InsertPicture(imageBytes, contentType, songPage.GetSeName(_workContext.WorkingLanguage.Id, true, false), true);
                     var songPicture = new SongPicture() {
                         SongId = songPage.Id,
-                    DateCreated = DateTime.Now,
-                    DateUpdated = DateTime.Now,
-                    DisplayOrder = 1,
-                    PictureId = picture.Id
-                };
+                        DateCreated = DateTime.Now,
+                        DateUpdated = DateTime.Now,
+                        DisplayOrder = 1,
+                        PictureId = picture.Id
+                    };
                     _songService.InsertPicture(songPicture);
                 }
                

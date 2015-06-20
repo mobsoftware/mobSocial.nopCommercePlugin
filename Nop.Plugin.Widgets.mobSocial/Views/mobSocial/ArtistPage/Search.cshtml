@@ -1,10 +1,9 @@
 ﻿@using Nop.Plugin.Widgets.MobSocial.Models;
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
-    Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
 
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
+    
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-page-search.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
 }
@@ -38,7 +37,7 @@
             </tr>
             <tr ng-show="searchType == 'Songs'">
                 <td>
-                    <input type="checkbox" data-ng-model="searchArtists" /> Restrict to artist
+                    <input type="checkbox" data-ng-model="searchArtists" /> Restrict to Artist
                     <br />
                     <div ng-show="searchArtists">
                         Artist: <input type="text" data-ng-model="artistName" />
@@ -49,6 +48,13 @@
             <tr>
                 <td>
                     Results per page: <select data-ng-model="count" ng-options="val for val in [15, 30, 50]"></select>
+                </td>
+            </tr>
+        </table>
+        <table class="table-form">
+            <tr>
+                <td>
+                    <a href="@Url.RouteUrl("ArtistsPage", new { action = "MyArtistPages" })"><i class="fa fa-music"></i> Sell Music</a>
                 </td>
             </tr>
         </table>

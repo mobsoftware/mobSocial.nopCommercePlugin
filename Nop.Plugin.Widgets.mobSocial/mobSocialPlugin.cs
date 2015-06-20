@@ -13,6 +13,7 @@ using Nop.Services.Messages;
 using Nop.Services.Tasks;
 using Nop.Web.Framework.Menu;
 using SiteMapNode = System.Web.SiteMapNode;
+using System.Web.Configuration;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -26,6 +27,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly IMobSocialService _mobSocialService;
         private readonly ILocalizationService _localizationService;
+        private readonly HttpRuntimeSection _config;
 
         public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings, 
             ISettingService settingService, IMessageTemplateService messageTemplateService, 
@@ -40,6 +42,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             _scheduleTaskService = scheduleTaskService;
             _mobSocialService = mobSocialService;
             _localizationService = localizationService;
+            _config = new HttpRuntimeSection();//TODO Move to dependency registrar and perform injection
         }
 
 
@@ -185,8 +188,10 @@ namespace Nop.Plugin.Widgets.MobSocial
                 EchonestAPIKey = "DQFW7ZCMHBBLMLVFE",
                 // Would you like to replace the partner id with your own? 
                 // Find more info here by contacting us at info@skatemob.com
-                SevenDigitalPartnerId = "9378"
-
+                SevenDigitalPartnerId = "9378",
+                SongFileMaximumUploadSize = _config.MaxRequestLength,
+                SongFileSampleMaximumUploadSize = _config.MaxRequestLength,
+                PurchasedSongFeePercentage = 30
                 
             };
 
@@ -372,6 +377,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.AddOrUpdatePluginLocaleResource("Admin.EventPage.BackToList", "Back to list");
             this.AddOrUpdatePluginLocaleResource("BusinessPages.HoursOfOperationText", "Hours of Operation");
             this.AddOrUpdatePluginLocaleResource("BusinessPages.HeaderMenuName", "Businesses");
+            this.AddOrUpdatePluginLocaleResource("ArtistPages.SendPaymentMessageText", "When my song purchases reach $10 net amount, send payment to:");
 
 
             // Update core locales. do not remove core locales during uninstall

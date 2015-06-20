@@ -24,6 +24,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web;
+using Nop.Services.Catalog;
+using Nop.Services.Orders;
+using Nop.Core.Domain.Payments;
+using Nop.Core.Domain.Tax;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -45,6 +49,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IArtistPageAPIService _artistPageApiService;
         private readonly IArtistPageManagerService _artistPageManagerService;
         private readonly IMusicService _musicService;
+        private readonly IDownloadService _downloadService;
+        private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
+        private readonly IStoreContext _storeContext;
+        private readonly TaxSettings _taxSettings;
+        private readonly ISongService _songService;
+        private readonly IPriceFormatter _priceFormatter;
+        private readonly IArtistPagePaymentService _artistPagePaymentService;
 
         public ArtistPageController(ILocalizationService localizationService,
             IPictureService pictureService,
@@ -58,7 +70,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IMusicService musicService,
             mobSocialSettings mobSocialSettings,
             IMobSocialService mobSocialService,
-            IWorkContext workContext)
+            IWorkContext workContext,
+            IDownloadService downloadService,
+            IProductService productService,
+            IOrderService orderService,
+            IStoreContext storeContext,
+            TaxSettings taxSettings,
+            ISongService songService,
+            IPriceFormatter priceFormatter,
+            IArtistPagePaymentService artistPagePaymentService)
         {
             _localizationService = localizationService;
             _pictureService = pictureService;
@@ -73,6 +93,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _artistPageApiService = artistPageApiService;
             _artistPageManagerService = artistPageManagerService;
             _musicService = musicService;
+            _downloadService = downloadService;
+            _productService = productService;
+            _orderService = orderService;
+            _storeContext = storeContext;
+            _taxSettings = taxSettings;
+            _songService = songService;
+            _priceFormatter = priceFormatter;
+            _artistPagePaymentService = artistPagePaymentService;
         }
 
         #endregion
@@ -113,6 +141,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             if (model.Pictures.Count > 0)
                 model.MainPictureUrl = model.Pictures[0].PictureUrl;
+            else
+                model.MainPictureUrl = _pictureService.GetDefaultPictureUrl();
 
             model.CanEdit = CanEdit(artist);
             model.CanDelete = CanDelete(artist);
@@ -245,7 +275,37 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(model);
 
         }
+        [HttpPost]
+        public ActionResult GetArtistSongsByArtistPage(int ArtistPageId)
+        {
+            //check if artist page exists
+            var artistPage = _artistPageService.GetById(ArtistPageId);
+            if (artistPage == null)
+                return null;
+            var model = new List<object>();
+            foreach (var song in artistPage.Songs)
+            {
+                var product = _productService.GetProductById(song.AssociatedProductId);
+                if (product == null) //no associated product. may be a remote artist..what say?
+                    continue;
 
+                var download = _downloadService.GetDownloadById(product.SampleDownloadId);
+                model.Add(new
+                {
+                    Id = song.Id,
+                    Name = song.Name,
+                    SeName = song.GetSeName(_workContext.WorkingLanguage.Id, true, false),
+                    ImageUrl = song.Pictures.Count > 0 ? _pictureService.GetPictureUrl(song.Pictures.First().PictureId) : _pictureService.GetDefaultPictureUrl(),
+                    PreviewUrl = song.PreviewUrl,
+                    TrackId = song.Id,
+                    DownloadId = download == null ? 0 : download.Id,
+                    AssociatedProductId = product.Id,
+                    RemoteSong = false
+                });
+        }
+            return Json(model);
+
+        }
         [HttpPost]
         public ActionResult GetArtistSongPreviewUrl(string TrackId)
         {
@@ -258,6 +318,65 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(new { Success = false, Message = "Invalid Track Id" });
         }
 
+        /// <summary>
+        /// Gets all the purchased songs of artist
+        /// </summary>
+        public ActionResult GetPurchasedSongs(int ArtistPageId, int Count = 15, int Page = 1)
+        {
+            var artistPage = _artistPageService.GetById(ArtistPageId);
+            var modelList = new List<object>();
+            int totalPages = 0, totalSales = 0;
+            decimal totalGross = 0, totalFee = 0, totalNet = 0;
+            if (artistPage != null && CanDelete(artistPage))
+            {
+                var customerOrderItems = _orderService.GetAllOrderItems(null, null, null, null, null, PaymentStatus.Paid, null, true);
+                var artistPageSongProductIds = artistPage.Songs.Select(x => x.AssociatedProductId);
+                //let's get the purchased items
+                var purchasedItems = customerOrderItems.Where(x => artistPageSongProductIds.Contains(x.Product.Id));
+                
+                //summary
+                totalSales = purchasedItems.Count();
+                totalPages = Convert.ToInt32(Math.Ceiling((decimal)purchasedItems.Count() / Count));
+                totalGross = purchasedItems.Sum(x => _taxSettings.PricesIncludeTax ? x.PriceInclTax : x.PriceExclTax);
+                totalFee = (totalGross * _mobSocialSettings.PurchasedSongFeePercentage) / 100;
+                totalNet = totalGross - totalFee;
+
+                //pagination
+                purchasedItems = purchasedItems.Skip(Count * (Page - 1)).Take(Count);
+
+                foreach (var pi in purchasedItems)
+                {
+                    var song = _songService.GetSongByProductId(pi.Product.Id);
+                    var grossPrice = _taxSettings.PricesIncludeTax ? pi.PriceInclTax : pi.PriceExclTax;
+                    var feeAmount = (grossPrice * _mobSocialSettings.PurchasedSongFeePercentage) / 100;
+                    var netPrice = grossPrice - feeAmount;
+                    
+                    //add new object to collection
+                    modelList.Add(new
+                    {
+                        SongName = pi.Product.Name,
+                        PurchasedOn = _dateTimeHelper.ConvertToUserTime( pi.Order.CreatedOnUtc,DateTimeKind.Utc).ToString(),
+                        OrderId = pi.Order.Id,
+                        PreviewUrl = song.PreviewUrl,
+                        SellPrice = _priceFormatter.FormatPrice(grossPrice,true, _workContext.WorkingCurrency),
+                        FeeAmount = _priceFormatter.FormatPrice(feeAmount, true, _workContext.WorkingCurrency),
+                        NetPrice = _priceFormatter.FormatPrice(netPrice, true, _workContext.WorkingCurrency),
+                        SeName = song.GetSeName(_workContext.WorkingLanguage.Id, true, false)
+                    });
+                }
+            }
+            var model = new {
+                Songs = modelList,
+                Page = Page,
+                Count = Count,
+                TotalPages = totalPages,
+                TotalSellPrice = _priceFormatter.FormatPrice(totalGross, true, _workContext.WorkingCurrency),
+                TotalFeeAmount = _priceFormatter.FormatPrice(totalFee, true, _workContext.WorkingCurrency),
+                TotalNetPrice = _priceFormatter.FormatPrice(totalNet, true, _workContext.WorkingCurrency),
+                TotalSales = totalSales
+            };
+            return Json(model);
+        }
 
         public ActionResult Search()
         {
@@ -280,7 +399,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (dba.Pictures.Count > 0)
                     imageUrl = _pictureService.GetPictureUrl(dba.Pictures.First().PictureId, _mobSocialSettings.ArtistPageThumbnailSize, true);
                 else
-                    imageUrl = _pictureService.GetPictureUrl(0, _mobSocialSettings.ArtistPageThumbnailSize, true);
+                    imageUrl = _pictureService.GetDefaultPictureUrl();
 
                 model.Add(new {
                     Name = dba.Name,
@@ -420,7 +539,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     RemoteSourceName = artist.RemoteSourceName,
                     Id = artist.Id,
                     SeName = artist.GetSeName(_workContext.WorkingLanguage.Id, true, false),
-                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : "" 
+                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : _pictureService.GetDefaultPictureUrl() 
                 };                
               
 
@@ -462,7 +581,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     RemoteSourceName = artist.RemoteSourceName,
                     Id = artist.Id,
                     SeName = artist.GetSeName(_workContext.WorkingLanguage.Id, true, false),
-                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : ""
+                    MainPictureUrl = artist.Pictures.Count() > 0 ? _pictureService.GetPictureUrl(artist.Pictures.First().PictureId, _mobSocialSettings.ArtistPageMainImageSize, true) : _pictureService.GetDefaultPictureUrl()
                 };
 
 
@@ -814,6 +933,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(new { Success = false, Message = "Unauthorized" });
 
             var files = file.ToList();
+            var newImageUrl = "";
             foreach (var fi in files)
             {
                 Stream stream = null;
@@ -847,14 +967,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                 if (firstArtistPagePicture == null)
                 {
-                    var artistPagePicture = new ArtistPagePicture() {                        
+                    firstArtistPagePicture = new ArtistPagePicture() {                        
                         ArtistPageId = ArtistPageId,
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
                         DisplayOrder = 1,
                         PictureId = picture.Id
                     };
-                    _artistPageService.InsertPicture(artistPagePicture);
+                    _artistPageService.InsertPicture(firstArtistPagePicture);
                 }
                 else
                 {
@@ -865,10 +985,93 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     firstArtistPagePicture.PictureId = picture.Id;
                     _artistPageService.UpdatePicture(firstArtistPagePicture);
                 }
+                newImageUrl = _pictureService.GetPictureUrl(firstArtistPagePicture.PictureId, 0, true);
 
             }
 
+            return Json(new { Success = true, Url = newImageUrl });
+            }
+
+        [HttpPost]
+        public ActionResult GetPaymentMethod(int ArtistPageId)
+        {
+            var artistPage = _artistPageService.GetById(ArtistPageId);
+
+            if (CanDelete(artistPage))
+            {
+                //the user can access payment method. let's fetch it.
+
+                var paymentMethod = _artistPagePaymentService.GetPaymentMethod(ArtistPageId);
+                if (paymentMethod != null)
+                {
+                    var model = new ArtistPagePaymentModel() {
+                        AccountNumber = paymentMethod.AccountNumber,
+                        Address = paymentMethod.Address,
+                        BankName = paymentMethod.BankName,
+                        City = paymentMethod.City,
+                        PayableTo = paymentMethod.PayableTo,
+                        PaymentTypeId = (int)paymentMethod.PaymentType,
+                        PaypalEmail = paymentMethod.PaypalEmail,
+                        RoutingNumber = paymentMethod.RoutingNumber,
+                        ArtistPageId = paymentMethod.ArtistPageId,
+                        Id=paymentMethod.Id
+                    };
+                    return Json(new { Success = true, PaymentMethod = model });
+                }
+                else
+                {
+                    var model = new ArtistPagePaymentModel() {
+                        ArtistPageId = ArtistPageId,
+                        PaymentTypeId = (int)ArtistPagePayment.PagePaymentType.Paypal
+                    };
+                    return Json(new { Success = true, PaymentMethod = model });
+                }
+               
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SavePaymentMethod(ArtistPagePaymentModel Model)
+        {
+            if (!ModelState.IsValid)
+                return InvokeHttp404();
+
+            var artistPage = _artistPageService.GetById(Model.ArtistPageId);
+            if (CanEdit(artistPage))
+            {
+                ArtistPagePayment paymentMethod;
+                paymentMethod = _artistPagePaymentService.GetPaymentMethod(Model.ArtistPageId);
+                if (paymentMethod == null)
+                {
+                    paymentMethod = new ArtistPagePayment();
+                }               
+                //set the new values
+                paymentMethod.AccountNumber = Model.AccountNumber;
+                paymentMethod.Address = Model.Address;
+                paymentMethod.ArtistPageId = Model.ArtistPageId;
+                paymentMethod.BankName = Model.BankName;
+                paymentMethod.City = Model.City;
+                paymentMethod.PayableTo = Model.PayableTo;
+                paymentMethod.PaymentType = (ArtistPagePayment.PagePaymentType)Model.PaymentTypeId;
+                paymentMethod.PaypalEmail = Model.PaypalEmail;
+                paymentMethod.RoutingNumber = Model.RoutingNumber;
+
+                if (paymentMethod.Id == 0)
+                    _artistPagePaymentService.InsertPaymentMethod(paymentMethod);
+                else
+                    _artistPagePaymentService.UpdatePaymentMethod(paymentMethod);
+
             return Json(new { Success = true });
+        }
+            else
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
+
+            }
         }
         #endregion
 

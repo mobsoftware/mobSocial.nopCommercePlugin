@@ -12,7 +12,6 @@
                 }
                 dialogService.open(dialogId)
 
-                //first lets go to our server to get the preview url
                 $http.get("/songs/ShareSong?TrackId=" + attr.trackid + "&RemoteTrackId=" + attr.remotetrackid)
                          .success(function (data, status, headers, config) {
                              if (status == 200) {

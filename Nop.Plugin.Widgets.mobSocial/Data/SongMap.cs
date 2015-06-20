@@ -15,16 +15,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             ToTable(typeof(Song).Name);
             HasKey(x => x.Id);
 
-            Property(x => x.PageOwnerId);
             Property(x => x.Name);
-            Property(x => x.Description);
-            Property(x => x.RemoteEntityId);
-            Property(x => x.RemoteSourceName);
-            Property(x => x.RemoteArtistId);
+            Property(x => x.PageOwnerId);
             Property(x => x.PreviewUrl);
             Property(x => x.TrackId);
-            
-            
+            Property(x => x.RemoteEntityId);
+            Property(x => x.RemoteSourceName);
+            Property(x => x.ArtistPageId);
+            Property(x => x.AssociatedProductId);
+            Property(x => x.Published);
         }
     }
 }

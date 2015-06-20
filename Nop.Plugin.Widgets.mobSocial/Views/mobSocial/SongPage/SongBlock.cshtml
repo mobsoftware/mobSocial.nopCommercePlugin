@@ -5,14 +5,14 @@
     </div>
     <div class="song-title" ng-if="!song.RemoteSong">
         <a class="song-name" href="/{{song.SeName}}">{{song.Name}}</a>
-        <a href="" mob-preview-song-button trackid="{{song.TrackId}}">Play</a> |
-        <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a> |
+        <a href="" mob-preview-song-button previewurl="{{song.PreviewUrl}}">Play</a> |
+        <a buy-song-button productid="{{song.AssociatedProductId}}" href="">Buy</a> |
         <a href="" share-song-button trackid="{{song.Id}}">Share</a>
     </div>
     <div class="song-title" ng-if="song.RemoteSong">
         <a class="song-name" href="/remote-song/{{song.SeName}}">{{song.Name}}</a>
         <a href="" mob-preview-song-button trackid="{{song.TrackId}}">Play</a> |
-        <a href="{{song.AffiliateUrl}}" target="_blank">Buy</a> |
+        <a buy-song-button affiliateurl="{{song.AffiliateUrl}}" href="">Buy</a> |
         <a href="" share-song-button trackid="0" remotetrackid="{{song.Id}}">Share</a>
     </div>
     
