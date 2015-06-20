@@ -64,6 +64,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new ArtistPageMap());
             modelBuilder.Configurations.Add(new ArtistPagePictureMap());
             modelBuilder.Configurations.Add(new ArtistPageManagerMap());
+            modelBuilder.Configurations.Add(new ArtistPagePaymentMap());
             modelBuilder.Configurations.Add(new SongMap());
             modelBuilder.Configurations.Add(new SongPictureMap());
             modelBuilder.Configurations.Add(new SharedSongMap());
@@ -124,6 +125,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
                 this.DropTable<ArtistPagePicture>();
                 this.DropTable<ArtistPageManager>();
+                this.DropTable<ArtistPagePayment>();
                 this.DropTable<SharedSong>();   
                 this.DropTable<SongPicture>();
                 this.DropTable<Song>();

@@ -158,12 +158,30 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
         $scope.GetPurchasedSongs();
 
 
-    $scope.PaymentOptions = [
-        { value: 'paypal', text: 'Paypal' },
-        { value: 'bankaccount', text: 'Bank Account' },
-        { value: 'sendcheck', text: 'Send Check' },
+    $scope.PaymentTypes = [
+        { value: '1', text: 'Paypal' },
+        { value: '2', text: 'Bank Account' },
+        { value: '3', text: 'Send Check' },
     ];
+    $scope.GetPaymentMethod = function () {
+        $http.post("/artists/GetPaymentMethod", { ArtistPageId: $scope.artist.Id})
+              .success(function (data, status, headers, config) {
+                  $scope.PaymentMethod = data.PaymentMethod;
+              });
+    }
+    if ($scope.artist.CanDelete)
+        $scope.GetPaymentMethod();
 
+
+    $scope.SavePaymentMethod = function () {
+        $http.post("/artists/SavePaymentMethod", $scope.PaymentMethod)
+             .success(function (data, status, headers, config) {
+                 $scope.PaymentMethodSaved = data.Success;
+                 if (!data.Success) {
+                     alert("Failed to save payment method");
+                 }
+             });
+    }
 
 
 }]);

@@ -42,7 +42,20 @@
                 </button>
             }
         </div>
-        
+        <div class="song-price a-center">
+            @if (Model.CanEdit)
+            {
+            <text>Price: </text><a href="#" editable-text="song.Price" onbeforesave="UpdateSong('Price', $data)">{{ song.Price || '0.00' }}</a>
+
+
+            }
+            else
+            {
+
+                <h2>{{song.FormattedPrice}}</h2>
+            }
+           
+        </div>
         <div class="song-page-action-links">
             <a>
                 <i class="fa fa-music"></i> <span mob-preview-song-button trackid="{{song.TrackId}}" songid="{{song.Id}}" previewurl="{{song.PreviewUrl}}">Play</span>
@@ -70,6 +83,7 @@
                     @if (Model.CanEdit)
                     {
                         <a href="#" editable-text="song.Name" onbeforesave="UpdateSong('Name', $data)">{{ song.Name || 'empty' }}</a>
+                       
 
                     }
                     else
@@ -78,7 +92,12 @@
                         <text>{{ song.Name}}</text>
                     }
                 </h1>
-
+                @if (Model.CanEdit)
+                {
+                    <em>
+                        {{ song.Published ? '' : 'The song is not live. Go to Song Files tab to publish'  }}
+                    </em>
+                }
             </div>
             <div id="tabs">
                 <ul class="resp-tabs-list">

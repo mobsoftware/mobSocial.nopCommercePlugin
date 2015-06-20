@@ -42,6 +42,7 @@
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Core\ArtistPageAPIService.cs" />
     <Compile Include="Core\ArtistPageManagerService.cs" />
+    <Compile Include="Core\ArtistPagePaymentService.cs" />
     <Compile Include="Core\ArtistPageService.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Core\IApiUri.cs" />
     <Compile Include="Core\IArtistPageAPIService.cs" />
     <Compile Include="Core\IArtistPageManagerService.cs" />
+    <Compile Include="Core\IArtistPagePaymentService.cs" />
     <Compile Include="Core\IArtistPageService.cs" />
     <Compile Include="Core\IBusinessPageCouponService.cs" />
     <Compile Include="Core\IBusinessPageService.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Core\SongService.cs" />
     <Compile Include="Data\ArtistPageManagerMap.cs" />
     <Compile Include="Data\ArtistPageMap.cs" />
+    <Compile Include="Data\ArtistPagePaymentMap.cs" />
     <Compile Include="Data\ArtistPagePictureMap.cs" />
     <Compile Include="Data\CustomerFavoriteSongMap.cs" />
     <Compile Include="Data\CustomerProfileMap.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="Data\SongPictureMap.cs" />
     <Compile Include="Domain\ArtistPage.cs" />
     <Compile Include="Domain\ArtistPageManager.cs" />
+    <Compile Include="Domain\ArtistPagePayment.cs" />
     <Compile Include="Domain\ArtistPagePicture.cs" />
     <Compile Include="Domain\BusinessPageCoupon.cs" />
     <Compile Include="Domain\BusinessPagePicture.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="Domain\CustomerProfileView.cs" />
     <Compile Include="Domain\EventPageAttendance.cs" />
     <Compile Include="Models\AddPictureModel.cs" />
+    <Compile Include="Models\ArtistPagePaymentModel.cs" />
     <Compile Include="Models\PurchasedSongModel.cs" />
     <Compile Include="Models\SongModel.cs" />
     <Compile Include="Models\ArtistPageModel.cs" />

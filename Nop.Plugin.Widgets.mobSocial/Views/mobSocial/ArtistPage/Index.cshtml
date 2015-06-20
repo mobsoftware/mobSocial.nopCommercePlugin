@@ -198,8 +198,8 @@
 
                     <!--begin purchased songs-->
                     <div>
-                        
-                        <table class="data-table">
+                        <div class="a-center" ng-show="PurchasedSongs.length == 0">No songs have been purchased so far</div>
+                        <table class="data-table" ng-show="PurchasedSongs.length > 0">
                             <tr>
                                 <td class="a-right" colspan="5">
                                     Jump To Page: <select data-ng-model="PurchasedSongsPage" data-ng-options="i for i in PageOptions"></select>
@@ -224,37 +224,37 @@
                             </tr>
                            
                         </table><br/>
-                       <table width="100%">
-                           <tr>
-                               <td colspan="5" class="a-right">
-                                   <table style="float:right">
-                                       <tr>
-                                           <td class="a-left" style="width:110px"><strong>Summary</strong></td>
-                                           <td class="a-right"></td>
-                                       </tr>
-                                       <tr>
-                                           <td class="a-left"><strong>Total Sales:</strong></td>
-                                           <td class="a-right">{{TotalSales}}</td>
-                                       </tr>
-                                       <tr>
-                                           <td class="a-left"><strong>Total Sell Price:</strong></td>
-                                           <td class="a-right">{{TotalSellPrice}}</td>
-                                       </tr>
-                                       <tr>
-                                           <td class="a-left"><strong>Total Fee:</strong></td>
-                                           <td class="a-right">{{TotalFeeAmount}}</td>
-                                       </tr>
-                                       <tr>
-                                           <td class="a-left"><strong>Total Net Price:</strong></td>
-                                           <td class="a-right">{{TotalNetPrice}}</td>
-                                       </tr>
-                                   </table>
+                        <table width="100%" ng-show="PurchasedSongs.length > 0">
+                            <tr>
+                                <td colspan="5" class="a-right">
+                                    <table style="float:right">
+                                        <tr>
+                                            <td class="a-left" style="width:110px"><strong>Summary</strong></td>
+                                            <td class="a-right"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Sales:</strong></td>
+                                            <td class="a-right">{{TotalSales}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Sell Price:</strong></td>
+                                            <td class="a-right">{{TotalSellPrice}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Fee:</strong></td>
+                                            <td class="a-right">{{TotalFeeAmount}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-left"><strong>Total Net Price:</strong></td>
+                                            <td class="a-right">{{TotalNetPrice}}</td>
+                                        </tr>
+                                    </table>
 
 
-                               </td>
+                                </td>
 
-                           </tr>
-                       </table>
+                            </tr>
+                        </table>
                     </div>
                     <!--end purchased songs-->
                     
@@ -262,53 +262,56 @@
                     <!--begin payments page-->
                     <div>
                         <p>@T("ArtistPages.SendPaymentMessageText")</p>
+                        <strong ng-show="PaymentMethodSaved">Payment Method saved successfully</strong>
                         <table class="table-form">
                             <tr>
                                 <td>
                                     <div class="control-group">
                                         <label class="control-label" for="name">Payment Type</label><br />
-                                        <select data-ng-model="PaymentOption" data-ng-options="item.value as item.text for item in PaymentOptions"></select>
+                                        <select data-ng-model="PaymentMethod.PaymentTypeId" value="{{PaymentMethod.PaymentTypeId}}" >
+                                            <option ng-repeat="item in PaymentTypes" value="{{item.value}}">{{item.text}}</option>
+                                        </select>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div ng-if="PaymentOption == 'paypal'">
+                                    <div ng-if="PaymentMethod.PaymentTypeId == '1'">
                                         <div class="control-group">
                                             <label class="control-label" for="paypalemail">Paypal Email</label><br />
-                                            <input ng-model="PaypalEmail" id="paypalemail"/>
+                                            <input ng-model="PaymentMethod.PaypalEmail" id="paypalemail" />
                                         </div>
                                     </div>
-                                    <div ng-if="PaymentOption == 'bankaccount'">
+                                    <div ng-if="PaymentMethod.PaymentTypeId == '2'">
                                         <div class="control-group">
                                             <label class="control-label" for="bankname">Bank Name</label><br />
-                                            <input ng-model="BankName" id="bankname" />
+                                            <input ng-model="PaymentMethod.BankName" id="bankname" />
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label" for="routingnumber">Routing Number</label><br />
-                                            <input ng-model="RoutingNumber" id="routingnumber" />
+                                            <input ng-model="PaymentMethod.RoutingNumber" id="routingnumber" />
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label" for="accountnumber">Account Number</label><br />
-                                            <input ng-model="AccountNumber" id="accountnumber" />
+                                            <input ng-model="PaymentMethod.AccountNumber" id="accountnumber" />
                                         </div>
                                     </div>
-                                    <div ng-if="PaymentOption == 'sendcheck'">
+                                    <div ng-if="PaymentMethod.PaymentTypeId == '3'">
                                         <div class="control-group">
                                             <label class="control-label" for="payableto">Payable To</label><br />
-                                            <input ng-model="PayableTo" id="payableto" />
+                                            <input ng-model="PaymentMethod.PayableTo" id="payableto" />
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label" for="address">Address</label><br />
-                                            <input ng-model="PayableTo" id="address" />
+                                            <input ng-model="PaymentMethod.Address" id="address" />
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label" for="city">City</label><br />
-                                            <input ng-model="City" id="city" />
+                                            <input ng-model="PaymentMethod.City" id="city" />
                                         </div>
                                     </div>
-                                    <div ng-show="PaymentOption">
-                                        <input type="button" value="Save" ng-click="" />
+                                    <div ng-show="PaymentMethod.PaymentTypeId">
+                                        <input type="button" value="Save" ng-click="SavePaymentMethod()" />
                                     </div>
                                 </td>
                             </tr>

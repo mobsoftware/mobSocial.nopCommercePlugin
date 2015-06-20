@@ -12,7 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
     {
         public ArtistPagePaymentMap()
         {
-            ToTable(typeof(ArtistPagePayment).ToString());
+            ToTable("ArtistPagePayment");
 
             Property(x => x.ArtistPageId);
             Property(x => x.PaymentType);

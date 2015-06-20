@@ -187,6 +187,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<ArtistPageManagerService>().As<IArtistPageManagerService>().InstancePerRequest();
             builder.RegisterType<SongService>().As<ISongService>().InstancePerRequest();
             builder.RegisterType<SharedSongService>().As<ISharedSongService>().InstancePerRequest();
+            builder.RegisterType<ArtistPagePaymentService>().As<IArtistPagePaymentService>().InstancePerRequest();
             // Override any NopCommerce Services below:
             builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 

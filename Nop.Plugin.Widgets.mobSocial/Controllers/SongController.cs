@@ -49,6 +49,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IStoreContext _storeContext;
         private readonly IProductService _productService;
         private readonly IDownloadService _downloadService;
+        private readonly IPriceFormatter _priceFormatter;
 
         public SongController(ILocalizationService localizationService,
             IPictureService pictureService,
@@ -67,7 +68,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             ISharedSongService sharedSongService,
             IStoreContext storeContext,
             IProductService productService,
-            IDownloadService downloadService)
+            IDownloadService downloadService,
+            IPriceFormatter priceFormatter)
         {
             _localizationService = localizationService;
             _pictureService = pictureService;
@@ -87,6 +89,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _storeContext = storeContext;
             _productService = productService;
             _downloadService = downloadService;
+            _priceFormatter = priceFormatter;
         }
 
         #endregion
@@ -116,7 +119,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 PreviewUrl = song.PreviewUrl,
                 AssociatedProductId = song.AssociatedProductId,
                 Published = song.Published,
-                FormattedPrice =  product != null ? product.Price.ToString() : ""
+                Price = product != null ? product.Price : 0,
+                FormattedPrice =  product != null ? _priceFormatter.FormatPrice(product.Price, true, _workContext.WorkingCurrency) : ""
             };
 
             //images for song

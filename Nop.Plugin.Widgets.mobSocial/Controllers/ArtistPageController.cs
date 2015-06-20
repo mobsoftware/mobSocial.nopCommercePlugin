@@ -56,6 +56,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly TaxSettings _taxSettings;
         private readonly ISongService _songService;
         private readonly IPriceFormatter _priceFormatter;
+        private readonly IArtistPagePaymentService _artistPagePaymentService;
 
         public ArtistPageController(ILocalizationService localizationService,
             IPictureService pictureService,
@@ -76,7 +77,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IStoreContext storeContext,
             TaxSettings taxSettings,
             ISongService songService,
-            IPriceFormatter priceFormatter)
+            IPriceFormatter priceFormatter,
+            IArtistPagePaymentService artistPagePaymentService)
         {
             _localizationService = localizationService;
             _pictureService = pictureService;
@@ -98,6 +100,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _taxSettings = taxSettings;
             _songService = songService;
             _priceFormatter = priceFormatter;
+            _artistPagePaymentService = artistPagePaymentService;
         }
 
         #endregion
@@ -987,6 +990,88 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             return Json(new { Success = true, Url = newImageUrl });
+        }
+
+        [HttpPost]
+        public ActionResult GetPaymentMethod(int ArtistPageId)
+        {
+            var artistPage = _artistPageService.GetById(ArtistPageId);
+
+            if (CanDelete(artistPage))
+            {
+                //the user can access payment method. let's fetch it.
+
+                var paymentMethod = _artistPagePaymentService.GetPaymentMethod(ArtistPageId);
+                if (paymentMethod != null)
+                {
+                    var model = new ArtistPagePaymentModel() {
+                        AccountNumber = paymentMethod.AccountNumber,
+                        Address = paymentMethod.Address,
+                        BankName = paymentMethod.BankName,
+                        City = paymentMethod.City,
+                        PayableTo = paymentMethod.PayableTo,
+                        PaymentTypeId = (int)paymentMethod.PaymentType,
+                        PaypalEmail = paymentMethod.PaypalEmail,
+                        RoutingNumber = paymentMethod.RoutingNumber,
+                        ArtistPageId = paymentMethod.ArtistPageId,
+                        Id=paymentMethod.Id
+                    };
+                    return Json(new { Success = true, PaymentMethod = model });
+                }
+                else
+                {
+                    var model = new ArtistPagePaymentModel() {
+                        ArtistPageId = ArtistPageId,
+                        PaymentTypeId = (int)ArtistPagePayment.PagePaymentType.Paypal
+                    };
+                    return Json(new { Success = true, PaymentMethod = model });
+                }
+               
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SavePaymentMethod(ArtistPagePaymentModel Model)
+        {
+            if (!ModelState.IsValid)
+                return InvokeHttp404();
+
+            var artistPage = _artistPageService.GetById(Model.ArtistPageId);
+            if (CanEdit(artistPage))
+            {
+                ArtistPagePayment paymentMethod;
+                paymentMethod = _artistPagePaymentService.GetPaymentMethod(Model.ArtistPageId);
+                if (paymentMethod == null)
+                {
+                    paymentMethod = new ArtistPagePayment();
+                }               
+                //set the new values
+                paymentMethod.AccountNumber = Model.AccountNumber;
+                paymentMethod.Address = Model.Address;
+                paymentMethod.ArtistPageId = Model.ArtistPageId;
+                paymentMethod.BankName = Model.BankName;
+                paymentMethod.City = Model.City;
+                paymentMethod.PayableTo = Model.PayableTo;
+                paymentMethod.PaymentType = (ArtistPagePayment.PagePaymentType)Model.PaymentTypeId;
+                paymentMethod.PaypalEmail = Model.PaypalEmail;
+                paymentMethod.RoutingNumber = Model.RoutingNumber;
+
+                if (paymentMethod.Id == 0)
+                    _artistPagePaymentService.InsertPaymentMethod(paymentMethod);
+                else
+                    _artistPagePaymentService.UpdatePaymentMethod(paymentMethod);
+
+                return Json(new { Success = true });
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
+
+            }
         }
         #endregion
 
