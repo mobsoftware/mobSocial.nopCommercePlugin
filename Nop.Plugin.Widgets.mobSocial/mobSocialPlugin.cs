@@ -447,7 +447,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             var someoneSentYouASongNotification = new MessageTemplate()
             {
-                Name = "MobSocial.SomeoneSentYouASongNotification",
+                Name = "MobSocial.SendSomeoneSentYouASongNotification",
                 Subject = "%Friend.FirstName% sent you a song!",
                 Body = "<a href=\"%Store.URL%\">Log in</a> to %Friend.FirstName%'s song to you.",
                 EmailAccountId = 1,

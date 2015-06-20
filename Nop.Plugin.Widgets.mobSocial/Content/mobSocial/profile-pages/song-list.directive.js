@@ -21,7 +21,7 @@
 	                    Title: $scope.ngModel.title,
 	                    RemoteArtistId: $scope.ngModel.artist_id,
 	                    ArtistName: $scope.ngModel.artist_name,
-	                    PreviewUrl: 
+	                    PreviewUrl: ''
 	                    };
 
 	                var url = './CustomerProfile/AddFavoriteSong';

@@ -25,6 +25,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(m => m.HomeTown);
             Property(m => m.ShortDescription);
 
+
+
+
         }
     }
 }

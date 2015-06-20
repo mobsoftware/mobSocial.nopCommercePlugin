@@ -20,7 +20,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string PreviewUrl { get; set; }
         public string TrackId { get; set; }
         public string RemoteArtistId { get; set; }
-
+        
         public virtual IList<SongPicture> Pictures { get; set; }
     }
 }

@@ -14,7 +14,6 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -344,7 +343,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (!_workContext.CurrentCustomer.IsRegistered())
             {
                 //ask user to login if he is logged out
-                return View(ControllerUtil.MobSocialViewsFolder + "/_MustLogin.cshtml", "/Music");
+                return View(ControllerUtil.MobSocialViewsFolder + "_MustLogin.cshtml");
             }
             //check if song exists
             var song = _songService.GetById(TrackId);
