@@ -658,6 +658,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var imageUrl = "";
 
             var product = _productService.GetProductById(song.AssociatedProductId);
+            if (product == null)
+            {
+                return Json(new { Success = false, Message = "NoAssociatedProduct" });
+            }
             foreach (var fi in files)
             {
                 Stream stream = null;

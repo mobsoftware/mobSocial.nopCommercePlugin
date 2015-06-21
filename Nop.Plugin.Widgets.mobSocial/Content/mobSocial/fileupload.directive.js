@@ -49,13 +49,16 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     }
                 });
             }
-            //filesize filter
+            if (maxsize) {
+                 //filesize filter
             uploader.filters.push({
                 name: 'sizeFilter',
                 fn: function (item /*{File|FileLikeObject}*/, options) {
                     return item.size <= maxsize;
                 }
             });
+            }
+           
 
             // CALLBACKS
             uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {

@@ -31,7 +31,7 @@
     <div class="artist-left-content">
         <div class="artist-page-image">
             <img src="@Model.MainPictureUrl" id="song-page-image" style="width:100%" />
-            @if (Model.CanEdit)
+            @if (Model.CanEdit && string.IsNullOrEmpty(Model.RemoteEntityId))
             {
                 var uploadUrl = "/songs/UploadPicture/" + Model.Id;
                 <button file-upload-button
