@@ -14,7 +14,7 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
             var id = attrs.id;
             var imageSrc = attrs.imagesrc;
             var uploadtype = attrs.uploadtype;
-            
+            var maxsize = attrs.maxsize;
 
             var htmlUpload = $("<input name='" + name + "' type='file' style='opacity:0;position:absolute;left:-5000px' nv-file-select='' uploader='uploader' id='file_uploader_" + id + "'  />");
             var htmlProgress = $("<span id='progress_" + id + "'></span>");
@@ -49,15 +49,23 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     }
                 });
             }
+            //filesize filter
+            uploader.filters.push({
+                name: 'sizeFilter',
+                fn: function (item /*{File|FileLikeObject}*/, options) {
+                    return item.size <= maxsize;
+                }
+            });
 
             // CALLBACKS
             uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
-                alert("Can't add this file");
+                alert("Can't add this file. Please check file type or file size.");
                 if (typeof window[attrs.onWhenAddingFileFailed] == "function") {
                     window[attrs.onWhenAddingFileFailed](item, filter, options);
                 }
             };
             uploader.onAfterAddingFile = function (fileItem) {
+                console.log(fileItem);
                 fileItem.formData.push(extraData);
                 if (typeof window[attrs.onAfterAddingFile] == "function") {
                     window[attrs.onAfterAddingFile](fileItem);

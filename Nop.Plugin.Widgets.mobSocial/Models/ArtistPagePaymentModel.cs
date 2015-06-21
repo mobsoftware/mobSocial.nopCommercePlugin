@@ -18,5 +18,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public string PayableTo { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public string Country { get; set; }
+        public string PostalCode { get; set; }
     }
 }

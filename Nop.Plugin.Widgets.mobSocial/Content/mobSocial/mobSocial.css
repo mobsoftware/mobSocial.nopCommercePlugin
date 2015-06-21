@@ -637,7 +637,17 @@ table.table-form .control-group{
 .master-wrapper-main .center-3 { overflow:visible; }
 /*** END OVERRIDE NOPCOMMERCE STYLES ***/
 
+/*** GENERIC VALIDATION STYLES BASED ON ANGULAR CLASSES***/
+input.ng-invalid-required.ng-touched, input.ng-invalid.ng-touched, input.ng-invalid-required.ng-touched,
+select.ng-invalid-required.ng-touched, select.ng-invalid.ng-touched, select.ng-invalid-required.ng-touched
+{
+    border:solid 1px red;
+}
 
+span.required
+{
+    color:red;
+}
 /*** RESPONSIVE TABS ***/
 
 

@@ -69,13 +69,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return picture;
         }
 
-        public IList<Song> SearchSongs(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
+        public IList<Song> SearchSongs(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "", bool PublishedOnly = true)
         {
             int totalCount;
-            return SearchSongs(Term, out totalCount, Count, Page, SearchDescriptions, SearchArtists, ArtistName);
+            return SearchSongs(Term, out totalCount, Count, Page, SearchDescriptions, SearchArtists, ArtistName, PublishedOnly);
         }
 
-        public IList<Song> SearchSongs(string Term, out int TotalPages, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
+        public IList<Song> SearchSongs(string Term, out int TotalPages, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "", bool PublishedOnly = true)
         {
             var songRows = base.Repository.Table.OrderBy(x => x.Id).AsQueryable();
             var listSongs = new List<Song>();
@@ -95,7 +95,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
               //now filter those rows which belong to these artists only
                listSongs = listSongs.Where(x => remoteArtistIds.Contains(x.RemoteArtistId)).ToList();
-            }          
+            }
+
+            if (PublishedOnly)
+                listSongs = listSongs.Where(x => x.Published == true).ToList();
 
             TotalPages = int.Parse(Math.Ceiling((decimal)listSongs.Count() / Count).ToString());
 

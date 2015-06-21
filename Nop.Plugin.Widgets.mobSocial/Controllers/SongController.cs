@@ -115,8 +115,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 RemoteSourceName = song.RemoteSourceName,
                 TrackId = song.TrackId,
                 Id = song.Id,
+                PreviewUrl = string.IsNullOrEmpty(song.RemoteEntityId) ? song.PreviewUrl : _musicService.GetTrackPreviewUrl(int.Parse(song.TrackId)),
                 AffiliateUrl = affiliateUrl,
-                PreviewUrl = song.PreviewUrl,
                 AssociatedProductId = song.AssociatedProductId,
                 Published = song.Published,
                 Price = product != null ? product.Price : 0,
@@ -239,6 +239,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     SeName = dbs.GetSeName(_workContext.WorkingLanguage.Id, true, false),
                     TrackId = dbs.TrackId,
                     AffiliateUrl = affiliateUrl,
+                    PreviewUrl = string.IsNullOrEmpty( dbs.RemoteEntityId) ? dbs.PreviewUrl : _musicService.GetTrackPreviewUrl(int.Parse( dbs.TrackId)),
+                    AssociatedProductId = dbs.AssociatedProductId,
                     RemoteSong = false
                 });
             }
@@ -361,20 +363,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             var product = _productService.GetProductById(song.AssociatedProductId);
                             if (key == "Published")
                             {
-                                song.Published = value == "1" ? true : false;
-                                product.Published = song.Published;
+                                song.Published = value == "true" ? true : false;
+                               
                             }
                             else
                             {
                                 decimal priceDecimal;
-                                if (decimal.TryParse(value, out priceDecimal))
+                                if (product!=null && decimal.TryParse(value, out priceDecimal))
                                 {
                                     //for pricing, we need to get the product 
                                     product.Price = priceDecimal;
-                                    
+
                                 }
                             }
-                            _productService.UpdateProduct(product);
+                            if (product != null)
+                            {
+                                product.Published = song.Published;
+                                _productService.UpdateProduct(product);
+                            }
+                              
                             break;
                         
                     }

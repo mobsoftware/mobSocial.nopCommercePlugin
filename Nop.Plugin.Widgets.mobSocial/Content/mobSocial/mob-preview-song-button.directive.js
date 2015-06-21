@@ -73,6 +73,9 @@
 
                                      }
                                  }
+                                 else {
+                                     alert("Can't play the song");
+                                 }
                              });
                 }
 

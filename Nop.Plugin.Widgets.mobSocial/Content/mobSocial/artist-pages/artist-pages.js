@@ -24,12 +24,18 @@
             $http.post("/artists/SaveArtist", $scope.artist)
                    .success(function (data, status, headers, config) {
                        $scope.recordSaved = data.Success;
-                       if (data.PageUrl)
-                           $scope.newPageUrl = data.PageUrl;
+                       if (data.RedirectTo)
+                           window.location.href = data.RedirectTo;
                    })
                    .error(function () {
                        alert("An error occured");
                    });
+        }
+        else {
+            if (!$scope.artistFormValid)
+                alert("Fields marked * are mandatory");
+            else
+                alert("The artist name you are trying to create is not available");
         }
        
     };

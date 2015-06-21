@@ -89,9 +89,10 @@ app.controller("SongPageDisplayController", ['$scope', '$http', function ($scope
     $scope.song = songModel;
 
     $scope.statuses = [
-         { value: 1, text: 'Yes' },
-        { value: 0, text: 'No' }
+         { value: true, text: 'Yes' },
+        { value: false, text: 'No' }
     ];
+
     $scope.UpdateSong = function (key, data) {
         var obj = "key=" + key + "&value=" + data + "&id=" + $scope.song.Id;
         var config = {
@@ -152,6 +153,9 @@ app.controller("SongPageEditorController", ['$scope', '$http', function ($scope,
                    .error(function () {
                        alert("An error occured");
                    });
+        }
+        else {
+            alert("Fields marked * are mandatory");
         }
 
     };

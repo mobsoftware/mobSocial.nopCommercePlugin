@@ -18,6 +18,8 @@
 
         
     var json = Json.Encode(Model);
+    var maxUploadSizeSongFile = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Plugin.Widgets.MobSocial.mobSocialSettings>().SongFileMaximumUploadSize;
+    var maxUploadSizeSampleSongFile = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Plugin.Widgets.MobSocial.mobSocialSettings>().SongFileSampleMaximumUploadSize;
     
 
 }
@@ -131,12 +133,13 @@
                             <table class="table-form">
                                 <tr>
                                     <td>
-                                        <label>Song File:</label><br/>                                        
+                                        <label>Song File (max. @(maxUploadSizeSongFile / 1024)MB):</label><br/>                                        
                                         <button file-upload-button
                                                 id="songfile"
                                                 fieldname="SongFile"
-                                                extraData ='{"SongId": {{song.Id}}, "FieldName": "SongFile"}'
+                                                extradata='{"SongId": {{song.Id}}, "FieldName": "SongFile"}'
                                                 uploadtype="music"
+                                                maxsize="@(maxUploadSizeSongFile * 1024)"
                                                 url="/songs/UploadSongFile">
                                             <i class="fa fa-upload"></i> Upload Song File
                                         </button><br/>
@@ -148,12 +151,13 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>Song File Sample:</label><br />                                     
+                                        <label>Song File Sample (max. @(maxUploadSizeSampleSongFile / 1024)MB):</label><br />                                     
                                         <button file-upload-button
                                                 id="songsamplefile"
                                                 fieldname="SampleFile"
                                                 extradata='{"SongId": {{song.Id}}, "FieldName": "SampleFile"}'
                                                 uploadtype="music"
+                                                maxsize="@(maxUploadSizeSampleSongFile * 1024)"
                                                 url="/songs/UploadSongFile">
                                             <i class="fa fa-upload"></i> Upload Sample Song File
                                         </button>
@@ -163,9 +167,10 @@
                                 <tr>
                                     <td>
                                         <label>Publish:</label><br /><br />
-                                        <span href="#" editable-select="song.Published" value="{{song.Published ? '1' : '0'}}" e-ng-options="s.value as s.text for s in statuses" onbeforesave="UpdateSong('Published', $data)" e-rows="7" e-cols="40">
-                                            {{ song.Published ? 'Published' : 'Not Published' || 'Not Published' }}
+                                        <span href="#" editable-select="song.Published" e-ng-options="s.value as s.text for s in statuses" onbeforesave="UpdateSong('Published', $data)" e-rows="7" e-cols="40">
+                                            {{ song.Published == 1 ? 'Published' : 'Not Published' || 'Not Published' }}
                                         </span>
+                                        
                                     </td>
                                 </tr>
                             </table>

@@ -18,7 +18,7 @@
 
 <div data-ng-controller="ArtistPageController">
     <div ng-show="recordSaved">
-        Page created successfully. Click <a href="{{newPageUrl}}">here</a> to go to the page
+        Page created successfully. Please wait while your are being redirected to the page...
     </div>
     <form name="createArtistForm" ng-show="!recordSaved">
         
@@ -28,13 +28,13 @@
             </tr>
             <tr>
                 <td style="vertical-align:top;padding-right:2px;">
-                    <img ng-src="{{artist.ImageUrl}}" />
+                    <img ng-src="{{artist.ImageUrl}}" style="max-width:200px" />
                 </td>
                 <td>
                     <div class="control-group">
-                        <label class="control-label" for="name">Artist Name</label><br />
+                        <label class="control-label" for="name">Artist Name <span class="required">*</span></label><br />
                         <input type="text" name="name" id="name" data-ng-model="artist.Name" data-ng-blur="IsArtistNameAvailable()" required />
-                        <span ng-show="createArtistForm.name.$invalid && createArtistForm.name.$dirty">Name is required</span>
+                        <span ng-show="createArtistForm.name.$invalid && createArtistForm.name.$touched">Name is required</span>
                         <span ng-show="createArtistForm.name.$valid">
                             <span ng-show="artist.nameAvailable && createArtistForm.name.$valid"><i class="fa fa-check"></i> Artist Name Available</span>
                             <span ng-show="!artist.nameAvailable || !createArtistForm.name.$valid"><i class="fa fa-times"></i> Not Available</span>
