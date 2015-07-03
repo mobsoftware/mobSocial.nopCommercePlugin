@@ -31,7 +31,7 @@
                        alert("An error occured");
                    });
         }
-       
+
     };
 }]);
 
@@ -81,17 +81,17 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
         $scope.GetManagers();
 
     $scope.GetEligibleManagers = function () {
-        $http.post("/artists/GetEligibleManagers", {ArtistPageId: $scope.artist.Id})
+        $http.post("/artists/GetEligibleManagers", { ArtistPageId: $scope.artist.Id })
                  .success(function (data, status, headers, config) {
                      $scope.eligibleManagers = data;
                  });
     }
-    
+
     $scope.newPageManager = null;
     $scope.AddPageManager = function () {
         if ($scope.newPageManager == null)
             return;
-        $http.post("/artists/SavePageManager", {ArtistPageId: $scope.artist.Id, CustomerId : $scope.newPageManager.originalObject.Id})
+        $http.post("/artists/SavePageManager", { ArtistPageId: $scope.artist.Id, CustomerId: $scope.newPageManager.originalObject.Id })
                 .success(function (data, status, headers, config) {
                     if (data.Success) {
                         var newMgr = $scope.newPageManager.originalObject;
@@ -123,8 +123,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
                        //remove the manager from the array
                        for (var i = 0; i < $scope.managers.length; i++) {
                            var mgr = $scope.managers[i];
-                           if(mgr.Id == CustomerId)
-                           {
+                           if (mgr.Id == CustomerId) {
                                $scope.managers.splice(i, 1);
                                break;
                            }
@@ -132,12 +131,12 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
                    }
                });
         }
-       
+
     }
     $scope.PurchasedSongsPage = 1;
     $scope.PurchasedSongsCount = 15;
     $scope.GetPurchasedSongs = function () {
-        $http.post("/artists/GetPurchasedSongs", { ArtistPageId: $scope.artist.Id, Page : $scope.PurchasedSongsPage, Count: $scope.PurchasedSongsCount })
+        $http.post("/artists/GetPurchasedSongs", { ArtistPageId: $scope.artist.Id, Page: $scope.PurchasedSongsPage, Count: $scope.PurchasedSongsCount })
                 .success(function (data, status, headers, config) {
                     $scope.PurchasedSongs = data.Songs;
                     $scope.PurchasedSongsLoaded = true;
@@ -164,7 +163,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
         { value: '3', text: 'Send Check' },
     ];
     $scope.GetPaymentMethod = function () {
-        $http.post("/artists/GetPaymentMethod", { ArtistPageId: $scope.artist.Id})
+        $http.post("/artists/GetPaymentMethod", { ArtistPageId: $scope.artist.Id })
               .success(function (data, status, headers, config) {
                   $scope.PaymentMethod = data.PaymentMethod;
               });
@@ -186,13 +185,12 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
 
 }]);
 
-app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio',  function ($scope, $http, ngAudio) {
+app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio', function ($scope, $http, ngAudio) {
     $scope.artist = artistModel;
     var params = null;
     var url = "";
 
-    if($scope.artist.RemoteEntityId == null)
-    {
+    if ($scope.artist.RemoteEntityId == null) {
         url = "/artists/GetArtistSongsByArtistPage";
         params = {
             ArtistPageId: $scope.artist.Id
@@ -209,11 +207,11 @@ app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio',  func
                   .success(function (data, status, headers, config) {
                       $scope.songs = data;
                       $scope.songsLoaded = true;
-        });
+                  });
     }
     $scope.GetArtistSongs();
-   
-    $scope.GotoSongEditor = function(){
+
+    $scope.GotoSongEditor = function () {
         window.location.href = "/songs/SongEditor/" + $scope.artist.Id;
     }
 }]);
@@ -223,9 +221,9 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     $scope.Page = 1;
     $scope.Count = 15;
     $scope.Search = "";
-    
+
     $scope.GetArtistPages = function (Page, Count, Search) {
-        $http.post("/artists/MyArtistPages", { Page: Page, Count : Count, Search: Search })
+        $http.post("/artists/MyArtistPages", { Page: Page, Count: Count, Search: Search })
                   .success(function (data, status, headers, config) {
                       $scope.Artists = data.Artists;
                       $scope.TotalPages = data.TotalPages;
@@ -242,7 +240,7 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     });
     $scope.$watchGroup(['Search', 'Page', 'Count'], function () {
         $scope.GetArtistPages($scope.Page, $scope.Count, $scope.Search);
-    });     
+    });
 
     $scope.DeleteArtist = function (ArtistPageId) {
         if (confirm("Are you sure you wish to delete this artist page?")) {
@@ -260,8 +258,8 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     $scope.GetPagesAsManager = function () {
         $http.post("/artists/GetPagesAsManager")
                  .success(function (data, status, headers, config) {
-                     $scope.AsManagerArtists = data.Artists;                    
-        });
+                     $scope.AsManagerArtists = data.Artists;
+                 });
     }
     $scope.GetPagesAsManager();
 
