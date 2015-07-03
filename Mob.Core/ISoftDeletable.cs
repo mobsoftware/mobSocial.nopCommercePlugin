@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Mob.Core
 {
-    public interface ILogicalDeleteSupported
+    public interface ISoftDeletable
     {
         bool IsDeleted { get; set; }
     }

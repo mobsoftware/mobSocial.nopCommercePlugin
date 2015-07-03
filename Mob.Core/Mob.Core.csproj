@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="CategoryExtensions.cs" />
-    <Compile Include="ILogicalDeleteSupported.cs" />
+    <Compile Include="ISoftDeletable.cs" />
     <Compile Include="ISortableSupported.cs" />
     <Compile Include="OAuthBaseExtensions.cs" />
     <Compile Include="OAuthBase.cs" />
