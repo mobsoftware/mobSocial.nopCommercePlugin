@@ -12,8 +12,8 @@ using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Tasks;
 using Nop.Web.Framework.Menu;
-using SiteMapNode = System.Web.SiteMapNode;
 using System.Web.Configuration;
+using System.Linq;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -273,51 +273,6 @@ namespace Nop.Plugin.Widgets.MobSocial
             return true;
         }
 
-        public Nop.Web.Framework.Menu.SiteMapNode BuildMenuItem()
-        {
-
-
-            var menuItem = new Nop.Web.Framework.Menu.SiteMapNode()
-            {
-                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
-                ControllerName = "TeamPage",
-                ActionName = "Index",
-                Visible = true,
-                RouteValues = new RouteValueDictionary() { { "area", null } },
-            };
-
-            var manageTeamSubMenu = new Nop.Web.Framework.Menu.SiteMapNode()
-            {
-                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
-                ControllerName = "TeamPage",
-                ActionName = "Index",
-                Visible = true,
-                RouteValues = new RouteValueDictionary() { { "area", null } },
-            };
-
-
-
-
-            var manageEventsSubMenu = new Nop.Web.Framework.Menu.SiteMapNode()
-            {
-                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
-                ControllerName = "ManageEventPage",
-                ActionName = "List",
-                Visible = true,
-                RouteValues = new RouteValueDictionary() { { "area", null } },
-                
-            };
-
-            menuItem.ChildNodes.Add(manageTeamSubMenu);
-            menuItem.ChildNodes.Add(manageEventsSubMenu);
-
-
-            return menuItem;
-        }
-
-
-
-
         #region Helper Methods
         private void AddScheduledTasks()
         {
@@ -468,6 +423,52 @@ namespace Nop.Plugin.Widgets.MobSocial
         #endregion
 
 
-       
+        public void ManageSiteMap(SiteMapNode rootNode)
+        {
+
+            var menuItem = new SiteMapNode()
+            {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
+                ControllerName = "TeamPage",
+                ActionName = "Index",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+            };
+
+            var manageTeamSubMenu = new SiteMapNode()
+            {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
+                ControllerName = "TeamPage",
+                ActionName = "Index",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+            };
+
+
+
+
+            var manageEventsSubMenu = new SiteMapNode()
+            {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
+                ControllerName = "ManageEventPage",
+                ActionName = "List",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+
+            };
+
+            menuItem.ChildNodes.Add(manageTeamSubMenu);
+            menuItem.ChildNodes.Add(manageEventsSubMenu);
+
+
+            var pluginNode = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Third party plugins");
+
+            if (pluginNode != null)
+                pluginNode.ChildNodes.Add(menuItem);
+            else
+                rootNode.ChildNodes.Add(menuItem);
+
+
+        }
     }
 }

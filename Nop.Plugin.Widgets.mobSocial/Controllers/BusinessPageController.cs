@@ -602,7 +602,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     contentType = PictureUtility.GetContentType(fileExtension);
                 }
 
-                var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
+                var picture = _pictureService.InsertPicture(fileBinary, contentType, null);
 
 
                 var firstBusinessPagePicture = _businessPageService.GetFirstEntityPicture(entityId);

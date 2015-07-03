@@ -4,7 +4,7 @@ using Mob.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class CustomerFavoriteSong : BaseEntity, ISortableSupported, ILogicalDeleteSupported
+    public class CustomerFavoriteSong : BaseEntity, ISortableSupported, ISoftDeletable
     {
         public CustomerFavoriteSong()
         {

@@ -11,6 +11,7 @@ using Nop.Services.Catalog;
 using Nop.Services.Topics;
 using Nop.Services.Seo;
 using Nop.Services.Customers;
+using Nop.Core.Domain.Security;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -24,13 +25,29 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private readonly IBusinessPageService _businessPageService;
         private IEventPageService _eventPageService;
 
-        public SitemapGenerator(IStoreContext storeContext, ICategoryService categoryService, 
-            IProductService productService, IManufacturerService manufacturerService, ITopicService topicService, 
-            CommonSettings commonSettings, IEventPageService eventPageService, ICustomerService customerService,
+        public SitemapGenerator(IStoreContext storeContext, 
+            ICategoryService categoryService, 
+            IProductService productService, 
+            IManufacturerService manufacturerService, 
+            ITopicService topicService, 
+            CommonSettings commonSettings, 
+            IEventPageService eventPageService, 
+            ICustomerService customerService,
             IBusinessPageService businessPageService,
-            BlogSettings blogSettings, NewsSettings newsSettings, ForumSettings forumSettings) : base(storeContext, categoryService, 
-            productService, manufacturerService, topicService, commonSettings, 
-            blogSettings, newsSettings, forumSettings)
+            BlogSettings blogSettings, 
+            NewsSettings newsSettings, 
+            ForumSettings forumSettings,
+            SecuritySettings securitySettings) : 
+                base(storeContext,
+                categoryService,
+                productService,
+                manufacturerService,
+                topicService,
+                commonSettings,
+                blogSettings,
+                newsSettings,
+                forumSettings,
+                securitySettings)
         {
             _customerService = customerService;
             _businessPageService = businessPageService;

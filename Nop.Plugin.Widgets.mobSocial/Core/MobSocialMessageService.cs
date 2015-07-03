@@ -314,7 +314,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             var email = new QueuedEmail()
             {
-                Priority = 5,
+                Priority = QueuedEmailPriority.High,
                 From = emailAccount.Email,
                 FromName = emailAccount.DisplayName,
                 To = toEmailAddress,

@@ -108,9 +108,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         public void LogicalDelete(int id)
         {
             var dbEntity = _repository.GetById(id);
-            if (dbEntity is ILogicalDeleteSupported)
+            if (dbEntity is ISoftDeletable)
             {
-                var entity = (ILogicalDeleteSupported)dbEntity;
+                var entity = (ISoftDeletable)dbEntity;
                 entity.IsDeleted = true;
                 _repository.Update((T)entity);
                 // Should we delete the slug? 

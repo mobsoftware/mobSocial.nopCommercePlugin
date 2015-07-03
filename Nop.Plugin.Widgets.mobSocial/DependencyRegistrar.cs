@@ -160,7 +160,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             // Service Injection
             builder.RegisterGeneric(typeof(BaseService<,>)).As(typeof(IBaseService<,>)).InstancePerLifetimeScope();
-            builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
+            //builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
             builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerRequest();
             builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerRequest();
             builder.RegisterType<CustomerVideoAlbumService>().As<ICustomerVideoAlbumService>().InstancePerRequest();

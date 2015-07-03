@@ -71,18 +71,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public string CreateDatabaseInstallationScript()
-        {
-            return ((IObjectContextAdapter) this).ObjectContext.CreateDatabaseScript();
-        }
 
         public void Install()
         {
+
             //It's required to set initializer to null (for SQL Server Compact).
             //otherwise, you'll get something like "The model backing the 'your context name' context has changed since the database was created. Consider using Code First Migrations to update the database"
             Database.SetInitializer<MobSocialObjectContext>(null);
 
-            Database.ExecuteSqlCommand(CreateDatabaseInstallationScript());
+            Database.ExecuteSqlCommand(CreateDatabaseScript());
             SaveChanges();
         }
 
@@ -126,7 +123,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<ArtistPagePicture>();
                 this.DropTable<ArtistPageManager>();
                 this.DropTable<ArtistPagePayment>();
-                this.DropTable<SharedSong>();   
+                this.DropTable<SharedSong>();
                 this.DropTable<SongPicture>();
                 this.DropTable<Song>();
                 this.DropTable<ArtistPage>();
@@ -139,8 +136,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
         }
 
-
-       
 
         public string CreateDatabaseScript()
         {
@@ -166,6 +161,49 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         public int ExecuteSqlCommand(string sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
         {
             throw new NotImplementedException();
+        }
+
+
+        public void Detach(object entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            ((IObjectContextAdapter)this).ObjectContext.Detach(entity);
+
+        }
+
+      
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether proxy creation setting is enabled (used in EF)
+        /// </summary>
+        public virtual bool ProxyCreationEnabled
+        {
+            get
+            {
+                return this.Configuration.ProxyCreationEnabled;
+            }
+            set
+            {
+                this.Configuration.ProxyCreationEnabled = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether auto detect changes setting is enabled (used in EF)
+        /// </summary>
+        public virtual bool AutoDetectChangesEnabled
+        {
+            get
+            {
+                return this.Configuration.AutoDetectChangesEnabled;
+            }
+            set
+            {
+                this.Configuration.AutoDetectChangesEnabled = value;
+            }
         }
     }
 

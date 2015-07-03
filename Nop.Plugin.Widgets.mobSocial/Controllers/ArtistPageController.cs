@@ -722,7 +722,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         
                         var contentType = PictureUtility.GetContentType(fileExtension);
 
-                        var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false), true);
+                        var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false));
                         var artistPicture = new ArtistPagePicture() {
                             ArtistPageId = artistPage.Id,
                             DateCreated = DateTime.Now,
@@ -960,7 +960,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     contentType = PictureUtility.GetContentType(fileExtension);
                 }
 
-                var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
+                var picture = _pictureService.InsertPicture(fileBinary, contentType, null);
 
 
                 var firstArtistPagePicture = _artistPageService.GetFirstEntityPicture(ArtistPageId);
@@ -1177,7 +1177,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     var contentType = PictureUtility.GetContentType(fileExtension);
 
-                    var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false), true);
+                    var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false));
                     var artistPicture = new ArtistPagePicture() {
                         ArtistPageId = artistPage.Id,
                         DateCreated = DateTime.Now,
