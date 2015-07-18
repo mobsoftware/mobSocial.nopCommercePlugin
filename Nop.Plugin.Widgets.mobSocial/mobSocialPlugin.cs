@@ -14,12 +14,15 @@ using Nop.Services.Tasks;
 using Nop.Web.Framework.Menu;
 using SiteMapNode = System.Web.SiteMapNode;
 using System.Web.Configuration;
+using MobAds.Public;
+using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
-    public class mobSocialPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
-
+    public class mobSocialPlugin : MobAdsPublic, IAdminMenuPlugin
     {
+        
+
         private readonly MobSocialObjectContext _context;
         private readonly mobSocialSettings _mobSocialSettings;
         private readonly ISettingService _settingService;
@@ -28,12 +31,14 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly IMobSocialService _mobSocialService;
         private readonly ILocalizationService _localizationService;
         private readonly HttpRuntimeSection _config;
+        private readonly IStoreContext _storeContext;
 
-        public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings, 
-            ISettingService settingService, IMessageTemplateService messageTemplateService, 
+        public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings,
+            ISettingService settingService, IMessageTemplateService messageTemplateService,
             IScheduleTaskService scheduleTaskService,
             IMobSocialService mobSocialService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            IStoreContext storeContext) : base(storeContext, settingService)
         {
             _context = context;
             _mobSocialSettings = mobSocialSettings;
@@ -42,13 +47,13 @@ namespace Nop.Plugin.Widgets.MobSocial
             _scheduleTaskService = scheduleTaskService;
             _mobSocialService = mobSocialService;
             _localizationService = localizationService;
-            _config = new HttpRuntimeSection();//TODO Move to dependency registrar and perform injection
+            _config = new HttpRuntimeSection(); //TODO Move to dependency registrar and perform injection
         }
 
 
         #region Methods
 
-        public IList<string> GetWidgetZones()
+        public override IList<string> GetWidgetDisplayZones()
         {
             return !string.IsNullOrWhiteSpace(_mobSocialSettings.WidgetZone)
                       ? new List<string>() { 
@@ -66,7 +71,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="actionName">Action name</param>
         /// <param name="controllerName">Controller name</param>
         /// <param name="routeValues">Route values</param>
-        public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
+        public override void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
             actionName = "Configure";
             controllerName = "MobSocial";
@@ -80,7 +85,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="actionName">Action name</param>
         /// <param name="controllerName">Controller name</param>
         /// <param name="routeValues">Route values</param>
-        public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
+        public override void GetWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
            
 
@@ -468,6 +473,16 @@ namespace Nop.Plugin.Widgets.MobSocial
         #endregion
 
 
-       
+
+        public override string AppId
+        {
+            get { return "MobSocialPluginNop3.5"; }
+        }
+
+        public override int MobAdsClientId
+        {
+            get { return 0; }
+        }
+
     }
 }
