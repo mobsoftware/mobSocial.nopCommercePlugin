@@ -53,6 +53,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             return !string.IsNullOrWhiteSpace(_mobSocialSettings.WidgetZone)
                       ? new List<string>() { 
                           _mobSocialSettings.WidgetZone, 
+                          "head_html_tag",
                           "header_menu_after", 
                           "account_navigation_after", 
                           "profile_page_info_userdetails" 
@@ -82,8 +83,6 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="routeValues">Route values</param>
         public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-           
-
             switch(widgetZone)
             {
                 case "footer": {
@@ -98,6 +97,18 @@ namespace Nop.Plugin.Widgets.MobSocial
                         };
 
                     break;
+                } 
+                case "head_html_tag" : {
+                    actionName = "PublicInfo";
+                    controllerName = "Head";
+
+                    routeValues = new RouteValueDictionary()
+                    {
+                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
+                        {"area", null},
+                        {"widgetZone", widgetZone}
+                    };
+                    break;
                 }
                 case "header_menu_after" : {
                     actionName = "PublicInfo";
@@ -111,6 +122,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                     };
                     break;
                 }
+
+
                 case "account_navigation_after" : {
                      actionName = "PublicInfo";
                     controllerName = "SocialNetworkNavigation";

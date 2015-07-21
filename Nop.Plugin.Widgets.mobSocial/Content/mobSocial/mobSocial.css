@@ -676,6 +676,10 @@ table.table-form .control-group{
     .block-newsletter .title { text-align: center; }
 
     /* Categories on Home Page */
+
+    #searchTypeDropDown {
+        float: left;
+    }
     
     .home-page-category-grid .category-item { width: 130px; }
 

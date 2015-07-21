@@ -3,17 +3,17 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class HeaderMenuController : BasePublicController
+    public class HeadController : BasePublicController
     {
 
-        public HeaderMenuController()
+        public HeadController()
         {
         }
 
         [ChildActionOnly]
         public ActionResult PublicInfo(string widgetZone)
         {
-            return View(ControllerUtil.MobSocialViewsFolder + "/HeaderMenu/PublicInfo.cshtml");
+            return View(ControllerUtil.MobSocialViewsFolder + "/Head/PublicInfo.cshtml");
         }
 
     }

@@ -96,6 +96,7 @@ li a:hover {
 
 
 .search-box-button {
+    float:none;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
     width: 43px;
@@ -104,7 +105,14 @@ li a:hover {
     margin: 0 -2px 0 -2px;
 }
 
+.search-box .search-box-button {
+    float: none;
+}
 
+.search-box input.search-box-text {
+    float: none;
+    margin-right: -2px;
+}
 
 .search-dropdown {
     position: absolute;
@@ -157,6 +165,7 @@ li a:hover {
     height: 25px;
     width: 288px;
     margin-left: -3px;
+    margin-right: -2px;
 }
 
 
@@ -199,8 +208,9 @@ li a:hover {
     pointer-events: none;
 }
 
+
 .search-dropdown-arrow-hover {
-    border-top-color: #333 !important;
+    border-top-color: #fff !important;
 }
 
 
@@ -260,19 +270,29 @@ li a:hover {
 
 .ui-selectmenu-button {
     width: 98px !important;
-    height: 34px;
+    height: 40px;
     overflow: hidden;
     padding: 0;
     display: inline-block;
     vertical-align: middle;
     font-weight: 700;
     font-size: 1.1em;
-    border-bottom-right-radius: 0px;
-    border-top-right-radius: 0px;
+    border-radius: 0px;
+    margin-right: -1px;
 }
 
+
+
+
+
+
     .ui-selectmenu-button span.ui-selectmenu-text {
-        padding: 0.5em 2.1em 0.5em 1em;
+      padding: 0.5em 2.1em 0.5em 1em;
+      height: 40px;
+      color: #FFF;
+      font-weight: normal;
+      text-overflow: inherit;
+      background-color: #4ab2f1;
     }
 
 
@@ -316,6 +336,16 @@ li a:hover {
 	display: inline-block;
 }
 
+@media screen and (max-width: 480px) {
+    input[type="text"].search-box-text {
+        width: 44.4%;
+    }
+}
+
+
+.ui-selectmenu-menu .ui-front .ui-selectmenu-open {
+    margin-top: -1px
+}
 
 /*** END SEARCH BOX STYLES    ***/
 

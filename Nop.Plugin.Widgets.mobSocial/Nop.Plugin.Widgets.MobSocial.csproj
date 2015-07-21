@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArtistPageController.cs" />
+    <Compile Include="Controllers\HeadController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
@@ -308,7 +309,9 @@
     <Content Include="Content\ie6.css" />
     <Content Include="Content\ie7.css" />
     <Content Include="Content\mobSocial\profile-pages\customer-video-albums.js" />
-    <Content Include="Content\mobSocial\profile-pages\profile.service.js" />
+    <Content Include="Content\mobSocial\profile-pages\profile.service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\profile-pages\song-list.directive.js" />
     <Content Include="Content\mobSocial\RTCMultiConnection.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -367,6 +370,7 @@
     <Content Include="Themes\mobSocial\Content\images\ico-pm.png" />
     <Content Include="Themes\mobSocial\Content\images\ico-rss.gif" />
     <Content Include="Themes\mobSocial\Content\images\logo.gif" />
+    <Content Include="Themes\mobSocial\Content\images\logo2.png" />
     <Content Include="Themes\mobSocial\Content\images\mobile-menu-collapse.png" />
     <Content Include="Themes\mobSocial\Content\images\mobile-menu-expand.png" />
     <Content Include="Themes\mobSocial\Content\images\progress-step-active.gif" />
@@ -648,6 +652,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\SongPage\SongEditor.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Head\PublicInfo.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\Web.config" />
