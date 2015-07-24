@@ -68,6 +68,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new SongMap());
             modelBuilder.Configurations.Add(new SongPictureMap());
             modelBuilder.Configurations.Add(new SharedSongMap());
+
+            //video battle
+            modelBuilder.Configurations.Add(new VideoBattleGenreMap());
+            modelBuilder.Configurations.Add(new VideoBattleVideoMap());
+            modelBuilder.Configurations.Add(new VideoGenreMap());
+            modelBuilder.Configurations.Add(new VideoBattleParticipantMap());
+            modelBuilder.Configurations.Add(new VideoBattleVoteMap());
+            modelBuilder.Configurations.Add(new VideoBattleVideoMap());
+            
             base.OnModelCreating(modelBuilder);
         }
 
@@ -130,6 +139,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<SongPicture>();
                 this.DropTable<Song>();
                 this.DropTable<ArtistPage>();
+
+                this.DropTable<VideoBattleGenre>();
+                this.DropTable<VideoGenre>();
+                this.DropTable<VideoBattleParticipant>();
+                this.DropTable<VideoBattleVote>();
+                this.DropTable<VideoBattleVideo>();
+                this.DropTable<VideoBattle>();
+
+                
                 SaveChanges();
             }
             catch (Exception)
