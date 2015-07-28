@@ -8,6 +8,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Enums
 {
     public enum VideoBattleParticipantStatus
     {
+        NotChallenged = 0,
         Challanged = 10,
         ChallangeAccepted = 20,
         ChallengeDenied = 30,

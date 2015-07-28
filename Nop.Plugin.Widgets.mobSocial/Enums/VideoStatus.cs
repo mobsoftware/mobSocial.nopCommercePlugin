@@ -8,7 +8,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Enums
 {
     public enum VideoStatus
     {
-        Pending,
-        Approved
+        Pending,//video uploaded is pending for moderation
+        Approved //video uploaded is approved
     }
 }

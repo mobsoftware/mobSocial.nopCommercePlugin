@@ -40,6 +40,7 @@
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\SongController.cs" />
+    <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Core\ArtistPageAPIService.cs" />
     <Compile Include="Core\ArtistPageManagerService.cs" />
     <Compile Include="Core\ArtistPagePaymentService.cs" />
@@ -61,6 +62,12 @@
     <Compile Include="Core\IOAuthService.cs" />
     <Compile Include="Core\ISharedSongService.cs" />
     <Compile Include="Core\ISongService.cs" />
+    <Compile Include="Core\IVideoBattleGenreService.cs" />
+    <Compile Include="Core\IVideoBattleParticipantService.cs" />
+    <Compile Include="Core\IVideoBattleService.cs" />
+    <Compile Include="Core\IVideoBattleVideoService.cs" />
+    <Compile Include="Core\IVideoBattleVoteService.cs" />
+    <Compile Include="Core\IVideoGenreService.cs" />
     <Compile Include="Core\MusicApiCredentials.cs" />
     <Compile Include="Core\MusicApiUri.cs" />
     <Compile Include="Core\NotificationService.cs" />
@@ -69,6 +76,9 @@
     <Compile Include="Core\SharedSongService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Core\SongService.cs" />
+    <Compile Include="Core\VideoBattleParticipantService.cs" />
+    <Compile Include="Core\VideoBattleService.cs" />
+    <Compile Include="Core\VideoBattleVideoService.cs" />
     <Compile Include="Data\ArtistPageManagerMap.cs" />
     <Compile Include="Data\ArtistPageMap.cs" />
     <Compile Include="Data\ArtistPagePaymentMap.cs" />
@@ -84,6 +94,12 @@
     <Compile Include="Data\CustomerTimelineMap.cs" />
     <Compile Include="Data\SongMap.cs" />
     <Compile Include="Data\SongPictureMap.cs" />
+    <Compile Include="Data\VideoBattleGenreMap.cs" />
+    <Compile Include="Data\VideoBattleMap.cs" />
+    <Compile Include="Data\VideoBattleParticipantMap.cs" />
+    <Compile Include="Data\VideoBattleVideoMap.cs" />
+    <Compile Include="Data\VideoBattleVoteMap.cs" />
+    <Compile Include="Data\VideoGenreMap.cs" />
     <Compile Include="Domain\ArtistPage.cs" />
     <Compile Include="Domain\ArtistPageManager.cs" />
     <Compile Include="Domain\ArtistPagePayment.cs" />
@@ -99,6 +115,17 @@
     <Compile Include="Domain\CustomerTimeline.cs" />
     <Compile Include="Domain\Song.cs" />
     <Compile Include="Domain\SongPicture.cs" />
+    <Compile Include="Domain\VideoBattle.cs" />
+    <Compile Include="Domain\VideoBattleGenre.cs" />
+    <Compile Include="Domain\VideoBattleParticipant.cs" />
+    <Compile Include="Domain\VideoBattleVideo.cs" />
+    <Compile Include="Domain\VideoBattleVote.cs" />
+    <Compile Include="Domain\VideoGenre.cs" />
+    <Compile Include="Enums\VideoBattleParticipantStatus.cs" />
+    <Compile Include="Enums\VideoBattleStatus.cs" />
+    <Compile Include="Enums\VideoBattleType.cs" />
+    <Compile Include="Enums\VideoBattleVoteType.cs" />
+    <Compile Include="Enums\VideoStatus.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Hubs\MessagingHub.cs" />
     <Compile Include="Hubs\AudioVideoHub.cs" />
@@ -210,6 +237,9 @@
     <Compile Include="Models\TeamPage\TeamPageModel.cs" />
     <Compile Include="mobSocialPlugin.cs" />
     <Compile Include="mobSocialSettings.cs" />
+    <Compile Include="Models\VideoBattleModel.cs" />
+    <Compile Include="Models\VideoBattlePublicModel.cs" />
+    <Compile Include="Models\VideoParticipantPublicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
     <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
@@ -364,6 +394,9 @@
     <Content Include="Themes\mobSocial\Content\responsive.css" />
     <Content Include="Themes\mobSocial\Content\styles.css" />
     <Content Include="Themes\mobSocial\Content\styles.rtl.css" />
+    <Content Include="Uploads\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\mobSocial\Admin\ManageTeamPage\List.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -631,6 +664,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\SongPage\SongEditor.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\VideoBattle\ViewVideoBattle.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\VideoBattle\VideoBattleEditor.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\Web.config" />

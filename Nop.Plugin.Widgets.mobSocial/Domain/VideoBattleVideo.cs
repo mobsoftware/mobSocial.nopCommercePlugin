@@ -12,11 +12,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
     {
         public string VideoPath { get; set; }
 
+        public string MimeType { get; set; }
+
         public int ParticipantId { get; set; }
 
         public int VideoBattleId { get; set; }
 
         public VideoStatus VideoStatus { get; set; }
+
+        public DateTime DateUploaded { get; set; }
 
         public virtual VideoBattle VideoBattle { get; set; }
     }

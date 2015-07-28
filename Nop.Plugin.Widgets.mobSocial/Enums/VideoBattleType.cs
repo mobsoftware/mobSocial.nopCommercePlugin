@@ -8,7 +8,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Enums
 {
     public enum VideoBattleType
     {
-        Private = 1,
-        Public = 2
+        PrivateParticipationWithPrivateVisibility = 1,
+        PrivateParticipationWithPublicVisibility = 2,
+        PublicParticipationWithPublicVisibility = 3
     }
 }
