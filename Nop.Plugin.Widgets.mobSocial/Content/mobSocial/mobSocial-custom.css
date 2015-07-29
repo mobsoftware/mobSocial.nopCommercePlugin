@@ -107,7 +107,14 @@ li a:hover {
 
 .search-box .search-box-button {
     float: none;
+    background-color: #BC0000;
 }
+.search-box .search-box-button:hover {
+    background-color: #980000;
+}
+
+
+
 
 .search-box input.search-box-text {
     float: none;
@@ -288,16 +295,13 @@ li a:hover {
 
 
 
-
-
-
     .ui-selectmenu-button span.ui-selectmenu-text {
       padding: 0.5em 2.1em 0.5em 1em;
       height: 40px;
       color: #FFF;
       font-weight: normal;
       text-overflow: inherit;
-      background-color: #4ab2f1;
+      background-color: #BC0000;
     }
 
 
@@ -354,6 +358,149 @@ li a:hover {
 
 /*** END SEARCH BOX STYLES    ***/
 
+.header-menu > ul > li > a:hover,
+.breadcrumb a:hover,
+.block .list a:hover {
+  color: #980000;
+}
+
+
+@media  (min-width: 481px) and (max-width: 700px)  {
+    .menu-toggle,
+    .footer-block.information div.title,
+    .footer-block.customer-service div.title,
+    .footer-block.my-account div.title,
+    .newsletter-subscribe-button,
+    .item-box .product-box-add-to-cart-button {
+        background-color: #BC0000;
+    }
+}
+
+@media  (min-width: 701px) {
+    .menu-toggle,
+    .newsletter-subscribe-button,
+    .item-box .product-box-add-to-cart-button {
+        background-color: #BC0000;
+    }
+}
+
+
+.cart-total .order-total,
+.order-details-page .order-overview .order-total strong
+{
+    color: #4C4C4C;
+
+}
+
+.cart-footer .checkout-button
+{
+    background-color: #169E00;
+}
+
+.cart-footer .checkout-button:hover {
+    background-color: #107600;
+}
+
+
+    .item-box .product-title a,
+    .block .list .active > a,
+    .block .view-all a,
+    .cart a, .data-table a, .forum-table a,
+    .topic-post .post-actions .post-link-button,
+    .mini-shopping-cart .name a,
+    .overview .value a, .variant-overview .value a,
+    .ui-tabs-nav li.ui-state-active a,
+    .cart .product .edit-item a,
+    .email-a-friend-page .title h2
+    { 
+        color: #BC0000;
+    }
+
+    .item-box .product-title a:hover,
+    .block .list .active > a:hover,
+    .block .view-all a:hover,
+    .block .tags li a:hover,
+    .forums-table-section .forum-title a:hover, 
+    .forums-table-section .topic-title a:hover,
+    .forums-table-section .topic-title a:hover,
+    .cart a:hover, .data-table a:hover, .forum-table a:hover,
+    .forum-search-box .advanced a:hover,
+    .topic-post .post-actions .post-link-button:hover,
+    .topic-post a.username:hover,
+    .mini-shopping-cart .name a:hover,
+    .header-links a:hover,
+    .overview .value a:hover, .variant-overview .value a:hover,
+    .footer-block .list a:hover,
+    .cart .product a:hover,
+    .wishlist-page .share-info a:hover,
+    .address-list-page .button-2:hover, .order-list-page .button-2:hover,
+    .cart .product .edit-item a:hover
+    { 
+        color: #980000;
+    }
+
+
+
+.registration-page .button-1,
+.registration-result-page .button-1,
+.login-page .button-1,
+.password-recovery-page .button-1,
+.account-page .button-1,
+.return-request-page .button-1,
+.newsletter-subscribe-button,
+.item-box .product-box-add-to-cart-button,
+.overview .add-to-cart-button,
+.variant-overview .add-to-cart-button,
+.search-input .button-1,
+.contact-page .button-1,
+.mini-shopping-cart input[type="button"],
+.wishlist-content .update-wishlist-button, 
+.wishlist-content .wishlist-add-to-cart-button,
+.checkout-page .button-1,
+.shopping-cart-page .common-buttons input:first-child,
+.order-details-page .page-title a.print-order-button,
+.order-details-page .actions input:first-child,
+.forum-edit-page .buttons .button-1, 
+.move-topic-page .buttons .button-1,
+.private-messages .buttons .button-1,
+.pager li span,
+.email-a-friend-page .button-1
+ {
+    background-color: #BC0000;
+}
+
+
+
+
+
+
+
+    .registration-page .button-1:hover,
+    .registration-result-page .button-1:hover,
+    .login-page .button-1:hover,
+    .password-recovery-page .button-1:hover,
+    .account-page .button-1:hover,
+    .return-request-page .button-1:hover,
+    .newsletter-subscribe-button:hover,
+    .item-box .product-box-add-to-cart-button:hover,
+    .overview .add-to-cart-button:hover,
+    .variant-overview .add-to-cart-button:hover,
+    .search-input .button-1:hover,
+    .contact-page .button-1:hover,
+    .forums-table-section .view-all a:hover,
+    .mini-shopping-cart input[type="button"]:hover,
+    .wishlist-content .update-wishlist-button:hover,
+    .wishlist-content .wishlist-add-to-cart-button:hover,
+    .checkout-page .button-1:hover,
+    .shopping-cart-page .common-buttons input:first-child:hover,
+    .order-details-page .page-title a.print-order-button:hover,
+    .order-details-page .actions input:first-child:hover,
+    .forum-edit-page .buttons .button-1:hover,
+    .move-topic-page .buttons .button-1:hover,
+    .private-messages .buttons .button-1:hover,
+    .email-a-friend-page .button-1:hover {
+        background-color: #980000;
+    }
 
 
 
