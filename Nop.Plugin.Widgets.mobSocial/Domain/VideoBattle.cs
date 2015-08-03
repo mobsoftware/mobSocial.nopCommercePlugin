@@ -22,6 +22,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public DateTime AcceptanceLastDate { get; set; }
 
+        public DateTime VotingLastDate { get; set; }
+
         public VideoBattleType VideoBattleType { get; set; }
 
         public VideoBattleStatus VideoBattleStatus { get; set; }

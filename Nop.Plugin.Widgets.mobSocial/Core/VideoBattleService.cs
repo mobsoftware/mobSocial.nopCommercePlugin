@@ -2,11 +2,15 @@
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Services.Configuration;
+using Nop.Services.Logging;
+using Nop.Services.Media;
+using Nop.Services.Seo;
 using Nop.Web.Framework.Kendoui;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
-    public class VideoBattleService : BaseService<VideoBattle, VideoBattle>, IVideoBattleService
+    public class VideoBattleService : BaseService<VideoBattle, VideoBattlePicture>, IVideoBattleService
     {
         private readonly IRepository<VideoBattle> _videoBattleRepository;
         private readonly IRepository<VideoBattleParticipant> _videoBattleParticipantRepository;
@@ -14,36 +18,49 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         private readonly IWorkContext _workContext;
 
-        public VideoBattleService(IRepository<VideoBattle> videoBattleRepository,
-            IRepository<VideoBattleParticipant> videoBattleParticipantRepository,
+        private IUrlRecordService _urlRecordService;
+        private readonly IPictureService _pictureService;
+
+        public VideoBattleService(ISettingService settingService, IWebHelper webHelper,
+            ILogger logger,
+            IRepository<VideoBattle> videoBattleRepository,
+            IRepository<VideoBattlePicture> videoBattlePictureRepository,
+            IRepository<VideoBattleParticipant> videoBattleParticpantRepository,
             IRepository<VideoBattleGenre> videoBattleGenreRepository,
-            IWorkContext workContext) :
-            base(videoBattleRepository, workContext)
+            IUrlRecordService urlRecordService,
+            IWorkContext workContext,
+            IPictureService pictureService)
+            : base(videoBattleRepository, videoBattlePictureRepository, workContext, urlRecordService)
         {
-            _videoBattleRepository = videoBattleRepository;
-            _videoBattleParticipantRepository = videoBattleParticipantRepository;
-            _videoBattleGenreRepository = videoBattleGenreRepository;
+            _urlRecordService = urlRecordService;
             _workContext = workContext;
+            _pictureService = pictureService;
+            _videoBattleRepository = videoBattleRepository;
+            _videoBattleParticipantRepository = videoBattleParticpantRepository;
+            _videoBattleGenreRepository = videoBattleGenreRepository;
         }
+
 
         public override System.Collections.Generic.List<VideoBattle> GetAll(string term, int count)
         {
             throw new System.NotImplementedException();
         }
 
-        public override System.Collections.Generic.List<VideoBattle> GetAllPictures(int entityId)
+        public override System.Collections.Generic.List<VideoBattlePicture> GetAllPictures(int entityId)
         {
-            throw new System.NotImplementedException();
+            return base.PictureRepository.Table.Where(x => x.VideoBattleId == entityId).ToList();
         }
 
-        public override VideoBattle GetFirstEntityPicture(int entityId)
+        public override VideoBattlePicture GetFirstEntityPicture(int entityId)
         {
-            throw new System.NotImplementedException();
+            return base.PictureRepository.Table.FirstOrDefault(x => x.VideoBattleId == entityId);
         }
 
         public override Nop.Core.Domain.Media.Picture GetFirstPicture(int entityId)
         {
-            throw new System.NotImplementedException();
+            var entityPicture = PictureRepository.Table.FirstOrDefault(x => x.VideoBattleId == entityId);
+            var picture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
+            return picture;
         }
         /// <summary>
         /// A multipurpose method for getting the video battles

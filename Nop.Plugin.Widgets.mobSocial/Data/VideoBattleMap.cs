@@ -14,7 +14,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.Description);
             Property(x => x.DateCreated).HasColumnType("datetime2");
             Property(x => x.DateUpdated).HasColumnType("datetime2");
-            Property(x => x.AcceptanceLastDate);
+            Property(x => x.AcceptanceLastDate).HasColumnType("datetime2");
+            Property(x => x.VotingLastDate).HasColumnType("datetime2");
+
             Property(x => x.VideoBattleType);
             Property(x => x.VideoBattleVoteType);
             Property(x => x.VideoBattleStatus);

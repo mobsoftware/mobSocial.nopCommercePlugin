@@ -1,0 +1,70 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+@{
+    var videouploadUrl = "/VideoBattles/UploadVideo/";
+}
+<div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}">
+    <div class="participant-name">{{participant.ParticipantName}}</div>
+    <div class="participation-status">
+        <div ng-switch on="participant.VideoBattleParticipantStatus">
+            <div ng-switch-when="@((int) VideoBattleParticipantStatus.NotChallenged)">Challenger</div>
+            <div ng-switch-when="@((int) VideoBattleParticipantStatus.Challenged)">Pending Acceptance</div>
+            <div ng-switch-when="@((int) VideoBattleParticipantStatus.ChallengeAccepted)">Challenge Accepted</div>
+            <div ng-switch-when="@((int) VideoBattleParticipantStatus.ChallengeDenied)">Challenge Denied</div>
+            <div ng-switch-when="@((int) VideoBattleParticipantStatus.ChallengeCancelled)">Challenge Cancelled</div>
+
+        </div>
+
+    </div>
+    <div class="video-placeholder">
+        <div ng-if="participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged)">
+            <div class="video-battle-action-buttons" ng-hide="processingAcceptOrDenyInvite || inviteAccepted">
+                <button ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeAccepted))">Accept</button>
+                <button ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeDenied))">Reject</button>
+            </div>
+        </div>
+        <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || ((participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged)) && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending))">
+
+            <div ng-if="participant.VideoPath == null && participant.CanEdit">
+                You have not uploaded any video yet.
+            </div>
+            <div ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Open) && !participant.CanEdit">
+                Video uploaded will be visible once the battle goes live
+            </div>
+
+            <div ng-if="participant.VideoPath != null && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || participant.CanEdit)" class="videogular-container">
+
+                <videogular vg-theme="controller.config.theme">
+                    <vg-media vg-src="participant.VideoSource" vg-tracks="">
+                    </vg-media>
+                    <vg-controls>
+                        <vg-play-pause-button></vg-play-pause-button>
+                        <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                        <vg-scrub-bar>
+                            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                        </vg-scrub-bar>
+                        <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+                        <vg-volume>
+                            <vg-mute-button></vg-mute-button>
+                            <vg-volume-bar></vg-volume-bar>
+                        </vg-volume>
+                        <vg-fullscreen-button></vg-fullscreen-button>
+                    </vg-controls>
+
+                    <vg-poster vg-url='controller.config.plugins.poster'></vg-poster>
+                </videogular>
+            </div>
+        </div>
+
+        <div class="video-uploader-button" ng-if="participant.CanEdit && (participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged))">
+            <button file-upload-button
+                    id="videofile_{{VideoBattle.Id}}_{{participant.Id}}"
+                    fieldname="VideoFile"
+                    extradata='{"VideoBattleId": {{VideoBattle.Id}}, "ParticipantId" : {{participant.Id}}, "FieldName": "VideoFile"}'
+                    uploadtype="video"
+                    url="@videouploadUrl">
+                <i class="fa fa-upload"></i> Upload Video
+            </button>
+        </div>
+    </div>
+
+</div>

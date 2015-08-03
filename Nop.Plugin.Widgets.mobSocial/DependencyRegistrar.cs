@@ -158,6 +158,29 @@ namespace Nop.Plugin.Widgets.MobSocial
             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
             .InstancePerRequest();
 
+            builder.RegisterType<EfRepository<VideoBattle>>().As<IRepository<VideoBattle>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<VideoBattleVote>>().As<IRepository<VideoBattleVote>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<VideoBattleVideo>>().As<IRepository<VideoBattleVideo>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<VideoBattleParticipant>>().As<IRepository<VideoBattleParticipant>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<VideoBattleGenre>>().As<IRepository<VideoBattleGenre>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
+
+            builder.RegisterType<EfRepository<VideoGenre>>().As<IRepository<VideoGenre>>()
+            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
+            .InstancePerRequest();
             // Service Injection
             builder.RegisterGeneric(typeof(BaseService<,>)).As(typeof(IBaseService<,>)).InstancePerLifetimeScope();
             builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
@@ -174,7 +197,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<CustomerProfileService>().As<CustomerProfileService>().InstancePerRequest();
             builder.RegisterType<TeamPageService>().As<TeamPageService>().InstancePerRequest();
             builder.RegisterType<NotificationService>().As<INotificationService>().InstancePerRequest();
-            //builder.RegisterType<CustomerFavoriteSongService>().As<ICustomerFavoriteSongService>().InstancePerRequest();
+            builder.RegisterType<CustomerFavoriteSongService>().As<ICustomerFavoriteSongService>().InstancePerRequest();
             builder.RegisterType<EchoNestMusicService>().As<IMusicService>().InstancePerRequest();
             builder.RegisterType<MusicApiCredentials>().As<IOAuthCredentials>().InstancePerRequest();
             builder.RegisterType<MusicApiUri>().As<IApiUri>().InstancePerRequest();
@@ -188,6 +211,15 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<SongService>().As<ISongService>().InstancePerRequest();
             builder.RegisterType<SharedSongService>().As<ISharedSongService>().InstancePerRequest();
             builder.RegisterType<ArtistPagePaymentService>().As<IArtistPagePaymentService>().InstancePerRequest();
+
+            builder.RegisterType<VideoBattleService>().As<IVideoBattleService>().InstancePerRequest();
+            builder.RegisterType<VideoBattleVideoService>().As<IVideoBattleVideoService>().InstancePerRequest();
+            builder.RegisterType<VideoBattleParticipantService>().As<IVideoBattleParticipantService>().InstancePerRequest();
+            builder.RegisterType<VideoBattleGenreService>().As<IVideoBattleGenreService>().InstancePerRequest();
+            builder.RegisterType<VideoBattleVoteService>().As<IVideoBattleVoteService>().InstancePerRequest();
+            builder.RegisterType<VideoGenreService>().As<IVideoGenreService>().InstancePerRequest();
+            
+            
             // Override any NopCommerce Services below:
             builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 

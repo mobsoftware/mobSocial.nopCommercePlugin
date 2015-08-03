@@ -1,1 +1,50 @@
-﻿
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AppendTitleParts(Model.Title);
+
+    Html.AppendMetaDescriptionParts(Model.Description);
+    Html.AppendMetaKeywordParts(Model.Description);
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+
+    var json = Json.Encode(Model);
+}
+
+<div data-ng-controller="VideoBattleEditorController" ng-init="init(@json)">
+    <div ng-show="recordSaved">
+        Video Battle created successfully. Redirecting to battle page to upload a video...
+    </div>
+    <form name="createBattleForm" ng-show="!recordSaved">
+        <table class="table-form">
+            <tr>
+                <td style="text-align:center;"><h1>Create Video Battle</h1></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <label class="control-label" for="title">Title <span class="required">*</span></label><br />
+                        <input type="text" name="title" id="title" data-ng-model="VideoBattle.Title" required />
+                        <span ng-show="createBattleForm.title.$invalid && createBattleForm.title.$dirty">Title is required</span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="description">Description</label><br />
+                        <textarea name="description" id="description" data-ng-model="VideoBattle.Description"></textarea>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="description">Challenge Acceptance Last Date & Time</label><br />
+                        <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="description">Voting Last Date</label><br />
+                    </div>
+                    <div class="control-group">
+                        <input type="button" ng-click="SaveVideoBattle()" value="Create Battle" />
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+    </form>
+</div>
+

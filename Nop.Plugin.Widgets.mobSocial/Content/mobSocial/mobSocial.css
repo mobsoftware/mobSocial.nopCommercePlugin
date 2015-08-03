@@ -632,6 +632,71 @@ table.table-form .control-group{
 }
 /***END ARTIST PAGE STYLES*/
 
+/***DATE PICKER STYLES OVERRIDE*/
+.datepicker-area select {
+    padding: 0px;
+    width: auto;
+}
+/***END DATE PICKER STYLES OVERRIDE*/
+
+.participant-box {
+    float: left;
+    width: 45%;
+    height: 350px;
+    text-align: center;
+    margin: 10px;
+}
+.participant-box.participant-10 {
+    border: dashed 2px #ccc;
+    
+}
+.participant-box.participant-0 {
+    border: solid 2px #ccc;
+}
+.participant-box.participant-20 {
+    border: solid 2px #ccc;
+}
+.participant-box.participant-30, .participant-box.participant-40{
+    border: solid 2px #ccc;
+    opacity: 0.8;
+}
+.participant-box .participant-name {
+    margin: 20px 0 0;
+    font-size: 1.4em;
+}
+.participant-box .participant-status {
+    padding-bottom: 5px;
+    font-style: italic;
+}
+.participant-box .video-placeholder {
+    padding: 5px 0;
+    margin: 5px 0;
+}
+.participant-box .video-uploader-button {
+    padding: 10px 0;
+}
+.participant-box .video-placeholder .fa-plus-circle {
+    font-size: 13em;
+    color: #faa;
+}
+.participant-box .angucomplete-holder {
+    width: 80%;
+    margin: auto;
+}
+.participant-box .angucomplete-holder input {
+    padding: 2%;
+    border: solid 1px #ccc;
+    display: block;
+    width: 96%;
+}
+
+h1.battle-page-heading {
+        text-align: center;
+    font-size: 2em;
+    padding: 20px;
+}
+
+
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/
 .master-wrapper-main .center-3 { overflow:visible; }

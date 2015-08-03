@@ -50,5 +50,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         }
 
 
+
+        public override List<VideoBattleParticipant> GetAll(string term, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override List<VideoBattleParticipant> GetAllPictures(int entityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override VideoBattleParticipant GetFirstEntityPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Nop.Core.Domain.Media.Picture GetFirstPicture(int entityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

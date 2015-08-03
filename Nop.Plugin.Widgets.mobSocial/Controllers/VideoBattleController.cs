@@ -60,47 +60,43 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [Authorize]
         public ActionResult VideoBattleEditor(int VideoBattleId = 0)
         {
-            VideoBattle videoBattle;
-            if (VideoBattleId != 0)
-                videoBattle = _videoBattleService.GetById(VideoBattleId);
-            else
-                videoBattle = new VideoBattle();
+            var videoBattle = VideoBattleId != 0 ? _videoBattleService.GetById(VideoBattleId) : new VideoBattle();
 
             //can the user actually edit the battle?
-            if (CanEdit(videoBattle))
-            {
-                var model = new VideoBattleModel()
-                {
-                    AcceptanceLastDate = videoBattle.AcceptanceLastDate,
-                    ChallengerId = videoBattle.ChallengerId,
-                    DateCreated = videoBattle.DateCreated,
-                    DateUpdated = videoBattle.DateUpdated,
-                    Description = videoBattle.Description,
-                    Title = videoBattle.Title,
-                    Id = videoBattle.Id,
-                    VideoBattleStatus = videoBattle.VideoBattleStatus,
-                    VideoBattleType = videoBattle.VideoBattleType,
-                    VideoBattleVoteType = videoBattle.VideoBattleVoteType
-                };
-                return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/VideoBattleEditor.cshtml", model);
-            }
-            return new HttpUnauthorizedResult();
+            if (!CanEdit(videoBattle)) return InvokeHttp404();
 
+            var model = new VideoBattleModel()
+            {
+                AcceptanceLastDate = VideoBattleId == 0 ? DateTime.UtcNow.AddDays(10) : videoBattle.AcceptanceLastDate, //10 days
+                ChallengerId = videoBattle.ChallengerId,
+                DateCreated = VideoBattleId == 0 ? DateTime.UtcNow : videoBattle.DateCreated,
+                DateUpdated = VideoBattleId == 0 ? DateTime.UtcNow : videoBattle.DateUpdated,
+                VotingLastDate = VideoBattleId == 0 ? DateTime.UtcNow.AddDays(20) : videoBattle.VotingLastDate, //20 days
+                Description = videoBattle.Description,
+                Title = videoBattle.Title,
+                Id = videoBattle.Id,
+                VideoBattleStatus = videoBattle.VideoBattleStatus,
+                VideoBattleType = videoBattle.VideoBattleType,
+                VideoBattleVoteType = videoBattle.VideoBattleVoteType
+            };
+            return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/VideoBattleEditor.cshtml", model);
         }
 
-        [Authorize]
+        [HttpPost]
         public ActionResult SaveVideoBattle(VideoBattleModel Model)
         {
             if (!ModelState.IsValid)
-                return new HttpUnauthorizedResult();
+                return Json(new {Success = false, Message = "Invalid"});
 
             //lets check if it's a new video battle or an edit is being performed
             VideoBattle videoBattle = null;
             if (Model.Id == 0)
             {
-                videoBattle = new VideoBattle();
-                videoBattle.ChallengerId = _workContext.CurrentCustomer.Id;
-                videoBattle.DateCreated = DateTime.UtcNow;
+                videoBattle = new VideoBattle
+                {
+                    ChallengerId = _workContext.CurrentCustomer.Id,
+                    DateCreated = DateTime.UtcNow
+                };
             }
             else
             {
@@ -111,9 +107,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             videoBattle.DateUpdated = DateTime.UtcNow;
             videoBattle.Description = Model.Description;
             videoBattle.VideoBattleStatus = VideoBattleStatus.Pending;
-            videoBattle.VideoBattleType = Model.VideoBattleType;
-            videoBattle.VideoBattleVoteType = Model.VideoBattleVoteType;
-            
+            videoBattle.VideoBattleType =  Model.VideoBattleType;
+            videoBattle.VideoBattleVoteType = VideoBattleVoteType.SelectOneWinner; // Model.VideoBattleVoteType;
+            videoBattle.Title = Model.Title;
             if (Model.Id == 0)
             {                
                 _videoBattleService.Insert(videoBattle);
@@ -123,48 +119,100 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (CanEdit(videoBattle))
                     _videoBattleService.Update(videoBattle);
             }
-            return Json(new { Success = true });
+            return Json(new { Success = true, RedirectTo = Url.RouteUrl("VideoBattlePage", new { VideoBattleId = videoBattle.Id}) });
         }
 
-        public ActionResult ViewVideoBattle(int VideoBattleId)
+        public ActionResult Index(int VideoBattleId)
         {
             var videoBattle = _videoBattleService.GetById(VideoBattleId);
+
+            //does the video battle exist?
+            if (videoBattle == null)
+                return InvokeHttp404();
+
+            IList<VideoBattleParticipant> participants = null;
+
             //only open video battles can be viewed or ofcourse if I am the owner, I should be able to see it open or closed right?
-            if (videoBattle.VideoBattleStatus == VideoBattleStatus.Open || CanEdit(videoBattle))
+            var canOpen = videoBattle.VideoBattleStatus == VideoBattleStatus.Open;
+            //or is this the battle owner
+            canOpen = canOpen || CanEdit(videoBattle);
+
+            //still can't open, let's see if it's a participant accessting the page
+            if (!canOpen)
             {
-                //lets get the videos associated with battle
-                var battleVideos = _videoBattleVideoService.GetBattleVideos(VideoBattleId);
-
-                var challengerVideo = battleVideos.First(x => x.ParticipantId == videoBattle.ChallengerId);
-                var challenger = _customerService.GetCustomerById(videoBattle.ChallengerId);
-
-                var challengerVideoModel = new VideoParticipantPublicModel()
-                {
-                    VideoPath = challengerVideo.VideoPath,
-                    ParticipantName = challenger.GetFullName(),
-                    MimeType = challengerVideo.MimeType
-                };
-                var model = new VideoBattlePublicModel
-                {
-                    Challenger = challengerVideoModel
-                };
-
-                //lets now add the challengee videos
-                foreach (var video in battleVideos.Where(x => x.ParticipantId != _workContext.CurrentCustomer.Id))
-                {
-                    var challengee = _customerService.GetCustomerById(video.ParticipantId);
-                    model.Challengee.Add(new VideoParticipantPublicModel()
-                    {
-                        VideoPath = video.VideoPath,
-                        ParticipantName = challengee.GetFullName(),
-                        MimeType = video.MimeType
-                    });
-                }
-
-                model.IsEditable = CanEdit(videoBattle);
-                return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/ViewVideoBattle.cshtml", model);
+                participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId, null);
+                canOpen = participants.Count(x => x.ParticipantId == _workContext.CurrentCustomer.Id) > 0;
             }
-            return InvokeHttp404();
+
+            if (!canOpen) return InvokeHttp404();
+            
+            //get all the participants who have been invited, accepted etc. to the battle
+            if(participants == null)
+                participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId, null);
+
+
+            //lets get the videos associated with battle
+            var battleVideos = _videoBattleVideoService.GetBattleVideos(VideoBattleId);
+
+            var challengerVideo = battleVideos.FirstOrDefault(x => x.ParticipantId == videoBattle.ChallengerId);
+            var challenger = _customerService.GetCustomerById(videoBattle.ChallengerId);
+
+            var challengerVideoModel = new VideoParticipantPublicModel()
+            {
+                ParticipantName = challenger.GetFullName(),
+                Id = challenger.Id,
+                CanEdit = _workContext.CurrentCustomer.Id == videoBattle.ChallengerId
+                    
+            };
+
+            if (challengerVideo != null)
+            {
+                challengerVideoModel.VideoPath = challengerVideo.VideoPath;
+                challengerVideoModel.MimeType = challengerVideo.MimeType;
+            }
+
+            var model = new VideoBattlePublicModel
+            {
+                Title = videoBattle.Title,
+                Description = videoBattle.Description,
+                AcceptanceLastDate = videoBattle.AcceptanceLastDate,
+                VotingLastDate = videoBattle.VotingLastDate,
+                DateCreated = videoBattle.DateCreated,
+                DateUpdated = videoBattle.DateUpdated,
+                Id = VideoBattleId
+            };
+
+            //add challenger as participant
+            model.Participants.Add(challengerVideoModel);
+
+            foreach (var participant in participants)
+            {
+                    
+                var challengee = _customerService.GetCustomerById(participant.ParticipantId);
+                var cModel = new VideoParticipantPublicModel()
+                {
+                    ParticipantName = challengee.GetFullName(),
+                    Id = challengee.Id,
+                    CanEdit = _workContext.CurrentCustomer.Id == participant.ParticipantId,
+                    VideoBattleParticipantStatus = participant.ParticipantStatus
+                };
+
+                //find if the participant has uploaded video? only those who have accepted challege would be shown 'with videos'
+                if (participant.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted)
+                {
+                    var video = battleVideos.FirstOrDefault(x => x.ParticipantId == participant.ParticipantId);
+                    if (video != null)
+                    {
+                        cModel.VideoPath = video.VideoPath;
+                        cModel.MimeType = video.MimeType;
+                    }
+                }
+                model.Participants.Add(cModel);
+            }
+               
+                
+            model.IsEditable = CanEdit(videoBattle);
+            return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/Single.cshtml", model);
         }
         #endregion
 
@@ -188,7 +236,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         var videoBattleParticipant = new VideoBattleParticipant()
                         {
                             ParticipantId = pi,
-                            ParticipantStatus = VideoBattleParticipantStatus.Challanged,
+                            ParticipantStatus = VideoBattleParticipantStatus.Challenged,
                             VideoBattleId = VideoBattleId
                         };
                         _videoBattleParticipantService.Insert(videoBattleParticipant);
@@ -208,7 +256,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     }
                 }
                 
-                return Json(new { Success = true }); ;
+                return Json(model); ;
             }
             return Json(new { Success = false, Message = "Unauthorized"}); ;
                 
@@ -216,8 +264,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult UpdateParticipantStatus(int VideoBattleId, int ParticipantId, VideoBattleParticipantStatus Status)
+        public ActionResult UpdateParticipantStatus(int VideoBattleId, VideoBattleParticipantStatus VideoBattleParticipantStatus)
         {
+            var ParticipantId = _workContext.CurrentCustomer.Id;
             var videoBattleParticipant = _videoBattleParticipantService.GetVideoBattleParticipant(VideoBattleId, ParticipantId);
             if(videoBattleParticipant == null)
             {
@@ -227,36 +276,36 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //lets first check the battle for validations
             var videoBattle = _videoBattleService.GetById(videoBattleParticipant.VideoBattleId);
             if (videoBattle == null 
-                || videoBattle.VideoBattleStatus != VideoBattleStatus.Open
-                || videoBattle.AcceptanceLastDate >= DateTime.UtcNow)
+                || videoBattle.VideoBattleStatus != VideoBattleStatus.Pending
+                || videoBattle.AcceptanceLastDate < DateTime.UtcNow)
             {
                 return Json(new { Success = false, Message = "Battle Closed Or Expired" });
             }
 
 
             //so it's there.
-            if (videoBattleParticipant.ParticipantStatus == VideoBattleParticipantStatus.Challanged)
+            if (videoBattleParticipant.ParticipantStatus == VideoBattleParticipantStatus.Challenged)
             {
-                switch (Status)
+                switch (VideoBattleParticipantStatus)
                 {
-                    case VideoBattleParticipantStatus.ChallangeAccepted:
+                    case VideoBattleParticipantStatus.ChallengeAccepted:
                     case VideoBattleParticipantStatus.ChallengeDenied:
                         //only the one who is participant should be able to accept/deny the challenge
                         if (_workContext.CurrentCustomer.Id == ParticipantId)
                         {
-                            videoBattleParticipant.ParticipantStatus = Status;
+                            videoBattleParticipant.ParticipantStatus = VideoBattleParticipantStatus;
                         }
                         break;
                     case VideoBattleParticipantStatus.ChallengeCancelled:
                         //only the one who challenges or admin can cancel the challenge
                         if (_workContext.CurrentCustomer.IsAdmin() || _workContext.CurrentCustomer.Id == videoBattle.ChallengerId)
                         {
-                            videoBattleParticipant.ParticipantStatus = Status;
+                            videoBattleParticipant.ParticipantStatus = VideoBattleParticipantStatus;
                         }
                         break;
                 }
                 _videoBattleParticipantService.Update(videoBattleParticipant);
-                return Json(new { Success = true});
+                return Json(new {Success = true, ParticipantStatus = videoBattleParticipant.ParticipantStatus, ParticipantId = ParticipantId});
             }
             else
             {
@@ -273,24 +322,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// </summary>
         /// <param name="VideoBattleId">The ID of video battle</param>
         /// <param name="ParticipantId">The ID of Challenger or Challengee</param>
-        /// <param name="VideoFile">The Video File</param>
+        /// <param name="File">The Video File</param>
         /// <returns>JSon response with success as true or false</returns>
         [HttpPost]
-        public ActionResult UploadVideo(int VideoBattleId, int ParticipantId, HttpPostedFileBase VideoFile)
+        public ActionResult UploadVideo(int VideoBattleId, int ParticipantId, HttpPostedFileBase File)
         {
             //is there any file to upload
-            if (VideoFile == null)
+            if (File == null)
             {
                 return Json(new { Success = false, Message = "Missing File" });
             }
 
             //first lets find out if it's legal to upload video now?
-            var videoBattle = _videoBattleService.GetById(VideoBattleId);
-            if (videoBattle.ChallengerId != _workContext.CurrentCustomer.Id && videoBattle.VideoBattleStatus != VideoBattleStatus.Open)
-            {
-                //nopes..the person trying to upload is neither the challenger nor the battle is open
-                return Json(new {Success = false, Message = "Unauthorized"});
-            }
+            var videoBattle = _videoBattleService.GetById(VideoBattleId);         
 
             bool eligibleToUpload = false;
             //is the participant actually eligible to upload?
@@ -319,9 +363,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (videoBattle.VideoBattleStatus == VideoBattleStatus.Pending)
                 {
                     //let's save the file to the server first
-                    var contentType = VideoFile.ContentType;
+                    var contentType = File.ContentType;
                    
-                    var fileName = Path.GetFileName(VideoFile.FileName);
+                    var fileName = Path.GetFileName(File.FileName);
                     var fileExtension = Path.GetExtension(fileName);
                     if (!string.IsNullOrEmpty(fileExtension))
                         fileExtension = fileExtension.ToLowerInvariant();
@@ -334,7 +378,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     var savePath = ControllerUtil.MobSocialPluginsFolder + "Uploads/" + DateTime.Now.Ticks.ToString() + fileExtension;
                     //save the file
-                    VideoFile.SaveAs(savePath);
+                    File.SaveAs(Server.MapPath(savePath));
 
                     var videoBattleVideo = _videoBattleVideoService.GetBattleVideo(VideoBattleId, ParticipantId);
                     if (videoBattleVideo == null)
@@ -352,15 +396,37 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         };
                         _videoBattleVideoService.Insert(videoBattleVideo);
 
-                        //now that we have second video uploaded, we can activate the battle
-                        videoBattle.VideoBattleStatus = VideoBattleStatus.Open;
-                        _videoBattleService.Update(videoBattle);
+                        //let's get all the videos already uploaded, we mark the video battle open immediately if all the participants have uploaded videos or time limit has reached
+                        var allVideos = _videoBattleVideoService.GetBattleVideos(VideoBattleId);
+                        var allParticipants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId, null).AsQueryable();
+
+                        var totalChallenged = allParticipants.Count();
+                        var totalAccepted =
+                            allParticipants.Count(
+                                x => x.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted);
+
+                        var totalPending =
+                            allParticipants.Count(x => x.ParticipantStatus == VideoBattleParticipantStatus.Challenged);
+
+                        var markOpen = false;
+
+                        markOpen = totalChallenged == allVideos.Count || //all challenged have uploaded their videos
+                                   (totalPending == 0); //people have already either rejected or cancelled from the battle
+
+                        if (markOpen)
+                        {
+
+                            //let the battle begin...TINGGG!!!
+                            videoBattle.VideoBattleStatus = VideoBattleStatus.Open;
+                            _videoBattleService.Update(videoBattle);
+                        }
+
                     }
                     else
                     {
                         //so the user has already uploaded the video
                         //we can let the user change a video only if he is a challenger and no other participants are there
-                        var participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId, VideoBattleParticipantStatus.Challanged);
+                        var participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId, VideoBattleParticipantStatus.Challenged);
                         if (participants.Count == 0)
                         {
                             //TODO: Delete existing video, should we?
@@ -370,8 +436,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             _videoBattleService.Update(videoBattle);
                         }
                     }
+                    return Json(new { Success = true, VideoUrl = ""});
 
                 }
+                else
+                {
+                    return Json(new { Success = false, Message = "Unauthorized" });
+                }
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
             }
 
          
@@ -385,6 +460,64 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #endregion
 
         #region Video Battles Votes
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult VoteBattle(int VideoBattleId, int ParticipantId, int VoteValue)
+        {
+            //first find the video battle
+            var videoBattle = _videoBattleService.GetById(VideoBattleId);
+            //is the video available for voting
+            if (videoBattle.VideoBattleStatus == VideoBattleStatus.Open)
+            {
+                var customer = _workContext.CurrentCustomer;
+                //check if the logged in user has voted for this battle
+                var videoBattleVotes = _videoBattleVoteService.GetVideoBattleVotes(VideoBattleId, customer.Id);
+
+                var voteCount = videoBattleVotes.Count(x => x.UserId == customer.Id && x.ParticipantId == ParticipantId);
+
+                if(voteCount == 1)
+                {
+                    //already voted for this participant, not it can't be changed
+                    return Json(new { Success = false, Message = "Already Voted" });
+                }
+                else
+                {
+                    //user has not voted for this participant however it may be possible that depending on vote type, user can't vote on this battle
+                    switch (videoBattle.VideoBattleVoteType)
+                    {
+                        case VideoBattleVoteType.SelectOneWinner:
+                            //if one winner was to be selected, we'll have to check if user has not voted for some other participant
+                            if (videoBattleVotes.Count > 0)
+                            {
+                                //yes, user has voted for some other participant so he can't vote for this participant now.
+                                return Json(new { Success = false, Message = "Already Voted" });
+                            }                            
+                            break;
+                        case VideoBattleVoteType.Rating:
+                            break;
+                        case VideoBattleVoteType.LikeDislike:
+                            break;
+                    }
+                    //user can vote now. let's create a new vote
+                    var videoBattleVote = new VideoBattleVote()
+                    {
+                        ParticipantId = ParticipantId,
+                        UserId = customer.Id,
+                        VideoBattleId = videoBattle.Id,
+                        VoteValue = VoteValue
+                    };
+                    _videoBattleVoteService.Insert(videoBattleVote);
+                    return Json(new { Success = true });
+
+                }
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Closed For Voting" });
+            }            
+            
+        }
         #endregion
 
         #region Utilities

@@ -75,7 +75,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             modelBuilder.Configurations.Add(new VideoGenreMap());
             modelBuilder.Configurations.Add(new VideoBattleParticipantMap());
             modelBuilder.Configurations.Add(new VideoBattleVoteMap());
-            modelBuilder.Configurations.Add(new VideoBattleVideoMap());
+            modelBuilder.Configurations.Add(new VideoBattlePictureMap());  
+            modelBuilder.Configurations.Add(new VideoBattleMap());
             
             base.OnModelCreating(modelBuilder);
         }

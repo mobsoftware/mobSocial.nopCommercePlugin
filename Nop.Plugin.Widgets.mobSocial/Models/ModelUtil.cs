@@ -15,5 +15,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
     {
         public static string ContentPathMobSocial { get { return "~/Plugins/Widgets.mobSocial/Content/mobSocial"; } }
         public static string ContentPath { get { return "~/Plugins/Widgets.mobSocial/Content"; } }
+        public static string ScriptsPath { get { return "~/Plugins/Widgets.mobSocial/Scripts"; } }
+
     }
 }
