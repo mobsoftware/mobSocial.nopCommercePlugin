@@ -23,4 +23,11 @@
            .error(Error);
     }
 
+    this.VoteBattle = function (VideoBattleId, ParticipantId, VoteValue, Success, Error) {
+        $http.post("/VideoBattles/VoteBattle", { VideoBattleId: VideoBattleId, ParticipantId: ParticipantId, VoteValue: VoteValue })
+           .success(Success)
+           .error(Error);
+    }
+
+
 }]);

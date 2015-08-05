@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Services.Configuration;
 using Nop.Services.Logging;
 using Nop.Services.Media;
@@ -15,6 +17,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         private readonly IRepository<VideoBattle> _videoBattleRepository;
         private readonly IRepository<VideoBattleParticipant> _videoBattleParticipantRepository;
         private readonly IRepository<VideoBattleGenre> _videoBattleGenreRepository;
+        private readonly IRepository<VideoBattleVideo> _videoBattleVideoRepository;
 
         private readonly IWorkContext _workContext;
 
@@ -27,6 +30,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             IRepository<VideoBattlePicture> videoBattlePictureRepository,
             IRepository<VideoBattleParticipant> videoBattleParticpantRepository,
             IRepository<VideoBattleGenre> videoBattleGenreRepository,
+            IRepository<VideoBattleVideo> videoBattleVideoRepository,
             IUrlRecordService urlRecordService,
             IWorkContext workContext,
             IPictureService pictureService)
@@ -38,6 +42,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             _videoBattleRepository = videoBattleRepository;
             _videoBattleParticipantRepository = videoBattleParticpantRepository;
             _videoBattleGenreRepository = videoBattleGenreRepository;
+            _videoBattleVideoRepository = videoBattleVideoRepository;
         }
 
 
@@ -96,6 +101,76 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             }
             //return paginated result
             return battles.Skip((Page - 1) * Count).Take(Count).ToList();
+        }
+
+        /// <summary>
+        /// Sets all the scheduled battles open for public when they reach the end date. It also changes the participant status of the participants who 
+        /// have not responded to the challenge 
+        /// </summary>
+        public void SetScheduledBattlesOpenOrClosed()
+        {
+            //get the battles which have acceptance date equal to or less than now
+            var now = DateTime.UtcNow;
+            var videoBattles =
+                _videoBattleRepository.Table.Where(
+                    x =>
+                        (x.AcceptanceLastDate <= now || x.VotingLastDate <= now) &&
+                        (x.VideoBattleStatus == VideoBattleStatus.Pending ||
+                         x.VideoBattleStatus == VideoBattleStatus.Locked)).ToList();
+
+            foreach (var battle in videoBattles)
+            {
+                //do we need to open or complete the battle?
+                if (battle.VotingLastDate <= now)
+                {
+                    //lets complete the battle as it's more than voting last date
+                    battle.VideoBattleStatus = VideoBattleStatus.Complete;
+                }
+                else if (battle.AcceptanceLastDate <= now)
+                {
+                    //get participants of this battle
+                    var participants = _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == battle.Id);
+
+                    //all the participants who have not accepted will now be changed to denied
+                    foreach (var participant in participants.Where(x => x.ParticipantStatus == VideoBattleParticipantStatus.Challenged))
+                    {
+                        participant.ParticipantStatus = VideoBattleParticipantStatus.ChallengeDenied;
+                        _videoBattleParticipantRepository.Update(participant);
+                    }
+
+                    //let's see if there are enough participants to open the battle (at least two)
+                    if (participants.Count(x => x.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted) > 1)
+                    {
+                        //and do we have at least two videos for competition
+                        var battleVideoCount = _videoBattleVideoRepository.Table.Count(x => x.VideoBattleId == battle.Id);
+                        //depending on the number of videos, battle can be either open or closed or complete
+                        if (battleVideoCount == 0)
+                        {
+                            battle.VideoBattleStatus = VideoBattleStatus.Closed;
+                        }
+                        else if (battleVideoCount > 1)
+                        {
+                            battle.VideoBattleStatus = VideoBattleStatus.Open;
+                        }
+                        else
+                        {
+                            //only one video has been uploaded and by default, he should be the winner? (I guess). BTW the battle is complete then.
+                            battle.VideoBattleStatus = VideoBattleStatus.Complete;
+                        }
+
+                    }
+                    else
+                    {
+                        //so nobody accepted the challenge...too bad...let's close the battle then
+                        battle.VideoBattleStatus = VideoBattleStatus.Closed;
+                    }
+                }
+                
+                _videoBattleRepository.Update(battle);
+              
+
+            }
+
         }
     }
 }

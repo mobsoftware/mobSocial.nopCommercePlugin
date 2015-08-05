@@ -32,13 +32,15 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly ILocalizationService _localizationService;
         private readonly HttpRuntimeSection _config;
         private readonly IStoreContext _storeContext;
+        private readonly IVideoBattleService _videoBattleService;
 
         public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings,
             ISettingService settingService, IMessageTemplateService messageTemplateService,
             IScheduleTaskService scheduleTaskService,
             IMobSocialService mobSocialService,
             ILocalizationService localizationService,
-            IStoreContext storeContext) : base(storeContext, settingService)
+            IStoreContext storeContext,
+            IVideoBattleService videoBattleService) : base(storeContext, settingService)
         {
             _context = context;
             _mobSocialSettings = mobSocialSettings;
@@ -47,7 +49,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             _scheduleTaskService = scheduleTaskService;
             _mobSocialService = mobSocialService;
             _localizationService = localizationService;
+            _videoBattleService = videoBattleService;
+
             _config = new HttpRuntimeSection(); //TODO Move to dependency registrar and perform injection
+
         }
 
 
@@ -268,7 +273,10 @@ namespace Nop.Plugin.Widgets.MobSocial
         }
 
 
-       
+        public void SetScheduledVideoBattlesOpenOrClosed()
+        {
+            _videoBattleService.SetScheduledBattlesOpenOrClosed();
+        }
 
 
         #endregion
@@ -326,9 +334,13 @@ namespace Nop.Plugin.Widgets.MobSocial
         #region Helper Methods
         private void AddScheduledTasks()
         {
-            int every24hrs = 24 * 60 * 60;
+            const int every24hrs = 24 * 60 * 60;
             AddScheduledTask("Friend Request Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
             AddScheduledTask("Product Review Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.ProductReviewNotificationTask, Nop.Plugin.Widgets.MobSocial");
+
+            const int every5Min = 5*60;
+            AddScheduledTask("Video Battle Status Update Task", every5Min, true, false, "Nop.Plugin.Widgets.MobSocial.Tasks.VideoBattlesStatusUpdateTask, Nop.Plugin.Widgets.MobSocial");
+
 
         }
 
@@ -337,20 +349,17 @@ namespace Nop.Plugin.Widgets.MobSocial
         {
             var task = _scheduleTaskService.GetTaskByType(type);
 
-            if (task == null)
+            if (task != null) return;
+            task = new ScheduleTask
             {
-                task = new ScheduleTask
-                {
-                    Name = name,
-                    Seconds = seconds,
-                    Type = type,
-                    Enabled = enabled,
-                    StopOnError = stopOnError,
-                };
+                Name = name,
+                Seconds = seconds,
+                Type = type,
+                Enabled = enabled,
+                StopOnError = stopOnError,
+            };
 
-                _scheduleTaskService.InsertTask(task);
-            }
-
+            _scheduleTaskService.InsertTask(task);
         }
 
 

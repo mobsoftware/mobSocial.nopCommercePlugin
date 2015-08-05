@@ -146,6 +146,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<VideoBattleParticipant>();
                 this.DropTable<VideoBattleVote>();
                 this.DropTable<VideoBattleVideo>();
+                this.DropTable<VideoBattlePicture>();
                 this.DropTable<VideoBattle>();
 
                 

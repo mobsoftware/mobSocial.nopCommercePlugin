@@ -645,7 +645,35 @@ table.table-form .control-group{
     height: 350px;
     text-align: center;
     margin: 10px;
+    position: relative;
 }
+@media screen and (max-width:600px) {
+    .participant-box {
+        width: 95%;
+    }
+ }
+.participant-box .video-watched-status{
+    position: absolute;
+    padding: 5px;
+    color: #aaa;
+    font-weight: bold;
+    right: 0;
+}
+.participant-box .participation-status {
+    color: gray;
+    font-style: italic;
+}
+.participant-box .leader-status {
+    position: absolute;
+    padding: 5px 10px;
+    background-color: #c30;
+    color: white;
+    border: dashed 1px white;
+    font-weight: bold;
+    margin: 10px;
+    box-shadow: 0px 1px 6px rgba(0,0,0,0.5);
+}
+
 .participant-box.participant-10 {
     border: dashed 2px #ccc;
     
@@ -657,11 +685,12 @@ table.table-form .control-group{
     border: solid 2px #ccc;
 }
 .participant-box.participant-30, .participant-box.participant-40{
-    border: solid 2px #ccc;
-    opacity: 0.8;
+    border: solid 2px red;
+    opacity: 0.5;
+    color: red;
 }
 .participant-box .participant-name {
-    margin: 20px 0 0;
+    margin: 5px 0 0;
     font-size: 1.4em;
 }
 .participant-box .participant-status {
@@ -675,7 +704,19 @@ table.table-form .control-group{
 .participant-box .video-uploader-button {
     padding: 10px 0;
 }
-.participant-box .video-placeholder .fa-plus-circle {
+.participant-box .video-uploader-button button.big{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+}
+.participant-box .video-uploader-button button.big .fa {
+    display: block;
+    color: #ccc!important;
+    font-size: 13em;
+}
+  
+.participant-box .video-placeholder .fa.big {
     font-size: 13em;
     color: #faa;
 }
@@ -689,14 +730,56 @@ table.table-form .control-group{
     display: block;
     width: 96%;
 }
-
+.battle-status {
+           text-align: center;
+    margin-bottom: 20px;
+    font-size: 1em;
+    font-family: verdana;
+    color: white;
+    background-color: rgba(0,0,0,0.7);
+    font-weight: bold;
+    padding: 5px;
+    width: 150px;
+    border-radius: 5px;
+    margin: auto;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    box-shadow: inset 0px 2px 1px rgba(0,0,0,0.5);
+}
 h1.battle-page-heading {
         text-align: center;
     font-size: 2em;
-    padding: 20px;
+    padding-top: 20px;
 }
-
-
+.challengees-to-invite {
+    border-top: dashed 1px #ccc;
+    margin-top: 10px;
+    padding-top: 5px;
+}
+.battle-timer {
+          text-align: center;
+    font-size: 1.3em;
+    background-color: #faa;
+    padding: 10px 0px;
+    font-weight: bold;
+    color: black;
+    border: dashed 2px white;
+    border-bottom: none;
+    width: 80%;
+    margin: 5px auto 0px;
+}
+.participant-voting {
+    padding: 10px 0;
+}
+.participant-voting button {
+    padding: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #006400;
+    color: white;
+    font-weight: bold;
+}
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/
 .master-wrapper-main .center-3 { overflow:visible; }

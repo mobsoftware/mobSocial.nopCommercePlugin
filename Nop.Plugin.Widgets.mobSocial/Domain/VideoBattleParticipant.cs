@@ -16,7 +16,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public VideoBattleParticipantStatus ParticipantStatus { get; set; }
 
+        public DateTime LastUpdated { get; set; }
+
         public virtual VideoBattle VideoBattle { get; set; }
+
+
 
 
     }

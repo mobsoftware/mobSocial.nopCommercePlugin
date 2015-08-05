@@ -14,15 +14,15 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
             var id = attrs.id;
             var imageSrc = attrs.imagesrc;
             var uploadtype = attrs.uploadtype;
-            var maxsize = attrs.maxsize;
+            var multiple = attrs.multiple ? "multiple" : "";
 
-            var htmlUpload = $("<input name='" + name + "' type='file' style='opacity:0;position:absolute;left:-5000px' nv-file-select='' uploader='uploader' id='file_uploader_" + id + "'  />");
+            var htmlUpload = $("<input name='" + name + "' type='file' style='opacity:0;position:absolute;left:-5000' nv-file-select='' uploader='uploader' id='file_uploader_" + id + "'" + multiple + "  />");
             var htmlProgress = $("<span id='progress_" + id + "'></span>");
 
             var uploader = scope.uploader = new FileUploader({ url: url });
-
+          
             //filters
-            if (uploadtype == "image") {
+            if (uploadtype === "image") {
                 uploader.filters.push({
                     name: 'imageFilter',
                     fn: function (item /*{File|FileLikeObject}*/, options) {
@@ -31,7 +31,7 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     }
                 });
             }
-            else if (uploadtype == "music") {
+            else if (uploadtype === "music") {
                 uploader.filters.push({
                     name: 'musicFilter',
                     fn: function (item /*{File|FileLikeObject}*/, options) {
@@ -40,7 +40,7 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     }
                 });
             }
-            else if (uploadtype == "video") {
+            else if (uploadtype === "video") {
                 uploader.filters.push({
                     name: 'videoFilter',
                     fn: function (item /*{File|FileLikeObject}*/, options) {
@@ -49,51 +49,40 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     }
                 });
             }
-            if (maxsize) {
-                 //filesize filter
-            uploader.filters.push({
-                name: 'sizeFilter',
-                fn: function (item /*{File|FileLikeObject}*/, options) {
-                    return item.size <= maxsize;
-                }
-            });
-            }
-           
 
             // CALLBACKS
             uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
-                alert("Can't add this file. Please check file type or file size.");
-                if (typeof window[attrs.onWhenAddingFileFailed] == "function") {
-                    window[attrs.onWhenAddingFileFailed](item, filter, options);
+                alert("Can't add this file");
+                if (typeof scope[attrs.onwhenaddingfilefailed] == "function") {
+                    scope[attrs.onwhenaddingfilefailed](item, filter, options);
                 }
             };
             uploader.onAfterAddingFile = function (fileItem) {
-                console.log(fileItem);
                 fileItem.formData.push(extraData);
-                if (typeof window[attrs.onAfterAddingFile] == "function") {
-                    window[attrs.onAfterAddingFile](fileItem);
+                if (typeof scope[attrs.onafteraddingfile] == "function") {
+                    scope[attrs.onafteraddingfile](fileItem);
                 }
             };
             uploader.onAfterAddingAll = function (addedFileItems) {
-                if (typeof window[attrs.onAfterAddingAll] == "function") {
-                    window[attrs.onAfterAddingAll](addedFileItems);
+                if (typeof scope[attrs.onafteraddingall] == "function") {
+                    scope[attrs.onafteraddingall](addedFileItems);
                 }
             };
             uploader.onBeforeUploadItem = function (item) {
-                if (typeof window[attrs.onBeforeUploadItem] == "function") {
-                    window[attrs.onBeforeUploadItem](item);
+                if (typeof scope[attrs.onbeforeuploaditem] == "function") {
+                    scope[attrs.onbeforeuploaditem](item);
                 }
             };
             uploader.onProgressItem = function (fileItem, progress) {
                 $(elem).hide();
                 htmlProgress.html(progress + "% complete");
-                if (typeof window[attrs.onProgressItem] == "function") {
-                    window[attrs.onProgressItem](fileItem, progress);
+                if (typeof scope[attrs.onprogressitem] == "function") {
+                    scope[attrs.onprogressitem](fileItem, progress);
                 }
             };
             uploader.onProgressAll = function (progress) {
-                if (typeof window[attrs.onProgressAll] == "function") {
-                    window[attrs.onProgressAll](progress);
+                if (typeof scope[attrs.onprogressall] == "function") {
+                    scope[attrs.onprogressall](progress);
                 }
             };
             uploader.onSuccessItem = function (fileItem, response, status, headers) {
@@ -107,31 +96,32 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     alert("Failed to upload file");
                     htmlProgress.html("Upload Failed." + response.Message);
                 }
-                if (typeof window[attrs.onSuccessItem] == "function") {
-                    window[attrs.onSuccessItem](fileItem, response, status, headers);
+               
+                if (typeof scope[attrs.onsuccessitem] == "function") {
+                    scope[attrs.onsuccessitem](fileItem, response, status, headers);
                 }
             };
             uploader.onErrorItem = function (fileItem, response, status, headers) {
 
                 htmlProgress.html("Upload Failed");
-                if (typeof window[attrs.onErrorItem] == "function") {
-                    window[attrs.onErrorItem](fileItem, response, status, headers);
+                if (typeof scope[attrs.onerroritem] == "function") {
+                    scope[attrs.onerroritem](fileItem, response, status, headers);
                 }
             };
             uploader.onCancelItem = function (fileItem, response, status, headers) {
-                if (typeof window[attrs.onCancelItem] == "function") {
-                    window[attrs.onCancelItem](fileItem, response, status, headers);
+                if (typeof scope[attrs.oncancelitem] == "function") {
+                    scope[attrs.oncancelitem](fileItem, response, status, headers);
                 }
             };
             uploader.onCompleteItem = function (fileItem, response, status, headers) {
                 $(elem).show();
-                if (typeof window[attrs.onCompleteItem] == "function") {
-                    window[attrs.onCompleteItem](fileItem, response, status, headers);
+                if (typeof scope[attrs.oncompleteitem] == "function") {
+                    scope[attrs.oncompleteitem](fileItem, response, status, headers);
                 }
             };
             uploader.onCompleteAll = function () {
-                if (typeof window[attrs.onCompleteAll] == "function") {
-                    window[attrs.onCompleteAll]();
+                if (typeof scope[attrs.oncompleteall] == "function") {
+                    scope[attrs.oncompleteall]();
                 }
             };
 

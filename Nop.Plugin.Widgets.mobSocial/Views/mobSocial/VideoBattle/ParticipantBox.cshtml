@@ -3,6 +3,14 @@
     var videouploadUrl = "/VideoBattles/UploadVideo/";
 }
 <div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}">
+    
+    
+    <div ng-if="participant.IsLeading || participant.IsWinner" class="leader-status">
+        {{participant.IsWinner ? "Winner" : "Leading"}}
+    </div>
+    <div class="video-watched-status" ng-if="participant.VideoWatched || GlobalVotingStatus">
+        <i class="fa fa-check"></i> Watched
+    </div>
     <div class="participant-name">{{participant.ParticipantName}}</div>
     <div class="participation-status">
         <div ng-switch on="participant.VideoBattleParticipantStatus">
@@ -22,27 +30,33 @@
                 <button ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeDenied))">Reject</button>
             </div>
         </div>
-        <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || ((participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged)) && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending))">
+        <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeDenied) ">
+            <i class="fa fa-times big"></i>
+        </div>
+        <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeCancelled) ">
+            <i class="fa fa-ban big"></i>
+        </div>
+        <div ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || ((participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged)) && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending))">
 
-            <div ng-if="participant.VideoPath == null && participant.CanEdit">
+            <div ng-if="participant.VideoPath == null && participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged)">
                 You have not uploaded any video yet.
             </div>
-            <div ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Open) && !participant.CanEdit">
+            <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) && !participant.CanEdit">
                 Video uploaded will be visible once the battle goes live
             </div>
 
-            <div ng-if="participant.VideoPath != null && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || participant.CanEdit)" class="videogular-container">
+            <div ng-if="participant.VideoPath != null && (VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || participant.CanEdit)" class="videogular-container">
 
-                <videogular vg-theme="controller.config.theme">
-                    <vg-media vg-src="participant.VideoSource" vg-tracks="">
+                <videogular vg-complete="WatchedVideo(participant.Id)" vg-theme="controller.config.theme">
+                    <vg-media vg-src="participant.VideoSource" vg-tracks="" preload="metadata">
                     </vg-media>
                     <vg-controls>
                         <vg-play-pause-button></vg-play-pause-button>
-                        <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                        <vg-time-display>{{ currentTime | date:'hh:mm:ss' }}</vg-time-display>
                         <vg-scrub-bar>
                             <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                         </vg-scrub-bar>
-                        <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+                        <vg-time-display>{{ timeLeft | date:'hh:mm:ss' }}</vg-time-display>
                         <vg-volume>
                             <vg-mute-button></vg-mute-button>
                             <vg-volume-bar></vg-volume-bar>
@@ -54,16 +68,55 @@
                 </videogular>
             </div>
         </div>
-
-        <div class="video-uploader-button" ng-if="participant.CanEdit && (participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged))">
-            <button file-upload-button
-                    id="videofile_{{VideoBattle.Id}}_{{participant.Id}}"
-                    fieldname="VideoFile"
-                    extradata='{"VideoBattleId": {{VideoBattle.Id}}, "ParticipantId" : {{participant.Id}}, "FieldName": "VideoFile"}'
-                    uploadtype="video"
-                    url="@videouploadUrl">
-                <i class="fa fa-upload"></i> Upload Video
-            </button>
+        <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending)">
+            <div class="video-uploader-button" ng-if="participant.CanEdit && (participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged))">
+                <button class="{{participant.VideoPath == null ? 'big' : ''}}" file-upload-button
+                        id="videofile_{{VideoBattle.Id}}_{{participant.Id}}"
+                        fieldname="VideoFile"
+                        extradata='{"VideoBattleId": {{VideoBattle.Id}}, "ParticipantId" : {{participant.Id}}, "FieldName": "VideoFile"}'
+                        uploadtype="video"
+                        onsuccessitem="UploadSuccess"
+                        url="@videouploadUrl">
+                    <i class="fa fa-upload"></i> Upload Video
+                </button>
+            </div>
+        </div>
+        <div class="participant-voting text-center">
+            <div ng-if="VideoBattleComplete && participant.CurrentUserVote == null && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) && !participant.CanEdit && (participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged))">
+                <div ng-switch on="VideoBattle.VideoBattleVoteType">
+                    <div ng-switch-when="@((int) VideoBattleVoteType.SelectOneWinner)">
+                        <button ng-hide="voted" ng-click="VoteBattle(VideoBattle.Id, participant.Id, 1)">SELECT AS WINNER</button>
+                    </div>
+                    <div ng-switch-when="@((int) VideoBattleVoteType.LikeDislike)">
+                    </div>
+                    <div ng-switch-when="@((int) VideoBattleVoteType.Rating)">
+                    </div>
+                </div>
+            </div>
+            <div ng-if="participant.CurrentUserVote != null">
+                <div ng-switch on="VideoBattle.VideoBattleVoteType">
+                    <div ng-switch-when="@((int) VideoBattleVoteType.SelectOneWinner)">
+                        <b><i class="fa fa-check-circle"></i> You selected {{participant.ParticipantName}} as winner</b>
+                    </div>
+                    <div ng-switch-when="@((int) VideoBattleVoteType.LikeDislike)">
+                    </div>
+                    <div ng-switch-when="@((int) VideoBattleVoteType.Rating)">
+                    </div>
+                </div>
+            </div>
+            <div class="voting-stats">
+                <div ng-switch on="VideoBattle.VideoBattleVoteType">
+                    <div ng-switch-when="@((int) VideoBattleVoteType.SelectOneWinner)">
+                        {{participant.TotalVoters}} have voted for {{participant.ParticipantName}}
+                    </div>
+                    <div ng-switch-when="@((int) VideoBattleVoteType.LikeDislike)">
+                        {{participant.RatingCountLike}} <i class="fa fa-thumbs-up"></i>. {{participant.RatingCountDislike}} <i class="fa fa-thumbs-down"></i>
+                    </div>
+                    <div ng-switch-when="@((int) VideoBattleVoteType.Rating)">
+                        Average Rating: {{participant.AverageRating}}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

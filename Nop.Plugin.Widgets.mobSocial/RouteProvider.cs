@@ -255,6 +255,13 @@ namespace Nop.Plugin.Widgets.MobSocial
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );
+            routes.MapLocalizedRoute("VideoBattleVoteBattle",
+                         "VideoBattles/VoteBattle",
+                         new { controller = "VideoBattle", action = "VoteBattle" },
+                         new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                         );
+
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             routes.MapHubs();
         }

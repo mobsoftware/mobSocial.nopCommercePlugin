@@ -44,9 +44,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         {
             if (ParticipantStatus.HasValue)
             {
-                return _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == BattleId && x.ParticipantStatus == ParticipantStatus.Value).ToList();
+                return _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == BattleId && x.ParticipantStatus == ParticipantStatus.Value).OrderBy(x => x.ParticipantStatus).ToList();
             }
-            return _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == BattleId).ToList();
+            return _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == BattleId).OrderBy(x => x.ParticipantStatus).ToList();
         }
 
 

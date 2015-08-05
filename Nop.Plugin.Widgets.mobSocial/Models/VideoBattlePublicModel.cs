@@ -23,6 +23,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public VideoBattleStatus VideoBattleStatus { get; set; }
 
+        public VideoBattleType VideoBattleType { get; set; }
+
+        public VideoBattleVoteType VideoBattleVoteType { get; set; }
+
         public bool IsEditable { get; set; }
 
         public string Title { get; set; }
@@ -38,5 +42,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public DateTime VotingLastDate { get; set; }
 
         public int CurrentUserId { get; set; }
+
+       
     }
 }
