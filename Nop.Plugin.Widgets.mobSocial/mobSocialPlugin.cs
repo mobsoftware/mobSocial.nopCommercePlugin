@@ -502,4 +502,4 @@ namespace Nop.Plugin.Widgets.MobSocial
        
     }
 }
-}
+

@@ -649,9 +649,14 @@ table.table-form .control-group{
      width:200px;
 
  }
- .artist-right-content{
+ .artist-center-content{
      float:left;
      width:700px;
+     margin-left:10px;
+ }
+  .artist-right-content{
+     float:left;
+     width:200px;
      margin-left:10px;
  }
  .message-text{

@@ -41,22 +41,29 @@
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
+    <Compile Include="Core\CustomerFavoriteSongService.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\FeatureToggle.cs" />
-    <Compile Include="Core\ICustomerFavoriteSongService.cs" />
     <Compile Include="Core\IApiUri.cs" />
+    <Compile Include="Core\ICustomerFavoriteSongService.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\IOAuthService.cs" />
+    <Compile Include="Core\MusicApiCredentials.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\MusicApiUri.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\OAuthService.cs" />
     <Compile Include="Core\IOAuthCredentials.cs" />
-    <Compile Include="Core\MusicApiUri.cs" />
-    <Compile Include="Core\MusicApiCredentials.cs" />
-    <Compile Include="Core\CustomerFavoriteSongService.cs" />
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Core\ArtistPageAPIService.cs" />
     <Compile Include="Core\ArtistPageManagerService.cs" />
     <Compile Include="Core\ArtistPagePaymentService.cs" />
     <Compile Include="Core\ArtistPageService.cs" />
-    <Compile Include="Core\CustomerFavoriteSongService.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
     <Compile Include="Core\BusinessPageCouponService.cs" />
@@ -68,7 +75,6 @@
     <Compile Include="Core\IArtistPageService.cs" />
     <Compile Include="Core\IBusinessPageCouponService.cs" />
     <Compile Include="Core\IBusinessPageService.cs" />
-    <Compile Include="Core\ICustomerFavoriteSongService.cs" />
     <Compile Include="Core\IMusicService.cs" />
     <Compile Include="Core\ISharedSongService.cs" />
     <Compile Include="Core\ISongService.cs" />
@@ -78,8 +84,6 @@
     <Compile Include="Core\IVideoBattleVideoService.cs" />
     <Compile Include="Core\IVideoBattleVoteService.cs" />
     <Compile Include="Core\IVideoGenreService.cs" />
-    <Compile Include="Core\MusicApiCredentials.cs" />
-    <Compile Include="Core\MusicApiUri.cs" />
     <Compile Include="Core\NotificationService.cs" />
     <Compile Include="Core\INotificationService.cs" />
     <Compile Include="Core\SharedSongService.cs" />
@@ -814,7 +818,7 @@
       <Project>{4f1f649c-1020-45be-a487-f416d9297ff3}</Project>
       <Name>Nop.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\mobads\Mob.Core\Mob.Core.csproj">
+    <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
     </ProjectReference>
@@ -911,22 +915,6 @@
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.60_Source\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.60_Source\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
