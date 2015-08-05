@@ -51,10 +51,12 @@
     <Compile Include="Core\MusicApiCredentials.cs" />
     <Compile Include="Core\CustomerFavoriteSongService.cs" />
     <Compile Include="Controllers\SongController.cs" />
+    <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Core\ArtistPageAPIService.cs" />
     <Compile Include="Core\ArtistPageManagerService.cs" />
     <Compile Include="Core\ArtistPagePaymentService.cs" />
     <Compile Include="Core\ArtistPageService.cs" />
+    <Compile Include="Core\CustomerFavoriteSongService.cs" />
     <Compile Include="Core\CustomerProfileService.cs" />
     <Compile Include="Core\CustomerTimelineService.cs" />
     <Compile Include="Core\BusinessPageCouponService.cs" />
@@ -66,14 +68,29 @@
     <Compile Include="Core\IArtistPageService.cs" />
     <Compile Include="Core\IBusinessPageCouponService.cs" />
     <Compile Include="Core\IBusinessPageService.cs" />
+    <Compile Include="Core\ICustomerFavoriteSongService.cs" />
     <Compile Include="Core\IMusicService.cs" />
     <Compile Include="Core\ISharedSongService.cs" />
     <Compile Include="Core\ISongService.cs" />
+    <Compile Include="Core\IVideoBattleGenreService.cs" />
+    <Compile Include="Core\IVideoBattleParticipantService.cs" />
+    <Compile Include="Core\IVideoBattleService.cs" />
+    <Compile Include="Core\IVideoBattleVideoService.cs" />
+    <Compile Include="Core\IVideoBattleVoteService.cs" />
+    <Compile Include="Core\IVideoGenreService.cs" />
+    <Compile Include="Core\MusicApiCredentials.cs" />
+    <Compile Include="Core\MusicApiUri.cs" />
     <Compile Include="Core\NotificationService.cs" />
     <Compile Include="Core\INotificationService.cs" />
     <Compile Include="Core\SharedSongService.cs" />
     <Compile Include="Core\SitemapGenerator.cs" />
     <Compile Include="Core\SongService.cs" />
+    <Compile Include="Core\VideoGenreService.cs" />
+    <Compile Include="Core\VideoBattleVoteService.cs" />
+    <Compile Include="Core\VideoBattleGenreService.cs" />
+    <Compile Include="Core\VideoBattleParticipantService.cs" />
+    <Compile Include="Core\VideoBattleService.cs" />
+    <Compile Include="Core\VideoBattleVideoService.cs" />
     <Compile Include="Data\ArtistPageManagerMap.cs" />
     <Compile Include="Data\ArtistPageMap.cs" />
     <Compile Include="Data\ArtistPagePaymentMap.cs" />
@@ -89,6 +106,13 @@
     <Compile Include="Data\CustomerTimelineMap.cs" />
     <Compile Include="Data\SongMap.cs" />
     <Compile Include="Data\SongPictureMap.cs" />
+    <Compile Include="Data\VideoBattleGenreMap.cs" />
+    <Compile Include="Data\VideoBattleMap.cs" />
+    <Compile Include="Data\VideoBattleParticipantMap.cs" />
+    <Compile Include="Data\VideoBattlePictureMap.cs" />
+    <Compile Include="Data\VideoBattleVideoMap.cs" />
+    <Compile Include="Data\VideoBattleVoteMap.cs" />
+    <Compile Include="Data\VideoGenreMap.cs" />
     <Compile Include="Domain\ArtistPage.cs" />
     <Compile Include="Domain\ArtistPageManager.cs" />
     <Compile Include="Domain\ArtistPagePayment.cs" />
@@ -104,6 +128,18 @@
     <Compile Include="Domain\CustomerTimeline.cs" />
     <Compile Include="Domain\Song.cs" />
     <Compile Include="Domain\SongPicture.cs" />
+    <Compile Include="Domain\VideoBattle.cs" />
+    <Compile Include="Domain\VideoBattleGenre.cs" />
+    <Compile Include="Domain\VideoBattleParticipant.cs" />
+    <Compile Include="Domain\VideoBattlePicture.cs" />
+    <Compile Include="Domain\VideoBattleVideo.cs" />
+    <Compile Include="Domain\VideoBattleVote.cs" />
+    <Compile Include="Domain\VideoGenre.cs" />
+    <Compile Include="Enums\VideoBattleParticipantStatus.cs" />
+    <Compile Include="Enums\VideoBattleStatus.cs" />
+    <Compile Include="Enums\VideoBattleType.cs" />
+    <Compile Include="Enums\VideoBattleVoteType.cs" />
+    <Compile Include="Enums\VideoStatus.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Hubs\MessagingHub.cs" />
     <Compile Include="Hubs\AudioVideoHub.cs" />
@@ -215,6 +251,10 @@
     <Compile Include="Models\TeamPage\TeamPageModel.cs" />
     <Compile Include="mobSocialPlugin.cs" />
     <Compile Include="mobSocialSettings.cs" />
+    <Compile Include="Models\VideoBattleModel.cs" />
+    <Compile Include="Models\VideoBattlePublicModel.cs" />
+    <Compile Include="Models\VideoParticipantBoxModel.cs" />
+    <Compile Include="Models\VideoParticipantPublicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
     <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
@@ -229,6 +269,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\angular-audio\js\angular.audio.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-datetimepicker\datetimepicker.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\angular-datetimepicker\datetimepicker.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.js">
@@ -331,8 +377,59 @@
     <Content Include="Content\mobSocial\buy-song-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\video-battles\video-battle-services.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\video-battles\video-battles.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\styles.css" />
     <Content Include="Content\styles.rtl.css" />
+    <Content Include="Content\videogular\angular-sanitize.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\angular-timer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\humanize-duration.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\moment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\theme\fonts\videogular.dev.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\theme\fonts\videogular.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\theme\videogular.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\theme\videogular.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\waypoints.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\vg-buffering.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\vg-controls.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\vg-ima-ads.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\vg-overlay-play.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\vg-poster.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\videogular.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -385,6 +482,9 @@
     <Content Include="Themes\mobSocial\Content\responsive.css" />
     <Content Include="Themes\mobSocial\Content\styles.css" />
     <Content Include="Themes\mobSocial\Content\styles.rtl.css" />
+    <Content Include="Uploads\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\mobSocial\Admin\ManageTeamPage\List.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -491,6 +591,18 @@
     </None>
     <None Include="Content\angular-file-upload-1.1.5\README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\videogular\theme\fonts\videogular.eot">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\theme\fonts\videogular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\videogular\theme\fonts\videogular.woff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Views\mobSocial\BusinessPage\Search.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -657,6 +769,19 @@
     <Content Include="Views\mobSocial\Head\PublicInfo.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\VideoBattle\VideoBattleEditor.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\VideoBattle\Single.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\VideoBattle\ParticipantBox.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\VideoBattle\Includes.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml" />
     <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -740,6 +865,10 @@
       <Private>True</Private>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="MobAds.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>MobLib\MobAds.Public.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -799,9 +928,27 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="MobLib\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- <Import Project="..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\..\Downloads\nopCommerce_3.10_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

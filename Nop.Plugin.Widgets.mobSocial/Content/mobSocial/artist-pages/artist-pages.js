@@ -24,14 +24,20 @@
             $http.post("/artists/SaveArtist", $scope.artist)
                    .success(function (data, status, headers, config) {
                        $scope.recordSaved = data.Success;
-                       if (data.PageUrl)
-                           $scope.newPageUrl = data.PageUrl;
+                       if (data.RedirectTo)
+                           window.location.href = data.RedirectTo;
                    })
                    .error(function () {
                        alert("An error occured");
                    });
         }
-
+        else {
+            if (!$scope.artistFormValid)
+                alert("Fields marked * are mandatory");
+            else
+                alert("The artist name you are trying to create is not available");
+        }
+       
     };
 }]);
 
@@ -86,7 +92,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
                      $scope.eligibleManagers = data;
                  });
     }
-
+    
     $scope.newPageManager = null;
     $scope.AddPageManager = function () {
         if ($scope.newPageManager == null)
@@ -131,7 +137,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
                    }
                });
         }
-
+       
     }
     $scope.PurchasedSongsPage = 1;
     $scope.PurchasedSongsCount = 15;
@@ -207,10 +213,10 @@ app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio', funct
                   .success(function (data, status, headers, config) {
                       $scope.songs = data;
                       $scope.songsLoaded = true;
-                  });
+        });
     }
     $scope.GetArtistSongs();
-
+   
     $scope.GotoSongEditor = function () {
         window.location.href = "/songs/SongEditor/" + $scope.artist.Id;
     }
@@ -221,7 +227,7 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     $scope.Page = 1;
     $scope.Count = 15;
     $scope.Search = "";
-
+    
     $scope.GetArtistPages = function (Page, Count, Search) {
         $http.post("/artists/MyArtistPages", { Page: Page, Count: Count, Search: Search })
                   .success(function (data, status, headers, config) {
@@ -240,7 +246,7 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     });
     $scope.$watchGroup(['Search', 'Page', 'Count'], function () {
         $scope.GetArtistPages($scope.Page, $scope.Count, $scope.Search);
-    });
+    });     
 
     $scope.DeleteArtist = function (ArtistPageId) {
         if (confirm("Are you sure you wish to delete this artist page?")) {
@@ -258,8 +264,8 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     $scope.GetPagesAsManager = function () {
         $http.post("/artists/GetPagesAsManager")
                  .success(function (data, status, headers, config) {
-                     $scope.AsManagerArtists = data.Artists;
-                 });
+                     $scope.AsManagerArtists = data.Artists;                    
+        });
     }
     $scope.GetPagesAsManager();
 

@@ -207,6 +207,54 @@ namespace Nop.Plugin.Widgets.MobSocial
               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
               );
+
+            //video battles
+            routes.MapLocalizedRoute("VideoBattles",
+                          "VideoBattles",
+                          new { controller = "VideoBattle", action = "VideoBattles" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+
+            routes.MapLocalizedRoute("VideoBattleEditor",
+                          "VideoBattles/Editor/{VideoBattleId}",
+                          new { controller = "VideoBattle", action = "VideoBattleEditor", VideoBattleId = UrlParameter.Optional },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+
+
+            routes.MapLocalizedRoute("VideoBattleSave",
+                          "VideoBattles/SaveVideoBattle",
+                          new { controller = "VideoBattle", action = "SaveVideoBattle" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+            routes.MapLocalizedRoute("VideoBattleUploadVideo",
+                          "VideoBattles/UploadVideo",
+                          new { controller = "VideoBattle", action = "UploadVideo" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+            routes.MapLocalizedRoute("VideoBattlePage",
+                          "VideoBattles/VideoBattle/{VideoBattleId}",
+                          new { controller = "VideoBattle", action = "Index" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+
+            routes.MapLocalizedRoute("VideoBattleInviteParticipants",
+                          "VideoBattles/InviteParticipants",
+                          new { controller = "VideoBattle", action = "InviteParticipants" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+            routes.MapLocalizedRoute("VideoBattleUpdateParticipantStatus",
+                          "VideoBattles/UpdateParticipantStatus",
+                          new { controller = "VideoBattle", action = "UpdateParticipantStatus" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             routes.MapHubs();
         }

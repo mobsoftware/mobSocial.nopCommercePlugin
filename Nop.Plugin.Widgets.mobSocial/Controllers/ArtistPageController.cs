@@ -302,7 +302,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     AssociatedProductId = product.Id,
                     RemoteSong = false
                 });
-        }
+            }
             return Json(model);
 
         }
@@ -737,7 +737,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                 return Json(new {
                     Success = true,
-                    PageUrl = Url.RouteUrl("ArtistPageUrl", new { SeName = artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false) })
+                    RedirectTo = Url.RouteUrl("ArtistPageUrl", new { SeName = artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false) })
                 });
             }
             else
@@ -990,7 +990,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             return Json(new { Success = true, Url = newImageUrl });
-            }
+        }
 
         [HttpPost]
         public ActionResult GetPaymentMethod(int ArtistPageId)
@@ -1009,6 +1009,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         Address = paymentMethod.Address,
                         BankName = paymentMethod.BankName,
                         City = paymentMethod.City,
+                        Country = paymentMethod.Country,
+                        PostalCode = paymentMethod.PostalCode,
                         PayableTo = paymentMethod.PayableTo,
                         PaymentTypeId = (int)paymentMethod.PaymentType,
                         PaypalEmail = paymentMethod.PaypalEmail,
@@ -1055,6 +1057,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 paymentMethod.ArtistPageId = Model.ArtistPageId;
                 paymentMethod.BankName = Model.BankName;
                 paymentMethod.City = Model.City;
+                paymentMethod.Country = Model.Country;
+                paymentMethod.PostalCode = Model.PostalCode;
                 paymentMethod.PayableTo = Model.PayableTo;
                 paymentMethod.PaymentType = (ArtistPagePayment.PagePaymentType)Model.PaymentTypeId;
                 paymentMethod.PaypalEmail = Model.PaypalEmail;
@@ -1065,8 +1069,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 else
                     _artistPagePaymentService.UpdatePaymentMethod(paymentMethod);
 
-            return Json(new { Success = true });
-        }
+                return Json(new { Success = true });
+            }
             else
             {
                 return Json(new { Success = false, Message = "Unauthorized" });

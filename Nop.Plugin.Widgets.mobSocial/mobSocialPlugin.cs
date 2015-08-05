@@ -13,13 +13,16 @@ using Nop.Services.Messages;
 using Nop.Services.Tasks;
 using Nop.Web.Framework.Menu;
 using System.Web.Configuration;
+using MobAds.Public;
+using Nop.Core;
 using System.Linq;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
-    public class mobSocialPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
-
+    public class mobSocialPlugin : MobAdsPublic, IAdminMenuPlugin
     {
+        
+
         private readonly MobSocialObjectContext _context;
         private readonly mobSocialSettings _mobSocialSettings;
         private readonly ISettingService _settingService;
@@ -28,12 +31,14 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly IMobSocialService _mobSocialService;
         private readonly ILocalizationService _localizationService;
         private readonly HttpRuntimeSection _config;
+        private readonly IStoreContext _storeContext;
 
         public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings, 
             ISettingService settingService, IMessageTemplateService messageTemplateService, 
             IScheduleTaskService scheduleTaskService,
             IMobSocialService mobSocialService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            IStoreContext storeContext) : base(storeContext, settingService)
         {
             _context = context;
             _mobSocialSettings = mobSocialSettings;
@@ -42,13 +47,13 @@ namespace Nop.Plugin.Widgets.MobSocial
             _scheduleTaskService = scheduleTaskService;
             _mobSocialService = mobSocialService;
             _localizationService = localizationService;
-            _config = new HttpRuntimeSection();//TODO Move to dependency registrar and perform injection
+            _config = new HttpRuntimeSection(); //TODO Move to dependency registrar and perform injection
         }
 
 
         #region Methods
 
-        public IList<string> GetWidgetZones()
+        public override IList<string> GetWidgetDisplayZones()
         {
             return !string.IsNullOrWhiteSpace(_mobSocialSettings.WidgetZone)
                       ? new List<string>() { 
@@ -67,7 +72,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="actionName">Action name</param>
         /// <param name="controllerName">Controller name</param>
         /// <param name="routeValues">Route values</param>
-        public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
+        public override void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
             actionName = "Configure";
             controllerName = "MobSocial";
@@ -81,7 +86,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="actionName">Action name</param>
         /// <param name="controllerName">Controller name</param>
         /// <param name="routeValues">Route values</param>
-        public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
+        public override void GetWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
             switch(widgetZone)
             {
@@ -97,7 +102,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                         };
 
                     break;
-                } 
+                }
                 case "head_html_tag" : {
                     actionName = "PublicInfo";
                     controllerName = "Head";
@@ -208,7 +213,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                 
             };
 
-
+           
             var mediaSettings = new MediaSettings()
                 {
                     AvatarPictureSize = 200
@@ -475,13 +480,26 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             var pluginNode = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Third party plugins");
-
+            
             if (pluginNode != null)
                 pluginNode.ChildNodes.Add(menuItem);
             else
                 rootNode.ChildNodes.Add(menuItem);
 
-
         }
+
+
+        public override string AppId
+        {
+            get { return "MobSocialPluginNop3.5"; }
+        }
+
+
+        public override int MobAdsClientId
+        {
+            get { return 0; }
+        }
+       
     }
+}
 }

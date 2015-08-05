@@ -6,7 +6,7 @@
 
     Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
-    
+
     Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
@@ -52,7 +52,7 @@
         <div data-ng-repeat="song in songs">
             @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
         </div>
-       
+        
     </div>
 </div>
 <div class="artist-right-content">
@@ -308,6 +308,14 @@
                                         <div class="control-group">
                                             <label class="control-label" for="city">City</label><br />
                                             <input ng-model="PaymentMethod.City" id="city" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="country">Country</label><br />
+                                            <input ng-model="PaymentMethod.Country" id="country" />
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="postalcode">Postal Code</label><br />
+                                            <input ng-model="PaymentMethod.PostalCode" id="postalcode" />
                                         </div>
                                     </div>
                                     <div ng-show="PaymentMethod.PaymentTypeId">

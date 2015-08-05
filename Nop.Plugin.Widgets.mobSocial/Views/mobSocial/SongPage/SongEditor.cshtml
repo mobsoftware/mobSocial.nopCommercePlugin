@@ -25,7 +25,7 @@
             <tr>
                 <td>
                     <div class="control-group">
-                        <label class="control-label" for="name">Song Name</label><br />
+                        <label class="control-label" for="name">Song Name <span class="required">*</span></label><br />
                         <input type="text" name="name" id="name" data-ng-model="song.Name" required />
                         <span ng-show="createSongForm.name.$invalid && createSongForm.name.$dirty">Name is required</span>
                     </div>
@@ -34,7 +34,7 @@
                         <textarea name="description" id="description" data-ng-model="song.Description"></textarea>
                     </div>                  
                     <div class="control-group">
-                        <label class="control-label" for="price">Selling Price</label><br />
+                        <label class="control-label" for="price">Selling Price <span class="required">*</span></label><br />
                         <input type="number" name="price" id="price" data-ng-model="song.Price" required />
                         <span ng-show="createSongForm.price.$invalid && createSongForm.price.$dirty">Price is required</span>
                     </div>

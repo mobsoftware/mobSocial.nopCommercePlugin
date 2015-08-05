@@ -109,14 +109,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             var product = _productService.GetProductById(song.AssociatedProductId);
             var model = new SongModel() {
-                Description = song.Description,               
+                Description = song.Description,
                 Name = song.Name,
                 RemoteEntityId = song.RemoteEntityId,
-                RemoteSourceName = song.RemoteSourceName,  
+                RemoteSourceName = song.RemoteSourceName,
                 TrackId = song.TrackId,
                 Id = song.Id,
+                PreviewUrl = string.IsNullOrEmpty(song.RemoteEntityId) ? song.PreviewUrl : _musicService.GetTrackPreviewUrl(int.Parse(song.TrackId)),
                 AffiliateUrl = affiliateUrl,
-                PreviewUrl = song.PreviewUrl,
                 AssociatedProductId = song.AssociatedProductId,
                 Published = song.Published,
                 Price = product != null ? product.Price : 0,
@@ -180,7 +180,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return InvokeHttp404();
         }
 
-        
+
         [HttpPost]
         public ActionResult GetSongPreviewUrl(string TrackId, int SongId = 0)
         {
@@ -231,7 +231,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     affiliateUrl = _musicService.GetTrackAffiliateUrl(iTrackId);
                 }
 
-             
+
                 model.Add(new {
                     Name = dbs.Name,
                     Id = dbs.Id,
@@ -239,6 +239,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     SeName = dbs.GetSeName(_workContext.WorkingLanguage.Id, true, false),
                     TrackId = dbs.TrackId,
                     AffiliateUrl = affiliateUrl,
+                    PreviewUrl = string.IsNullOrEmpty( dbs.RemoteEntityId) ? dbs.PreviewUrl : _musicService.GetTrackPreviewUrl(int.Parse( dbs.TrackId)),
+                    AssociatedProductId = dbs.AssociatedProductId,
                     RemoteSong = false
                 });
             }
@@ -299,7 +301,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [HttpPost]
         public ActionResult GetSimilarSongs(string RemoteTrackId, int Count = 5)
         {
-            
+
             var model = new List<object>();
 
             var remoteSongs = _artistPageApiService.GetSimilarSongs(RemoteTrackId, Count);
@@ -357,26 +359,31 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             break;
                         case "Description":
                             song.Description = value;
-                            break;                       
+                            break;
                         case "Published":
                         case "Price":
                             var product = _productService.GetProductById(song.AssociatedProductId);
                             if (key == "Published")
                             {
-                                song.Published = value == "1" ? true : false;
-                                product.Published = song.Published;
+                                song.Published = value == "true" ? true : false;
+                               
                             }
                             else
                             {
                                 decimal priceDecimal;
-                                if (decimal.TryParse(value, out priceDecimal))
+                                if (product!=null && decimal.TryParse(value, out priceDecimal))
                                 {
                                     //for pricing, we need to get the product 
                                     product.Price = priceDecimal;
                                     
                                 }
                             }
+                            if (product != null)
+                            {
+                                product.Published = song.Published;
                             _productService.UpdateProduct(product);
+                            }
+                              
                             break;
                         
                     }
@@ -442,7 +449,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                 };
             }
-            
+
             return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/ShareSong.cshtml", model);
 
         }
@@ -492,14 +499,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     }
 
                 }
-                return Json(new { Success = true });  
+                return Json(new { Success = true });
             }
             else
             {
                 return Json(new { Success = false, Message = "Unauthorized" });
             }
-                      
-           
+
+
         }
 
         /// <summary>
@@ -543,7 +550,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         RemoteSong = false
                     });
                 }
-                
+
             }
             var model = new {
                 Songs = smodel,
@@ -567,7 +574,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     foreach (var kv in filteredSongs)
                     {
                         var imageUrl = "";
-                       
+
                         var sharedWith = kv.Value;
 
                         var customerModel = new List<object>();
@@ -598,10 +605,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             SharedWith = customerModel
                         });
 
-                    }                    
-                 
+                    }
+
                 }
-                
+
 
             }
             var model = new {
@@ -653,6 +660,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var imageUrl = "";
 
             var product = _productService.GetProductById(song.AssociatedProductId);
+            if (product == null)
+            {
+                return Json(new { Success = false, Message = "NoAssociatedProduct" });
+            }
             foreach (var fi in files)
             {
                 Stream stream = null;
@@ -811,13 +822,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 DateUpdated = DateTime.Now
             };
             return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/SongEditor.cshtml", model);
-            }
+        }
 
         [HttpPost]
         public ActionResult SaveSong(SongModel model)
         {
             if (!ModelState.IsValid)
-            return Json(new { Success = true });
+                return Json(new { Success = true });
 
             if (!_workContext.CurrentCustomer.IsRegistered())
                 return InvokeHttp404();
@@ -899,7 +910,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return _workContext.CurrentCustomer.Id == Song.PageOwnerId //page owner
                 || _workContext.CurrentCustomer.IsAdmin(); //administrator
         }
-        
+
         [NonAction]
         Song SaveRemoteSongToDB(string songJson)
         {
@@ -907,7 +918,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return null;
 
             var song = (JObject)JsonConvert.DeserializeObject(songJson);
-           
+
             var songPage = new Song() {
                 PageOwnerId = _workContext.CurrentCustomer.IsAdmin() ? _workContext.CurrentCustomer.Id : 0,
                 Description = song["Description"].ToString(),
@@ -947,15 +958,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     };
                     _songService.InsertPicture(songPicture);
                 }
-               
+
             }
             return songPage;
-            
+
         }
 
         #endregion
 
-      
+
 
     }
 }

@@ -8,8 +8,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 {
     public interface ICustomerFavoriteSongService : IBaseService<CustomerFavoriteSong, CustomerFavoriteSong>
     {
-        List<CustomerFavoriteSong> GetTop10(int customerId);
+        List<CustomerFavoriteSong> GetTop10(int CustomerId);
 
         void UpdateFavoriteSongOrder(int favoriteSongId, int displayOrder);
+
     }
 }

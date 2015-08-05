@@ -23,7 +23,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.PayableTo).IsOptional();
             Property(x => x.Address).IsOptional();
             Property(x => x.City).IsOptional();
-
+            Property(x => x.Country).IsOptional();
+            Property(x => x.PostalCode).IsOptional();
         }
     }
 }

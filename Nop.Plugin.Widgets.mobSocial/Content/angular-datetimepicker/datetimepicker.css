@@ -1,0 +1,85 @@
+/* 
+    Created on : Jul 30, 2015, 7:39:42 PM
+    Author     : Apexol
+*/
+
+.datepicker-container
+{
+    position: relative;
+   
+}
+.datepicker-area
+{
+    position: absolute;
+    top:24px;
+    background-color: white;
+    display: none;
+    border:solid 1px #aaa;
+    
+}
+.datepicker-area table
+{
+    border:solid 1px #eee;
+}
+.datepicker-area table td
+{
+   
+    text-align: right;
+     border: solid 1px #eee;
+}
+.datepicker-area table th
+{
+    padding: 10px;
+    text-align: center;
+}
+.datepicker-area table tr.month_row, .datepicker-area table tr.time_row
+{
+    background-color: #eee;
+}
+.datepicker-area table tr.month_row td
+{
+    text-align: center;
+   
+}
+.datepicker-area table tr.time_row td
+{
+    padding:5px;
+}
+.datepicker-area table tr td a
+{
+    text-decoration: none;
+    display: block;
+     padding: 10px;
+}
+.datepicker-area table tr td.isCurrentDate
+{
+    background-color: yellow;
+}
+.datepicker-area table tr td a.disabled
+{
+    color: #ccc;
+}
+.datepicker-next, .datepicker-prev
+{
+    border:solid 1px #ccc;
+    font-weight:bold;
+    cursor: pointer;
+    padding: 0px 5px;
+}
+.datepicker-next
+{
+    float:right;
+}
+.datepicker-prev
+{
+    float:left;
+}
+
+.datepicker-close{
+    background-color: #B00;
+    outline: none;
+    border: none;
+    color: white;
+    padding: 1px 12px 2px 12px;
+    cursor:pointer;
+}

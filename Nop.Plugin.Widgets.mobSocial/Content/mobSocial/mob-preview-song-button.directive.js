@@ -29,7 +29,7 @@
                     $rootScope.audio.pause();//pause any active track
                     $rootScope.activePlayer = null;
                     $rootScope.activeTrack = null;
-                   
+
                 }
 
                 var previewUrl = "";
@@ -39,7 +39,7 @@
                     previewUrl = attr.previewurl;
                     //so we got the url lets put ngaudio in action
                     $rootScope.audio = ngAudio.load(previewUrl);
-                
+                    
                     if (!$rootScope.audio || $rootScope.audio.error) {
                         alert("Error loading sound");
                     }
@@ -52,28 +52,31 @@
                     }
                 }
                 else {
-                //first lets go to our server to get the preview url
+                    //first lets go to our server to get the preview url
                     $http.post("/songs/GetSongPreviewUrl", { TrackId: attr.trackid, SongId: attr.SongId })
-                         .success(function (data, status, headers, config) {
+                             .success(function (data, status, headers, config) {
 
-                             if (data.Success) {
+                                 if (data.Success) {
                                      previewUrl = data.PreviewUrl;
-                                 //so we got the url lets put ngaudio in action
+                                     //so we got the url lets put ngaudio in action
                                      $rootScope.audio = ngAudio.load(previewUrl);
 
                                      if (!$rootScope.audio || $rootScope.audio.error) {
-                                     alert("Error loading sound");
+                                         alert("Error loading sound");
+                                     }
+                                     else {
+                                         $rootScope.activeTrack = attr.trackid;
+                                         $rootScope.activePlayer = elem;
+                                         elem.html(pauseText);
+
+                                         $rootScope.audio.play();
+
+                                     }
                                  }
                                  else {
-                                     $rootScope.activeTrack = attr.trackid;
-                                     $rootScope.activePlayer = elem;
-                                     elem.html(pauseText);
-
-                                     $rootScope.audio.play();
-
+                                     alert("Can't play the song");
                                  }
-                             }
-                         });
+                             });
                 }
 
 

@@ -1,0 +1,87 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+@using Nop.Plugin.Widgets.MobSocial.Models
+@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattlePublicModel
+
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AppendTitleParts(Model.Title);
+
+    Html.AppendMetaDescriptionParts(Model.Description);
+    Html.AppendMetaKeywordParts(Model.Description);
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+
+
+    var json = Json.Encode(Model);
+    var videouploadUrl = "/VideoBattles/UploadVideo/";
+    var timerFormat = "{{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
+    var maxSeconds = 0;
+    var maxUnit = "";
+    var now = DateTime.UtcNow;
+    if (Model.AcceptanceLastDate > now)
+    {
+        var diffDate = Model.AcceptanceLastDate.Subtract(now);
+        maxSeconds = Convert.ToInt32(diffDate.TotalHours) * 60 * 60;
+        if (diffDate.TotalDays > 30)
+        {
+            maxUnit = "month";
+
+        }
+        else if (diffDate.TotalDays > 1)
+        {
+            maxUnit = "day";
+        }
+        else if (diffDate.TotalHours > 1)
+        {
+            maxUnit = "hour";
+        }
+        else if (diffDate.TotalMinutes > 1)
+        {
+            maxUnit = "minute";
+        }
+        else
+        {
+            maxUnit = "second";
+        }
+        maxUnit = "hour";
+    }
+    
+}
+
+<h1 class="battle-page-heading">
+    @Model.Title starts in <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval="1000">@timerFormat</timer>
+</h1>
+
+<div class="battle-participants" ng-controller="VideoBattlePageController as controller" ng-init="init(@json)">
+   
+    <span ng-repeat="participant in VideoBattle.Participants">
+       @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
+    </span>
+
+
+    <div class="participant-box pending">
+
+        <div class="participant-name">Invite to Battle</div>
+        <div class="video-placeholder">
+            <i class="fa fa-plus-circle"></i>
+            <angucomplete-alt id="customer-autocomplete"
+                              placeholder="Type name of a friend or a user..."
+                              selected-object="CustomerSelected"
+                              remote-api-handler="searchAPI"
+                              minlength="1"
+                              pause="100"
+                              image-field="PictureUrl"
+                              title-field="DisplayName"
+                              input-class="form-control form-control-small"></angucomplete-alt>
+
+            <div ng-repeat="c in challengees">
+                <div class="selected-receiver">
+                    {{c.DisplayName}}
+                    <a ng-click="RemoveChallengee(c.Id)"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="clearfix clear"></div><br />
+            <button ng-click="InviteParticipants()">Invite Now</button>
+        </div>
+    </div>
+</div>
