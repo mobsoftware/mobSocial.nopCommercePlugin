@@ -7,7 +7,7 @@
 
 .profile-left {
     display: inline-block;
-    max-width: 205px;
+    max-width: 210px;
     vertical-align: top;
 }
 
@@ -16,7 +16,7 @@
     display: inline-block;
     vertical-align: top;
     /*width: 545px; <-three column layout width*/
-    width: 697px;
+    width: 765px;
     margin: 0;
     padding: 0;
 }
@@ -31,11 +31,17 @@
 
 .profile-right {
     display: inline-block;
-    width: 175px;
+    width: 210px;
     min-height: 500px;
     vertical-align: top;
     /* border: 1px solid #cccccc; */
     text-align: center;
+}
+
+.profile-right .ad {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    min-height: initial;
 }
 
 .send-pm-box {
@@ -64,7 +70,10 @@
 
 
 
-
+.private-message-send-page a {
+    font-size: 18px;
+    color: #BC0000;
+}
 
 
 .confirm-friend-button:hover, .add-friend-button:hover {
@@ -644,38 +653,47 @@ table.table-form .control-group{
         border-bottom: none;
     }
 
- .artist-left-content{
-     float:left;
-     width:200px;
+.artist-left-content {
+    float: left;
+    width: 200px;
+    display: inline-block;
+}
 
- }
- .artist-center-content{
-     float:left;
-     width:700px;
-     margin-left:10px;
- }
-  .artist-right-content{
-     float:left;
-     width:200px;
-     margin-left:10px;
- }
- .message-text{
-       clear: both;
-  background-color: #eee;
-  padding: 10px;
- }
+.artist-center-content {
+    width: 768px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.artist-right {
+    float: right;
+    width: 205px;
+    display: inline-block;
+}
+
+    .artist-right ad {
+        margin-left: 10px;
+    }
+
+.message-text {
+    clear: both;
+    background-color: #eee;
+    padding: 10px;
+}
+
 @media screen and (max-width:480px) {
-    .artist-left-content{
-     clear:both;
-     
+    .artist-left-content {
+        clear: both;
+    }
 
- }
- .artist-right-content{
-     float:left;
-     width:100%;
-     margin-left:0;
- }
-
+    .artist-center-content {
+        float: left;
+        width: 100%;
+        margin-left: 0;
+    }
+    .artist-right-content {
+        
+    }
 }
 /***END ARTIST PAGE STYLES*/
 
@@ -818,5 +836,9 @@ span.required
     
     /* Profile Pages */
     .profile-center-content { width: 98%; }
+
+    .profile-right {
+        margin-top:10px;
+    }
 
 }

@@ -364,6 +364,16 @@ li a:hover {
   color: #980000;
 }
 
+@media (max-width: 1000px) {
+    .menu-toggle,
+    .footer-block.information div.title,
+    .footer-block.customer-service div.title,
+    .footer-block.my-account div.title,
+    .newsletter-subscribe-button,
+    .item-box .product-box-add-to-cart-button {
+        background-color: #BC0000;
+    }
+}
 
 @media  (min-width: 481px) and (max-width: 700px)  {
     .menu-toggle,
