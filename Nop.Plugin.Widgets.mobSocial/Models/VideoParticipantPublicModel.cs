@@ -20,6 +20,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public string ParticipantName { get; set; }
 
+        public string ParticipantUrl { get; set; }
+
         public int RatingCountLike { get; set; }
 
         public int RatingCountDislike { get; set; }

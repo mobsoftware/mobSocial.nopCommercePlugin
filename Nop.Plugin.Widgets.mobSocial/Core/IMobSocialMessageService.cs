@@ -23,6 +23,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
         int SendProductReviewNotification(Customer customer, List<Product> unreviewedProducts, int languageId, int storeId);
 
         int SendSomeoneSentYouASongNotification(Customer customer, int languageId, int storeId);
+
+        int SendSomeoneChallengedYouForABattleNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
+
+        int SendVideoBattleCompleteNotification(Customer customer, VideoBattle videoBattle, int languageId, int storeId);
+
+        int SendVotingReminderNotification(Customer customer, VideoBattle videoBattle, int languageId, int storeId);
+
+
     }
 
 }

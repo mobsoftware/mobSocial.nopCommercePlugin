@@ -3,15 +3,17 @@
     var videouploadUrl = "/VideoBattles/UploadVideo/";
 }
 <div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}">
-    
-    
-    <div ng-if="participant.IsLeading || participant.IsWinner" class="leader-status">
+
+
+    <div ng-if="(participant.IsLeading || participant.IsWinner) && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Complete))" class="leader-status">
         {{participant.IsWinner ? "Winner" : "Leading"}}
     </div>
     <div class="video-watched-status" ng-if="participant.VideoWatched || GlobalVotingStatus">
         <i class="fa fa-check"></i> Watched
     </div>
-    <div class="participant-name">{{participant.ParticipantName}}</div>
+    <div class="participant-name">
+        <a href="{{participant.ParticipantUrl}}">{{participant.ParticipantName}}</a> 
+    </div>
     <div class="participation-status">
         <div ng-switch on="participant.VideoBattleParticipantStatus">
             <div ng-switch-when="@((int) VideoBattleParticipantStatus.NotChallenged)">Challenger</div>
@@ -104,7 +106,7 @@
                     </div>
                 </div>
             </div>
-            <div class="voting-stats">
+            <div class="voting-stats" ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending)">
                 <div ng-switch on="VideoBattle.VideoBattleVoteType">
                     <div ng-switch-when="@((int) VideoBattleVoteType.SelectOneWinner)">
                         {{participant.TotalVoters}} have voted for {{participant.ParticipantName}}

@@ -29,5 +29,10 @@
            .error(Error);
     }
 
+    this.GetVideoBattles = function (ViewType, Page, Count, Success, Error) {
+        $http.post("/VideoBattles/GetBattles", { ViewType: ViewType, Page: Page, Count: Count })
+           .success(Success)
+           .error(Error);
+    }
 
 }]);

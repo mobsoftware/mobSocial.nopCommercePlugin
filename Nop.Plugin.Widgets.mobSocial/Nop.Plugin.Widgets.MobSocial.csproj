@@ -756,7 +756,12 @@
     <Content Include="Views\mobSocial\VideoBattle\Includes.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml" />
+    <Content Include="Views\mobSocial\VideoBattle\VideoBattleBox.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>

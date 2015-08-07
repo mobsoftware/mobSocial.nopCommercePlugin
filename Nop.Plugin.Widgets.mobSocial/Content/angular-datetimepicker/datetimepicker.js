@@ -1,6 +1,6 @@
 var dtpAppDirectives = angular.module('ngDateTimePicker', []);
 
-dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
+dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function($compile, $rootScope) {
         return {
             restrict: "E",
             scope: {
@@ -10,9 +10,14 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                 includeTime: "@"
             },
             template: "<div class='datepicker-container'><input readonly type='text' ng-focus='expandMe();' class='datepicker-input' ng-model='currentDate' /> <button class='ng-hide datepicker-close' ng-click='closeMe();'>&#10006;</button><br/></div>",
-            replace: true,            
+            replace: true,
             link: function($scope, $elem, $attr) {
-                
+                //let's add the current scope to root scope to maintain the list of all the datetime pickers on the page
+                if (!$rootScope.DateTimePickerScopes) {
+                    $rootScope.DateTimePickerScopes = [];
+                }
+                $rootScope.DateTimePickerScopes.push($scope);
+
                 $scope.calLock = false;
                 if ($scope.minDate === undefined) {
                     $scope._minDate = new Date(1970, 1, 1);
@@ -215,7 +220,12 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                     $compile($scope._datePickerArea)($scope);
                 };
                 
-                $scope.expandMe = function(){
+                $scope.expandMe = function () {
+                    //we should close the other opened pickers before opening a new one
+                    for (var i = 0; i < $rootScope.DateTimePickerScopes.length; i++) {
+                        $rootScope.DateTimePickerScopes[i].closeMe();
+                    }
+
                     $elem.find("button").removeClass("ng-hide");
                     $scope.reloadDate();
                     $scope._datePickerArea.css("display", "block").addClass("datepicker-expanded");

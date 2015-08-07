@@ -1,5 +1,7 @@
 ﻿@using Nop.Plugin.Widgets.MobSocial.Models
 @{
+    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/angular-sanitize.min.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/videogular.min.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/vg-controls.min.js");

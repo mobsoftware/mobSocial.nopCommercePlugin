@@ -739,12 +739,18 @@ table.table-form .control-group{
     background-color: rgba(0,0,0,0.7);
     font-weight: bold;
     padding: 5px;
-    width: 150px;
+    width: 50%;
     border-radius: 5px;
     margin: auto;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
     box-shadow: inset 0px 2px 1px rgba(0,0,0,0.5);
+}
+.battle-description {
+        padding: 10px;
+    margin: 10px;
+    border-top: dotted 1px #ccc;
+    border-bottom: dotted 1px #ccc;
 }
 h1.battle-page-heading {
         text-align: center;
@@ -779,6 +785,32 @@ h1.battle-page-heading {
     background-color: #006400;
     color: white;
     font-weight: bold;
+}
+.video-battle-box {
+        width: 45%;
+    border: solid 1px #eee;
+    float: left;
+    margin: 2%;
+}
+@media screen and (max-width:600px) {
+    .video-battle-box {
+        width: 95%;
+    }
+ }
+.video-battle-box .title {
+        font-size: 25px;
+    text-align: center;
+    margin: 5px 0px;
+}
+.video-battle-box .posted-by {
+    text-align: center;
+    color: gray;
+}
+.video-battle-box .timer {
+        text-align: center;
+    margin: 15px 0;
+    font-weight: bold;
+    color: red;
 }
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/

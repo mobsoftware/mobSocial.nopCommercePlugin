@@ -21,7 +21,6 @@ app.controller("VideoBattleEditorController", [
 	        $scope.VideoBattle.AcceptanceLastDate = parseJsonDate(model.AcceptanceLastDate);
 	        $scope.VideoBattle.VotingLastDate = parseJsonDate(model.VotingLastDate);
 
-
 	    };
 
 
@@ -30,22 +29,28 @@ app.controller("VideoBattleEditorController", [
 	    });
 
 	    $scope.processing = false;
-	    $scope.saved = false;
+	    $scope.recordSaved = false;
 	    $scope.SaveVideoBattle = function () {
 	        if ($scope.FormValid) {
-
+                //check for dates
+                if ($scope.VideoBattle.VotingLastDate < $scope.VideoBattle.AcceptanceLastDate) {
+                    alert("Voting Last Date must be greater than Acceptance Last Date");
+                    return;
+                }
 	            $scope.processing = true;
 
 	            VideoBattleService.SaveVideoBattle($scope.VideoBattle,
 					function (data) {
 					    $scope.processing = false;
 					    if (data.Success) {
-					        $scope.saved = true;
+					        $scope.recordSaved = true;
 					        if (data.RedirectTo) {
 					            window.location.href = data.RedirectTo;
 					        } else {
 
 					        }
+					    } else {
+					        alert(data.Message);
 					    }
 					},
 					function (data) {
@@ -184,6 +189,9 @@ app.controller("VideoBattlePageController", [
 	    $scope.processingAcceptOrDenyInvite = false;
 	    $scope.inviteAccepted = false;
 	    $scope.AcceptOrDenyInvite = function (VideoBattleId, ParticipantStatus) {
+            if (!confirm('Are you sure?')) {
+                return;
+            }
 	        $scope.processingAcceptOrDenyInvite = true;
 	        VideoBattleService.UpdateParticipantStatus(VideoBattleId, ParticipantStatus,
 				function (data) {
@@ -222,4 +230,30 @@ app.controller("VideoBattlePageController", [
 	    };
 
 	}
+]);
+
+app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
+    function ($scope, VideoBattleService) {
+        $scope.Page = 1;
+        $scope.Count = 15;
+        $scope.processing = false;
+
+        $scope.GetVideoBattles = function (ViewType) {
+            $scope.processing = true;
+            $scope.VideoBattles = [];
+            VideoBattleService.GetVideoBattles(ViewType, $scope.Page, $scope.Count,
+                function(data) {
+                    if (data.Success) {
+                        $scope.VideoBattles = data.VideoBattles;
+                        $scope.loaded = true;
+                    }
+                    $scope.processing = false;
+                },
+                function (data) {
+                    $scope.processing = false;
+                    alert("error occurred");
+                });
+        };
+        $scope.GetVideoBattles('open'); //load default view
+    }
 ]);

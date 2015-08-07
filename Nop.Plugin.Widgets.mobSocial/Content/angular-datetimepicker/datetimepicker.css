@@ -15,6 +15,7 @@
     background-color: white;
     display: none;
     border:solid 1px #aaa;
+    z-index: 5;
     
 }
 .datepicker-area table

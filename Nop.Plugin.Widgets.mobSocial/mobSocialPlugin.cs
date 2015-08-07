@@ -474,7 +474,62 @@ namespace Nop.Plugin.Widgets.MobSocial
                 IsActive = true,
                 LimitedToStores = false
             };
+
             _messageTemplateService.InsertMessageTemplate(someoneSentYouASongNotification);
+
+
+            var someoneChallengedForBattleNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.SomeoneChallengedYouForBattleNotification",
+                Subject = "%Challenger.FirstName% challenged you for a video battle!",
+                Body = "<a href=\"%Store.URL%\">Log in</a> to accept the challege.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(someoneChallengedForBattleNotification);
+
+            var videoBattleCompleteNotificationToParticipants = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleCompleteNotificationToParticipants",
+                Subject = "%VideoBattle.Title% is complete!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to see the winner.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+            _messageTemplateService.InsertMessageTemplate(videoBattleCompleteNotificationToParticipants);
+
+            var videoBattleCompleteNotificationToVoters = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleCompleteNotificationToVoters",
+                Subject = "%VideoBattle.Title% is complete!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to see the winner.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+            _messageTemplateService.InsertMessageTemplate(videoBattleCompleteNotificationToVoters);
+
+            var someoneInvitedYouToVote = new MessageTemplate() {
+                Name = "MobSocial.SomeoneInvitedYouToVoteNotification",
+                Subject = "You have been invited to judge %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to judge the participants.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+            _messageTemplateService.InsertMessageTemplate(someoneInvitedYouToVote);
+
+            var voteReminderNotification = new MessageTemplate() {
+                Name = "MobSocial.VoteReminderNotification",
+                Subject = "You have been invited to judge %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to judge the participants.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(voteReminderNotification);
 
 
         }

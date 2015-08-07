@@ -1,1 +1,59 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+
+}
+@section left
+{
+    @Html.Action("PublicInfo", "SocialNetworkNavigation", new { widgetZone = "account_navigation_after" })
+}
+
+<div ng-controller="VideoBattlesPageController">
+    <div class="page-title">
+        <h1>Video Battles</h1>
+    </div>
+    <div class="page-body">
+        <div id="tabs">
+            <ul class="resp-tabs-list">
+                <li ng-click="GetVideoBattles('open')"><i class="fa fa-info"></i> Open Battles</li>
+                <li ng-click="GetVideoBattles('challenged')"><i class="fa fa-info"></i> Open Challenges</li>
+                <li ng-click="GetVideoBattles('my')"><i class="fa fa-user"></i> My Battles</li>
+                <li ng-click="GetVideoBattles('closed')"><i class="fa fa-user"></i> Closed Battles</li>
+            </ul>
+            <div class="resp-tabs-container">
+                @for (var i = 0; i < 4; i++)
+                {
+                    <div>
+                        @if (i == 2)
+                        {
+                            <div style="text-align: right;margin-bottom:10px">
+                                <a href="@Url.RouteUrl("VideoBattleEditor")"><i class="fa fa-plus-circle"></i> Create Video Battle</a>
+                            </div>
+                        }
+                        <div class="battles-container">
+                            <div ng-if="processing">
+                                Loading battles...
+                            </div>
+                            <div ng-if="VideoBattles.length == 0 && loaded" class="text-center">
+                                No video battles found
+                            </div>
+                            <div ng-repeat="VideoBattle in VideoBattles">
+                                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/VideoBattleBox.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+            </div>
+            
+        </div>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tabs").easyResponsiveTabs();
+    });
+</script>

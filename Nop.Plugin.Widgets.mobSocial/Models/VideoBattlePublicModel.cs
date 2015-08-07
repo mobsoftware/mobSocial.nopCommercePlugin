@@ -41,7 +41,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public DateTime VotingLastDate { get; set; }
 
-        public int CurrentUserId { get; set; }
+        public int RemainingSeconds { get; set; }
+
+        public string ChallengerName { get; set; }
+
+        public string ChallengerUrl { get; set; }
+
+        public string VideoBattleUrl { get; set; }
 
        
     }

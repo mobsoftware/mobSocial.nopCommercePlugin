@@ -14,7 +14,7 @@
 
     var json = Json.Encode(Model);
     var videouploadUrl = "/VideoBattles/UploadVideo/";
-    var timerFormat = "{{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
+    var timerFormat = "{{ddays}} day{{daysS}} {{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
     var maxSeconds = 0;
     var maxUnit = "";
     var now = DateTime.UtcNow;
@@ -29,13 +29,10 @@
         endDate = Model.VotingLastDate;
     }
     var diffDate = endDate.Subtract(now);
+    
     maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
-    if (diffDate.TotalDays > 30)
-    {
-        maxUnit = "month";
-
-    }
-    else if (diffDate.TotalDays > 1)
+   
+    if (diffDate.TotalDays > 1)
     {
         maxUnit = "day";
     }
@@ -51,7 +48,6 @@
     {
         maxUnit = "second";
     }
-    maxUnit = "hour";
 
 }
 
@@ -90,6 +86,9 @@
             <div ng-switch-when="@((int) VideoBattleStatus.Complete)">Battle Completed</div>
         </div>
     </div>
+    <div class="battle-description">
+        {{VideoBattle.Description}}
+    </div>
     <span ng-repeat="participant in VideoBattle.Participants">
         @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
     </span>
@@ -120,7 +119,7 @@
                 </div>
 
                 <div ng-if="invited" class="text-center">
-                    Successfully invited selected users to battle.
+                    Successfully invited selected users to battle.<br/> <a href="" onclick="window.location.reload()">Refresh</a> page to see their status.
                 </div>
                 <div class="clearfix clear"></div><br />
                 <button ng-if="!processing" ng-click="InviteParticipants()">Invite Now</button>
