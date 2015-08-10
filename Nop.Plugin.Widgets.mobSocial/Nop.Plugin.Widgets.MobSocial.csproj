@@ -130,9 +130,11 @@
     <Compile Include="Domain\VideoBattleView.cs" />
     <Compile Include="Domain\VideoBattleVote.cs" />
     <Compile Include="Domain\VideoGenre.cs" />
+    <Compile Include="Enums\NotificationRecipientType.cs" />
     <Compile Include="Enums\VideoBattleParticipantStatus.cs" />
     <Compile Include="Enums\VideoBattleStatus.cs" />
     <Compile Include="Enums\VideoBattleType.cs" />
+    <Compile Include="Enums\VideoBattleVoteStatus.cs" />
     <Compile Include="Enums\VideoBattleVoteType.cs" />
     <Compile Include="Enums\VideoStatus.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
@@ -302,6 +304,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\fileupload.directive.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\poweredby.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\share-song-button.directive.js">

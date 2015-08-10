@@ -53,8 +53,6 @@
 
 <h1 class="battle-page-heading">
     @Model.Title
-
-
 </h1>
 
     @if (maxSeconds > 0)
@@ -76,6 +74,8 @@
         </div>
     }
 
+@Html.Widget("video_inline")
+
 <div class="battle-participants" ng-controller="VideoBattlePageController as controller" ng-init="init(@json)">
     <div class="battle-status">
         <div ng-switch on="VideoBattle.VideoBattleStatus">
@@ -93,11 +93,14 @@
         @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
     </span>
 
-    @if (Model.IsEditable)
+    @if ((Model.IsEditable || Model.IsParticipant) && (Model.VideoBattleStatus == VideoBattleStatus.Pending || Model.VideoBattleStatus == VideoBattleStatus.Open))
     {
+        var isVoterInvite = (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.IsParticipant) || (Model.VideoBattleStatus == VideoBattleStatus.Open) && (Model.IsEditable || Model.IsParticipant);
+        
+        
         <div class="participant-box pending">
 
-            <div class="participant-name">Invite to Battle</div>
+            <div class="participant-name">Invite to @(isVoterInvite ? "Vote" : "Battle")</div>
             <div class="video-placeholder">
                 <i class="fa fa-plus-circle big"></i>
                 <angucomplete-alt id="customer-autocomplete"
@@ -119,10 +122,10 @@
                 </div>
 
                 <div ng-if="invited" class="text-center">
-                    Successfully invited selected users to battle.<br/> <a href="" onclick="window.location.reload()">Refresh</a> page to see their status.
+                    Successfully invited selected users to @(isVoterInvite ? "vote on this battle" : "battle").<br/> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
                 </div>
                 <div class="clearfix clear"></div><br />
-                <button ng-if="!processing" ng-click="InviteParticipants()">Invite Now</button>
+                <button ng-if="!processing" ng-click="@(isVoterInvite ? "InviteVoters()" : "InviteParticipants()")">Invite Now</button>
             </div>
         </div>
     }

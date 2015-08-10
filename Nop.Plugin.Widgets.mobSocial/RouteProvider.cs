@@ -255,6 +255,12 @@ namespace Nop.Plugin.Widgets.MobSocial
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );
+            routes.MapLocalizedRoute("VideoBattleInviteVoters",
+                         "VideoBattles/InviteVoters",
+                         new { controller = "VideoBattle", action = "InviteVoters" },
+                         new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                         );
             routes.MapLocalizedRoute("VideoBattleUpdateParticipantStatus",
                           "VideoBattles/UpdateParticipantStatus",
                           new { controller = "VideoBattle", action = "UpdateParticipantStatus" },

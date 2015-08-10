@@ -35,4 +35,10 @@
            .error(Error);
     }
 
+    this.InviteVoters = function (VideoBattleId, ParticipantIds, Success, Error) {
+        $http.post("/VideoBattles/InviteVoters", { VideoBattleId: VideoBattleId, VoterIds: ParticipantIds })
+           .success(Success)
+           .error(Error);
+    }
+
 }]);

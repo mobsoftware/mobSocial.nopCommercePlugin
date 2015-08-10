@@ -73,7 +73,7 @@ app.controller("VideoBattlePageController", [
 	        theme: rootUrl + "/Plugins/Widgets.mobSocial/Content/videogular/theme/videogular.css",
 	        preload: "metadata",
 	        plugins: {
-	            poster: "http://www.videogular.com/assets/images/videogular.png"
+	            poster: "/Plugins/Widgets.mobSocial/Content/mobsocial/poweredby.jpg"
 	        }
 	    };
 	    $scope.GlobalVotingStatus = false; //keeps track if user has voted for at least a video and then shows watched on all participants
@@ -81,6 +81,7 @@ app.controller("VideoBattlePageController", [
 	    $scope.init = function (model) {
 	        $scope.VideoBattle = model;
 
+	       
 	        //setup sources for each video
 	        for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
 	            var participant = $scope.VideoBattle.Participants[i];
@@ -95,7 +96,33 @@ app.controller("VideoBattlePageController", [
 	                participant.VideoWatched = true;
 	                $scope.GlobalVotingStatus = true;
 	            }
+
+	            //an extra object as well
+	            participant.extras = {};
 	        }
+
+	        //randomly select any participant to include extra data
+	        //TODO: select participant using some algorithm
+
+	        //setup a timeout to check if the ajax request is complete for ad loading or not
+	        var ajaxNotComplete = setInterval(function () {
+	            if (window["mobads_video_inline"] == null) {
+	                return;
+	            }
+	            
+                //clear now
+	            clearInterval(ajaxNotComplete);
+
+	            var randomPartIndex = Math.floor(Math.random() * ($scope.VideoBattle.Participants.length));
+	            
+	            if (randomPartIndex < $scope.VideoBattle.Participants.length) {
+	                eval("$scope._video_inline_data = " + window["mobads_video_inline"]);
+	                $scope.ExtraData = $scope._video_inline_data;
+
+	                $scope.VideoBattle.Participants[randomPartIndex].extras = $scope.ExtraData;
+	            }
+	        }, 500);
+	        
 	        $scope.CheckVotingEligibility();
 	    };
 
@@ -124,10 +151,12 @@ app.controller("VideoBattlePageController", [
 	    }
 
 	    $scope.VoteBattle = function (VideoBattleId, ParticipantId, VoteValue, Success, Error) {
+	        
 	        VideoBattleService.VoteBattle(VideoBattleId,
 	            ParticipantId,
 	            VoteValue,
                 function (data) {
+                    
                     if (data.Success) {
                         for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
                             var participant = $scope.VideoBattle.Participants[i];
@@ -167,25 +196,46 @@ app.controller("VideoBattlePageController", [
 	    }
 
 	    $scope.invited = false;
-	    $scope.InviteParticipants = function () {
-	        var participantIds = [];
-	        for (var i = 0; i < $scope.challengees.length; i++) {
-	            participantIds.push($scope.challengees[i].Id);
-	        }
-	        $scope.processing = true;
-	        VideoBattleService.InviteParticipants($scope.VideoBattle.Id,
-				participantIds,
-				function (data) { //success
-				    $scope.processing = false;
-				    $scope.invited = true;
-				    //clear the challengees
-				    $scope.challengees.splice(0, $scope.challengees.length);
+        $scope.InviteParticipants = function() {
+            var participantIds = [];
+            for (var i = 0; i < $scope.challengees.length; i++) {
+                participantIds.push($scope.challengees[i].Id);
+            }
+            $scope.processing = true;
+            VideoBattleService.InviteParticipants($scope.VideoBattle.Id,
+                participantIds,
+                function(data) { //success
+                    $scope.processing = false;
+                    $scope.invited = true;
+                    //clear the challengees
+                    $scope.challengees.splice(0, $scope.challengees.length);
 
-				}, function () { //error
-				    $scope.processing = false;
-				    alert("Error occured");
-				});
-	    }
+                }, function() { //error
+                    $scope.processing = false;
+                    alert("Error occured");
+                });
+        };
+
+        $scope.InviteVoters = function () {
+            var participantIds = [];
+            for (var i = 0; i < $scope.challengees.length; i++) {
+                participantIds.push($scope.challengees[i].Id);
+            }
+            $scope.processing = true;
+            VideoBattleService.InviteVoters($scope.VideoBattle.Id,
+                participantIds,
+                function (data) { //success
+                    $scope.processing = false;
+                    $scope.invited = true;
+                    //clear the challengees
+                    $scope.challengees.splice(0, $scope.challengees.length);
+
+                }, function () { //error
+                    $scope.processing = false;
+                    alert("Error occured");
+                });
+        };
+
 	    $scope.processingAcceptOrDenyInvite = false;
 	    $scope.inviteAccepted = false;
 	    $scope.AcceptOrDenyInvite = function (VideoBattleId, ParticipantStatus) {

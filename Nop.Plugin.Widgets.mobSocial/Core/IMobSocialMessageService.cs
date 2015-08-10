@@ -4,6 +4,7 @@ using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Controllers;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -26,9 +27,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         int SendSomeoneChallengedYouForABattleNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
 
-        int SendVideoBattleCompleteNotification(Customer customer, VideoBattle videoBattle, int languageId, int storeId);
+        int SendVideoBattleCompleteNotification(Customer customer, VideoBattle videoBattle, NotificationRecipientType recipientType, int languageId, int storeId);
 
-        int SendVotingReminderNotification(Customer customer, VideoBattle videoBattle, int languageId, int storeId);
+        int SendVotingReminderNotification(Customer sender, Customer receiver, VideoBattle videoBattle, int languageId, int storeId);
 
 
     }

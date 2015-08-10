@@ -21,6 +21,7 @@ using Nop.Services.Orders;
 using Nop.Core.Domain.Shipping;
 using System.Text;
 using System.Web;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Core
 {
@@ -299,14 +300,75 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
 
-        public int SendVideoBattleCompleteNotification(Customer customer, VideoBattle videoBattle, int languageId, int storeId)
+        public int SendVideoBattleCompleteNotification(Customer customer, VideoBattle videoBattle, NotificationRecipientType recipientType, int languageId, int storeId)
         {
-            throw new NotImplementedException();
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate(recipientType == NotificationRecipientType.Participant ? "MobSocial.VideoBattleCompleteNotificationToParticipants" : "MobSocial.VideoBattleCompleteNotificationToVoters", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, customer);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = customer.Email;
+            var toName = customer.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
 
-        public int SendVotingReminderNotification(Customer customer, VideoBattle videoBattle, int languageId, int storeId)
+        public int SendVotingReminderNotification(Customer sender, Customer receiver, VideoBattle videoBattle, int languageId, int storeId)
         {
-            throw new NotImplementedException();
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.SomeoneInvitedYouToVoteNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
+                new Token("Inviter.Name", sender.GetFullName() , true)
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, sender);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = receiver.Email;
+            var toName = receiver.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
 
         #endregion

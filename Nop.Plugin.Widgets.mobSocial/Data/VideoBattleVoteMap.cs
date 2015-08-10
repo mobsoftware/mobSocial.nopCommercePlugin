@@ -19,6 +19,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.UserId);
             Property(x => x.VideoBattleId);
             Property(x => x.VoteValue);
+            Property(x => x.VoteStatus);
 
         }
     }

@@ -46,7 +46,6 @@
             <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) && !participant.CanEdit">
                 Video uploaded will be visible once the battle goes live
             </div>
-
             <div ng-if="participant.VideoPath != null && (VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || participant.CanEdit)" class="videogular-container">
 
                 <videogular vg-complete="WatchedVideo(participant.Id)" vg-theme="controller.config.theme">
@@ -65,7 +64,13 @@
                         </vg-volume>
                         <vg-fullscreen-button></vg-fullscreen-button>
                     </vg-controls>
-
+                    <vg-ima-ads vg-network="participant.extras.network"
+                                vg-unit-path="participant.extras.unitPath"
+                                vg-companion="participant.extras.companion"
+                                vg-companion-size="participant.extras.companionSize"
+                                vg-ad-tag-url="participant.extras.adTagUrl"
+                                vg-skip-button="participant.extras.skipButton">
+                    </vg-ima-ads>
                     <vg-poster vg-url='controller.config.plugins.poster'></vg-poster>
                 </videogular>
             </div>

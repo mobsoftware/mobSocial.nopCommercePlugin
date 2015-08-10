@@ -49,6 +49,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public string VideoBattleUrl { get; set; }
 
-       
+        public bool IsParticipant { get; set; }
     }
 }

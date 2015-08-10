@@ -250,6 +250,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             // do not remove core locales
 
             RemoveScheduledTask("Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
+            RemoveScheduledTask("Nop.Plugin.Widgets.MobSocial.Tasks.VideoBattlesStatusUpdateTask, Nop.Plugin.Widgets.MobSocial");
 
             //settings
             _settingService.DeleteSetting<mobSocialSettings>();

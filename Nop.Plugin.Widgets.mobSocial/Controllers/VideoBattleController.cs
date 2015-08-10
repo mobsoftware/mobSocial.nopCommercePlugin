@@ -165,7 +165,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             //only open video battles can be viewed or ofcourse if I am the owner, I should be able to see it open or closed right?
-            var canOpen = CanEdit(videoBattle);
+            var canOpen = videoBattle.VideoBattleStatus != VideoBattleStatus.Pending || CanEdit(videoBattle);
 
             //still can't open, let's see if it's a participant accessting the page
             if (!canOpen)
@@ -254,7 +254,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             foreach (var participant in model.Participants)
             {
                 //first the global voting status for this participant
-                var votesForParticipant = videoBattleVotes.Where(x => x.ParticipantId == participant.Id);
+                var votesForParticipant = videoBattleVotes.Where(x => x.ParticipantId == participant.Id && x.VoteStatus == VideoBattleVoteStatus.Voted);
 
                 //total votes
                 var forParticipant = votesForParticipant as IList<VideoBattleVote> ?? votesForParticipant.ToList();
@@ -277,7 +277,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
                 //now vote of logged in user
-                var currentUserVote = videoBattleCurrentUserVotes.FirstOrDefault(x => x.ParticipantId == participant.Id);
+                var currentUserVote = videoBattleCurrentUserVotes.FirstOrDefault(x => x.ParticipantId == participant.Id && x.VoteStatus == VideoBattleVoteStatus.Voted);
                 if (currentUserVote != null)
                 {
                     //stores the value of vote for logged in user if any
@@ -317,6 +317,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     winnerOrLeader.IsWinner = true;
                 }
             }
+            //because we use same interface to inviting participants and voters, its necessary that we show the invite box to participants (who have accepted) as well
+            //ofcourse with Invite Voters title
+            model.IsParticipant = model.Participants.Where(x => x.VideoBattleParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted).Select(x => x.Id).Contains(_workContext.CurrentCustomer.Id);
             model.IsEditable = CanEdit(videoBattle);
             return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/Single.cshtml", model);
         }
@@ -457,6 +460,62 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult InviteVoters(int VideoBattleId, IList<int> VoterIds)
+        {
+            //first check if it's a valid videobattle and the logged in user can actually invite
+            var videoBattle = _videoBattleService.GetById(VideoBattleId);
+            if (videoBattle == null)
+                return Json(new { Success = false, Message = "Invalid battle"});
+
+            var participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId,
+                VideoBattleParticipantStatus.ChallengeAccepted);
+
+            var model = new List<object>();
+            if (CanInvite(videoBattle) || participants.Select(x => x.ParticipantId).Contains(_workContext.CurrentCustomer.Id))
+            {
+                var votes = _videoBattleVoteService.GetVideoBattleVotes(VideoBattleId, null);
+
+                foreach (var vi in VoterIds)
+                {
+                    var vote = votes.FirstOrDefault(x => x.UserId == vi);
+                    if (vote == null)
+                    {
+                        vote = new VideoBattleVote()
+                        {
+                            VideoBattleId = VideoBattleId,
+                            ParticipantId = _workContext.CurrentCustomer.Id,
+                            VoteStatus = VideoBattleVoteStatus.NotVoted,
+                            VoteValue = 0,
+                            UserId = vi
+                        };
+                        _videoBattleVoteService.Insert(vote);
+
+                        //send the notification
+                        var receiver = _customerService.GetCustomerById(vi);
+                        _mobsocialMessageService.SendVotingReminderNotification(_workContext.CurrentCustomer, receiver,
+                            videoBattle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+                         model.Add(new {
+                            Success = true,
+                            VoterId = vi,
+                        });
+                    }
+                    else
+                    {
+                        model.Add(new {
+                            Success = false,
+                            VoterId = vi,
+                            Message = "Already invited"
+                        });
+                    }
+                }
+
+                return Json(model);
+                
+            }
+            return Json(new { Success = false, Message = "Unauthorized" });
+        }
         [Authorize]
         [HttpPost]
         public ActionResult UpdateParticipantStatus(int VideoBattleId, VideoBattleParticipantStatus VideoBattleParticipantStatus)
@@ -680,12 +739,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 //check if the logged in user has voted for this battle
                 var videoBattleVotes = _videoBattleVoteService.GetVideoBattleVotes(VideoBattleId, customer.Id);
 
-                var voteCount = videoBattleVotes.Count(x => x.UserId == customer.Id && x.ParticipantId == ParticipantId);
+                var vote = videoBattleVotes.FirstOrDefault(x => x.UserId == customer.Id && x.ParticipantId == ParticipantId);
 
-                if (voteCount == 1)
+                if (vote != null)
                 {
-                    //already voted for this participant, not it can't be changed
-                    return Json(new { Success = false, Message = "Already Voted" });
+                    //so there is a vote. is the voting status notvoted then only he'll be able to vote
+                    if (vote.VoteStatus == VideoBattleVoteStatus.Voted)
+                        //already voted for this participant, not it can't be changed
+                        return Json(new {Success = false, Message = "Already Voted"});
+                    
+                    //yep...this vote might be from somebody who has been invited and not voted yet. let's do it.
+                    vote.VoteValue = VoteValue;
+                    vote.VoteStatus = VideoBattleVoteStatus.Voted;
+                    _videoBattleVoteService.Update(vote);
                 }
                 else
                 {
@@ -694,7 +760,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     {
                         case VideoBattleVoteType.SelectOneWinner:
                             //if one winner was to be selected, we'll have to check if user has not voted for some other participant
-                            if (videoBattleVotes.Count > 0)
+                            if (videoBattleVotes.Count(x => x.VoteStatus == VideoBattleVoteStatus.Voted) > 0)
                             {
                                 //yes, user has voted for some other participant so he can't vote for this participant now.
                                 return Json(new { Success = false, Message = "Already Voted" });
@@ -710,12 +776,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         ParticipantId = ParticipantId,
                         UserId = customer.Id,
                         VideoBattleId = videoBattle.Id,
-                        VoteValue = VoteValue
+                        VoteValue = VoteValue,
+                        VoteStatus = VideoBattleVoteStatus.Voted
                     };
                     _videoBattleVoteService.Insert(videoBattleVote);
-                    return Json(new { Success = true });
+                   
 
                 }
+                return Json(new { Success = true });
             }
             else
             {
