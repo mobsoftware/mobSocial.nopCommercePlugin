@@ -4,7 +4,7 @@
 }
 <div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}">
 
-
+    <div class="participant-box-overlay" ng-show="IsVideoPlaying && PlayingParticipant !== participant"><i class="fa fa-lock"></i></div>
     <div ng-if="(participant.IsLeading || participant.IsWinner) && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Complete))" class="leader-status">
         {{participant.IsWinner ? "Winner" : "Leading"}}
     </div>
@@ -12,7 +12,7 @@
         <i class="fa fa-check"></i> Watched
     </div>
     <div class="participant-name">
-        <a href="{{participant.ParticipantUrl}}">{{participant.ParticipantName}}</a> 
+        <a href="{{participant.ParticipantUrl}}">{{participant.ParticipantName}}</a>
     </div>
     <div class="participation-status">
         <div ng-switch on="participant.VideoBattleParticipantStatus">
@@ -48,7 +48,7 @@
             </div>
             <div ng-if="participant.VideoPath != null && (VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || participant.CanEdit)" class="videogular-container">
 
-                <videogular vg-complete="WatchedVideo(participant.Id)" vg-theme="controller.config.theme">
+                <videogular vg-player-ready="PlayerReady(participant, $API)" vg-complete="WatchedVideo(participant.Id)" vg-update-state="UpdateState(participant, $state)" vg-theme="controller.config.theme">
                     <vg-media vg-src="participant.VideoSource" vg-tracks="" preload="metadata">
                     </vg-media>
                     <vg-controls>
@@ -73,6 +73,7 @@
                     </vg-ima-ads>
                     <vg-poster vg-url='controller.config.plugins.poster'></vg-poster>
                 </videogular>
+                
             </div>
         </div>
         <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending)">

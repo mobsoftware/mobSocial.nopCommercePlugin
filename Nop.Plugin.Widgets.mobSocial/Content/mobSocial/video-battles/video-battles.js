@@ -6,7 +6,8 @@ app.requires = app.requires.concat(["ngSanitize",
 			"com.2fdevs.videogular",
 			"com.2fdevs.videogular.plugins.controls",
 			"com.2fdevs.videogular.plugins.overlayplay",
-			"com.2fdevs.videogular.plugins.poster", 'timer']);
+			"com.2fdevs.videogular.plugins.poster",
+            "com.2fdevs.videogular.plugins.imaads", 'timer']);
 
 app.controller("VideoBattleEditorController", [
 	"$scope", "VideoBattleService", function ($scope, VideoBattleService) {
@@ -77,6 +78,8 @@ app.controller("VideoBattlePageController", [
 	        }
 	    };
 	    $scope.GlobalVotingStatus = false; //keeps track if user has voted for at least a video and then shows watched on all participants
+	    $scope.IsVideoPlaying = false;
+        $scope.PlayingParticipant = null;
 
 	    $scope.init = function (model) {
 	        $scope.VideoBattle = model;
@@ -96,9 +99,10 @@ app.controller("VideoBattlePageController", [
 	                participant.VideoWatched = true;
 	                $scope.GlobalVotingStatus = true;
 	            }
-
+	            
 	            //an extra object as well
 	            participant.extras = {};
+	            participant.adextras = false;
 	        }
 
 	        //randomly select any participant to include extra data
@@ -106,10 +110,10 @@ app.controller("VideoBattlePageController", [
 
 	        //setup a timeout to check if the ajax request is complete for ad loading or not
 	        var ajaxNotComplete = setInterval(function () {
-	            if (window["mobads_video_inline"] == null) {
+	            if (window["mobads_video_inline"] == null) { //why not $window injection? TODO:
 	                return;
 	            }
-	            
+	           
                 //clear now
 	            clearInterval(ajaxNotComplete);
 
@@ -118,12 +122,36 @@ app.controller("VideoBattlePageController", [
 	            if (randomPartIndex < $scope.VideoBattle.Participants.length) {
 	                eval("$scope._video_inline_data = " + window["mobads_video_inline"]);
 	                $scope.ExtraData = $scope._video_inline_data;
-
-	                $scope.VideoBattle.Participants[randomPartIndex].extras = $scope.ExtraData;
+	                var participant = $scope.VideoBattle.Participants[randomPartIndex];
+                    //assign temporarily to another variable because otherwise it'll start immediately
+	                participant.adextras = $scope.ExtraData;
+	               
 	            }
 	        }, 500);
 	        
 	        $scope.CheckVotingEligibility();
+	    };
+
+        //initialize api for interations
+	    $scope.PlayerReady = function (participant, API) {
+	        participant.API = API;
+	    };
+
+	    $scope.UpdateState = function (participant, state) {
+            //show the ad when the video is played
+	       if (state === "play") {
+               if (participant.adextras) {
+                   participant.extras = participant.adextras;
+               }
+               $scope.IsVideoPlaying = true;
+	           $scope.PlayingParticipant = participant;
+
+	       }
+	       else if (state === "stop") {
+	           $scope.IsVideoPlaying = false;
+	           $scope.PlayingParticipant = null;
+	       }
+           
 	    };
 
 	    $scope.WatchedVideo = function (participantId) {
