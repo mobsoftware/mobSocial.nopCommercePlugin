@@ -37,9 +37,23 @@
                         <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" >Voting Last Date</label><br/>
+                        <label class="control-label">Voting Last Date</label><br/>
                         <datetimepicker current-date="VideoBattle.VotingLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
 
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Battle Type</label><br/>
+                        <select data-ng-model="VideoBattle.VideoBattleType">
+                            <option value="@((int) VideoBattleType.Open)">@(VideoBattleType.Open)</option>
+                            <option value="@((int) VideoBattleType.InviteOnly)">@(VideoBattleType.InviteOnly)</option>
+                            <option value="@((int) VideoBattleType.SignUp)">@(VideoBattleType.SignUp)</option>
+                        </select>
+
+                    </div>
+                    <div class="control-group" ng-show="VideoBattle.VideoBattleType == @((int)VideoBattleType.Open)">
+                        <label class="control-label" for="maxcount">Maximum Participants Allowed</label><br />
+                        <input type="number" min="0" step="1" name="MaximumParticipantCount" id="maxcount" data-ng-model="VideoBattle.MaximumParticipantCount" />
+                        <em>0 for no limit</em>
                     </div>
                     <div class="control-group">
                         <div ng-show="processing">

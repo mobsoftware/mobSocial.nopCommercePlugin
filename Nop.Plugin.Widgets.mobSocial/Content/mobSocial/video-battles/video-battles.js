@@ -139,7 +139,11 @@ app.controller("VideoBattlePageController", [
 
 	    $scope.UpdateState = function (participant, state) {
             //show the ad when the video is played
-	       if (state === "play") {
+	        if (state === "play") {
+                if ($scope.IsVideoPlaying) {
+                    participant.API.stop();
+                    alert("Another video is already playing.");
+                }
                if (participant.adextras) {
                    participant.extras = participant.adextras;
                }
@@ -242,6 +246,17 @@ app.controller("VideoBattlePageController", [
                     $scope.processing = false;
                     alert("Error occured");
                 });
+        };
+
+        $scope.JoinBattle = function() {
+            VideoBattleService.JoinBattle($scope.VideoBattle.Id,
+             function (data) { //success
+                
+
+             }, function () { //error
+                 $scope.processing = false;
+                 alert("Error occured");
+             });
         };
 
         $scope.InviteVoters = function () {

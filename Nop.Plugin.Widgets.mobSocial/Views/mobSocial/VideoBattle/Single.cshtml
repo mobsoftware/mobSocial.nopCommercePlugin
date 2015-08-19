@@ -29,9 +29,9 @@
         endDate = Model.VotingLastDate;
     }
     var diffDate = endDate.Subtract(now);
-    
+
     maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
-   
+
     if (diffDate.TotalDays > 1)
     {
         maxUnit = "day";
@@ -55,24 +55,24 @@
     @Model.Title
 </h1>
 
-    @if (maxSeconds > 0)
-    {
-        <div class="battle-timer">
-            @if (Model.VideoBattleStatus == VideoBattleStatus.Pending)
-            {
-                <text>
-                    Starts in
-                </text>
-            }
-            else
-            {
-                <text>
-                    Ends in
-                </text>
-            }
-            <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval="1000">@timerFormat</timer>
-        </div>
-    }
+@if (maxSeconds > 0)
+{
+    <div class="battle-timer">
+        @if (Model.VideoBattleStatus == VideoBattleStatus.Pending)
+        {
+            <text>
+                Starts in
+            </text>
+        }
+        else
+        {
+            <text>
+                Ends in
+            </text>
+        }
+        <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval="1000">@timerFormat</timer>
+    </div>
+}
 
 @Html.Widget("video_inline")
 
@@ -89,13 +89,53 @@
     <div class="battle-description">
         {{VideoBattle.Description}}
     </div>
+    @{
+        if (Model.VideoBattleType != VideoBattleType.InviteOnly && !Model.IsParticipant && !Model.IsEditable)
+        {
+            <div>
+                @if (Model.IsUserLoggedIn)
+                {
+
+                    <a class="button-primary button-1" ng-click="JoinBattle(VideoBattle.Id)">Join Battle</a>
+
+                }
+                else
+                {
+                    <a class="button-primary button-1" href="@Url.RouteUrl("login", new { ReturnUrl = Url.RouteUrl("VideoBattlePage", new { VideoBattleId = Model.Id }) })">Join Battle</a>
+
+                }
+            </div>
+        }
+
+    }
     <span ng-repeat="participant in VideoBattle.Participants">
         @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
     </span>
+    @{
+        var showInvitationBox = true;
 
-    @if ((Model.IsEditable || Model.IsParticipant) && (Model.VideoBattleStatus == VideoBattleStatus.Pending || Model.VideoBattleStatus == VideoBattleStatus.Open))
+        //battle host or participant
+        showInvitationBox = (Model.IsEditable || Model.IsParticipant);
+
+        //battle is not closed?
+        showInvitationBox = showInvitationBox && (Model.VideoBattleStatus == VideoBattleStatus.Pending || Model.VideoBattleStatus == VideoBattleStatus.Open);
+
+        if (Model.VideoBattleType == VideoBattleType.InviteOnly)
+        {
+            //only host can invite
+            showInvitationBox = showInvitationBox && Model.IsEditable;
+        }
+        else if (Model.VideoBattleType == VideoBattleType.Open)
+        {
+            //anybody can invite so battle should only be pending for invitations to work
+            showInvitationBox = showInvitationBox && (Model.VideoBattleStatus == VideoBattleStatus.Pending);
+        }
+
+    }
+    @if (showInvitationBox)
     {
-        var isVoterInvite = (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.IsParticipant) || (Model.VideoBattleStatus == VideoBattleStatus.Open) && (Model.IsEditable || Model.IsParticipant);
+        var isVoterInvite = (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.IsParticipant && Model.VideoBattleType != VideoBattleType.Open)
+            || (Model.VideoBattleStatus == VideoBattleStatus.Open) && (Model.IsEditable || Model.IsParticipant);
 
 
         <div class="participant-box pending">
@@ -122,9 +162,9 @@
                 </div>
 
                 <div ng-if="invited" class="text-center">
-                    Successfully invited selected users to @(isVoterInvite ? "vote on this battle" : "battle").<br/> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
+                    Successfully invited selected users to @(isVoterInvite ? "vote on this battle" : "battle").<br /> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
                 </div>
-                <div class="clearfix clear"></div><br/>
+                <div class="clearfix clear"></div><br />
                 <button ng-if="!processing" ng-click="@(isVoterInvite ? "InviteVoters()" : "InviteParticipants()")">Invite Now</button>
             </div>
         </div>

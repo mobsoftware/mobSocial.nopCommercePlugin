@@ -12,6 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Enums
         Challenged = 10,
         ChallengeAccepted = 20,
         ChallengeDenied = 30,
-        ChallengeCancelled = 40
+        ChallengeCancelled = 40,
+        SignedUp = 50
     }
 }

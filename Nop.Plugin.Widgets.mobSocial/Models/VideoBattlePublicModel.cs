@@ -50,5 +50,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public string VideoBattleUrl { get; set; }
 
         public bool IsParticipant { get; set; }
+
+        public int MaximumParticipantCount { get; set; }
+
+        public bool IsUserLoggedIn { get; set; }
     }
 }

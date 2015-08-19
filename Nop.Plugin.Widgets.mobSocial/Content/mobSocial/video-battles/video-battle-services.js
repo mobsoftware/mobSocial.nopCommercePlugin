@@ -41,4 +41,10 @@
            .error(Error);
     }
 
+    this.JoinBattle = function (VideoBattleId, Success, Error) {
+        $http.post("/VideoBattles/JoinBattle", { VideoBattleId: VideoBattleId})
+           .success(Success)
+           .error(Error);
+    }
+
 }]);

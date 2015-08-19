@@ -80,8 +80,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 Title = videoBattle.Title,
                 Id = videoBattle.Id,
                 VideoBattleStatus = videoBattle.VideoBattleStatus,
-                VideoBattleType = videoBattle.VideoBattleType,
-                VideoBattleVoteType = videoBattle.VideoBattleVoteType
+                VideoBattleType = VideoBattleId == 0 ? VideoBattleType.InviteOnly : videoBattle.VideoBattleType,
+                VideoBattleVoteType = videoBattle.VideoBattleVoteType,
+                MaximumParticipantCount = VideoBattleId == 0 ? 10 : videoBattle.MaximumParticipantCount
             };
             return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/VideoBattleEditor.cshtml", model);
         }
@@ -113,6 +114,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             videoBattle.VideoBattleType = Model.VideoBattleType;
             videoBattle.VideoBattleVoteType = VideoBattleVoteType.SelectOneWinner; // Model.VideoBattleVoteType;
             videoBattle.Title = Model.Title;
+            videoBattle.MaximumParticipantCount = (int)Math.Round((decimal)Model.MaximumParticipantCount);
+
             if (Model.Id == 0)
             {
                 videoBattle.AcceptanceLastDate = Model.AcceptanceLastDate.ToUniversalTime();
@@ -165,7 +168,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             //only open video battles can be viewed or ofcourse if I am the owner, I should be able to see it open or closed right?
-            var canOpen = videoBattle.VideoBattleStatus != VideoBattleStatus.Pending || CanEdit(videoBattle);
+            var canOpen = videoBattle.VideoBattleStatus != VideoBattleStatus.Pending || CanEdit(videoBattle) || videoBattle.VideoBattleType == VideoBattleType.Open;
 
             //still can't open, let's see if it's a participant accessting the page
             if (!canOpen)
@@ -213,7 +216,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 VideoBattleType = videoBattle.VideoBattleType,
                 VideoBattleVoteType = videoBattle.VideoBattleVoteType,
                 Id = VideoBattleId,
-                RemainingSeconds = GetRemainingSeconds(videoBattle)
+                RemainingSeconds = GetRemainingSeconds(videoBattle),
+                MaximumParticipantCount = videoBattle.MaximumParticipantCount,
+                IsUserLoggedIn = _workContext.CurrentCustomer.IsRegistered()
             };
 
             //add challenger as participant
@@ -460,6 +465,61 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult JoinBattle(int VideoBattleId)
+        {
+            //first check if it's a valid videobattle and the logged in user can actually invite
+            var videoBattle = _videoBattleService.GetById(VideoBattleId);
+
+           
+            if (videoBattle == null)
+                return InvokeHttp404();
+
+            //only open or signup battle types can be joined directly. it should not be open in status either way
+            if (videoBattle.VideoBattleType != VideoBattleType.InviteOnly && videoBattle.VideoBattleStatus == VideoBattleStatus.Pending)
+            {
+               //get the current customer id
+                var customer = _workContext.CurrentCustomer;
+
+                //get the participation status
+                var status = _videoBattleParticipantService.GetParticipationStatus(VideoBattleId, customer.Id);
+                //get all participants to get count of total, we can't allow if count reaches a max limit for open battles
+                if (videoBattle.VideoBattleType == VideoBattleType.Open)
+                {
+                    var participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId, VideoBattleParticipantStatus.ChallengeAccepted);
+                    if (participants.Count == videoBattle.MaximumParticipantCount)
+                    {
+                        //nop, can't join now
+                        return Json(new { Success = false, Message = "No more participants allowed" });
+                    }
+                   
+                }
+
+                if (status == VideoBattleParticipantStatus.NotChallenged)
+                {
+                    //not challenged so it's a valid request
+                    var videoBattleParticipant = new VideoBattleParticipant
+                    {
+                        ParticipantId = customer.Id,
+                        VideoBattleId = VideoBattleId,
+                        LastUpdated = DateTime.UtcNow,
+                        //depending on the type of battle, the challenge is either accepted directly or marked for approval
+                        ParticipantStatus = videoBattle.VideoBattleType == VideoBattleType.Open
+                            ? VideoBattleParticipantStatus.ChallengeAccepted
+                            : VideoBattleParticipantStatus.SignedUp
+                    };
+
+
+                    //and save it
+                    _videoBattleParticipantService.Insert(videoBattleParticipant);
+                    return Json(new {Success = true, Status = videoBattleParticipant.ParticipantStatus});
+
+                }
+            }
+            return Json(new {Success = false, Message = "No more participants allowed"});
+
+        }
         [HttpPost]
         [Authorize]
         public ActionResult InviteVoters(int VideoBattleId, IList<int> VoterIds)
@@ -831,7 +891,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             if (VideoBattle == null)
                 return false;
-            return _workContext.CurrentCustomer.Id == VideoBattle.ChallengerId && VideoBattle.VideoBattleStatus == VideoBattleStatus.Open //page owner
+            return (_workContext.CurrentCustomer.Id == VideoBattle.ChallengerId && VideoBattle.VideoBattleStatus == VideoBattleStatus.Open) //page owner
+                || VideoBattle.VideoBattleType == VideoBattleType.Open
                 || _workContext.CurrentCustomer.IsAdmin(); //administrator
         }
 

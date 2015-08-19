@@ -2,7 +2,7 @@
 @{
     var videouploadUrl = "/VideoBattles/UploadVideo/";
 }
-<div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}">
+<div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType == @((int) VideoBattleType.Open) && participant.VideoPath == null">
 
     <div class="participant-box-overlay" ng-show="IsVideoPlaying && PlayingParticipant !== participant"><i class="fa fa-lock"></i></div>
     <div ng-if="(participant.IsLeading || participant.IsWinner) && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Complete))" class="leader-status">
@@ -21,7 +21,7 @@
             <div ng-switch-when="@((int) VideoBattleParticipantStatus.ChallengeAccepted)">Challenge Accepted</div>
             <div ng-switch-when="@((int) VideoBattleParticipantStatus.ChallengeDenied)">Challenge Denied</div>
             <div ng-switch-when="@((int) VideoBattleParticipantStatus.ChallengeCancelled)">Challenge Cancelled</div>
-
+            <div ng-switch-when="@((int) VideoBattleParticipantStatus.SignedUp)">Signed Up for Challenge</div>
         </div>
 
     </div>
@@ -37,6 +37,9 @@
         </div>
         <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeCancelled) ">
             <i class="fa fa-ban big"></i>
+        </div>
+        <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.SignedUp)">
+            <i class="fa fa-clock-o big"></i>
         </div>
         <div ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || ((participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged)) && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending))">
 
@@ -73,7 +76,7 @@
                     </vg-ima-ads>
                     <vg-poster vg-url='controller.config.plugins.poster'></vg-poster>
                 </videogular>
-                
+
             </div>
         </div>
         <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending)">
