@@ -13,7 +13,7 @@
         <div ng-switch on="">
             <div ng-switch on="VideoBattle.VideoBattleStatus">
                 <div ng-switch-when="@((int) VideoBattleStatus.Pending)">
-                    
+
                     Starting in <timer countdown="VideoBattle.RemainingSeconds" max-time-unit="day" interval="1000">@timerFormat</timer>
                 </div>
                 <div ng-switch-when="@((int) VideoBattleStatus.Locked)">Battle Locked</div>
@@ -24,5 +24,10 @@
                 <div ng-switch-when="@((int) VideoBattleStatus.Complete)">Battle Completed</div>
             </div>
         </div>
+    </div>
+    <div ng-if="VideoBattle.IsEditable" class="text-center video-battle-box-actions">
+        <button ng-click="EditVideoBattle(VideoBattle.Id)"><i class="fa fa-pencil"></i> Edit</button>
+        <button ng-click="DeleteVideoBattle(VideoBattle.Id)"><i class="fa fa-times"></i> Delete</button>
+
     </div>
 </div>

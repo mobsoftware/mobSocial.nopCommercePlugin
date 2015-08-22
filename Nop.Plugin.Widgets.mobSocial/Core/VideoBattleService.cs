@@ -133,9 +133,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
                     var participants = _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == battle.Id);
 
                     //all the participants who have not accepted will now be changed to denied
-                    foreach (var participant in participants.Where(x => x.ParticipantStatus == VideoBattleParticipantStatus.Challenged))
+                    foreach (var participant in participants.Where(x => x.ParticipantStatus == VideoBattleParticipantStatus.Challenged || x.ParticipantStatus == VideoBattleParticipantStatus.SignedUp))
                     {
-                        participant.ParticipantStatus = VideoBattleParticipantStatus.ChallengeDenied;
+                        participant.ParticipantStatus = participant.ParticipantStatus == VideoBattleParticipantStatus.SignedUp ? VideoBattleParticipantStatus.ChallengeCancelled : VideoBattleParticipantStatus.ChallengeDenied;
                         _videoBattleParticipantRepository.Update(participant);
                     }
 

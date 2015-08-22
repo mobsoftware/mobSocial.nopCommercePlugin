@@ -646,6 +646,7 @@ table.table-form .control-group{
     text-align: center;
     margin: 10px;
     position: relative;
+    border: solid 2px transparent;
 }
 .participant-box-overlay {
     position: absolute;
@@ -692,7 +693,7 @@ table.table-form .control-group{
     border: dashed 2px #ccc;
     
 }
-.participant-box.participant-0 {
+.participant-box.participant-0 , .participant-box.participant-50 {
     border: solid 2px #ccc;
 }
 .participant-box.participant-20 {
@@ -733,6 +734,10 @@ table.table-form .control-group{
 .participant-box .video-placeholder .fa.big {
     font-size: 13em;
     color: #faa;
+}
+.participant-box .video-placeholder .fa.big.gray {
+    font-size: 20em;
+    color: #eed;
 }
 .participant-box .angucomplete-holder {
     width: 80%;
@@ -805,6 +810,9 @@ h1.battle-page-heading {
     border: solid 1px #eee;
     float: left;
     margin: 2%;
+}
+.video-battle-box .video-battle-box-actions button {
+    margin: 5px;
 }
 @media screen and (max-width:600px) {
     .video-battle-box {

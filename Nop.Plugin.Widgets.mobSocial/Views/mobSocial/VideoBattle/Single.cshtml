@@ -51,9 +51,18 @@
 
 }
 
+
 <h1 class="battle-page-heading">
     @Model.Title
 </h1>
+@if (Model.IsEditable)
+{
+    <div ng-controller="VideoBattlesPageController" class="text-center">
+        <button ng-click="EditVideoBattle(@Model.Id)"><i class="fa fa-pencil"></i> Edit</button>
+        <button ng-click="DeleteVideoBattle(@Model.Id)"><i class="fa fa-times"></i> Delete</button>
+    </div>
+}
+
 
 @if (maxSeconds > 0)
 {
@@ -87,16 +96,38 @@
         </div>
     </div>
     <div class="battle-description">
-        {{VideoBattle.Description}}
+        <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
+        
+       
+        @if (Model.VideoBattleStatus == VideoBattleStatus.Open)
+        {
+            <br />
+            <br />
+            <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
+        }
     </div>
     @{
         if (Model.VideoBattleType != VideoBattleType.InviteOnly && !Model.IsParticipant && !Model.IsEditable)
         {
-            <div>
+            <div class="text-center">
                 @if (Model.IsUserLoggedIn)
                 {
 
-                    <a class="button-primary button-1" ng-click="JoinBattle(VideoBattle.Id)">Join Battle</a>
+
+                    if (Model.VideoBattleType == VideoBattleType.Open)
+                    {
+                        <div ng-show="joinBattleProcessed"><i class="fa fa-check-circle"></i> You have successfully joined the battle. <a onclick="window.location.reload()">Refresh</a> page to upload video</div>
+                        <a class="button-primary button-1" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Join Battle</a>
+                    }
+                    else
+                    {
+                        <div ng-show="joinBattleProcessed">
+                            <i class="fa fa-check-circle"></i> You have successfully signed up for the battle. <a onclick="window.location.reload()">Refresh</a> page to see your approval status
+                        </div>
+                        <a class="button-primary button-1" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Signup For Battle</a>
+                    }
+
+
 
                 }
                 else

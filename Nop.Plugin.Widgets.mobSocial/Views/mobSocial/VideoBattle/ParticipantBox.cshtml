@@ -2,7 +2,7 @@
 @{
     var videouploadUrl = "/VideoBattles/UploadVideo/";
 }
-<div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType == @((int) VideoBattleType.Open) && participant.VideoPath == null">
+<div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && participant.VideoPath == null">
 
     <div class="participant-box-overlay" ng-show="IsVideoPlaying && PlayingParticipant !== participant"><i class="fa fa-lock"></i></div>
     <div ng-if="(participant.IsLeading || participant.IsWinner) && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Complete))" class="leader-status">
@@ -25,22 +25,34 @@
         </div>
 
     </div>
+
     <div class="video-placeholder">
-        <div ng-if="participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged)">
-            <div class="video-battle-action-buttons" ng-hide="processingAcceptOrDenyInvite || inviteAccepted">
-                <button ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeAccepted))">Accept</button>
-                <button ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeDenied))">Reject</button>
-            </div>
+        <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged) ">
+            <i class="fa fa-question-circle big gray"></i>
         </div>
         <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeDenied) ">
-            <i class="fa fa-times big"></i>
+            <i class="fa fa-times big gray"></i>
         </div>
         <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeCancelled) ">
-            <i class="fa fa-ban big"></i>
+            <i class="fa fa-ban big gray"></i>
         </div>
         <div ng-if="participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.SignedUp)">
-            <i class="fa fa-clock-o big"></i>
+            <i class="fa fa-clock-o big gray"></i>
         </div>
+        <div ng-if="participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged)">
+            <div class="video-battle-action-buttons" ng-hide="processingAcceptOrDenyInvite || inviteAccepted">
+                <button ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeAccepted), participant.Id)">Accept</button>
+                <button ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeDenied), participant.Id)">Reject</button>
+            </div>
+        </div>
+
+        <div ng-if="VideoBattle.IsEditable && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.SignedUp)">
+            <div class="video-battle-action-buttons" ng-hide="processingAcceptOrDenyInvite || inviteAccepted">
+                <button ajax-disable ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeAccepted), participant.Id)">Approve</button>
+                <button ajax-disable ng-click="AcceptOrDenyInvite(VideoBattle.Id, @((int) VideoBattleParticipantStatus.ChallengeCancelled), participant.Id)">Reject</button>
+            </div>
+        </div>
+
         <div ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || ((participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged)) && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending))">
 
             <div ng-if="participant.VideoPath == null && participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged)">

@@ -81,6 +81,10 @@ app.controller("VideoBattlePageController", [
 	    $scope.IsVideoPlaying = false;
         $scope.PlayingParticipant = null;
 
+        $scope.renderHtml = function (html_code) {
+            return $sce.trustAsHtml(html_code);
+        };
+
 	    $scope.init = function (model) {
 	        $scope.VideoBattle = model;
 
@@ -150,12 +154,15 @@ app.controller("VideoBattlePageController", [
                $scope.IsVideoPlaying = true;
 	           $scope.PlayingParticipant = participant;
 
-	       }
-	       else if (state === "stop") {
-	           $scope.IsVideoPlaying = false;
-	           $scope.PlayingParticipant = null;
-	       }
-           
+	        }
+	        else if (state === "pause") {
+	            $scope.IsVideoPlaying = false;
+	        }
+	        else if (state === "stop") {
+	            $scope.IsVideoPlaying = false;
+	            $scope.PlayingParticipant = null;
+	        }
+
 	    };
 
 	    $scope.WatchedVideo = function (participantId) {
@@ -248,13 +255,18 @@ app.controller("VideoBattlePageController", [
                 });
         };
 
-        $scope.JoinBattle = function() {
+        $scope.joinBattleProcessed = false;
+        $scope.JoinBattle = function () {
             VideoBattleService.JoinBattle($scope.VideoBattle.Id,
              function (data) { //success
-                
+                 if (data.Success) {
+                     $scope.joinBattleProcessed = true;
+
+                 } else {
+                     alert(data.Message);
+                 }
 
              }, function () { //error
-                 $scope.processing = false;
                  alert("Error occured");
              });
         };
@@ -281,12 +293,12 @@ app.controller("VideoBattlePageController", [
 
 	    $scope.processingAcceptOrDenyInvite = false;
 	    $scope.inviteAccepted = false;
-	    $scope.AcceptOrDenyInvite = function (VideoBattleId, ParticipantStatus) {
+	    $scope.AcceptOrDenyInvite = function (VideoBattleId, ParticipantStatus, ParticipantId) {
             if (!confirm('Are you sure?')) {
                 return;
             }
 	        $scope.processingAcceptOrDenyInvite = true;
-	        VideoBattleService.UpdateParticipantStatus(VideoBattleId, ParticipantStatus,
+	        VideoBattleService.UpdateParticipantStatus(VideoBattleId, ParticipantStatus, ParticipantId,
 				function (data) {
 				    if (data.Success) {
 				        $scope.processingAcceptOrDenyInvite = false;
@@ -348,5 +360,32 @@ app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
                 });
         };
         $scope.GetVideoBattles('open'); //load default view
+
+        $scope.EditVideoBattle = function(VideoBattleId) {
+            window.location.href = "/VideoBattles/Editor/" + VideoBattleId;
+        }
+
+        $scope.DeleteVideoBattle = function (VideoBattleId) {
+            if (!confirm("Are you sure you wish to delete this battle?")) {
+                return;
+            }
+
+            VideoBattleService.DeleteVideoBattle(VideoBattleId, function(data) {
+                if (data.Success) {
+                    for (var i = 0; i < $scope.VideoBattles.length; i++) {
+                        if ($scope.VideoBattles[i].Id === VideoBattleId) {
+                            $scope.VideoBattles.splice(i, 1);
+                            break;
+                        }
+                    }
+                } else {
+                    alert(data.Message);
+                }
+            }, function(data) {
+                alert("Error ocurred");
+            });
+
+        }
+
     }
 ]);

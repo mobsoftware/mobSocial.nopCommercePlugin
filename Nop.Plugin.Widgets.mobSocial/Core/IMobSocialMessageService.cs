@@ -31,7 +31,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
         int SendVotingReminderNotification(Customer sender, Customer receiver, VideoBattle videoBattle, int languageId, int storeId);
 
+        int SendVideoBattleSignupNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
 
+        int SendVideoBattleJoinNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
+
+        int SendVideoBattleSignupAcceptedNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
     }
 
 }
