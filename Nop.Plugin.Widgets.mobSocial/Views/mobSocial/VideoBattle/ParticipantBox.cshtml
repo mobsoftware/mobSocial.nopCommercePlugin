@@ -4,7 +4,7 @@
 }
 <div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && participant.VideoPath == null">
 
-    <div class="participant-box-overlay" ng-show="IsVideoPlaying && PlayingParticipant !== participant"><i class="fa fa-lock"></i></div>
+    <div class="participant-box-overlay" ng-show="(IsVideoPlaying) && PlayingParticipant !== participant"><i class="fa fa-lock"></i></div>
     <div ng-if="(participant.IsLeading || participant.IsWinner) && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Complete))" class="leader-status">
         {{participant.IsWinner ? "Winner" : "Leading"}}
     </div>
@@ -63,15 +63,13 @@
             </div>
             <div ng-if="participant.VideoPath != null && (VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || participant.CanEdit)" class="videogular-container">
 
-                <videogular vg-player-ready="PlayerReady(participant, $API)" vg-complete="WatchedVideo(participant.Id)" vg-update-state="UpdateState(participant, $state)" vg-theme="controller.config.theme">
+                <videogular vg-player-ready="PlayerReady(participant, $API)" vg-complete="WatchedVideo(participant.Id)" vg-update-state="UpdateState(participant, $state)" vg-theme="controller.config.theme" vg-responsive="true">
                     <vg-media vg-src="participant.VideoSource" vg-tracks="" preload="metadata">
                     </vg-media>
                     <vg-controls>
                         <vg-play-pause-button></vg-play-pause-button>
                         <vg-time-display>{{ currentTime | date:'hh:mm:ss' }}</vg-time-display>
-                        <vg-scrub-bar>
-                            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                        </vg-scrub-bar>
+                        <span>/</span>
                         <vg-time-display>{{ timeLeft | date:'hh:mm:ss' }}</vg-time-display>
                         <vg-volume>
                             <vg-mute-button></vg-mute-button>

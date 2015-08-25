@@ -1,7 +1,26 @@
 ﻿"use strict";
+
+
+//some generic functions before controllers
+//TODO: MOVE THESE FUNCTIONS TO SEPARATE FILE
+//parses json date
 function parseJsonDate(value) {
     return new Date(parseInt(value.replace("/Date(", "").replace(")/", ""), 10));
 }
+//check if an element is in view area
+function isScrolledIntoView(elem) {
+    var $elem = $(elem);
+    var $window = $(window);
+
+    var docViewTop = $window.scrollTop();
+    var docViewBottom = docViewTop + $window.height();
+
+    var elemTop = $elem.offset().top;
+    var elemBottom = elemTop + $elem.height();
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+}
+
 app.requires = app.requires.concat(["ngSanitize",
 			"com.2fdevs.videogular",
 			"com.2fdevs.videogular.plugins.controls",
@@ -79,16 +98,24 @@ app.controller("VideoBattlePageController", [
 	    };
 	    $scope.GlobalVotingStatus = false; //keeps track if user has voted for at least a video and then shows watched on all participants
 	    $scope.IsVideoPlaying = false;
-        $scope.PlayingParticipant = null;
+	    $scope.PlayingParticipant = null;
 
+        //for rendering html for description
         $scope.renderHtml = function (html_code) {
             return $sce.trustAsHtml(html_code);
         };
 
-	    $scope.init = function (model) {
-	        $scope.VideoBattle = model;
+        //constructor...huh...yes
+        $scope.init = function (model) {
+            //initialize the battle
+            $scope.VideoBattle = model;
+            //currently visible page. initialize to zero
+            $scope.VisiblePage = 0;
+            //total count to be shown per page
+            $scope.VisiblePerPage = 1;
+            //the participants which are visible for current page
+	        $scope.VisibleParticipants = [];
 
-	       
 	        //setup sources for each video
 	        for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
 	            var participant = $scope.VideoBattle.Participants[i];
@@ -107,7 +134,9 @@ app.controller("VideoBattlePageController", [
 	            //an extra object as well
 	            participant.extras = {};
 	            participant.adextras = false;
-	        }
+	        }//end of loop
+
+
 
 	        //randomly select any participant to include extra data
 	        //TODO: select participant using some algorithm
@@ -134,7 +163,42 @@ app.controller("VideoBattlePageController", [
 	        }, 500);
 	        
 	        $scope.CheckVotingEligibility();
-	    };
+
+            //load the data initially
+	        $scope.LoadNextPage();
+
+            //also setup a scroller so that next page is loaded as soon as load more comes into view
+            //jquery dependency
+            jQuery(window).scroll(function() {
+                if (isScrolledIntoView(".pagination-load-more")) {
+                   
+                    $scope.LoadNextPage();
+                    $scope.$apply();
+                }
+            });
+        };
+
+        $scope.LoadNextPage = function () {
+           
+            //let's increase the page number
+            $scope.VisiblePage++;
+           
+            var start = $scope.VisibleParticipants.length;
+            var end = start + $scope.VisiblePerPage;
+
+            if (start === $scope.VideoBattle.Participants.length) {
+                //done with all the participants data
+                return;
+            }
+            if (end > $scope.VideoBattle.Participants.length) {
+                end = $scope.VideoBattle.Participants.length;
+            }
+            
+            for (var i = start; i < end; i++) {
+                $scope.VisibleParticipants.push($scope.VideoBattle.Participants[i]);
+            }
+           
+        }
 
         //initialize api for interations
 	    $scope.PlayerReady = function (participant, API) {
@@ -142,25 +206,28 @@ app.controller("VideoBattlePageController", [
 	    };
 
 	    $scope.UpdateState = function (participant, state) {
+	       
             //show the ad when the video is played
 	        if (state === "play") {
-                if ($scope.IsVideoPlaying) {
+	            
+                if ($scope.IsVideoPlaying && participant !== $scope.PlayingParticipant) {
                     participant.API.stop();
                     alert("Another video is already playing.");
+                    return;
                 }
-               if (participant.adextras) {
+               if (participant.adextras && !participant.extras.network && !$scope.IsAdPlaying) {
                    participant.extras = participant.adextras;
+                   $scope.IsAdPlaying = true;
                }
+               
                $scope.IsVideoPlaying = true;
 	           $scope.PlayingParticipant = participant;
-
+	          
 	        }
-	        else if (state === "pause") {
+	        else if (state === "stop" && !$scope.IsAdPlaying) {
+	          
 	            $scope.IsVideoPlaying = false;
-	        }
-	        else if (state === "stop") {
-	            $scope.IsVideoPlaying = false;
-	            $scope.PlayingParticipant = null;
+	            $scope.IsAdPlaying = false;
 	        }
 
 	    };
@@ -176,7 +243,9 @@ app.controller("VideoBattlePageController", [
 	            }
 	        }
 	        $scope.CheckVotingEligibility();
-
+            //video played. stop now
+	        $scope.IsAdPlaying = false;
+	        $scope.IsVideoPlaying = false;
 	    };
         
 	    $scope.CheckVotingEligibility = function () {
@@ -201,6 +270,7 @@ app.controller("VideoBattlePageController", [
                             var participant = $scope.VideoBattle.Participants[i];
                             if (participant.Id === ParticipantId) {
                                 participant.CurrentUserVote = true;
+                                participant.TotalVoters++;
                                 $scope.Voted = true;
                             } 
                         }

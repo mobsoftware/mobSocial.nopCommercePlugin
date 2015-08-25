@@ -212,7 +212,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             //only open video battles can be viewed or ofcourse if I am the owner, I should be able to see it open or closed right?
-            var canOpen = videoBattle.VideoBattleStatus != VideoBattleStatus.Pending || CanEdit(videoBattle) || (videoBattle.VideoBattleType == VideoBattleType.Open || videoBattle.VideoBattleType == VideoBattleType.SignUp);
+            var canOpen = videoBattle.VideoBattleStatus != VideoBattleStatus.Pending 
+                        || CanEdit(videoBattle) 
+                        || (videoBattle.VideoBattleType != VideoBattleType.InviteOnly);
 
             //still can't open, let's see if it's a participant accessting the page
             if (!canOpen)
@@ -358,7 +360,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     winnerOrLeader = model.Participants.OrderByDescending(x => x.AverageRating).First();
                     break;
             }
-            if (winnerOrLeader != null)
+            if (winnerOrLeader != null && videoBattleVotes.Count > 0)
             {
                 winnerOrLeader.IsLeading = true;
                 if (videoBattle.VideoBattleStatus == VideoBattleStatus.Complete)

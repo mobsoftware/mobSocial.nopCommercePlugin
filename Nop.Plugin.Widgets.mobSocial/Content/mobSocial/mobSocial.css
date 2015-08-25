@@ -749,6 +749,9 @@ table.table-form .control-group{
     display: block;
     width: 96%;
 }
+.participant-box videogular {
+    height: 237px;
+ }
 .battle-status {
            text-align: center;
     margin-bottom: 20px;
@@ -833,6 +836,23 @@ h1.battle-page-heading {
     margin: 15px 0;
     font-weight: bold;
     color: red;
+}
+
+.pagination-load-more {
+        clear: both;
+    text-align: center;
+    padding: 25px 0;
+}
+.pagination-load-more a {
+        border: solid 1px gray;
+    padding: 5px 10px;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+.pagination-load-more a:hover {
+    background-color: #eee;
+    color: #5C5B5B;
+
 }
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/

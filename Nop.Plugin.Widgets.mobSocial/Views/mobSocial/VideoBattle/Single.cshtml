@@ -55,7 +55,7 @@
 <h1 class="battle-page-heading">
     @Model.Title
 </h1>
-@if (Model.IsEditable)
+@if (Model.IsEditable && Model.VideoBattleStatus == VideoBattleStatus.Pending)
 {
     <div ng-controller="VideoBattlesPageController" class="text-center">
         <button ng-click="EditVideoBattle(@Model.Id)"><i class="fa fa-pencil"></i> Edit</button>
@@ -139,9 +139,7 @@
         }
 
     }
-    <span ng-repeat="participant in VideoBattle.Participants">
-        @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
-    </span>
+  
     @{
         var showInvitationBox = true;
 
@@ -200,6 +198,13 @@
             </div>
         </div>
     }
+
+    <span ng-repeat="participant in VisibleParticipants">
+        @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
+    </span>
+    <div ng-show="VisibleParticipants.length < VideoBattle.Participants.length" class="pagination-load-more">
+        <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
+    </div>
 
 </div>
 
