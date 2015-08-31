@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Nop.Core;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
@@ -15,6 +14,8 @@ using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using System.Web;
 using Mob.Core;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Customers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers

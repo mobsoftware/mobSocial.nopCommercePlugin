@@ -4,7 +4,6 @@ using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.Tasks;
 using Nop.Core.Plugins;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Data;
 using Nop.Services.Cms;
 using Nop.Services.Configuration;
@@ -16,6 +15,7 @@ using SiteMapNode = System.Web.SiteMapNode;
 using System.Web.Configuration;
 using MobAds.Public;
 using Nop.Core;
+using Nop.Plugin.Widgets.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -64,6 +64,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             return !string.IsNullOrWhiteSpace(_mobSocialSettings.WidgetZone)
                       ? new List<string>() { 
                           _mobSocialSettings.WidgetZone, 
+                          "head_html_tag",
                           "header_menu_after", 
                           "account_navigation_after", 
                           "profile_page_info_userdetails" 
@@ -97,6 +98,20 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             switch (widgetZone)
             {
+                case "head_html_tag":
+                    {
+                        actionName = "HeadTagInclusions";
+                        controllerName = "mobSocial";
+
+                        routeValues = new RouteValueDictionary()
+                        {
+                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
+                            {"area", null},
+                            {"widgetZone", widgetZone}
+                        };
+
+                        break;
+                    }
                 case "footer":
                     {
                         actionName = "SocialNetworkByMobSocial";
@@ -606,5 +621,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             get { return 0; }
         }
 
+
+        public void ManageSiteMap(Web.Framework.Menu.SiteMapNode rootNode)
+        {
+            
+        }
     }
 }

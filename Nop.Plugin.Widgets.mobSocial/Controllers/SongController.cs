@@ -1,5 +1,4 @@
 ﻿using Nop.Web.Controllers;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Web.Framework.Security;
 using Nop.Services.Localization;
 using Nop.Services.Media;
@@ -25,6 +24,9 @@ using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Core.Infrastructure;
 using Nop.Services.Catalog;
 using Nop.Core.Domain.Catalog;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Services;
+
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     [NopHttpsRequirement(SslRequirement.No)]
@@ -688,7 +690,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     contentType = PictureUtility.GetContentType(fileExtension);
                 }
 
-                var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
+                var picture = _pictureService.InsertPicture(fileBinary, contentType, null);
 
 
                 var firstSongPicture = _songService.GetFirstEntityPicture(SongId);
@@ -946,7 +948,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     var contentType = PictureUtility.GetContentType(fileExtension);
 
-                    var picture = _pictureService.InsertPicture(imageBytes, contentType, songPage.GetSeName(_workContext.WorkingLanguage.Id, true, false), true);
+                    var picture = _pictureService.InsertPicture(imageBytes, contentType, songPage.GetSeName(_workContext.WorkingLanguage.Id, true, false));
                     var songPicture = new SongPicture() {
                         SongId = songPage.Id,
                         DateCreated = DateTime.Now,

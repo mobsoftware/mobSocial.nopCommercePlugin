@@ -15,12 +15,13 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Downloads\nopCommerce_3.40_Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <WebGreaseLibPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <NuGetPackageImportStamp>d812e46a</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,62 +30,64 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Constants\MobSocialConstant.cs" />
     <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
-    <Compile Include="Core\ArtistPageAPIService.cs" />
-    <Compile Include="Core\ArtistPageManagerService.cs" />
-    <Compile Include="Core\ArtistPagePaymentService.cs" />
-    <Compile Include="Core\ArtistPageService.cs" />
-    <Compile Include="Core\CustomerFavoriteSongService.cs" />
-    <Compile Include="Core\CustomerProfileService.cs" />
-    <Compile Include="Core\CustomerTimelineService.cs" />
-    <Compile Include="Core\BusinessPageCouponService.cs" />
-    <Compile Include="Core\BusinessPageService.cs" />
-    <Compile Include="Core\EchoNestMusicService .cs" />
-    <Compile Include="Core\IApiUri.cs" />
-    <Compile Include="Core\IArtistPageAPIService.cs" />
-    <Compile Include="Core\IArtistPageManagerService.cs" />
-    <Compile Include="Core\IArtistPagePaymentService.cs" />
-    <Compile Include="Core\IArtistPageService.cs" />
-    <Compile Include="Core\IBusinessPageCouponService.cs" />
-    <Compile Include="Core\IBusinessPageService.cs" />
-    <Compile Include="Core\ICustomerFavoriteSongService.cs" />
-    <Compile Include="Core\IMusicService.cs" />
-    <Compile Include="Core\IOAuthCredentials.cs" />
-    <Compile Include="Core\IOAuthService.cs" />
-    <Compile Include="Core\ISharedSongService.cs" />
-    <Compile Include="Core\ISongService.cs" />
-    <Compile Include="Core\IVideoBattleGenreService.cs" />
-    <Compile Include="Core\IVideoBattleParticipantService.cs" />
-    <Compile Include="Core\IVideoBattleService.cs" />
-    <Compile Include="Core\IVideoBattleVideoService.cs" />
-    <Compile Include="Core\IVideoBattleVoteService.cs" />
-    <Compile Include="Core\IVideoGenreService.cs" />
-    <Compile Include="Core\MusicApiCredentials.cs" />
-    <Compile Include="Core\MusicApiUri.cs" />
-    <Compile Include="Core\NotificationService.cs" />
-    <Compile Include="Core\INotificationService.cs" />
-    <Compile Include="Core\OAuthService.cs" />
-    <Compile Include="Core\SharedSongService.cs" />
-    <Compile Include="Core\SitemapGenerator.cs" />
-    <Compile Include="Core\SongService.cs" />
-    <Compile Include="Core\VideoGenreService.cs" />
-    <Compile Include="Core\VideoBattleVoteService.cs" />
-    <Compile Include="Core\VideoBattleGenreService.cs" />
-    <Compile Include="Core\VideoBattleParticipantService.cs" />
-    <Compile Include="Core\VideoBattleService.cs" />
-    <Compile Include="Core\VideoBattleVideoService.cs" />
+    <Compile Include="OwinStartup.cs" />
+    <Compile Include="Services\ArtistPageAPIService.cs" />
+    <Compile Include="Services\ArtistPageManagerService.cs" />
+    <Compile Include="Services\ArtistPagePaymentService.cs" />
+    <Compile Include="Services\ArtistPageService.cs" />
+    <Compile Include="Services\CustomerFavoriteSongService.cs" />
+    <Compile Include="Services\CustomerProfileService.cs" />
+    <Compile Include="Services\CustomerTimelineService.cs" />
+    <Compile Include="Services\BusinessPageCouponService.cs" />
+    <Compile Include="Services\BusinessPageService.cs" />
+    <Compile Include="Services\EchoNestMusicService .cs" />
+    <Compile Include="Services\IApiUri.cs" />
+    <Compile Include="Services\IArtistPageAPIService.cs" />
+    <Compile Include="Services\IArtistPageManagerService.cs" />
+    <Compile Include="Services\IArtistPagePaymentService.cs" />
+    <Compile Include="Services\IArtistPageService.cs" />
+    <Compile Include="Services\IBusinessPageCouponService.cs" />
+    <Compile Include="Services\IBusinessPageService.cs" />
+    <Compile Include="Services\ICustomerFavoriteSongService.cs" />
+    <Compile Include="Services\IMusicService.cs" />
+    <Compile Include="Services\IOAuthCredentials.cs" />
+    <Compile Include="Services\IOAuthService.cs" />
+    <Compile Include="Services\ISharedSongService.cs" />
+    <Compile Include="Services\ISongService.cs" />
+    <Compile Include="Services\IVideoBattleGenreService.cs" />
+    <Compile Include="Services\IVideoBattleParticipantService.cs" />
+    <Compile Include="Services\IVideoBattleService.cs" />
+    <Compile Include="Services\IVideoBattleVideoService.cs" />
+    <Compile Include="Services\IVideoBattleVoteService.cs" />
+    <Compile Include="Services\IVideoGenreService.cs" />
+    <Compile Include="Services\MusicApiCredentials.cs" />
+    <Compile Include="Services\MusicApiUri.cs" />
+    <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\INotificationService.cs" />
+    <Compile Include="Services\OAuthService.cs" />
+    <Compile Include="Services\SharedSongService.cs" />
+    <Compile Include="Services\SitemapGenerator.cs" />
+    <Compile Include="Services\SongService.cs" />
+    <Compile Include="Services\VideoGenreService.cs" />
+    <Compile Include="Services\VideoBattleVoteService.cs" />
+    <Compile Include="Services\VideoBattleGenreService.cs" />
+    <Compile Include="Services\VideoBattleParticipantService.cs" />
+    <Compile Include="Services\VideoBattleService.cs" />
+    <Compile Include="Services\VideoBattleVideoService.cs" />
     <Compile Include="Data\ArtistPageManagerMap.cs" />
     <Compile Include="Data\ArtistPageMap.cs" />
     <Compile Include="Data\ArtistPagePaymentMap.cs" />
@@ -146,10 +149,10 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\FacebookWebsiteAppController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
-    <Compile Include="Core\AttendanceStatus.cs" />
-    <Compile Include="Core\CustomerProfileViewService.cs" />
-    <Compile Include="Core\EventPageAttendanceService.cs" />
-    <Compile Include="Core\IEventPageAttendanceService.cs" />
+    <Compile Include="Services\AttendanceStatus.cs" />
+    <Compile Include="Services\CustomerProfileViewService.cs" />
+    <Compile Include="Services\EventPageAttendanceService.cs" />
+    <Compile Include="Services\IEventPageAttendanceService.cs" />
     <Compile Include="Data\CustomerProfileViewMap.cs" />
     <Compile Include="Data\EventPageAttendanceMap.cs" />
     <Compile Include="Domain\CustomerProfileView.cs" />
@@ -169,19 +172,19 @@
     <Compile Include="Models\EventPageHotelModel.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
     <Compile Include="Controllers\HeaderMenuController.cs" />
-    <Compile Include="Core\EventPageHotelService.cs" />
-    <Compile Include="Core\EventPageService.cs" />
-    <Compile Include="Core\IEventPageHotelService.cs" />
-    <Compile Include="Core\BaseService.cs" />
-    <Compile Include="Core\ITeamPageService.cs" />
-    <Compile Include="Core\IBaseService.cs" />
-    <Compile Include="Core\IEventPageService.cs" />
-    <Compile Include="Core\ICustomerVideoAlbumService.cs" />
-    <Compile Include="Core\CustomerVideoAlbumService.cs" />
-    <Compile Include="Core\HandleJsonErrorAttribute.cs" />
-    <Compile Include="Core\ICustomerAlbumPictureService.cs" />
-    <Compile Include="Core\CustomerAlbumPictureService.cs" />
-    <Compile Include="Core\TeamPageService.cs" />
+    <Compile Include="Services\EventPageHotelService.cs" />
+    <Compile Include="Services\EventPageService.cs" />
+    <Compile Include="Services\IEventPageHotelService.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\ITeamPageService.cs" />
+    <Compile Include="Services\IBaseService.cs" />
+    <Compile Include="Services\IEventPageService.cs" />
+    <Compile Include="Services\ICustomerVideoAlbumService.cs" />
+    <Compile Include="Services\CustomerVideoAlbumService.cs" />
+    <Compile Include="Services\HandleJsonErrorAttribute.cs" />
+    <Compile Include="Services\ICustomerAlbumPictureService.cs" />
+    <Compile Include="Services\CustomerAlbumPictureService.cs" />
+    <Compile Include="Services\TeamPageService.cs" />
     <Compile Include="Data\EventPagePictureMap.cs" />
     <Compile Include="Data\EventPageHotelMap.cs" />
     <Compile Include="Data\EventPageMap.cs" />
@@ -199,8 +202,8 @@
     <Compile Include="Domain\EventPageHotel.cs" />
     <Compile Include="Domain\EventPage.cs" />
     <Compile Include="GenericRouteProvider.cs" />
-    <Compile Include="Core\CustomerUpdatedEventHandler.cs" />
-    <Compile Include="Core\GenericUrlEventHandler.cs" />
+    <Compile Include="Services\CustomerUpdatedEventHandler.cs" />
+    <Compile Include="Services\GenericUrlEventHandler.cs" />
     <Compile Include="Models\EventPageModel.cs" />
     <Compile Include="Models\FeaturedVideosModel.cs" />
     <Compile Include="Models\CustomerVideoAlbum.cs" />
@@ -209,17 +212,17 @@
     <Compile Include="Models\CustomerAlbumModel.cs" />
     <Compile Include="Models\ProfileInformationModel.cs" />
     <Compile Include="Extensions\SeoExtensions.cs" />
-    <Compile Include="Core\MobSocialMessageService.cs" />
-    <Compile Include="Core\IMobSocialMessageService.cs" />
+    <Compile Include="Services\MobSocialMessageService.cs" />
+    <Compile Include="Services\IMobSocialMessageService.cs" />
     <Compile Include="Domain\SessionState.cs" />
     <Compile Include="Models\AddFriendButtonModel.cs" />
     <Compile Include="Controllers\SkateMoveController.cs" />
     <Compile Include="Controllers\mobSocialController.cs" />
-    <Compile Include="Core\ISkateMoveService.cs" />
-    <Compile Include="Core\SkateMoveService.cs" />
-    <Compile Include="Core\ISocialNetworkService.cs" />
-    <Compile Include="Core\MobSocialPictureService.cs" />
-    <Compile Include="Core\MobSocialService.cs" />
+    <Compile Include="Services\ISkateMoveService.cs" />
+    <Compile Include="Services\SkateMoveService.cs" />
+    <Compile Include="Services\ISocialNetworkService.cs" />
+    <Compile Include="Services\MobSocialPictureService.cs" />
+    <Compile Include="Services\MobSocialService.cs" />
     <Compile Include="Data\TeamPageMap.cs" />
     <Compile Include="Data\EfStartUpTask.cs" />
     <Compile Include="Data\SkateMoveMap.cs" />
@@ -258,219 +261,183 @@
     <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
     <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
+    <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
-    <Content Include="Content\angucomplete-alt\angucomplete-alt.css">
+    <Content Include="Content\Libraries\angucomplete-alt\angucomplete-alt.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angucomplete-alt\angucomplete-alt.js">
+    <Content Include="Content\Libraries\angucomplete-alt\angucomplete-alt.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-audio\js\angular.audio.js">
+    <Content Include="Content\Libraries\angular-audio\js\angular.audio.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-datetimepicker\datetimepicker.css">
+    <Content Include="Content\Libraries\angular-datetimepicker\datetimepicker.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-datetimepicker\datetimepicker.js">
+    <Content Include="Content\Libraries\angular-datetimepicker\datetimepicker.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.js">
+    <Content Include="Content\Libraries\angular-file-upload-1.1.5\angular-file-upload.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.js">
+    <Content Include="Content\Libraries\angular-file-upload-1.1.5\angular-file-upload.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-file-upload-1.1.5\license.txt">
+    <Content Include="Content\Libraries\angular-file-upload-1.1.5\license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-file-upload-1.1.5\src\intro.js">
+    <Content Include="Content\Libraries\angular-file-upload-1.1.5\src\intro.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-file-upload-1.1.5\src\module.js">
+    <Content Include="Content\Libraries\angular-file-upload-1.1.5\src\module.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-file-upload-1.1.5\src\outro.js">
+    <Content Include="Content\Libraries\angular-file-upload-1.1.5\src\outro.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-xeditable\css\xeditable.css">
+    <Content Include="Content\Libraries\angular-xeditable\css\xeditable.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-xeditable\js\xeditable.js">
+    <Content Include="Content\Libraries\angular-xeditable\js\xeditable.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\angular-xeditable\js\xeditable.min.js">
+    <Content Include="Content\Libraries\angular-xeditable\js\xeditable.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\ajaxdisable.directive.js">
+    <Content Include="Content\mobSocial\js\directives\ajaxdisable.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\fileupload.directive.js">
+    <Content Include="Content\mobSocial\js\directives\contenteditable.directive.js" />
+    <Content Include="Content\mobSocial\js\directives\fileupload.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\poweredby.jpg">
+    <Content Include="Content\mobSocial\images\poweredby.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\share-song-button.directive.js">
+    <Content Include="Content\mobSocial\js\directives\share-song-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\artist-pages\artist-page-search.js">
+    <Content Include="Content\mobSocial\js\controllers\artist-pages\artist-page-search.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\artist-pages\artist-pages.js">
+    <Content Include="Content\mobSocial\js\controllers\artist-pages\artist-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\autocomplete.directive.js" />
-    <Content Include="Content\mobSocial\mob-live-video.directive.js">
+    <Content Include="Content\mobSocial\js\directives\autocomplete.directive.js" />
+    <Content Include="Content\mobSocial\js\directives\mob-live-video.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\mob-preview-song-button.directive.js">
+    <Content Include="Content\mobSocial\js\directives\mob-preview-song-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\mob-video.js">
+    <Content Include="Content\mobSocial\js\common\mob-video.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\business-pages\business-pages-search.js">
+    <Content Include="Content\mobSocial\js\controllers\business-pages\business-pages-search.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\business-pages\business-pages.js">
+    <Content Include="Content\mobSocial\js\controllers\business-pages\business-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\ngthumb.js">
+    <Content Include="Content\mobSocial\js\directives\ngthumb.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\file-upload.js">
+    <Content Include="Content\mobSocial\js\controllers\profile-pages\my-health.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\profile-pages\my-health.js">
+    <Content Include="Content\Libraries\easy-responsive-tabs\easy-responsive-tabs.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\easy-responsive-tabs.css">
+    <Content Include="Content\Libraries\easy-responsive-tabs\easyResponsiveTabs.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\easyResponsiveTabs.js">
+    <Content Include="Content\mobSocial\css\ie6.css" />
+    <Content Include="Content\mobSocial\css\ie7.css" />
+    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-video-albums.js" />
+    <Content Include="Content\Libraries\signalr\RTCMultiConnection.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\ie6.css" />
-    <Content Include="Content\ie7.css" />
-    <Content Include="Content\mobSocial\profile-pages\customer-video-albums.js" />
-    <Content Include="Content\mobSocial\RTCMultiConnection.js">
+    <Content Include="Content\mobSocial\js\directives\song-list.directive.js" />
+    <Content Include="Content\mobSocial\html\song-list.template.html" />
+    <Content Include="Content\mobSocial\js\controllers\song-pages\song-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\song-list.directive.js" />
-    <Content Include="Content\mobSocial\song-list.template.html" />
-    <Content Include="Content\mobSocial\song-pages\song-pages.js">
+    <Content Include="Content\mobSocial\js\directives\whenscrolled.directive.js" />
+    <Content Include="Content\mobSocial\js\services\dialogservice.js" />
+    <Content Include="Content\mobSocial\js\services\song-service.js" />
+    <Content Include="Content\mobSocial\js\directives\buy-song-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\song-service.js" />
-    <Content Include="Content\mobSocial\buy-song-button.directive.js">
+    <Content Include="Content\mobSocial\js\controllers\video-battles\video-battle-services.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\video-battles\video-battle-services.js">
+    <Content Include="Content\mobSocial\js\controllers\video-battles\video-battles.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\video-battles\video-battles.js">
+    <Content Include="Content\mobSocial\css\styles.css" />
+    <Content Include="Content\mobSocial\css\styles.rtl.css" />
+    <Content Include="Content\Libraries\videogular\angular-sanitize.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\styles.css" />
-    <Content Include="Content\styles.rtl.css" />
-    <Content Include="Content\videogular\angular-sanitize.min.js">
+    <Content Include="Content\Libraries\videogular\angular-timer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\angular-timer.js">
+    <Content Include="Content\Libraries\videogular\humanize-duration.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\humanize-duration.js">
+    <Content Include="Content\Libraries\videogular\moment.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\moment.js">
+    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.dev.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\theme\fonts\videogular.dev.svg">
+    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\theme\fonts\videogular.svg">
+    <Content Include="Content\Libraries\videogular\theme\videogular.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\theme\videogular.css">
+    <Content Include="Content\Libraries\videogular\theme\videogular.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\theme\videogular.min.css">
+    <Content Include="Content\Libraries\videogular\waypoints.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\waypoints.min.js">
+    <Content Include="Content\Libraries\videogular\vg-buffering.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\vg-buffering.min.js">
+    <Content Include="Content\Libraries\videogular\vg-controls.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\vg-controls.min.js">
+    <Content Include="Content\Libraries\videogular\vg-ima-ads.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\vg-ima-ads.min.js">
+    <Content Include="Content\Libraries\videogular\vg-overlay-play.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\vg-overlay-play.min.js">
+    <Content Include="Content\Libraries\videogular\vg-poster.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\vg-poster.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\videogular\videogular.min.js">
+    <Content Include="Content\Libraries\videogular\videogular.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Libraries\signalr\jquery.signalR-1.2.2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Libraries\signalr\jquery.signalR-1.2.2.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Content\mobSocial\jquery.signalR-1.2.2.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\jquery.signalR-1.2.2.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Themes\mobSocial\Content\ie6.css" />
-    <Content Include="Themes\mobSocial\Content\ie7.css" />
-    <Content Include="Themes\mobSocial\Content\images\ajax_loader_large.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ajax_loader_small.gif" />
-    <Content Include="Themes\mobSocial\Content\images\arrow-up.png" />
-    <Content Include="Themes\mobSocial\Content\images\bbeditor-button-bg.gif" />
-    <Content Include="Themes\mobSocial\Content\images\bullet-left.gif" />
-    <Content Include="Themes\mobSocial\Content\images\bullet-right.gif" />
-    <Content Include="Themes\mobSocial\Content\images\download-sample-bg.gif" />
-    <Content Include="Themes\mobSocial\Content\images\forum-footer-bg.gif" />
-    <Content Include="Themes\mobSocial\Content\images\forum-header-bg.gif" />
-    <Content Include="Themes\mobSocial\Content\images\free-shipping.png" />
-    <Content Include="Themes\mobSocial\Content\images\ico-arrow-r.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-close-notification-bar.png" />
-    <Content Include="Themes\mobSocial\Content\images\ico-delete.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-edit.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-forum-post-add.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-forum-post-high.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-forum-post.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-forum-watch.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-forum.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-move-topic.gif" />
-    <Content Include="Themes\mobSocial\Content\images\ico-pm.png" />
-    <Content Include="Themes\mobSocial\Content\images\ico-rss.gif" />
-    <Content Include="Themes\mobSocial\Content\images\logo.gif" />
-    <Content Include="Themes\mobSocial\Content\images\mobile-menu-collapse.png" />
-    <Content Include="Themes\mobSocial\Content\images\mobile-menu-expand.png" />
-    <Content Include="Themes\mobSocial\Content\images\progress-step-active.gif" />
-    <Content Include="Themes\mobSocial\Content\images\progress-step-inactive.gif" />
-    <Content Include="Themes\mobSocial\Content\images\star-x-active.png" />
-    <Content Include="Themes\mobSocial\Content\images\star-x-inactive.png" />
-    <Content Include="Themes\mobSocial\Content\images\top-menu-background.png" />
-    <Content Include="Themes\mobSocial\Content\images\top-menu-divider.png" />
-    <Content Include="Themes\mobSocial\Content\images\top-menu-list-image-hover.png" />
-    <Content Include="Themes\mobSocial\Content\images\top-menu-list-image.png" />
-    <Content Include="Themes\mobSocial\Content\images\top-menu-triangle.png" />
-    <Content Include="Themes\mobSocial\Content\responsive.css" />
-    <Content Include="Themes\mobSocial\Content\styles.css" />
-    <Content Include="Themes\mobSocial\Content\styles.rtl.css" />
+    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.js" />
+    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.min.js" />
     <Content Include="Uploads\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -504,90 +471,90 @@
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\profile-pages\customer-profile.js">
+    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-profile.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\event-pages\event-pages.js">
+    <Content Include="Content\mobSocial\js\controllers\event-pages\event-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\fonts\fontawesome-webfont.svg">
+    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\jquery-ui.min.css">
+    <Content Include="Content\Libraries\jquery-ui\jquery-ui.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\jquery-ui.structure.min.css">
+    <Content Include="Content\Libraries\jquery-ui\jquery-ui.structure.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\jquery-ui.theme.min.css">
+    <Content Include="Content\Libraries\jquery-ui\jquery-ui.theme.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\scripts\angular.min.js">
+    <Content Include="Content\Libraries\angular\angular.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\mobSocial.js">
+    <Content Include="Content\mobSocial\js\mobSocial.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\scripts\jquery-1.11.min.js">
+    <Content Include="Content\Libraries\jquery\jquery-1.11.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\scripts\jquery-ui-1.11.min.js">
+    <Content Include="Content\Libraries\jquery-ui\jquery-ui-1.11.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\jquery.simplyscroll.css">
+    <Content Include="Content\mobSocial\css\jquery.simplyscroll.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\jquery.simplyscroll.old2.css">
+    <Content Include="Content\mobSocial\css\jquery.simplyscroll.old2.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\add-friend-button.js">
+    <Content Include="Content\mobSocial\js\common\add-friend-button.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\common.js">
+    <Content Include="Content\mobSocial\js\common\common.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\profile-pages\customer-albums.js">
+    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-albums.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\font-awesome.min.css">
+    <Content Include="Content\Libraries\font-awesome\font-awesome.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\jquery.form.js">
+    <Content Include="Content\Libraries\jquery-form\jquery.form.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\mobSocial-custom.css">
+    <Content Include="Content\mobSocial\css\mobSocial-custom.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\mobSocial.css">
+    <Content Include="Content\mobSocial\css\mobSocial.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\search-box-custom.css">
+    <Content Include="Content\mobSocial\css\search-box-custom.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Themes\mobSocial\Installation.txt" />
-    <None Include="Content\angular-file-upload-1.1.5\.jshintrc" />
-    <None Include="Content\angular-file-upload-1.1.5\angular-file-upload.min.map">
+    <Content Include="Themes\MobSocialDefault\Installation.txt" />
+    <None Include="Content\Libraries\angular-file-upload-1.1.5\.jshintrc" />
+    <None Include="Content\Libraries\angular-file-upload-1.1.5\angular-file-upload.min.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\angular-file-upload-1.1.5\bower.json">
+    <None Include="Content\Libraries\angular-file-upload-1.1.5\bower.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\angular-file-upload-1.1.5\Gruntfile.coffee">
+    <None Include="Content\Libraries\angular-file-upload-1.1.5\Gruntfile.coffee">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\angular-file-upload-1.1.5\package.json">
+    <None Include="Content\Libraries\angular-file-upload-1.1.5\package.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\angular-file-upload-1.1.5\README.md">
+    <None Include="Content\Libraries\angular-file-upload-1.1.5\README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Content\videogular\theme\fonts\videogular.eot">
+    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\theme\fonts\videogular.ttf">
+    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\videogular\theme\fonts\videogular.woff">
+    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">
@@ -599,20 +566,20 @@
     <Content Include="Views\mobSocial\FacebookWebsiteApp\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\fonts\fontawesome-webfont.eot">
+    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\fonts\fontawesome-webfont.ttf">
+    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\fonts\fontawesome-webfont.woff">
+    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\fonts\FontAwesome.otf">
+    <Content Include="Content\Libraries\font-awesome\FontAwesome.otf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Themes\mobSocial\theme.config" />
-    <Content Include="Themes\mobSocial\Views\Catalog\SearchBox.cshtml">
+    <None Include="Themes\MobSocialDefault\theme.config" />
+    <Content Include="Themes\MobSocialDefault\Views\Catalog\SearchBox.cshtml">
       <SubType>
       </SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -674,20 +641,12 @@
     <Content Include="Views\mobSocial\_FeaturedVideosBlock.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Themes\mobSocial\Views\Profile\Index.cshtml">
+    <Content Include="Themes\MobSocialDefault\Views\Profile\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Themes\mobSocial\Views\Profile\Info.cshtml">
+    <Content Include="Themes\MobSocialDefault\Views\Profile\Info.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Themes\mobSocial\Views\Shared\Head.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml">
-      <SubType>
-      </SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -770,6 +729,7 @@
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Views\mobSocial\WidgetZones\head_html_tag.cshtml" />
     <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -778,95 +738,99 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Nop.Data\Nop.Data.csproj">
+    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Libraries\Nop.Data\Nop.Data.csproj">
       <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
       <Name>Nop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
       <Name>Nop.Admin</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Nop.Core\Nop.Core.csproj">
+    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Libraries\Nop.Core\Nop.Core.csproj">
       <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
       <Name>Nop.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Nop.Services\Nop.Services.csproj">
+    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Libraries\Nop.Services\Nop.Services.csproj">
       <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
       <Name>Nop.Services</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>Nop.Web.Framework</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj">
+    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\Presentation\Nop.Web\Nop.Web.csproj">
       <Project>{4f1f649c-1020-45be-a487-f416d9297ff3}</Project>
       <Name>Nop.Web</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
+    <ProjectReference Include="..\..\MobAds\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
-      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc">
-      <HintPath>..\..\packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.50_Source\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServerCompact">
-      <HintPath>..\..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core">
-      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Owin">
-      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Owin.1.2.2\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
-      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.SystemWeb.1.2.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.1.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure">
-      <HintPath>..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="MobAds.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>MobLib\MobAds.Public.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Owin">
-      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -879,32 +843,47 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
@@ -928,6 +907,13 @@
     if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
     xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
   <!--<Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

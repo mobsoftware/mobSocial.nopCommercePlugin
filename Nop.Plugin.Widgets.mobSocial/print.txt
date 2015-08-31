@@ -1,0 +1,48 @@
+ Volume in drive F is Development
+ Volume Serial Number is E4C9-64DB
+
+ Directory of F:\SourceRepositories\MobSocial\musicianspagesp1\Nop.Plugin.Widgets.mobSocial
+
+31-Aug-15  08:27 PM    <DIR>          .
+31-Aug-15  08:27 PM    <DIR>          ..
+02-Jun-15  05:32 PM    <DIR>          $(SolutionDir)
+31-Aug-15  05:54 PM             4,296 App.config
+02-Jun-15  05:32 PM    <DIR>          bin
+31-Aug-15  06:42 PM    <DIR>          Constants
+31-Aug-15  05:26 PM    <DIR>          Content
+31-Aug-15  08:08 PM    <DIR>          Controllers
+31-Aug-15  07:52 PM    <DIR>          Data
+31-Aug-15  05:12 PM            14,458 DependencyRegistrar.cs
+31-Aug-15  04:56 PM               220 Description.txt
+19-Aug-15  07:03 PM    <DIR>          Domain
+19-Aug-15  06:07 PM    <DIR>          Enums
+02-Jun-15  05:32 PM    <DIR>          Extensions
+02-Jun-15  05:32 PM    <DIR>          Fakes
+08-Jun-15  03:54 PM             2,199 GenericRouteProvider.cs
+31-Aug-15  05:19 PM    <DIR>          Helpers
+02-Jun-15  05:32 PM    <DIR>          Hubs
+02-Jun-15  05:32 PM             1,299 license.txt
+02-Jun-15  05:32 PM             3,118 logo.jpg
+10-Aug-15  08:17 PM    <DIR>          MobLib
+02-Jun-15  05:32 PM             1,426 mobSocial.sln
+31-Aug-15  06:26 PM            27,203 mobSocialPlugin.cs
+19-Jun-15  03:56 PM             1,597 mobSocialSettings.cs
+19-Aug-15  07:54 PM    <DIR>          Models
+31-Aug-15  08:12 PM            54,019 Nop.Plugin.Widgets.MobSocial.csproj
+05-Jun-15  06:08 PM               228 Nop.Plugin.Widgets.MobSocial.csproj.user
+10-Jun-15  08:01 PM    <DIR>          obj
+31-Aug-15  08:12 PM               359 OwinStartup.cs
+31-Aug-15  05:54 PM             2,017 packages.config
+31-Aug-15  08:27 PM                 0 print.txt
+02-Jun-15  05:32 PM    <DIR>          Properties
+31-Aug-15  08:12 PM            12,303 RouteProvider.cs
+31-Aug-15  06:02 PM    <DIR>          Scripts
+31-Aug-15  08:06 PM    <DIR>          Services
+04-Aug-15  04:58 PM    <DIR>          Tasks
+31-Aug-15  05:43 PM    <DIR>          Themes
+28-Jul-15  05:31 PM    <DIR>          Uploads
+31-Aug-15  05:48 PM    <DIR>          ViewEngines
+02-Jun-15  05:32 PM    <DIR>          Views
+05-Jun-15  05:42 PM             3,655 web.config
+              16 File(s)        128,397 bytes
+              25 Dir(s)   8,534,519,808 bytes free

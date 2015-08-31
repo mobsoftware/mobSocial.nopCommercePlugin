@@ -16,7 +16,6 @@ using Nop.Web.Framework;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Profile;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial;
 using Nop.Plugin.Widgets.MobSocial.Models;

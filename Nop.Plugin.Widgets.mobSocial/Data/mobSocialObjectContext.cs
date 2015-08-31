@@ -3,6 +3,7 @@ using System.Data.Entity;
 
 using System.Data.Entity.Infrastructure;
 using Mob.Core;
+using Mob.Core.Data;
 using Nop.Core;
 using Nop.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
@@ -10,7 +11,7 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class MobSocialObjectContext : DbContext, IDbContext
+    public class MobSocialObjectContext : MobDbContext
     {
         public MobSocialObjectContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
@@ -187,6 +188,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         {
             throw new NotImplementedException();
         }
+
+
+      
+
+        
     }
 
 }

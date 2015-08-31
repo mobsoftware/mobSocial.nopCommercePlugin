@@ -5,7 +5,6 @@ using Nop.Admin.Controllers;
 using System.Linq;
 using Nop.Core;
 using Nop.Core.Domain.Common;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Services.Localization;

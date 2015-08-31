@@ -1,24 +1,23 @@
-﻿using System.Web.Mvc;
-using Nop.Web.Controllers;
-using Nop.Admin.Controllers;
-using Nop.Web.Framework.Kendoui;
-using Nop.Services.Security;
-using Nop.Plugin.Widgets.MobSocial.Core;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nop.Web.Framework.Controllers;
-using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Plugin.Widgets.MobSocial.Domain;
+using System.Web.Mvc;
+using Nop.Admin.Controllers;
 using Nop.Core;
-using Nop.Services.Seo;
+using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Models;
+using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
-using System;
 using Nop.Services.Media;
-using Nop.Plugin.Widgets.MobSocial.Models;
+using Nop.Services.Security;
+using Nop.Services.Seo;
+using Nop.Web.Framework.Controllers;
+using Nop.Web.Framework.Kendoui;
 using Nop.Web.Framework.Mvc;
+using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;
 
-namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
+namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
 {
     public partial class ManageEventPageController : BaseAdminController
     {
@@ -149,7 +148,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
             {
                 Id = item.Id,
                 Name = item.Name,
-                SeName = item.GetSeName(_workContext.WorkingLanguage.Id),
+                SeName = SeoExtensions.GetSeName(item, _workContext.WorkingLanguage.Id),
                 LocationName = item.LocationName,
                 Address1 = item.LocationAddress1,
                 Address2 = item.LocationAddress2,
@@ -205,7 +204,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 };
 
                 //search engine name
-                model.SeName = entity.GetSeName(_workContext.WorkingLanguage.Id);
+                model.SeName = SeoExtensions.GetSeName(entity, _workContext.WorkingLanguage.Id);
              
                 // todo: add event hosts
                 _eventPageService.Insert(entity);
@@ -269,7 +268,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
                 _eventPageService.Update(item);
 
                 //search engine name
-                model.SeName = item.GetSeName(_workContext.WorkingLanguage.Id);
+                model.SeName = SeoExtensions.GetSeName(item, _workContext.WorkingLanguage.Id);
              
                 _urlRecordService.SaveSlug(item, model.SeName, _workContext.WorkingLanguage.Id);
 

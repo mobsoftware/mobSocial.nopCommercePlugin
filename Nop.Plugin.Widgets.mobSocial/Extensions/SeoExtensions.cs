@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Nop.Core;
-using Nop.Core.Domain.Seo;
 using Nop.Core.Infrastructure;
 using Nop.Services.Localization;
 using Nop.Services.Seo;
@@ -10,7 +7,7 @@ using Nop.Services.Seo;
 /*using Nop.Core.Domain.Catalog;
 using Nop.Services.Catalog;*/
 
-namespace Nop.Plugin.Widgets.MobSocial
+namespace Nop.Plugin.Widgets.MobSocial.Extensions
 {
     public static class SeoExtensions
     {
