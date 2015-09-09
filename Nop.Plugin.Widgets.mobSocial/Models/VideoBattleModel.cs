@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Web.Framework.Mvc;
 
@@ -14,6 +15,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         [Required]
         public string Title { get; set; }
 
+        [AllowHtml]
         public string Description { get; set; }
 
         public DateTime DateCreated { get; set; }
@@ -32,5 +34,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public VideoBattleStatus VideoBattleStatus { get; set; }
 
         public VideoBattleVoteType VideoBattleVoteType { get; set; }
+
+        public int MaximumParticipantCount { get; set; }
     }
 }

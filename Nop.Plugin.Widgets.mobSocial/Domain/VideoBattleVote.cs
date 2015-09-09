@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Nop.Core;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
@@ -16,6 +17,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public int ParticipantId { get; set; }
 
         public int VoteValue { get; set; }
+
+        public VideoBattleVoteStatus VoteStatus { get; set; }
 
         public virtual VideoBattle VideoBattle { get; set; }
     }

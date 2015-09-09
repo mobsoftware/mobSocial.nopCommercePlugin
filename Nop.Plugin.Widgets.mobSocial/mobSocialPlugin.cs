@@ -21,7 +21,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 {
     public class mobSocialPlugin : MobAdsPublic, IAdminMenuPlugin
     {
-        
+
 
         private readonly MobSocialObjectContext _context;
         private readonly mobSocialSettings _mobSocialSettings;
@@ -32,13 +32,16 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly ILocalizationService _localizationService;
         private readonly HttpRuntimeSection _config;
         private readonly IStoreContext _storeContext;
+        private readonly IVideoBattleService _videoBattleService;
 
         public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings, 
             ISettingService settingService, IMessageTemplateService messageTemplateService, 
             IScheduleTaskService scheduleTaskService,
             IMobSocialService mobSocialService,
             ILocalizationService localizationService,
-            IStoreContext storeContext) : base(storeContext, settingService)
+            IStoreContext storeContext,
+            IVideoBattleService videoBattleService)
+            : base(storeContext, settingService)
         {
             _context = context;
             _mobSocialSettings = mobSocialSettings;
@@ -47,7 +50,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             _scheduleTaskService = scheduleTaskService;
             _mobSocialService = mobSocialService;
             _localizationService = localizationService;
+            _videoBattleService = videoBattleService;
+            _storeContext = storeContext;
             _config = new HttpRuntimeSection(); //TODO Move to dependency registrar and perform injection
+
         }
 
 
@@ -62,8 +68,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                           "header_menu_after", 
                           "account_navigation_after", 
                           "profile_page_info_userdetails" 
-                      } 
-                      : new List<string>() { "after_header_links" };   
+        }
+                      : new List<string>() { "after_header_links" };
         }
 
         /// <summary>
@@ -88,9 +94,11 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="routeValues">Route values</param>
         public override void GetWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-            switch(widgetZone)
+
+            switch (widgetZone)
             {
-                case "footer": {
+                case "footer":
+                    {
                     actionName = "SocialNetworkByMobSocial";
                     controllerName = "mobSocial";
 
@@ -154,7 +162,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                     };
                     break;
                 }
-                default:  {
+                default:
+                    {
                         actionName = "PublicInfo";
                         controllerName = "mobSocial";
 
@@ -181,8 +190,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             //otherwise, you'll get something like "The model backing the 'your context name' context has changed since the database was created. Consider using Code First Migrations to update the database"
 
             //settings
-            var mobSocialSettings = new mobSocialSettings()
-            {
+            var mobSocialSettings = new mobSocialSettings() {
                 ProfilePictureSize = 100,
                 WidgetZone = "after_header_links",
                 PeopleSearchAutoCompleteEnabled = true,
@@ -199,7 +207,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                 CustomerProfileUpdateViewCountAfterNumberOfSeconds = 180, // 3 minutes,
                 FacebookWebsiteAppId = "1234567890123456",
                 BusinessPageSearchUrl = "BusinessSearch",
-                ArtistPageMainImageSize= 300,
+                ArtistPageMainImageSize = 300,
                 ArtistPageThumbnailSize = 150,
                 // Would you like to replace the api key with your own? 
                 // Find more info here by contacting us at info@skatemob.com
@@ -210,19 +218,18 @@ namespace Nop.Plugin.Widgets.MobSocial
                 SongFileMaximumUploadSize = _config.MaxRequestLength,
                 SongFileSampleMaximumUploadSize = _config.MaxRequestLength,
                 PurchasedSongFeePercentage = 30
-                
+
             };
 
-           
-            var mediaSettings = new MediaSettings()
-                {
+
+            var mediaSettings = new MediaSettings() {
                     AvatarPictureSize = 200
                 };
 
 
 
             AddLocaleResourceStrings();
-            
+
 
 
             _settingService.SaveSetting(mediaSettings);
@@ -233,7 +240,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             AddScheduledTasks();
 
-           
+
 
             _context.Install();
 
@@ -241,11 +248,11 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         }
 
-        
 
-       
 
-       
+
+
+
         public override void Uninstall()
         {
             //locales
@@ -258,6 +265,10 @@ namespace Nop.Plugin.Widgets.MobSocial
             // do not remove core locales
 
             RemoveScheduledTask("Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
+            RemoveScheduledTask("Nop.Plugin.Widgets.MobSocial.Tasks.VideoBattlesStatusUpdateTask, Nop.Plugin.Widgets.MobSocial");
+
+            //delete message templates
+            DeleteMessageTemplates();
 
             //settings
             _settingService.DeleteSetting<mobSocialSettings>();
@@ -281,7 +292,10 @@ namespace Nop.Plugin.Widgets.MobSocial
         }
 
 
-       
+        public void SetScheduledVideoBattlesOpenOrClosed()
+        {
+            _videoBattleService.SetScheduledBattlesOpenOrClosed();
+        }
 
 
         #endregion
@@ -291,12 +305,58 @@ namespace Nop.Plugin.Widgets.MobSocial
             return true;
         }
 
+        public Nop.Web.Framework.Menu.SiteMapNode BuildMenuItem()
+        {
+
+
+            var menuItem = new Nop.Web.Framework.Menu.SiteMapNode() {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
+                ControllerName = "TeamPage",
+                ActionName = "Index",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+            };
+
+            var manageTeamSubMenu = new Nop.Web.Framework.Menu.SiteMapNode() {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
+                ControllerName = "TeamPage",
+                ActionName = "Index",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+            };
+
+
+
+
+            var manageEventsSubMenu = new Nop.Web.Framework.Menu.SiteMapNode() {
+                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
+                ControllerName = "ManageEventPage",
+                ActionName = "List",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+
+            };
+
+            menuItem.ChildNodes.Add(manageTeamSubMenu);
+            menuItem.ChildNodes.Add(manageEventsSubMenu);
+
+
+            return menuItem;
+        }
+
+
+
+
         #region Helper Methods
         private void AddScheduledTasks()
         {
-            int every24hrs = 24 * 60 * 60;
+            const int every24hrs = 24 * 60 * 60;
             AddScheduledTask("Friend Request Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.FriendRequestNotificationTask, Nop.Plugin.Widgets.MobSocial");
             AddScheduledTask("Product Review Notification Task", every24hrs, false, false, "Nop.Plugin.Widgets.MobSocial.Tasks.ProductReviewNotificationTask, Nop.Plugin.Widgets.MobSocial");
+
+            const int every5Min = 5 * 60;
+            AddScheduledTask("Video Battle Status Update Task", every5Min, true, false, "Nop.Plugin.Widgets.MobSocial.Tasks.VideoBattlesStatusUpdateTask, Nop.Plugin.Widgets.MobSocial");
+
 
         }
 
@@ -305,10 +365,9 @@ namespace Nop.Plugin.Widgets.MobSocial
         {
             var task = _scheduleTaskService.GetTaskByType(type);
 
-            if (task == null)
-            {
-                task = new ScheduleTask
-                {
+            if (task != null)
+                return;
+            task = new ScheduleTask {
                     Name = name,
                     Seconds = seconds,
                     Type = type,
@@ -318,8 +377,6 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                 _scheduleTaskService.InsertTask(task);
             }
-
-        }
 
 
         private void RemoveScheduledTask(string type)
@@ -365,8 +422,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         private void InsertMessageTemplates()
         {
             // Require user to login in order to view who and confirm the requests. Curiousity will drive traffic back to the site. - Bruce Leggett
-            var friendRequestNotification = new MessageTemplate()
-            {
+            var friendRequestNotification = new MessageTemplate() {
                 Name = "MobSocial.FriendRequestNotification",
                 Subject = "You have a new friend request at %Store.Name%",
                 Body = "You have a new friend request!<br/><br/>" +
@@ -380,8 +436,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             // Send periodic friend request reminders, but not too many that frustrate users - Bruce Leggett
-            var friendRequestReminderNotification = new MessageTemplate()
-            {
+            var friendRequestReminderNotification = new MessageTemplate() {
                 Name = "MobSocial.PendingFriendRequestNotification",
                 Subject = "You have pending friend requests at %Store.Name%",
                 Body = "You have friends waiting for you to confirm their requests!<br/><br/>" +
@@ -394,8 +449,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             _messageTemplateService.InsertMessageTemplate(friendRequestReminderNotification);
 
             // Require user to login in order to view what event - Bruce Leggett
-            var eventInvitationNotification = new MessageTemplate()
-            {
+            var eventInvitationNotification = new MessageTemplate() {
                 Name = "MobSocial.EventInvitationNotification",
                 Subject = "You have been invited to an event on %Store.Name%",
                 Body = "You have just been invited to an event!<br/><br/>" +
@@ -407,9 +461,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             };
             _messageTemplateService.InsertMessageTemplate(eventInvitationNotification);
 
-            
-            var productReviewNotification = new MessageTemplate()
-            {
+
+            var productReviewNotification = new MessageTemplate() {
                 Name = "MobSocial.ProductReviewNotification",
                 Subject = "How do you like the products you ordered?",
                 Body = "Hi %Customer.FirstName%,<br/><br/> What do you think about the products you've ordered? What do you think about the products you've ordered? Click on the products below to write a review and let us and others know what you think?<br/><br/>" +
@@ -424,8 +477,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
 
-            var someoneSentYouASongNotification = new MessageTemplate()
-            {
+            var someoneSentYouASongNotification = new MessageTemplate() {
                 Name = "MobSocial.SendSomeoneSentYouASongNotification",
                 Subject = "%Friend.FirstName% sent you a song!",
                 Body = "<a href=\"%Store.URL%\">Log in</a> to %Friend.FirstName%'s song to you.",
@@ -433,11 +485,125 @@ namespace Nop.Plugin.Widgets.MobSocial
                 IsActive = true,
                 LimitedToStores = false
             };
+
             _messageTemplateService.InsertMessageTemplate(someoneSentYouASongNotification);
 
 
+            var someoneChallengedForBattleNotification = new MessageTemplate() {
+                Name = "MobSocial.SomeoneChallengedYouForBattleNotification",
+                Subject = "%Challenger.FirstName% challenged you for a video battle!",
+                Body = "<a href=\"%Store.URL%\">Log in</a> to accept the challege.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(someoneChallengedForBattleNotification);
+
+            var videoBattleCompleteNotificationToParticipants = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleCompleteNotificationToParticipants",
+                Subject = "%VideoBattle.Title% is complete!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to see the winner.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+            _messageTemplateService.InsertMessageTemplate(videoBattleCompleteNotificationToParticipants);
+
+            var videoBattleCompleteNotificationToVoters = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleCompleteNotificationToVoters",
+                Subject = "%VideoBattle.Title% is complete!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to see the winner.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+            _messageTemplateService.InsertMessageTemplate(videoBattleCompleteNotificationToVoters);
+
+            var someoneInvitedYouToVote = new MessageTemplate() {
+                Name = "MobSocial.SomeoneInvitedYouToVoteNotification",
+                Subject = "You have been invited to judge %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to judge the participants.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+            _messageTemplateService.InsertMessageTemplate(someoneInvitedYouToVote);
+
+            var voteReminderNotification = new MessageTemplate() {
+                Name = "MobSocial.VoteReminderNotification",
+                Subject = "You have been invited to judge %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to judge the participants.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(voteReminderNotification);
+
+            var battleSignupNotification = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleSignupNotification",
+                Subject = "%Challenger.Name% has signed up for %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to approve the participants.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(battleSignupNotification);
+
+            var battleJoinNotification = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleJoinNotification",
+                Subject = "%Challenger.Name% is also participating in %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to view the participants.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(battleJoinNotification);
+
+            var signupAcceptedNotification = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleSignupAcceptedNotification",
+                Subject = "You have been approved to participate in %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to view the battle.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(signupAcceptedNotification);
+
         }
 
+        private void DeleteMessageTemplates()
+        {
+            var messageTemplates = new List<string>()
+            {
+                "MobSocial.FriendRequestNotification",
+                "MobSocial.PendingFriendRequestNotification",
+                "MobSocial.EventInvitationNotification",
+                "MobSocial.ProductReviewNotification",
+                "MobSocial.SomeoneSentYouASongNotification",
+                "MobSocial.SomeoneChallengedYouForBattleNotification",
+                "MobSocial.VideoBattleCompleteNotificationToParticipants",
+                "MobSocial.VideoBattleCompleteNotificationToVoters",
+                "MobSocial.SomeoneInvitedYouToVoteNotification",
+                "MobSocial.VoteReminderNotification",
+                "MobSocial.VideoBattleSignupNotification",
+                "MobSocial.VideoBattleJoinNotification",
+                "MobSocial.VideoBattleSignupAcceptedNotification"
+            };
+
+            foreach (var template in messageTemplates)
+            {
+                var messageTemplate = _messageTemplateService.GetMessageTemplateByName(template, _storeContext.CurrentStore.Id);
+                if(messageTemplate == null)
+                    continue;
+                
+                _messageTemplateService.DeleteMessageTemplate(messageTemplate);
+            }
+        }
         #endregion
 
 

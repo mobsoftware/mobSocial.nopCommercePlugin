@@ -1,4 +1,5 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleModel
+﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleModel
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
@@ -13,12 +14,12 @@
 
 <div data-ng-controller="VideoBattleEditorController" ng-init="init(@json)">
     <div ng-show="recordSaved">
-        Video Battle created successfully. Redirecting to battle page to upload a video...
+        Video Battle @(Model.Id == 0 ? "created" : "updated") successfully. Redirecting to battle page to upload a video...
     </div>
     <form name="createBattleForm" ng-show="!recordSaved">
         <table class="table-form">
             <tr>
-                <td style="text-align:center;"><h1>Create Video Battle</h1></td>
+                <td style="text-align:center;"><h1>Video Battle Editor</h1></td>
             </tr>
             <tr>
                 <td>
@@ -32,14 +33,41 @@
                         <textarea name="description" id="description" data-ng-model="VideoBattle.Description"></textarea>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="description">Challenge Acceptance Last Date & Time</label><br />
+                        <label class="control-label">Voting Start Date</label><br />
                         <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="description">Voting Last Date</label><br />
+                        <label class="control-label">Voting Last Date</label><br/>
+                        <datetimepicker current-date="VideoBattle.VotingLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+
                     </div>
                     <div class="control-group">
-                        <input type="button" ng-click="SaveVideoBattle()" value="Create Battle" />
+                        <label class="control-label">Battle Type</label><br/>
+                        <select data-ng-model="VideoBattle.VideoBattleType">
+                            <option value="@((int) VideoBattleType.Open)">@(VideoBattleType.Open)</option>
+                            <option value="@((int) VideoBattleType.InviteOnly)">@(VideoBattleType.InviteOnly)</option>
+                            <option value="@((int) VideoBattleType.SignUp)">@(VideoBattleType.SignUp)</option>
+                        </select>
+
+                    </div>
+                    <div class="control-group" ng-show="VideoBattle.VideoBattleType == @((int)VideoBattleType.Open)">
+                        <label class="control-label" for="maxcount">Maximum Participants Allowed</label><br />
+                        <input type="number" min="0" step="1" name="MaximumParticipantCount" id="maxcount" data-ng-model="VideoBattle.MaximumParticipantCount" />
+                        <em>0 for no limit</em>
+                    </div>
+                    <div class="control-group">
+                        <div ng-show="processing">
+                            Please wait...
+                        </div>
+                       @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
+                       {
+                        <text>The battle can't be edited now.</text>
+                       }
+                       else
+                       {
+                        <input type="button" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle" />
+
+                       }
                     </div>
                 </td>
 

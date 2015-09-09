@@ -14,74 +14,210 @@
 
     var json = Json.Encode(Model);
     var videouploadUrl = "/VideoBattles/UploadVideo/";
-    var timerFormat = "{{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
+    var timerFormat = "{{ddays}} day{{daysS}} {{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
     var maxSeconds = 0;
     var maxUnit = "";
     var now = DateTime.UtcNow;
-    if (Model.AcceptanceLastDate > now)
-    {
-        var diffDate = Model.AcceptanceLastDate.Subtract(now);
-        maxSeconds = Convert.ToInt32(diffDate.TotalHours) * 60 * 60;
-        if (diffDate.TotalDays > 30)
-        {
-            maxUnit = "month";
+    var endDate = DateTime.UtcNow;
 
-        }
-        else if (diffDate.TotalDays > 1)
+    if (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.AcceptanceLastDate > now)
+    {
+        endDate = Model.AcceptanceLastDate;
+    }
+    else if (Model.VideoBattleStatus == VideoBattleStatus.Open)
+    {
+        endDate = Model.VotingLastDate;
+    }
+    var diffDate = endDate.Subtract(now);
+
+    maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
+
+    if (diffDate.TotalDays > 1)
+    {
+        maxUnit = "day";
+    }
+    else if (diffDate.TotalHours > 1)
+    {
+        maxUnit = "hour";
+    }
+    else if (diffDate.TotalMinutes > 1)
+    {
+        maxUnit = "minute";
+    }
+    else
+    {
+        maxUnit = "second";
+    }
+
+}
+
+
+<h1 class="battle-page-heading">
+    @Model.Title
+</h1>
+@if (Model.IsEditable && Model.VideoBattleStatus == VideoBattleStatus.Pending)
+{
+    <div ng-controller="VideoBattlesPageController" class="text-center">
+        <button ng-click="EditVideoBattle(@Model.Id)"><i class="fa fa-pencil"></i> Edit</button>
+        <button ng-click="DeleteVideoBattle(@Model.Id)"><i class="fa fa-times"></i> Delete</button>
+    </div>
+}
+
+
+@if (maxSeconds > 0)
+{
+    <div class="battle-timer">
+        @if (Model.VideoBattleStatus == VideoBattleStatus.Pending)
         {
-            maxUnit = "day";
-        }
-        else if (diffDate.TotalHours > 1)
-        {
-            maxUnit = "hour";
-        }
-        else if (diffDate.TotalMinutes > 1)
-        {
-            maxUnit = "minute";
+            <text>
+                Starts in
+            </text>
         }
         else
         {
-            maxUnit = "second";
+            <text>
+                Ends in
+            </text>
         }
-        maxUnit = "hour";
-    }
-    
+        <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval=" 1000">@timerFormat</timer>
+    </div>
 }
 
-<h1 class="battle-page-heading">
-    @Model.Title starts in <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval="1000">@timerFormat</timer>
-</h1>
+@Html.Widget("video_inline")
 
 <div class="battle-participants" ng-controller="VideoBattlePageController as controller" ng-init="init(@json)">
-   
-    <span ng-repeat="participant in VideoBattle.Participants">
-       @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
-    </span>
-
-
-    <div class="participant-box pending">
-
-        <div class="participant-name">Invite to Battle</div>
-        <div class="video-placeholder">
-            <i class="fa fa-plus-circle"></i>
-            <angucomplete-alt id="customer-autocomplete"
-                              placeholder="Type name of a friend or a user..."
-                              selected-object="CustomerSelected"
-                              remote-api-handler="searchAPI"
-                              minlength="1"
-                              pause="100"
-                              image-field="PictureUrl"
-                              title-field="DisplayName"
-                              input-class="form-control form-control-small"></angucomplete-alt>
-
-            <div ng-repeat="c in challengees">
-                <div class="selected-receiver">
-                    {{c.DisplayName}}
-                    <a ng-click="RemoveChallengee(c.Id)"><i class="fa fa-times"></i></a>
-                </div>
-            </div>
-            <div class="clearfix clear"></div><br />
-            <button ng-click="InviteParticipants()">Invite Now</button>
+    <div class="battle-status">
+        <div ng-switch on="VideoBattle.VideoBattleStatus">
+            <div ng-switch-when="@((int) VideoBattleStatus.Pending)">Battle currently visible only to the participants of the battle</div>
+            <div ng-switch-when="@((int) VideoBattleStatus.Locked)">Battle Locked</div>
+            <div ng-switch-when="@((int) VideoBattleStatus.Open)">Battle Open</div>
+            <div ng-switch-when="@((int) VideoBattleStatus.Closed)">Battle Closed</div>
+            <div ng-switch-when="@((int) VideoBattleStatus.Complete)">Battle Completed</div>
         </div>
     </div>
+    <div class="battle-description">
+        <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
+        
+       
+        @if (Model.VideoBattleStatus == VideoBattleStatus.Open)
+        {
+            <br />
+            <br />
+            <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
+        }
+    </div>
+    @{
+        if (Model.VideoBattleType != VideoBattleType.InviteOnly && !Model.IsParticipant && !Model.IsEditable)
+        {
+            <div class="text-center">
+                @if (Model.IsUserLoggedIn)
+                {
+
+
+                    if (Model.VideoBattleType == VideoBattleType.Open)
+                    {
+                        <div ng-show="joinBattleProcessed"><i class="fa fa-check-circle"></i> You have successfully joined the battle. <a onclick="window.location.reload()">Refresh</a> page to upload video</div>
+                        <a class="button-primary button-1" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Join Battle</a>
+                    }
+                    else
+                    {
+                        <div ng-show="joinBattleProcessed">
+                            <i class="fa fa-check-circle"></i> You have successfully signed up for the battle. <a onclick="window.location.reload()">Refresh</a> page to see your approval status
+                        </div>
+                        <a class="button-primary button-1" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Signup For Battle</a>
+                    }
+
+
+
+                }
+                else
+                {
+                    <a class="button-primary button-1" href="@Url.RouteUrl("login", new { ReturnUrl = Url.RouteUrl("VideoBattlePage", new { VideoBattleId = Model.Id }) })">Join Battle</a>
+
+                }
+            </div>
+        }
+
+    }
+  
+    @{
+        var showInvitationBox = true;
+
+        //battle host or participant
+        showInvitationBox = (Model.IsEditable || Model.IsParticipant);
+
+        //battle is not closed?
+        showInvitationBox = showInvitationBox && (Model.VideoBattleStatus == VideoBattleStatus.Pending || Model.VideoBattleStatus == VideoBattleStatus.Open);
+
+        if (Model.VideoBattleType == VideoBattleType.InviteOnly)
+        {
+            //only host can invite
+            showInvitationBox = showInvitationBox && Model.IsEditable;
+        }
+        else if (Model.VideoBattleType == VideoBattleType.Open)
+        {
+            //anybody can invite so battle should only be pending for invitations to work
+            showInvitationBox = showInvitationBox && (Model.VideoBattleStatus == VideoBattleStatus.Pending);
+        }
+
+    }
+    @if (showInvitationBox)
+    {
+        var isVoterInvite = (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.IsParticipant && Model.VideoBattleType != VideoBattleType.Open)
+            || (Model.VideoBattleStatus == VideoBattleStatus.Open) && (Model.IsEditable || Model.IsParticipant);
+
+
+        <div class="participant-box pending">
+
+            <div class="participant-name">Invite to @(isVoterInvite ? "Vote" : "Battle")</div>
+            <div class="video-placeholder">
+                <i class="fa fa-plus-circle big"></i>
+                <angucomplete-alt id="customer-autocomplete"
+                                  placeholder="Type name of a friend or a user..."
+                                  selected-object="CustomerSelected"
+                                  remote-api-handler="searchAPI"
+                                  minlength="1"
+                                  pause="100"
+                                  image-field="PictureUrl"
+                                  title-field="DisplayName"
+                                  input-class="form-control form-control-small"></angucomplete-alt>
+                <div class="challengees-to-invite" ng-show="challengees.length > 0">
+                    <div ng-repeat="c in challengees">
+                        <div class="selected-receiver">
+                            {{c.DisplayName}}
+                            <a ng-click="RemoveChallengee(c.Id)"><i class="fa fa-times"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="invited" class="text-center">
+                    Successfully invited selected users to @(isVoterInvite ? "vote on this battle" : "battle").<br /> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
+                </div>
+                <div class="clearfix clear"></div><br />
+                <button ng-if="!processing" ng-click="@(isVoterInvite ? "InviteVoters()" : "InviteParticipants()")">Invite Now</button>
+            </div>
+        </div>
+    }
+
+    <span ng-repeat="participant in VisibleParticipants">
+        @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
+    </span>
+    <div ng-show="VisibleParticipants.length < VideoBattle.Participants.length" class="pagination-load-more">
+        <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
+    </div>
+
 </div>
+
+
+<script type='text/javascript'>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        var gads = document.createElement('script');
+        gads.async = true; gads.type = 'text/javascript';
+        gads.src = 'http://www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+    })();
+</script>
+<script src="http://imasdk.googleapis.com/js/sdkloader/ima3.js" type="text/javascript"></script>

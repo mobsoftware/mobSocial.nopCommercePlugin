@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Nop.Core;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 
@@ -12,6 +13,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
     {
         public string Title { get; set; }
 
+        [AllowHtml]
         public string Description { get; set; }
 
         public DateTime DateCreated { get; set; }
@@ -29,5 +31,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public VideoBattleStatus VideoBattleStatus { get; set; }
 
         public VideoBattleVoteType VideoBattleVoteType { get; set; }
+
+        public int MaximumParticipantCount { get; set; }
     }
 }

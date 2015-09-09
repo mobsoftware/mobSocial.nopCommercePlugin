@@ -1,6 +1,6 @@
 var dtpAppDirectives = angular.module('ngDateTimePicker', []);
 
-dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
+dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function($compile, $rootScope) {
         return {
             restrict: "E",
             scope: {
@@ -10,9 +10,14 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                 includeTime: "@"
             },
             template: "<div class='datepicker-container'><input readonly type='text' ng-focus='expandMe();' class='datepicker-input' ng-model='currentDate' /> <button class='ng-hide datepicker-close' ng-click='closeMe();'>&#10006;</button><br/></div>",
-            replace: true,            
+            replace: true,
             link: function($scope, $elem, $attr) {
-                
+                //let's add the current scope to root scope to maintain the list of all the datetime pickers on the page
+                if (!$rootScope.DateTimePickerScopes) {
+                    $rootScope.DateTimePickerScopes = [];
+                }
+                $rootScope.DateTimePickerScopes.push($scope);
+
                 $scope.calLock = false;
                 if ($scope.minDate === undefined) {
                     $scope._minDate = new Date(1970, 1, 1);
@@ -34,6 +39,10 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                 $scope._visibleHour =  $scope.currentDate.getHours();
                 $scope._visibleMinute =  $scope.currentDate.getMinutes();
                 
+                if ($scope._visibleHour > 12) { //12 hour clock
+                    $scope._visiblePeriod = "PM";
+                    $scope._visibleHour = $scope._visibleHour - 12;
+                }
                 var daysInMonth = function(anyDateInMonth)
                 {
                     var month = anyDateInMonth.getMonth();
@@ -112,21 +121,27 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                     }
                     yearSelect += "</select>";
                     
-                    var hourSelect, minSelect;
+                    var hourSelect, minSelect, periodSelect;
                     if($scope.includeTime){
                         hourSelect = " Hours: <select ng-model='_visibleHour'>";
-                        for (var i = 0; i <= 23; i++) {
+                        hourSelect += "<option value='12'>12</option>";
+                        for (var i = 1; i <= 11; i++) {
                             var hour = ("0" + i).slice(-2);
-                            hourSelect += "<option value='" + i + "'>" + hour + "</option>"
+                            hourSelect += "<option value='" + i + "'>" + hour + "</option>";
                         }
+                        
                         hourSelect += "</select>";
                         
                         minSelect = " Minutes: <select ng-model='_visibleMinute'>";
-                        for (var i = 0; i < 60; i+=5) {
+                        for (var i = 0; i < 60; i++) {
                             var min = ("0" + i).slice(-2);
-                            minSelect += "<option value='" + i + "'>" + min + "</option>"
+                            minSelect += "<option value='" + i + "'>" + min + "</option>";
                         }
-                        minSelect += "</select>";                        
+                        minSelect += "</select>";
+
+                        periodSelect = " Period: <select ng-model='_visiblePeriod'>";
+                        periodSelect += "<option value='AM'>AM</option><option value='PM'>PM</option>";
+                        periodSelect += "</select>";
                         
                     }
                     var year_html = "<tr><th colspan='7'><a class='datepicker-prev' ng-click='previousMonth()'>&laquo;</a> " + monthSelect + yearSelect  + " <a class='datepicker-next' ng-click='nextMonth()'>&raquo;</a></th></tr>";
@@ -164,7 +179,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                         }
                     }
                     dates_str += "</tr>";
-                    var time_html = "<tr class='time_row'><td colspan='7'>" + hourSelect + minSelect + "</td></tr>";
+                    var time_html = "<tr class='time_row'><td colspan='7'>" + hourSelect + minSelect + periodSelect + "</td></tr>";
                     
                     var close_button = "" ; //+ "<tr class='time_row'><td colspan='7'><button ng-click='closeMe()'>Close</button></td></tr>";
                     var cal_string = "<table>" + year_html + day_html + dates_str + time_html + close_button + "</table>";
@@ -190,10 +205,22 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                     }
                     $scope.reloadDate();
                 };
-                $scope.setDate = function(day) {
-                    $scope.currentDate = new Date($scope._visibleYear, $scope._visibleMonth, day, $scope._visibleHour, $scope._visibleMinute, 0);
-                    $scope._visibleDay = day;                    
-                    $scope.closeMe();
+                $scope.setDate = function (day, noClose) {
+                    
+                    var vhour = parseInt($scope._visibleHour);
+                    if ($scope._visiblePeriod === "AM") {
+                        if (vhour > 11)
+                            vhour = vhour - 12;
+
+                    } else {
+                        if (vhour < 12)
+                            vhour = vhour + 12;
+                    }
+                   
+                    $scope.currentDate = new Date($scope._visibleYear, $scope._visibleMonth, day, vhour, $scope._visibleMinute, 0);
+                    $scope._visibleDay = $scope.currentDate.getDate();
+                    if(noClose !== true)
+                        $scope.closeMe();
                 };
 
                 $scope.reloadDate = function() {
@@ -215,7 +242,12 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                     $compile($scope._datePickerArea)($scope);
                 };
                 
-                $scope.expandMe = function(){
+                $scope.expandMe = function () {
+                    //we should close the other opened pickers before opening a new one
+                    for (var i = 0; i < $rootScope.DateTimePickerScopes.length; i++) {
+                        $rootScope.DateTimePickerScopes[i].closeMe();
+                    }
+
                     $elem.find("button").removeClass("ng-hide");
                     $scope.reloadDate();
                     $scope._datePickerArea.css("display", "block").addClass("datepicker-expanded");
@@ -234,7 +266,9 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", function($compile) {
                 $scope.$watchGroup(['_visibleYear', '_visibleMonth'], function(newVal, oldVal) {
                     $scope.reloadDate();
                 });
-                
+                $scope.$watchGroup(['_visibleHour', '_visibleMinute','_visiblePeriod'], function (newVal, oldVal) {
+                    $scope.setDate($scope._visibleDay, true);
+                });
 
             }
         };

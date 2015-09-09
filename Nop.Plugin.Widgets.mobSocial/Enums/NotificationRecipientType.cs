@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Nop.Plugin.Widgets.MobSocial.Enums
 {
-    public enum VideoBattleType
+    public enum NotificationRecipientType
     {
-        Open = 1,
-        InviteOnly = 2,
-        SignUp = 3
+        Voter,
+        Participant
     }
 }

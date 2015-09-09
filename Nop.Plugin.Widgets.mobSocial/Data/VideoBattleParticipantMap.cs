@@ -17,6 +17,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.ParticipantId);
             Property(x => x.VideoBattleId);
             Property(x => x.ParticipantStatus);
+            Property(x => x.LastUpdated).HasColumnType("datetime2");
         }
     }
 }

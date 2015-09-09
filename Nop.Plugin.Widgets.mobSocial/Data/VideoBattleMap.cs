@@ -20,6 +20,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.VideoBattleType);
             Property(x => x.VideoBattleVoteType);
             Property(x => x.VideoBattleStatus);
+
+            Property(x => x.MaximumParticipantCount);
         }
     }
 }

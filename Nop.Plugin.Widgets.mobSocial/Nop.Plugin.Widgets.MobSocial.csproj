@@ -137,11 +137,14 @@
     <Compile Include="Domain\VideoBattleParticipant.cs" />
     <Compile Include="Domain\VideoBattlePicture.cs" />
     <Compile Include="Domain\VideoBattleVideo.cs" />
+    <Compile Include="Domain\VideoBattleView.cs" />
     <Compile Include="Domain\VideoBattleVote.cs" />
     <Compile Include="Domain\VideoGenre.cs" />
+    <Compile Include="Enums\NotificationRecipientType.cs" />
     <Compile Include="Enums\VideoBattleParticipantStatus.cs" />
     <Compile Include="Enums\VideoBattleStatus.cs" />
     <Compile Include="Enums\VideoBattleType.cs" />
+    <Compile Include="Enums\VideoBattleVoteStatus.cs" />
     <Compile Include="Enums\VideoBattleVoteType.cs" />
     <Compile Include="Enums\VideoStatus.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
@@ -257,12 +260,14 @@
     <Compile Include="mobSocialSettings.cs" />
     <Compile Include="Models\VideoBattleModel.cs" />
     <Compile Include="Models\VideoBattlePublicModel.cs" />
+    <Compile Include="Models\VideoBattleVotePublicModel.cs" />
     <Compile Include="Models\VideoParticipantBoxModel.cs" />
     <Compile Include="Models\VideoParticipantPublicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
     <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
+    <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
@@ -311,7 +316,13 @@
     <Content Include="Content\mobSocial\artist-pages\artist-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\ajaxdisable.directive.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\fileupload.directive.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\poweredby.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\share-song-button.directive.js">
@@ -785,7 +796,12 @@
     <Content Include="Views\mobSocial\VideoBattle\Includes.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml" />
+    <Content Include="Views\mobSocial\VideoBattle\VideoBattleBox.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
