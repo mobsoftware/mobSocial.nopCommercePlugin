@@ -284,7 +284,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 };
 
                 //find if the participant has uploaded video? only those who have accepted challege would be shown 'with videos'
-                if (participant.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted && (videoBattle.VideoBattleStatus != VideoBattleStatus.Pending || participant.ParticipantId == _workContext.CurrentCustomer.Id))
+                if (participant.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted && ((videoBattle.VideoBattleStatus != VideoBattleStatus.Pending && videoBattle.VideoBattleStatus != VideoBattleStatus.Locked) || participant.ParticipantId == _workContext.CurrentCustomer.Id))
                 {
                     var video = battleVideos.FirstOrDefault(x => x.ParticipantId == participant.ParticipantId);
                     if (video != null)

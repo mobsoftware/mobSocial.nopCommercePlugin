@@ -58,10 +58,13 @@
             <div ng-if="participant.VideoPath == null && participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged)">
                 You have not uploaded any video yet.
             </div>
-            <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) && !participant.CanEdit">
+            <div ng-if="participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.Challenged)">
+                <strong>Videos can no longer be submitted once voting starts</strong>
+            </div>
+            <div ng-if="(VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Locked)) && !participant.CanEdit">
                 Video uploaded will be visible once the battle goes live
             </div>
-            <div ng-if="participant.VideoPath != null && (VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) || participant.CanEdit)" class="videogular-container">
+            <div ng-if="participant.VideoPath != null && ((VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) && VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Locked)) || participant.CanEdit)" class="videogular-container">
 
                 <videogular vg-player-ready="PlayerReady(participant, $API)" vg-complete="WatchedVideo(participant.Id)" vg-update-state="UpdateState(participant, $state)" vg-theme="controller.config.theme" vg-responsive="true">
                     <vg-media vg-src="participant.VideoSource" vg-tracks="" preload="metadata">

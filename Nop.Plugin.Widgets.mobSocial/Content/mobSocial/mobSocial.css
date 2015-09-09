@@ -854,6 +854,17 @@ h1.battle-page-heading {
     color: #5C5B5B;
 
 }
+.c2a-maroon {
+        background-color: maroon;
+    color: white;
+    padding: 10px;
+    text-transform: uppercase;
+}
+.c2a-maroon:hover {
+    text-decoration: none;
+    color: white;
+}
+
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/
 .master-wrapper-main .center-3 { overflow:visible; }

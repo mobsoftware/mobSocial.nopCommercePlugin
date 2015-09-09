@@ -25,9 +25,15 @@
                 @for (var i = 0; i < 4; i++)
                 {
                     <div>
-                        @if (i == 2)
+                        @if (i == 0)
                         {
-                            <div style="text-align: right;margin-bottom:10px">
+                            <div style="text-align: left; margin-bottom: 10px;margin-top: 20px">
+                                <a href="@Url.RouteUrl("VideoBattleEditor")" class="c2a-maroon"><i class="fa fa-plus-circle"></i> Create Video Battle</a>
+                            </div>
+                        }
+                        else if (i == 2)
+                        {
+                            <div style="text-align: right; margin-bottom: 10px">
                                 <a href="@Url.RouteUrl("VideoBattleEditor")"><i class="fa fa-plus-circle"></i> Create Video Battle</a>
                             </div>
                         }

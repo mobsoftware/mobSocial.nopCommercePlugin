@@ -112,7 +112,7 @@ app.controller("VideoBattlePageController", [
             //currently visible page. initialize to zero
             $scope.VisiblePage = 0;
             //total count to be shown per page
-            $scope.VisiblePerPage = 1;
+            $scope.VisiblePerPage = 10;
             //the participants which are visible for current page
 	        $scope.VisibleParticipants = [];
 
@@ -364,7 +364,8 @@ app.controller("VideoBattlePageController", [
 	    $scope.processingAcceptOrDenyInvite = false;
 	    $scope.inviteAccepted = false;
 	    $scope.AcceptOrDenyInvite = function (VideoBattleId, ParticipantStatus, ParticipantId) {
-            if (!confirm('Are you sure?')) {
+	        if (ParticipantStatus === 30 && !confirm('Are you sure?')) {
+                //confirm only when it's a deny
                 return;
             }
 	        $scope.processingAcceptOrDenyInvite = true;

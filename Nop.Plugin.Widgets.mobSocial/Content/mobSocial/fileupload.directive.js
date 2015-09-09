@@ -52,7 +52,17 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
 
             // CALLBACKS
             uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
-                alert("Can't add this file");
+                var msg = "";
+                if (uploadtype === "image") {
+                    msg = "You can only upload image files. Allowed extensions are .jpg, .png, .jpeg, .bmp and .gif";
+                }
+                else if (uploadtype === "video") {
+                    msg = "You can only upload video files. Allowed extensions are .mp4, .avi, and .3gp";
+                }
+                else if (uploadtype === "music") {
+                    msg = "You can only upload music files. Allowed extensions are .mp3, .wav, and .amr";
+                }
+                alert(msg);
                 if (typeof scope[attrs.onwhenaddingfilefailed] == "function") {
                     scope[attrs.onwhenaddingfilefailed](item, filter, options);
                 }
