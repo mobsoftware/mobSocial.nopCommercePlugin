@@ -1,13 +1,9 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Models;
+﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+@using Nop.Plugin.Widgets.MobSocial.Models;
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
-    Html.AddCssFileParts(ModelUtil.ContentPath + "/angular-xeditable/css/xeditable.css");
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/song-pages/song-pages.js");
 
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-xeditable/js/xeditable.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
-
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
-    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
 
 }
 

@@ -1,25 +1,22 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Models
+﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+@using Nop.Plugin.Widgets.MobSocial.Models
 @{
-    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/angular-sanitize.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/videogular.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/vg-controls.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/vg-overlay-play.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/vg-poster.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/vg-buffering.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/vg-ima-ads.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/angular-sanitize.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/videogular.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-controls.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-overlay-play.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-poster.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-buffering.min.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-ima-ads.min.js");
 
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/humanize-duration.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/moment.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/humanize-duration.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/moment.js");
     
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/videogular/angular-timer.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/angular-timer.js");
 
 
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/fileupload.directive.js");
     
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/video-battles/video-battle-services.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/video-battles/video-battles.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/video-battles/video-battle-services.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/video-battles/video-battles.js");
 }
 

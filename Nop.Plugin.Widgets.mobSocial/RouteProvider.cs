@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
+using Nop.Plugin.Widgets.MobSocial.ViewEngines;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc.Routes;
-using Nop.Web.Framework.Seo;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -10,6 +10,8 @@ namespace Nop.Plugin.Widgets.MobSocial
     {
         public void RegisterRoutes(RouteCollection routes)
         {
+
+            System.Web.Mvc.ViewEngines.Engines.Add(new MobSocialViewEngine());
 
             // redirects to your store
             routes.MapRoute("FacebookWebsiteApp",
@@ -287,6 +289,9 @@ namespace Nop.Plugin.Widgets.MobSocial
                         new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                         );
+
+            // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
+            routes.MapHubs();
 
         }
 

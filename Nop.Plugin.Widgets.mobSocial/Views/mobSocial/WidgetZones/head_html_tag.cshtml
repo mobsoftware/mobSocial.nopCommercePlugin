@@ -4,7 +4,7 @@
     //THIRD PARTY RESOURCES
 
     //font-awesome icons
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/font-awesome/font-awesome.min.css");
+    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/fonts/font-awesome.min.css");
 
     //angular core
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular/angular.min.js");
@@ -14,8 +14,8 @@
     
     //jquery ui
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.min.css");
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui.structure.min.css");
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui.theme.min.css");
+    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.structure.min.css");
+    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui//jquery-ui.theme.min.css");
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui-1.11.min.js");
         
     //datepicker
@@ -37,16 +37,18 @@
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.js");
 
     //signalr
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/RTCMultiConnection.js");
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/jquery.signalr-2.2.0.js");
-    Html.AddScriptParts("~/signalr/hubs");
+    //Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/RTCMultiConnection.js");
+    //Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/jquery.signalR-1.2.2.min.js");
+   // Html.AddScriptParts("~/signalr/hubs");
     
+    //file upload
+    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
     
 
     //main app
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/mobSocial.js");
     
-
+        
     //custom css
     Html.AddCssFileParts(MobSocialConstant.PluginContentPathInternal + "/css/mobSocial.css");
     Html.AddCssFileParts(MobSocialConstant.PluginContentPathInternal + "/css/mobSocial-custom.css");
@@ -65,14 +67,16 @@
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/share-song-button.directive.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/buy-song-button.directive.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-live-video.directive.js");
-    
+    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/fileupload.directive.js");
+
+        
     //controllers
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/my-health.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-profile.js");
     
     //common js
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/common.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mob-video.js");
+    //Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mob-video.js");
 
     
 }

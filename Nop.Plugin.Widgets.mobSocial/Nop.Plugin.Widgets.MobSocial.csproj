@@ -44,7 +44,6 @@
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
-    <Compile Include="OwinStartup.cs" />
     <Compile Include="Services\ArtistPageAPIService.cs" />
     <Compile Include="Services\ArtistPageManagerService.cs" />
     <Compile Include="Services\ArtistPagePaymentService.cs" />
@@ -310,7 +309,9 @@
     <Content Include="Content\mobSocial\js\directives\ajaxdisable.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\js\directives\contenteditable.directive.js" />
+    <Content Include="Content\mobSocial\js\directives\contenteditable.directive.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\directives\fileupload.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -365,9 +366,15 @@
     <Content Include="Content\mobSocial\js\controllers\song-pages\song-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\js\directives\whenscrolled.directive.js" />
-    <Content Include="Content\mobSocial\js\services\dialogservice.js" />
-    <Content Include="Content\mobSocial\js\services\song-service.js" />
+    <Content Include="Content\mobSocial\js\directives\whenscrolled.directive.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\services\dialogservice.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\services\song-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\directives\buy-song-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -433,11 +440,17 @@
     <Content Include="Content\Libraries\signalr\jquery.signalR-1.2.2.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.js" />
-    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\jquery.signalR-1.0.0.js" />
+    <Content Include="Scripts\jquery.signalR-1.0.0.min.js" />
     <Content Include="Uploads\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -477,7 +490,7 @@
     <Content Include="Content\mobSocial\js\controllers\event-pages\event-pages.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.svg">
+    <Content Include="Content\Libraries\fonts\fontawesome-webfont.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Libraries\jquery-ui\jquery-ui.min.css">
@@ -516,7 +529,7 @@
     <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-albums.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Libraries\font-awesome\font-awesome.min.css">
+    <Content Include="Content\Libraries\fonts\font-awesome.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Libraries\jquery-form\jquery.form.js">
@@ -566,16 +579,16 @@
     <Content Include="Views\mobSocial\FacebookWebsiteApp\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.eot">
+    <Content Include="Content\Libraries\fonts\fontawesome-webfont.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.ttf">
+    <Content Include="Content\Libraries\fonts\fontawesome-webfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Libraries\font-awesome\fontawesome-webfont.woff">
+    <Content Include="Content\Libraries\fonts\fontawesome-webfont.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Libraries\font-awesome\FontAwesome.otf">
+    <Content Include="Content\Libraries\fonts\FontAwesome.otf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Themes\MobSocialDefault\theme.config" />
@@ -729,7 +742,15 @@
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Views\mobSocial\WidgetZones\head_html_tag.cshtml" />
+    <Content Include="Views\mobSocial\WidgetZones\head_html_tag.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_AppColumnsTwo.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\_AppColumnsOne.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -771,6 +792,7 @@
     <ProjectReference Include="..\..\MobAds\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -794,26 +816,25 @@
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.Core.1.0.0\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin">
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.Owin.1.0.0\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.SystemWeb.1.0.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.Host.SystemWeb.1.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
@@ -822,15 +843,15 @@
     <Reference Include="MobAds.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>MobLib\MobAds.Public.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">

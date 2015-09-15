@@ -69,7 +69,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         /// <summary>
         /// A multipurpose method for getting the video battles
         /// </summary>
-        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, out int TotalPages, int Page = 1, int Count = 15)
+        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, out int TotalPages, int Page = 1, int Count = 15)
         {
             var battles = _videoBattleRepository.Table;
             if (OwnerId != null)
@@ -98,6 +98,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             {
                 battles = battles.Where(x => x.VideoBattleStatus == BattleStatus.Value);
             }
+
+            if (BattleType != null)
+            {
+                battles = battles.Where(x => x.VideoBattleType == BattleType.Value);
+            }
+
             TotalPages = int.Parse(Math.Ceiling((decimal)battles.Count() / Count).ToString());
             //return paginated result
             return battles.OrderByDescending(x => x.DateUpdated).Skip((Page - 1) * Count).Take(Count).ToList();
