@@ -16,7 +16,7 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
             var uploadtype = attrs.uploadtype;
             var multiple = attrs.multiple ? "multiple" : "";
 
-            var htmlUpload = $("<input name='" + name + "' type='file' style='opacity:0;position:absolute;left:-5000' nv-file-select='' uploader='uploader' id='file_uploader_" + id + "'" + multiple + "  />");
+            var htmlUpload = $("<input name='" + name + "' type='file' style='opacity:0;position:absolute;left:-5000px' nv-file-select='' uploader='uploader' id='file_uploader_" + id + "'" + multiple + "  />");
             var htmlProgress = $("<span id='progress_" + id + "'></span>");
 
             var uploader = scope.uploader = new FileUploader({ url: url });

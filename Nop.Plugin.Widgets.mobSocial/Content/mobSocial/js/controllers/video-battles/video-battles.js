@@ -85,6 +85,10 @@ app.controller("VideoBattleEditorController", [
 app.controller("VideoBattlePageController", [
 	"$scope", "VideoBattleService", "$sce", function ($scope, VideoBattleService, $sce) {
 
+        //ie fix
+	    if (!window.location.origin) {
+	        window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+	    }
 	    //create a url based on the root 
 	    var rootUrl = window.location.origin;
 

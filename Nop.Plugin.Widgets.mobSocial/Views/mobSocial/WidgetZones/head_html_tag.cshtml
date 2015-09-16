@@ -29,6 +29,7 @@
    
     //x-editable
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/js/xeditable.min.js");
+    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/css/xeditable.css");
     
     //audio
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-audio/js/angular.audio.js");
@@ -57,6 +58,9 @@
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/services/song-service.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/services/dialogservice.js");
     
+    //filters'
+    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/filters/ms2timestr.js");
+    
     
 
     //custom directives
@@ -74,6 +78,7 @@
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/my-health.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-profile.js");
     
+
     //common js
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/common.js");
     //Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mob-video.js");

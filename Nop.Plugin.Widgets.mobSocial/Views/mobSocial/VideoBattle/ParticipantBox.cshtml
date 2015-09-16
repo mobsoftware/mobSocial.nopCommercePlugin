@@ -66,17 +66,19 @@
                 <videogular vg-player-ready="PlayerReady(participant, $API)" vg-complete="WatchedVideo(participant.Id)" vg-update-state="UpdateState(participant, $state)" vg-theme="controller.config.theme" vg-responsive="true">
                     <vg-media vg-src="participant.VideoSource" vg-tracks="" preload="metadata">
                     </vg-media>
+                    
                     <vg-controls>
                         <vg-play-pause-button></vg-play-pause-button>
-                        <vg-time-display>{{ currentTime | date:'hh:mm:ss' }}</vg-time-display>
+                        <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
                         <span>/</span>
-                        <vg-time-display>{{ timeLeft | date:'hh:mm:ss' }}</vg-time-display>
+                        <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
                         <vg-volume>
                             <vg-mute-button></vg-mute-button>
                             <vg-volume-bar></vg-volume-bar>
                         </vg-volume>
                         <vg-fullscreen-button></vg-fullscreen-button>
                     </vg-controls>
+                    <vg-overlay-play></vg-overlay-play>
                     <vg-ima-ads vg-network="participant.extras.network"
                                 vg-unit-path="participant.extras.unitPath"
                                 vg-companion="participant.extras.companion"
@@ -85,6 +87,7 @@
                                 vg-skip-button="participant.extras.skipButton">
                     </vg-ima-ads>
                     <vg-poster vg-url='controller.config.plugins.poster'></vg-poster>
+                   
                 </videogular>
 
             </div>

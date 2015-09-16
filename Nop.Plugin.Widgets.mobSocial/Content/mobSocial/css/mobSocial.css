@@ -854,6 +854,9 @@ h1.battle-page-heading {
     color: #5C5B5B;
 
 }
+videogular vg-overlay-play, [videogular] vg-overlay-play {
+    left: 0px !important;
+}
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/
 .master-wrapper-main .center-3 { overflow:visible; }
