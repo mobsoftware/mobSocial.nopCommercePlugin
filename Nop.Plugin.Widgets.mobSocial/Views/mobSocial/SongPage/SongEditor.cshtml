@@ -1,13 +1,15 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.SongModel
+﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+@model Nop.Plugin.Widgets.MobSocial.Models.SongModel
 @{
-    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+
 
     Html.AppendTitleParts(Model.Name);
 
    Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
 
-    Html.AddScriptParts(ResourceLocation.Foot, Nop.Plugin.Widgets.MobSocial.Models.ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/song-pages/song-pages.js");
     var json = Json.Encode(Model);
 }
 <script>
