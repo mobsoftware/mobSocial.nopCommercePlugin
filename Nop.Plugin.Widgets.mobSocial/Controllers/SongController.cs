@@ -1,5 +1,4 @@
 ﻿using Nop.Web.Controllers;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Web.Framework.Security;
 using Nop.Services.Localization;
 using Nop.Services.Media;
@@ -25,6 +24,9 @@ using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Core.Infrastructure;
 using Nop.Services.Catalog;
 using Nop.Core.Domain.Catalog;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Services;
+
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     [NopHttpsRequirement(SslRequirement.No)]

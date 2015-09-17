@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+}
+@section left
+{
+    @if (IsSectionDefined("left"))
+    {
+        @RenderSection("left")
+    }
+    else
+    {
+        @Html.Action("PublicInfo", "SocialNetworkNavigation", new { widgetZone = "account_navigation_after" })
+
+    }
+}
+
+<div ng-app="mobSocialApp" ng-cloak>
+    @RenderBody()
+</div>

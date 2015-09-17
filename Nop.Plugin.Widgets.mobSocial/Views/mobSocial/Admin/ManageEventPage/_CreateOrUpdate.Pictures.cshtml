@@ -17,7 +17,7 @@
                                 dataType: "json"
                             },
                             update: {
-                                url:"@Html.Raw(Url.Action("PictureUpdate", "ManageEventPage"))",
+                                url: "@Html.Raw(Url.Action("PictureUpdate", "ManageEventPage"))",
                                 type: "POST",
                                 dataType: "json"
                             },
@@ -108,7 +108,7 @@
                 $.ajax({
                     cache:false,
                     type: "POST",
-                    url: "@(Url.Action("PictureAdd", "ManageEventPage"))",
+                    url: "@Url.Action("PictureAdd", "ManageEventPage")",
                     data: { "pictureId": pictureId, "displayOrder": displayOrder, "entityId": @Model.Id },
                     success: function (data) {
                         var picturesGrid = $("#pictures-grid");

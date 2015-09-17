@@ -17,7 +17,6 @@ using Nop.Web.Framework;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Profile;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial;
 using Nop.Plugin.Widgets.MobSocial.Models;
@@ -26,6 +25,9 @@ using System.Linq;
 using System.Web;
 using Mob.Core;
 using Nop.Core;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Services;
+using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -188,7 +190,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(customer, 0)}),
 
                 });
             }
@@ -221,7 +223,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(customer, 0)}),
 
                 });
             }
@@ -254,7 +256,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(customer, 0)}),
 
                 });
             }
@@ -288,7 +290,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(customer, 0)}),
 
                 });
             }
@@ -321,7 +323,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(customer, 0)}),
 
                 });
             }
@@ -359,7 +361,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(customer, 0)}),
 
                 });
             }
@@ -418,7 +420,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = customer.GetSeName(0)}),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(customer, 0)}),
 
                 });
             }
@@ -507,7 +509,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         _mobSocialSettings.EventPageAttendanceThumbnailSize, _customerSettings.DefaultAvatarEnabled,
                         defaultPictureType: PictureType.Avatar),
                     ProfileUrl =
-                        Url.RouteUrl("CustomerProfileUrl", new {SeName = _workContext.CurrentCustomer.GetSeName(0)}),
+                        Url.RouteUrl("CustomerProfileUrl", new {SeName = SeoExtensions.GetSeName(_workContext.CurrentCustomer, 0)}),
                 });
 
             }

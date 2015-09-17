@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Nop.Core;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
@@ -15,6 +14,8 @@ using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using System.Web;
 using Mob.Core;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Customers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -392,16 +393,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             switch (ViewType)
             {
                 case "open":
-                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, null, out totalPages, Page, Count);
+                    battles = battles.ToList();
+                    break;
+                case "open-to-join":
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Pending, VideoBattleType.Open, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "challenged":
-                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, null, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "closed":
                     //either closed or complete..whichever it is so first get all of them
-                    battles = _videoBattleService.GetAll(null, null, null, null, out totalPages, 1, int.MaxValue);
+                    battles = _videoBattleService.GetAll(null, null, null, null, null, out totalPages, 1, int.MaxValue);
 
                     battles =
                         battles.Where(
@@ -416,7 +421,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     break;
                 case "my":
-                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
             }

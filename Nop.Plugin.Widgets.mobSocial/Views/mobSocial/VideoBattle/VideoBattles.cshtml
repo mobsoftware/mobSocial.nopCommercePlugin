@@ -1,13 +1,10 @@
 ﻿@{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
 
     @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
 
 }
-@section left
-{
-    @Html.Action("PublicInfo", "SocialNetworkNavigation", new { widgetZone = "account_navigation_after" })
-}
+
 
 <div ng-controller="VideoBattlesPageController">
     <div class="page-title">
@@ -17,12 +14,13 @@
         <div id="tabs">
             <ul class="resp-tabs-list">
                 <li ng-click="GetVideoBattles('open')"><i class="fa fa-video-camera"></i> Open Battles</li>
+                <li ng-click="GetVideoBattles('open-to-join')"><i class="fa fa-flag"></i> Join a battle</li>
                 <li ng-click="GetVideoBattles('challenged')"><i class="fa fa-bullhorn"></i> Open Challenges</li>
                 <li ng-click="GetVideoBattles('my')"><i class="fa fa-user"></i> My Battles</li>
                 <li ng-click="GetVideoBattles('closed')"><i class="fa fa-trophy"></i> Closed Battles</li>
             </ul>
             <div class="resp-tabs-container">
-                @for (var i = 0; i < 4; i++)
+                @for (var i = 0; i < 5; i++)
                 {
                     <div>
                         @if (i == 0)
@@ -36,6 +34,7 @@
                             <div style="text-align: right; margin-bottom: 10px">
                                 <a href="@Url.RouteUrl("VideoBattleEditor")"><i class="fa fa-plus-circle"></i> Create Video Battle</a>
                             </div>
+                               
                         }
                         <div class="battles-container">
                             <div ng-if="processing">
@@ -61,5 +60,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#tabs").easyResponsiveTabs();
+        
+
     });
 </script>

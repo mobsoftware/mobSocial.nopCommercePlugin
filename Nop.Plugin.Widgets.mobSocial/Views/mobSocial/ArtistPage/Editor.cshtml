@@ -1,16 +1,15 @@
 ﻿@model ArtistPageModel
+@using Nop.Plugin.Widgets.MobSocial.Constants
 @using Nop.Plugin.Widgets.MobSocial.Models;
 @{
-    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
  /*   Html.AppendTitleParts(Model.Name);
 
     Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);*/
 
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-pages.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
-    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/artist-pages/artist-pages.js");
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
     Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
 

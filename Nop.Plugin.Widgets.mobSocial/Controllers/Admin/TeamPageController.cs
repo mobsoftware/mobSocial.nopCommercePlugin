@@ -1,14 +1,13 @@
-﻿using System.Web.Mvc;
-using Nop.Web.Controllers;
-using Nop.Admin.Controllers;
-using Nop.Web.Framework.Kendoui;
-using Nop.Services.Security;
-using Nop.Plugin.Widgets.MobSocial.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
+using Nop.Admin.Controllers;
+using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Services.Security;
 using Nop.Web.Framework.Controllers;
+using Nop.Web.Framework.Kendoui;
 
-namespace Nop.Plugin.Widgets.MobSocial.Admin.Controllers
+namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
 {
     public partial class TeamPageController : BaseAdminController
     {

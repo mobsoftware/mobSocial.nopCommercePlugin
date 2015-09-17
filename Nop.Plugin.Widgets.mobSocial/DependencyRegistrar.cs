@@ -5,11 +5,12 @@ using Nop.Core.Data;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
 using Nop.Data;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Media;
 using Nop.Services.Seo;
+using SitemapGenerator = Nop.Plugin.Widgets.MobSocial.Services.SitemapGenerator;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -221,7 +222,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             
             
             // Override any NopCommerce Services below:
-            builder.RegisterType<MobSocial.Core.SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
+            builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 
 
             

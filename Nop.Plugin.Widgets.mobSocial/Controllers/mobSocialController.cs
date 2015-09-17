@@ -12,7 +12,6 @@ using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Seo;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Models.TeamPage;
@@ -28,8 +27,11 @@ using Nop.Web.Framework.Security;
 using Nop.Web.Models.Customer;
 using Mob.Core;
 using System.Web;
+using Nop.Plugin.Widgets.MobSocial.Constants;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Web.Controllers;
-
+using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -111,7 +113,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Content("social network by <a href=\"http://mobSocial.codeplex.com\">mobSocial</a>");
         }
 
-        
+
+        public ActionResult HeadTagInclusions()
+        {
+            return View("mobSocial/WidgetZones/head_html_tag");
+        }
 
         
         public ActionResult Configure()
@@ -192,7 +198,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         PictureUrl = _pictureService.GetPictureUrl(
                             c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 50),
 
-                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = c.GetSeName(0) }),
+                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(c, 0) }),
                         Id = c.Id
                     });
 
@@ -300,7 +306,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.Add(new CustomerFriendModel()
                     {
                         CustomerDisplayName = friendCustomer.GetFullName().ToTitleCase(),
-                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
+                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(friendCustomer, 0) }),
                         ProfileThumbnailUrl = friendThumbnailUrl
                     });
 
@@ -337,7 +343,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     FriendId = friendId,
                     CustomerDisplayName = friendCustomer.GetFullName(),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(friendCustomer, 0) }),
                     ProfileThumbnailUrl = friendThumbnailUrl
                 });
 
@@ -375,7 +381,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     {
                         FriendId = friendId,
                         CustomerDisplayName = friendCustomer.GetFullName(),
-                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
+                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(friendCustomer, 0) }),
                         ProfileThumbnailUrl = friendThumbnailUrl
                     });
 
@@ -417,7 +423,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model.Add(new CustomerFriendsModel()
                 {
                     CustomerDisplayName = friendCustomer.GetFullName().ToTitleCase(),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(0) }),
+                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(friendCustomer, 0) }),
                     ProfileThumbnailUrl = friendThumbnailUrl
                 });
 
@@ -503,7 +509,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     groupModel.Members.Add(new TeamPageGroupMemberModel()
                         {
                             DisplayName = memberCustomer.GetFullName(),
-                            ProfileUrl =  Url.RouteUrl("CustomerProfileUrl", new { SeName = memberCustomer.GetSeName(0) }),
+                            ProfileUrl =  Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(memberCustomer, 0) }),
                             ThumbnailUrl = memberThumbnailUrl
                         });
                 }
@@ -591,7 +597,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     {
 
                         ThumbnailUrl = "//img.youtube.com/vi/" + embedId + "/1.jpg",
-                        CustomerProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = videoCustomer.GetSeName(0) })
+                        CustomerProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(videoCustomer, 0) })
                     };
 
                 model.FeaturedVideos.Add(featuredVideoModel);

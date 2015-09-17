@@ -4,7 +4,6 @@ using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.Tasks;
 using Nop.Core.Plugins;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Data;
 using Nop.Services.Cms;
 using Nop.Services.Configuration;
@@ -16,6 +15,7 @@ using System.Web.Configuration;
 using MobAds.Public;
 using Nop.Core;
 using System.Linq;
+using Nop.Plugin.Widgets.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -97,6 +97,20 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             switch (widgetZone)
             {
+                case "head_html_tag":
+                    {
+                        actionName = "HeadTagInclusions";
+                        controllerName = "mobSocial";
+
+                        routeValues = new RouteValueDictionary()
+                        {
+                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
+                            {"area", null},
+                            {"widgetZone", widgetZone}
+                        };
+
+                        break;
+                    }
                 case "footer":
                     {
                     actionName = "SocialNetworkByMobSocial";
@@ -478,7 +492,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             var someoneSentYouASongNotification = new MessageTemplate() {
-                Name = "MobSocial.SendSomeoneSentYouASongNotification",
+                Name = "MobSocial.SomeoneSentYouASongNotification",                
                 Subject = "%Friend.FirstName% sent you a song!",
                 Body = "<a href=\"%Store.URL%\">Log in</a> to %Friend.FirstName%'s song to you.",
                 EmailAccountId = 1,
@@ -666,6 +680,11 @@ namespace Nop.Plugin.Widgets.MobSocial
             get { return 0; }
         }
        
+
+        public void ManageSiteMap(Web.Framework.Menu.SiteMapNode rootNode)
+        {
+            
+    }
     }
 }
 

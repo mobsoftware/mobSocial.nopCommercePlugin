@@ -1,12 +1,10 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Models;
+﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+@using Nop.Plugin.Widgets.MobSocial.Models;
 @{
-    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
-    
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/artist-pages/artist-page-search.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-pages/song-pages.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/artist-pages/artist-page-search.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/song-pages/song-pages.js");
 }
 <div class="artist-left-content">
     <div data-ng-controller="ArtistPageSearchCriteriaController">
@@ -20,12 +18,12 @@
             <tr>
                 <td>
                     Search:<br />
-                    <select data-ng-model="searchType" ng-options="type for type in searchTypes track by type"></select><br/><br/>
+                    <select data-ng-model="searchType" ng-options="type for type in searchTypes track by type"></select><br /><br />
                 </td>
             </tr>
             <tr>
                 <td>
-                    Search Term: <input data-ng-model="term" type="text" required /><br/>
+                    Search Term: <input data-ng-model="term" type="text" required /><br />
                     <input type="hidden" data-ng-model="page" />
                 </td>
             </tr>
@@ -33,7 +31,7 @@
                 <td>
                     <input type="checkbox" data-ng-model="searchDescription" /> Search Descriptions
                     <br />
-                    
+
                 </td>
             </tr>
             <tr ng-show="searchType == 'Songs'">
@@ -61,7 +59,8 @@
         </table>
     </div>
 </div>
-<div class="artist-center-content">
+<div class="artist-right-content">
+
     <div data-ng-controller="ArtistPageSearchController">
         <div ng-show="searching">Searching for '{{term}}'</div>
         <div ng-show="!searching && results.length == 0">Nothing found for '{{term}}' with selected filters. Please try again by changing the filters.</div>

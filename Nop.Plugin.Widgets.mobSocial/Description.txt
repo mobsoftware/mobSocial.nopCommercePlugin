@@ -1,4 +1,4 @@
-﻿Group: Widgets
+﻿Group: mobSocial
 FriendlyName: mobSocial
 SystemName: Widgets.mobSocial
 Version: 1.10

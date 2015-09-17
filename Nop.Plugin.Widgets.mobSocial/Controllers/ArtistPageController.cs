@@ -4,7 +4,6 @@ using Newtonsoft.Json.Linq;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
-using Nop.Plugin.Widgets.MobSocial.Core;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Plugin.Widgets.MobSocial.Models;
@@ -28,6 +27,8 @@ using Nop.Services.Catalog;
 using Nop.Services.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Tax;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
