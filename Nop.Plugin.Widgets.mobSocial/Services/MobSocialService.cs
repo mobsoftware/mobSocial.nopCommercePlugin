@@ -1,27 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
-using Nop.Plugin.Widgets.MobSocial.Domain;
-using Nop.Plugin.Widgets.MobSocial.Controllers;
-using Nop.Services.Catalog;
-using Nop.Services.Customers;
-using Nop.Services.Messages;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity;
-using Nop.Services.Orders;
+using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
-using System.Text;
+using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Services.Catalog;
+using Nop.Services.Customers;
 using Nop.Services.Localization;
-using Nop.Core.Domain.Messages;
-using System.Web;
+using Nop.Services.Messages;
+using Nop.Services.Orders;
 
-namespace Nop.Plugin.Widgets.MobSocial.Core
+namespace Nop.Plugin.Widgets.MobSocial.Services
 {
     /// <summary>
     /// Product service

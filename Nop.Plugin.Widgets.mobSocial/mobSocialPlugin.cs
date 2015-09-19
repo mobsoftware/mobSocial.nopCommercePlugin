@@ -34,8 +34,8 @@ namespace Nop.Plugin.Widgets.MobSocial
         private readonly IStoreContext _storeContext;
         private readonly IVideoBattleService _videoBattleService;
 
-        public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings, 
-            ISettingService settingService, IMessageTemplateService messageTemplateService, 
+        public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings,
+            ISettingService settingService, IMessageTemplateService messageTemplateService,
             IScheduleTaskService scheduleTaskService,
             IMobSocialService mobSocialService,
             ILocalizationService localizationService,
@@ -113,69 +113,60 @@ namespace Nop.Plugin.Widgets.MobSocial
                     }
                 case "footer":
                     {
-                    actionName = "SocialNetworkByMobSocial";
-                    controllerName = "mobSocial";
+                        actionName = "SocialNetworkByMobSocial";
+                        controllerName = "mobSocial";
 
-                    routeValues = new RouteValueDictionary()
+                        routeValues = new RouteValueDictionary()
                         {
                             {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
                             {"area", null},
                             {"widgetZone", widgetZone}
                         };
 
-                    break;
-                }
-                case "head_html_tag" : {
-                    actionName = "PublicInfo";
-                    controllerName = "Head";
+                        break;
+                    }
+              
+                case "header_menu_after":
+                    {
+                        actionName = "PublicInfo";
+                        controllerName = "HeaderMenu";
 
-                    routeValues = new RouteValueDictionary()
+                        routeValues = new RouteValueDictionary()
                     {
                         {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
                         {"area", null},
                         {"widgetZone", widgetZone}
                     };
-                    break;
-                }
-                case "header_menu_after" : {
-                    actionName = "PublicInfo";
-                    controllerName = "HeaderMenu";
+                        break;
+                    }
 
-                    routeValues = new RouteValueDictionary()
+
+                case "account_navigation_after":
+                    {
+                        actionName = "PublicInfo";
+                        controllerName = "SocialNetworkNavigation";
+
+                        routeValues = new RouteValueDictionary()
                     {
                         {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
                         {"area", null},
                         {"widgetZone", widgetZone}
                     };
-                    break;
-                }
-
-
-                case "account_navigation_after" : {
-                     actionName = "PublicInfo";
-                    controllerName = "SocialNetworkNavigation";
-
-                    routeValues = new RouteValueDictionary()
-                    {
-                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
-                        {"area", null},
-                        {"widgetZone", widgetZone}
-                    };
-                    break;
-                }
+                        break;
+                    }
                 case "profile_page_info_userdetails":
                     {
-                     actionName = "PublicInfo";
-                    controllerName = "CustomerProfile";
+                        actionName = "PublicInfo";
+                        controllerName = "CustomerProfile";
 
-                    routeValues = new RouteValueDictionary()
+                        routeValues = new RouteValueDictionary()
                     {
                         {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
                         {"area", null},
                         {"widgetZone", widgetZone}
                     };
-                    break;
-                }
+                        break;
+                    }
                 default:
                     {
                         actionName = "PublicInfo";
@@ -188,7 +179,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                             {"widgetZone", widgetZone}
                         };
                         break;
-                }
+                    }
             }
         }
 
@@ -237,8 +228,8 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             var mediaSettings = new MediaSettings() {
-                    AvatarPictureSize = 200
-                };
+                AvatarPictureSize = 200
+            };
 
 
 
@@ -382,15 +373,15 @@ namespace Nop.Plugin.Widgets.MobSocial
             if (task != null)
                 return;
             task = new ScheduleTask {
-                    Name = name,
-                    Seconds = seconds,
-                    Type = type,
-                    Enabled = enabled,
-                    StopOnError = stopOnError,
-                };
+                Name = name,
+                Seconds = seconds,
+                Type = type,
+                Enabled = enabled,
+                StopOnError = stopOnError,
+            };
 
-                _scheduleTaskService.InsertTask(task);
-            }
+            _scheduleTaskService.InsertTask(task);
+        }
 
 
         private void RemoveScheduledTask(string type)
@@ -492,7 +483,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             var someoneSentYouASongNotification = new MessageTemplate() {
-                Name = "MobSocial.SomeoneSentYouASongNotification",                
+                Name = "MobSocial.SomeoneSentYouASongNotification",
                 Subject = "%Friend.FirstName% sent you a song!",
                 Body = "<a href=\"%Store.URL%\">Log in</a> to %Friend.FirstName%'s song to you.",
                 EmailAccountId = 1,
@@ -612,9 +603,9 @@ namespace Nop.Plugin.Widgets.MobSocial
             foreach (var template in messageTemplates)
             {
                 var messageTemplate = _messageTemplateService.GetMessageTemplateByName(template, _storeContext.CurrentStore.Id);
-                if(messageTemplate == null)
+                if (messageTemplate == null)
                     continue;
-                
+
                 _messageTemplateService.DeleteMessageTemplate(messageTemplate);
             }
         }
@@ -624,8 +615,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public void ManageSiteMap(SiteMapNode rootNode)
         {
 
-            var menuItem = new SiteMapNode()
-            {
+            var menuItem = new SiteMapNode() {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
                 ControllerName = "TeamPage",
                 ActionName = "Index",
@@ -633,8 +623,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                 RouteValues = new RouteValueDictionary() { { "area", null } },
             };
 
-            var manageTeamSubMenu = new SiteMapNode()
-            {
+            var manageTeamSubMenu = new SiteMapNode() {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
                 ControllerName = "TeamPage",
                 ActionName = "Index",
@@ -645,8 +634,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
 
-            var manageEventsSubMenu = new SiteMapNode()
-            {
+            var manageEventsSubMenu = new SiteMapNode() {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
                 ControllerName = "ManageEventPage",
                 ActionName = "List",
@@ -660,7 +648,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
 
             var pluginNode = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Third party plugins");
-            
+
             if (pluginNode != null)
                 pluginNode.ChildNodes.Add(menuItem);
             else
@@ -679,12 +667,9 @@ namespace Nop.Plugin.Widgets.MobSocial
         {
             get { return 0; }
         }
-       
 
-        public void ManageSiteMap(Web.Framework.Menu.SiteMapNode rootNode)
-        {
-            
-    }
+
+
     }
 }
 

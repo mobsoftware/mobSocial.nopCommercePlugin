@@ -14,41 +14,46 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
     {
         private readonly MediaSettings _nopMediaSettings;
 
-        public MobSocialPictureService(IRepository<Picture> pictureRepository, IRepository<ProductPicture> productPictureRepository, ISettingService settingService, IWebHelper webHelper, ILogger logger, IDbContext dbContext, IEventPublisher eventPublisher, MediaSettings mediaSettings) : 
-            base(pictureRepository, productPictureRepository, settingService, webHelper, logger,dbContext, eventPublisher, mediaSettings)
+        public MobSocialPictureService(IRepository<Picture> pictureRepository,
+            IRepository<ProductPicture> productPictureRepository, ISettingService settingService, IWebHelper webHelper,
+            ILogger logger, IDbContext dbContext, IEventPublisher eventPublisher, MediaSettings mediaSettings) :
+                base(
+                pictureRepository, productPictureRepository, settingService, webHelper, logger, dbContext,
+                eventPublisher, mediaSettings)
         {
             _nopMediaSettings = mediaSettings;
         }
 
         //public override byte[] ValidatePicture(byte[] pictureBinary, string mimeType)
-    //{
-    //    private readonly MediaSettings _nopMediaSettings;
+        //{
+        //    private readonly MediaSettings _nopMediaSettings;
 
-    //    public MobSocialPictureService(IRepository<Picture> pictureRepository, IRepository<ProductPicture> productPictureRepository, ISettingService settingService, IWebHelper webHelper, ILogger logger, IEventPublisher eventPublisher, MediaSettings mediaSettings) : 
-    //        base(pictureRepository, 
-    //        productPictureRepository, 
-    //        settingService, 
-    //        webHelper, 
-    //        logger, 
-    //        eventPublisher, 
-    //        mediaSettings)
-    //    {
-    //        _nopMediaSettings = mediaSettings;
-    //    }
+        //    public MobSocialPictureService(IRepository<Picture> pictureRepository, IRepository<ProductPicture> productPictureRepository, ISettingService settingService, IWebHelper webHelper, ILogger logger, IEventPublisher eventPublisher, MediaSettings mediaSettings) : 
+        //        base(pictureRepository, 
+        //        productPictureRepository, 
+        //        settingService, 
+        //        webHelper, 
+        //        logger, 
+        //        eventPublisher, 
+        //        mediaSettings)
+        //    {
+        //        _nopMediaSettings = mediaSettings;
+        //    }
 
-    //    public PictureService(IRepository<Picture> pictureRepository,
-    //        IRepository<ProductPicture> productPictureRepository,
-    //        ISettingService settingService, 
-    //        IWebHelper webHelper,
-    //        ILogger logger,
-    //        IDbContext dbContext,
-    //        IEventPublisher eventPublisher,
-    //        MediaSettings mediaSettings)
-    //    {
+        //    public PictureService(IRepository<Picture> pictureRepository,
+        //        IRepository<ProductPicture> productPictureRepository,
+        //        ISettingService settingService, 
+        //        IWebHelper webHelper,
+        //        ILogger logger,
+        //        IDbContext dbContext,
+        //        IEventPublisher eventPublisher,
+        //        MediaSettings mediaSettings)
+        //    {
 
 
-      
-        
-    
-    //}
+
+
+
+        //}
+    }
 }

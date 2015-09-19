@@ -1,19 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Blogs;
-using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.News;
-using Nop.Services.Catalog;
-using Nop.Services.Topics;
-using Nop.Services.Seo;
-using Nop.Services.Customers;
 using Nop.Core.Domain.Security;
+using Nop.Services.Catalog;
+using Nop.Services.Customers;
+using Nop.Services.Seo;
+using Nop.Services.Topics;
+using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;
 
-namespace Nop.Plugin.Widgets.MobSocial.Core
+namespace Nop.Plugin.Widgets.MobSocial.Services
 {
     /// <summary>
     /// Represents a sitemap generator
@@ -80,7 +79,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             foreach (var eventPage in eventPages)
             {
-                var url = urlHelper.RouteUrl("EventPageUrl", new { SeName = eventPage.GetSeName(0) }, "http");
+                var url = urlHelper.RouteUrl("EventPageUrl", new { SeName = SeoExtensions.GetSeName(eventPage, 0) }, "http");
                 var updateFrequency = UpdateFrequency.Weekly;
                 var updateTime = eventPage.DateUpdated;
                 WriteUrlLocation(url, updateFrequency, updateTime);
@@ -98,7 +97,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             foreach (var customer in registeredCustomers)
             {
-                var url = urlHelper.RouteUrl("CustomerProfileUrl", new { SeName = customer.GetSeName(0) }, "http");
+                var url = urlHelper.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(customer, 0) }, "http");
 
                 if (url != null)
                 {
@@ -116,7 +115,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Core
 
             foreach (var businessPage in businessPages)
             {
-                var url = urlHelper.RouteUrl("BusinessPageUrl", new { SeName = businessPage.GetSeName(0) }, "http");
+                var url = urlHelper.RouteUrl("BusinessPageUrl", new { SeName = SeoExtensions.GetSeName(businessPage, 0) }, "http");
 
                 if (url != null)
                 {
