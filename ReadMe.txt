@@ -1,5 +1,5 @@
 Quick Source Code Setup:
-1. Add the mobSocial plugin and Mob.Core projects to your solution using git repository on CodePlex.
+1. Add the mobSocial plugin and Mob.Core projects to your solution.
 2. Reinstall packages using the nuget update-package command (e.g. "Update-Package -project Nop.Plugin.Widgets.MobSocial -reinstall" )
 3. If references are missing to nopCommerce projects then add them to the mobSocial references.
 4. Change the mobSocial plugin's Build > Output Path within the project properties to the nopCommerce solution's "Presentation\Nop.Web\Plugins\Widgets.mobSocial" directory.
