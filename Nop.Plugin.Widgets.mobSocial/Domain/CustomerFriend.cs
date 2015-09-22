@@ -1,9 +1,10 @@
 ﻿using System;
+using Mob.Core.Domain;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class CustomerFriend : BaseEntity
+    public class CustomerFriend : BaseMobEntity
     {
         public int FromCustomerId { get; set; }
         public int ToCustomerId { get; set; }

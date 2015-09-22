@@ -1,19 +1,15 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using Mob.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class BusinessPageCouponMap : EntityTypeConfiguration<BusinessPageCoupon>
+    public class BusinessPageCouponMap : BaseMobEntityTypeConfiguration<BusinessPageCoupon>
     {
 
         public BusinessPageCouponMap()
         {
-            ToTable("BusinessPageCoupon");
-
-            //Map the primary key
-            HasKey(m => m.Id);
-
             //Map the additional properties
             Property(m => m.BusinessPageId);
             Property(m => m.Name);

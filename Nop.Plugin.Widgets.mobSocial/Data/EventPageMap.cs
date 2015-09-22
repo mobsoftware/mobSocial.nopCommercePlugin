@@ -1,19 +1,15 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using Mob.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class EventPageMap : EntityTypeConfiguration<EventPage>
+    public class EventPageMap : BaseMobEntityTypeConfiguration<EventPage>
     {
 
         public EventPageMap()
         {
-            ToTable("EventPage");
-
-            //Map the primary key
-            HasKey(m => m.Id);
-
             //Map the additional properties
             Property(m => m.Name);
             Property(m => m.LocationAddress1);
@@ -32,8 +28,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(m => m.MetaKeywords).HasMaxLength(400);
             Property(m => m.MetaDescription);
 
-            Property(m => m.DateCreated).HasColumnType("datetime2");
-            Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();
 
         }
 

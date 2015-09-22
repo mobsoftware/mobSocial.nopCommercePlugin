@@ -7,7 +7,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
     /// <summary>
     /// Generic service to standardize Service APIs
     /// </summary>
-    public interface IBaseService<T, P> where T : BaseEntity where P : BaseEntity
+    public interface IBaseService<T, P> where T : BaseMobEntity where P : BaseMobEntity
     {
 
         void Insert(T entity);

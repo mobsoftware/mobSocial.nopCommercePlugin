@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
@@ -11,26 +13,26 @@ using Nop.Services.Seo;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class SongService : BaseService<Song, SongPicture>, ISongService
+    public class SongService : BaseEntityWithPictureService<Song, SongPicture>, ISongService
     {
         #region Fields
         private IUrlRecordService _urlRecordService;
         private IWorkContext _workContext;
         private IPictureService _pictureService;
-        private IRepository<ArtistPage> _artistPageRepository;
+        private IMobRepository<ArtistPage> _artistPageRepository;
         #endregion
 
         #region Constructor
         public SongService(ISettingService settingService,
           IWebHelper webHelper,
           ILogger logger,
-          IRepository<Song> songRepository,
-          IRepository<SongPicture> songPictureRepository,
-          IRepository<ArtistPage> artistPageRepository,
+          IMobRepository<Song> songRepository,
+          IMobRepository<SongPicture> songPictureRepository,
+          IMobRepository<ArtistPage> artistPageRepository,
           IUrlRecordService urlRecordService,
           IWorkContext workContext,
           IPictureService pictureService)
-            : base(songRepository, songPictureRepository, workContext, urlRecordService)
+            : base(songRepository, songPictureRepository, pictureService, workContext, urlRecordService)
         {
             _urlRecordService = urlRecordService;
             _workContext = workContext;
@@ -39,33 +41,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         }
         #endregion
       
-
-        public override List<Song> GetAll(string term, int count)
-        {
-            return base.Repository.Table
-               .Where(x => x.Name.ToLower().Contains(term.ToLower()))
-               .Take(count)
-               .ToList();
-        }
-
-        public override List<SongPicture> GetAllPictures(int entityId)
-        {
-            return PictureRepository.Table
-               .Where(x => x.SongId == entityId)
-               .ToList();
-        }
-
-        public override SongPicture GetFirstEntityPicture(int entityId)
-        {
-            return PictureRepository.Table.FirstOrDefault(x => x.SongId == entityId);
-        }
-
-        public override Nop.Core.Domain.Media.Picture GetFirstPicture(int entityId)
-        {
-            var entityPicture = PictureRepository.Table.FirstOrDefault(x => x.SongId == entityId);
-            var picture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
-            return picture;
-        }
 
         public IList<Song> SearchSongs(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "", bool PublishedOnly = true)
         {
@@ -105,7 +80,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public Song GetSongByRemoteEntityId(string RemoteEntityId)
         {
-            return base.Repository.Table.Where(x => RemoteEntityId.Contains(x.RemoteEntityId)).FirstOrDefault();
+            return base.Repository.Table.FirstOrDefault(x => RemoteEntityId.Contains(x.RemoteEntityId));
         }
 
 
@@ -113,7 +88,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public Song GetSongByProductId(int ProductId)
         {
-            return base.Repository.Table.Where(x => x.AssociatedProductId == ProductId).FirstOrDefault();
+            return base.Repository.Table.FirstOrDefault(x => x.AssociatedProductId == ProductId);
+        }
+
+        public override List<Song> GetAll(string Term, int Count = 15, int Page = 1)
+        {
+            return SearchSongs(Term, Count, Page).ToList();
         }
     }
 }

@@ -122,7 +122,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [HttpPost]
         public void DeleteFavoriteSong(int id)
         {
-            _customerFavoriteSongService.LogicalDelete(id);
+            //_customerFavoriteSongService.LogicalDelete(id);
         }
 
 

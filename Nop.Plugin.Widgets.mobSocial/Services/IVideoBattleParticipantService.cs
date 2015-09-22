@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Mob.Core.Services;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public interface IVideoBattleParticipantService: IBaseService<VideoBattleParticipant, VideoBattleParticipant>
+    public interface IVideoBattleParticipantService: IBaseEntityService<VideoBattleParticipant>
     {
         VideoBattleParticipant GetVideoBattleParticipant(int BattleId, int ParticipantId);
 

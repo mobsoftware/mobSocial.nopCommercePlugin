@@ -1,10 +1,11 @@
 ﻿using Nop.Core;
 using Nop.Core.Domain.Seo;
 using System;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class EventPageHotel : BaseEntity
+    public class EventPageHotel : BaseMobEntity
     {
 
         public int EventPageId { get; set; }
@@ -24,9 +25,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string AdditionalInformation { get; set; }
         public int DisplayOrder { get; set; }
 
-
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
 
 
         public virtual EventPage EventPage { get; set; }

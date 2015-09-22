@@ -700,7 +700,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (firstSongPicture == null)
                 {
                     firstSongPicture = new SongPicture() {
-                        SongId = SongId,
+                        EntityId = SongId,
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
                         DisplayOrder = 1,
@@ -710,7 +710,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
                 else
                 {
-                    firstSongPicture.SongId = SongId;
+                    firstSongPicture.EntityId = SongId;
                     firstSongPicture.DateCreated = DateTime.Now;
                     firstSongPicture.DateUpdated = DateTime.Now;
                     firstSongPicture.DisplayOrder = 1;
@@ -952,7 +952,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     var picture = _pictureService.InsertPicture(imageBytes, contentType, songPage.GetSeName(_workContext.WorkingLanguage.Id, true, false));
                     var songPicture = new SongPicture() {
-                        SongId = songPage.Id,
+                        EntityId = songPage.Id,
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
                         DisplayOrder = 1,

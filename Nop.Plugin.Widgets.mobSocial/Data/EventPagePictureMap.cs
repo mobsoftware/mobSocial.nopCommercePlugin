@@ -1,24 +1,18 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using Mob.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class EventPagePictureMap : EntityTypeConfiguration<EventPagePicture>
+    public class EventPagePictureMap : BaseMobEntityTypeConfiguration<EventPagePicture>
     {
 
         public EventPagePictureMap()
         {
-            ToTable("EventPagePicture");
-
-            //Map the primary key
-            HasKey(m => m.Id);
-
             Property(m => m.PictureId);
             Property(m => m.DisplayOrder);
-            
-            Property(m => m.DateCreated).HasColumnType("datetime2");
-            Property(m => m.DateUpdated).HasColumnType("datetime2").IsOptional();
+            Property(m => m.EntityId).HasColumnName("EventPageId"); //backward compatibility
             
         }
 

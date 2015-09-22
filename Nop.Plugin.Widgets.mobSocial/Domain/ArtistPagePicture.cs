@@ -6,19 +6,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class ArtistPagePicture : BaseEntity
+    public class ArtistPagePicture : BaseMobPictureEntity
     {
-        public int ArtistPageId { get; set; }
-        public int PictureId { get; set; }
-        public int DisplayOrder { get; set; }
-
         public virtual ArtistPage Artist { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
 
     }
 }

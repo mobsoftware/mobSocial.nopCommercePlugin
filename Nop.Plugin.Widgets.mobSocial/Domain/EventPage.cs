@@ -4,10 +4,11 @@ using Nop.Core.Domain.Seo;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class EventPage : BaseEntity, ISlugSupported, INameSupported
+    public class EventPage : BaseMobEntity, ISlugSupported, INameSupported
     {
 
         public string Name { get; set; }
@@ -31,8 +32,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
 
         public virtual List<EventPageHotel> Hotels { get; set; }
         public virtual List<EventPagePicture> Pictures { get; set; }

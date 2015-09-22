@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
@@ -11,12 +14,12 @@ using Nop.Services.Seo;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class VideoBattleService : BaseService<VideoBattle, VideoBattlePicture>, IVideoBattleService
+    public class VideoBattleService : BaseEntityWithPictureService<VideoBattle, VideoBattlePicture>, IVideoBattleService
     {
-        private readonly IRepository<VideoBattle> _videoBattleRepository;
-        private readonly IRepository<VideoBattleParticipant> _videoBattleParticipantRepository;
-        private readonly IRepository<VideoBattleGenre> _videoBattleGenreRepository;
-        private readonly IRepository<VideoBattleVideo> _videoBattleVideoRepository;
+        private readonly IMobRepository<VideoBattle> _videoBattleRepository;
+        private readonly IMobRepository<VideoBattleParticipant> _videoBattleParticipantRepository;
+        private readonly IMobRepository<VideoBattleGenre> _videoBattleGenreRepository;
+        private readonly IMobRepository<VideoBattleVideo> _videoBattleVideoRepository;
 
         private readonly IWorkContext _workContext;
 
@@ -25,15 +28,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public VideoBattleService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger,
-            IRepository<VideoBattle> videoBattleRepository,
-            IRepository<VideoBattlePicture> videoBattlePictureRepository,
-            IRepository<VideoBattleParticipant> videoBattleParticpantRepository,
-            IRepository<VideoBattleGenre> videoBattleGenreRepository,
-            IRepository<VideoBattleVideo> videoBattleVideoRepository,
+            IMobRepository<VideoBattle> videoBattleRepository,
+            IMobRepository<VideoBattlePicture> videoBattlePictureRepository,
+            IMobRepository<VideoBattleParticipant> videoBattleParticpantRepository,
+            IMobRepository<VideoBattleGenre> videoBattleGenreRepository,
+            IMobRepository<VideoBattleVideo> videoBattleVideoRepository,
             IUrlRecordService urlRecordService,
             IWorkContext workContext,
             IPictureService pictureService)
-            : base(videoBattleRepository, videoBattlePictureRepository, workContext, urlRecordService)
+            : base(videoBattleRepository, videoBattlePictureRepository, pictureService, workContext, urlRecordService)
         {
             _urlRecordService = urlRecordService;
             _workContext = workContext;
@@ -44,28 +47,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             _videoBattleVideoRepository = videoBattleVideoRepository;
         }
 
-
-        public override System.Collections.Generic.List<VideoBattle> GetAll(string term, int count)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override System.Collections.Generic.List<VideoBattlePicture> GetAllPictures(int entityId)
-        {
-            return base.PictureRepository.Table.Where(x => x.VideoBattleId == entityId).ToList();
-        }
-
-        public override VideoBattlePicture GetFirstEntityPicture(int entityId)
-        {
-            return base.PictureRepository.Table.FirstOrDefault(x => x.VideoBattleId == entityId);
-        }
-
-        public override Nop.Core.Domain.Media.Picture GetFirstPicture(int entityId)
-        {
-            var entityPicture = PictureRepository.Table.FirstOrDefault(x => x.VideoBattleId == entityId);
-            var picture = (entityPicture != null) ? _pictureService.GetPictureById(entityPicture.PictureId) : null;
-            return picture;
-        }
         /// <summary>
         /// A multipurpose method for getting the video battles
         /// </summary>
@@ -177,6 +158,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
             }
 
+        }
+
+        public override List<VideoBattle> GetAll(string Term, int Count = 15, int Page = 1)
+        {
+            throw new NotImplementedException();
         }
     }
 }

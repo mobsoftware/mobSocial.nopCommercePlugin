@@ -8,10 +8,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class Song : BaseEntity, ISlugSupported, INameSupported
+    public class Song : BaseMobEntity, ISlugSupported, INameSupported
     {
         public int PageOwnerId { get; set; }
         public string Name { get; set; }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Mob.Core.Data;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
@@ -30,11 +31,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         /// <summary>
         /// Object context
         /// </summary>
-        private readonly IRepository<GroupPage> _groupPageRepository;
-        private readonly IRepository<GroupPageMember> _groupPageMemberRepository;
-        private readonly IRepository<CustomerFriend> _customerFriendRepository;
-        private readonly IRepository<TeamPage> _teamPageRepository;
-        private readonly IRepository<CustomerAlbum> _customerAlbumRepository;
+        private readonly IMobRepository<GroupPage> _groupPageRepository;
+        private readonly IMobRepository<GroupPageMember> _groupPageMemberRepository;
+        private readonly IMobRepository<CustomerFriend> _customerFriendRepository;
+        private readonly IMobRepository<TeamPage> _teamPageRepository;
+        private readonly IMobRepository<CustomerAlbum> _customerAlbumRepository;
         private readonly IStoreContext _storeContext;
 
 
@@ -44,13 +45,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly ICustomerService _customerService;
         private readonly IMobSocialMessageService _mobSocialMessageService;
-        private IProductService _productService;
-        private IOrderService _orderService;
+        private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
         private ILocalizationService _localizationService;
         private MessageTemplatesSettings _messageTemplateSettings;
         private CatalogSettings _catalogSettings;
         private IProductAttributeParser _productAttributeParser;
-        private INotificationService _notificationService;
+        private readonly INotificationService _notificationService;
 
         #endregion
 
@@ -80,10 +81,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="context">Object context</param>
-        public MobSocialService(IProductService productService, IRepository<GroupPage> groupPageRepository, 
-            IRepository<GroupPageMember> groupPageMemberRepository, IRepository<CustomerFriend> customerFriendRepository,
-            IRepository<TeamPage> teamPageRepository, IRepository<CustomerAlbum> customerAlbumRepository, ICacheManager cacheManager, IWorkContext workContext,
+        public MobSocialService(IProductService productService, IMobRepository<GroupPage> groupPageRepository, 
+            IMobRepository<GroupPageMember> groupPageMemberRepository, IMobRepository<CustomerFriend> customerFriendRepository,
+            IMobRepository<TeamPage> teamPageRepository, IMobRepository<CustomerAlbum> customerAlbumRepository, ICacheManager cacheManager, IWorkContext workContext,
             IWorkflowMessageService workflowMessageService, ICustomerService customerService,
             IOrderService orderService, ILocalizationService localizationService, MessageTemplatesSettings messageTemplateSettings,
             INotificationService notificationService, CatalogSettings catalogSettings, IProductAttributeParser productAttributeParser,

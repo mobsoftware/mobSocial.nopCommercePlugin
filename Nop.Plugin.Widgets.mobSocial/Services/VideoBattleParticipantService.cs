@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
@@ -8,15 +10,15 @@ using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class VideoBattleParticipantService : BaseService<VideoBattleParticipant, VideoBattleParticipant>, IVideoBattleParticipantService
+    public class VideoBattleParticipantService : BaseEntityService<VideoBattleParticipant>, IVideoBattleParticipantService
     {
-        private readonly IRepository<VideoBattleParticipant> _videoBattleParticipantRepository;
+        private readonly IMobRepository<VideoBattleParticipant> _videoBattleParticipantRepository;
 
         private readonly IWorkContext _workContext;
 
-        public VideoBattleParticipantService(IRepository<VideoBattleParticipant> videoBattleParticipantRepository,                        
+        public VideoBattleParticipantService(IMobRepository<VideoBattleParticipant> videoBattleParticipantRepository,                        
             IWorkContext workContext) :
-            base(videoBattleParticipantRepository, workContext)
+            base(videoBattleParticipantRepository)
         {
             _videoBattleParticipantRepository = videoBattleParticipantRepository;
             _workContext = workContext;
@@ -47,24 +49,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             return _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == BattleId).OrderBy(x => x.ParticipantStatus).ToList();
         }
 
-
-
-        public override List<VideoBattleParticipant> GetAll(string term, int count)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<VideoBattleParticipant> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override VideoBattleParticipant GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Nop.Core.Domain.Media.Picture GetFirstPicture(int entityId)
+        public override List<VideoBattleParticipant> GetAll(string Term, int Count = 15, int Page = 1)
         {
             throw new NotImplementedException();
         }

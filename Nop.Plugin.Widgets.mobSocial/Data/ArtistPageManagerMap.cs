@@ -5,16 +5,14 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Data;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
-    public class ArtistPageManagerMap : EntityTypeConfiguration<ArtistPageManager>
+    public class ArtistPageManagerMap : BaseMobEntityTypeConfiguration<ArtistPageManager>
     {
         public ArtistPageManagerMap()
         {
-            ToTable(typeof(ArtistPageManager).Name);
-
-            HasKey(m => m.Id);
 
             Property(m => m.ArtistPageId);
             Property(m => m.CustomerId);

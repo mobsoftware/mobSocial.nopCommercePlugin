@@ -13,7 +13,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
     /// <summary>
     /// Generic base service to standardize domain Service APIs
     /// </summary>
-    public abstract class BaseService<T, P> : IBaseService<T,P> where T : BaseEntity where P : BaseEntity
+    public abstract class BaseService<T, P> : IBaseService<T,P> where T : BaseMobEntity where P : BaseMobEntity
     {
 
         private readonly IRepository<T> _repository;

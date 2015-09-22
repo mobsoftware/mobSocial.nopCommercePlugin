@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class SharedSongService: BaseService<SharedSong, SharedSong>, ISharedSongService
+    public class SharedSongService: BaseEntityService<SharedSong>, ISharedSongService
     {
-        private IRepository<Song> _songsRepository;
-        public SharedSongService(IRepository<Song> songsRepository, IRepository<SharedSong> sharedSongsRepository)
+        private IMobRepository<Song> _songsRepository;
+        public SharedSongService(IMobRepository<Song> songsRepository, IMobRepository<SharedSong> sharedSongsRepository)
             : base(sharedSongsRepository)
         {
             _songsRepository = songsRepository;
@@ -45,29 +47,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             TotalPages = int.Parse(Math.Ceiling((decimal)songRows.Count() / Count).ToString());
             return listSongShared.Skip((Page - 1) * Count).Take(Count).ToList();
         }
+        
 
-
-        public override List<SharedSong> GetAll(string term, int count)
+        public override List<SharedSong> GetAll(string Term, int Count = 15, int Page = 1)
         {
             throw new NotImplementedException();
         }
-
-        public override List<SharedSong> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SharedSong GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Nop.Core.Domain.Media.Picture GetFirstPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-       
     }
 }

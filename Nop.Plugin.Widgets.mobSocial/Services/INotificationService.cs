@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Mob.Core.Services;
 using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
@@ -8,7 +9,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
     /// <summary>
     /// Notification service
     /// </summary>
-    public interface INotificationService : IBaseService<Notification, Notification>
+    public interface INotificationService : IBaseEntityService<Notification>
     {
 
         int GetFriendRequestCount(int currentCustomerId);

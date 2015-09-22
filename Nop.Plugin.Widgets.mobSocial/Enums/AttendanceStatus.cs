@@ -1,4 +1,4 @@
-﻿namespace Nop.Plugin.Widgets.MobSocial.Services
+﻿namespace Nop.Plugin.Widgets.MobSocial.Enums
 {
     public enum AttendanceStatus
     {

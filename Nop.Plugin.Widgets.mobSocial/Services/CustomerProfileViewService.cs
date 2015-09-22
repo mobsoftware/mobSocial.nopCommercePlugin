@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Media;
@@ -8,26 +10,27 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class CustomerProfileViewService : BaseService<CustomerProfileView, CustomerProfileView>
+    public class CustomerProfileViewService : BaseEntityService<CustomerProfileView>
     {
         private readonly mobSocialSettings _mobSocialSettings;
+        private readonly IWorkContext _workContext;
 
         public CustomerProfileViewService(
-            IRepository<CustomerProfileView> customerProfileViewRepository,
+            IMobRepository<CustomerProfileView> customerProfileViewRepository,
             IWorkContext workContext,
             mobSocialSettings mobSocialSettings)
-            : base(customerProfileViewRepository, workContext)
+            : base(customerProfileViewRepository)
         {
             _mobSocialSettings = mobSocialSettings;
+            _workContext = workContext;
         }
 
         public void IncrementViewCount(int customerId) {
             
-            var currentCustomer = WorkContext.CurrentCustomer;
+            var currentCustomer = _workContext.CurrentCustomer;
 
             var viewerViewCount = Repository.Table
-                .Where(x => x.CustomerId == customerId && x.ViewerCustomerId == currentCustomer.Id)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.CustomerId == customerId && x.ViewerCustomerId == currentCustomer.Id);
 
             if (viewerViewCount != null)
             {
@@ -69,27 +72,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
             return viewCount;
         }
-
-        public override List<CustomerProfileView> GetAll(string term, int count)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public override List<CustomerProfileView> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override CustomerProfileView GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-
-        public override Picture GetFirstPicture(int entityId)
+       
+        public override List<CustomerProfileView> GetAll(string Term, int Count = 15, int Page = 1)
         {
             throw new NotImplementedException();
         }

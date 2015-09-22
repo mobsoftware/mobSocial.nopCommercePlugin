@@ -1,19 +1,15 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using Mob.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class CustomerFriendMap : EntityTypeConfiguration<CustomerFriend>
+    public class CustomerFriendMap : BaseMobEntityTypeConfiguration<CustomerFriend>
     {
 
         public CustomerFriendMap()
         {
-            ToTable("CustomerFriend");
-
-            //Map the primary key
-            HasKey(m => m.Id);
-
             //Map the additional properties
             Property(m => m.FromCustomerId);
 

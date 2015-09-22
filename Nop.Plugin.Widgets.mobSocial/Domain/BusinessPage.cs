@@ -4,10 +4,11 @@ using Nop.Core.Domain.Seo;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class BusinessPage : BaseEntity, ISlugSupported, INameSupported
+    public class BusinessPage : BaseMobEntity, ISlugSupported, INameSupported
     {
 
 
@@ -30,8 +31,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
 
         public virtual List<BusinessPageCoupon> Coupons { get; set; }
         public virtual List<BusinessPagePicture> Pictures { get; set; }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Media;
@@ -8,12 +10,12 @@ using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class EventPageHotelService : BaseService<EventPageHotel, EventPageHotel>,
+    public class EventPageHotelService : BaseEntityService<EventPageHotel>,
         IEventPageHotelService
     {
 
-        public EventPageHotelService(IRepository<EventPageHotel> repository,
-            IWorkContext workContext) : base(repository, workContext)
+        public EventPageHotelService(IMobRepository<EventPageHotel> repository,
+            IWorkContext workContext) : base(repository)
         {
         }
 
@@ -24,34 +26,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 .ToList();
         }
 
-        public override List<EventPageHotel> GetAll(string term, int count)
+        public override List<EventPageHotel> GetAll(string Term, int Count = 15, int Page = 1)
         {
             // TODO: Later make a stored procedure.
             return base.Repository.Table
-                .Where(x => x.Name.ToLower().Contains(term.ToLower()))
-                .Take(count)
+                .Where(x => x.Name.ToLower().Contains(Term.ToLower()))
+                .Skip((Page - 1) * Count)
+                .Take(Count)
                 .ToList();
-
-        }
-
-
-
-
-        public override List<EventPageHotel> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EventPageHotel GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-
-        }
-
-
-        public override Picture GetFirstPicture(int entityId)
-        {
-            throw new NotImplementedException();
         }
     }
 

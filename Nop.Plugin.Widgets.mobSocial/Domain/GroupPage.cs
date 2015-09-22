@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Mob.Core.Domain;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
 
-    public class GroupPage : BaseEntity
+    public class GroupPage : BaseMobEntity
     {
 
         public GroupPage()

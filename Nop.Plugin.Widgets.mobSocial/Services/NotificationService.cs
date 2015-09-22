@@ -1,49 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Mob.Core.Data;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class NotificationService : BaseService<Notification, Notification>, INotificationService
+    public class NotificationService : BaseEntityService<Notification>, INotificationService
     {
         private IWorkContext _workContext;
 
-        public NotificationService(IRepository<Notification> repository, IWorkContext workContext)
-            : base(repository, workContext)
+        public NotificationService(IMobRepository<Notification> repository, IWorkContext workContext)
+            : base(repository)
         {
             _workContext = workContext;
         }
-
-        public override List<Notification> GetAll(string term, int count)
-        {
-            return base.Repository.Table
-                .Where(x => x.Name.ToLower().Contains(term.ToLower()))
-                .Take(count)
-                .ToList();
-        }
-
-        public override List<Notification> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Notification GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Picture GetFirstPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-
+     
         public int GetFriendRequestCount(int currentCustomerId)
         {
             throw new NotImplementedException();
@@ -111,7 +89,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         }
 
 
-
+        public override List<Notification> GetAll(string Term, int Count = 15, int Page = 1)
+        {
+            return base.Repository.Table
+                .Where(x => x.Name.ToLower().Contains(Term.ToLower()))
+                .Skip((Page - 1) * Count)
+                .Take(Count)
+                .ToList();
+        }
     }
 
 }

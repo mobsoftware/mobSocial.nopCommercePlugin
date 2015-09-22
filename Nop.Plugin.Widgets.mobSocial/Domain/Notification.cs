@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Nop.Core;
 using System;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
 
-    public class Notification : BaseEntity
+    public class Notification : BaseMobEntity
     {
 
         public Notification()

@@ -1,3 +1,4 @@
+using Mob.Core.Services;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
@@ -5,7 +6,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
     /// <summary>
     /// Product service
     /// </summary>
-    public interface ITeamPageService : IBaseService<TeamPage, TeamPage>
+    public interface ITeamPageService : IBaseEntityService<TeamPage>
     {
     }
 

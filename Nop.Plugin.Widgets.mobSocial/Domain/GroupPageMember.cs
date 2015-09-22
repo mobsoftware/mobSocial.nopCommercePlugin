@@ -1,8 +1,9 @@
-﻿using Nop.Core;
+﻿using Mob.Core.Domain;
+using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class GroupPageMember : BaseEntity
+    public class GroupPageMember : BaseMobEntity
     {
         public virtual int GroupPageId { get; set; }
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Mob.Core;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Media;
@@ -14,7 +16,7 @@ using Nop.Services.Seo;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class CustomerFavoriteSongService : BaseService<CustomerFavoriteSong, CustomerFavoriteSong>, ICustomerFavoriteSongService
+    public class CustomerFavoriteSongService : BaseEntityService<CustomerFavoriteSong>, ICustomerFavoriteSongService
     {
         private MediaSettings _nopMediaSettings;
         private IUrlRecordService _urlRecordService;
@@ -24,13 +26,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public CustomerFavoriteSongService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger, IEventPublisher eventPublisher,
-            IRepository<CustomerFavoriteSong> entityRepository,
-            IRepository<CustomerFavoriteSong> entityPictureRepository,
+            IMobRepository<CustomerFavoriteSong> entityRepository,
             MediaSettings mediaSettings,
             IUrlRecordService urlRecordService,
             IPictureService pictureService,
             IOAuthService oAuthService,
-            IWorkContext workContext) : base(entityRepository, entityPictureRepository, workContext, urlRecordService)
+            IWorkContext workContext) : base(entityRepository, workContext, urlRecordService)
         {
             _nopMediaSettings = mediaSettings;
             _urlRecordService = urlRecordService;
@@ -60,42 +61,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         }
 
-        /// <summary>
-        /// Gets all pictures for the specified entity
-        /// </summary>
-        /// <returns></returns>
-        public override List<CustomerFavoriteSong> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Gets the first entity picture for the specified entity from EntityPicture table
-        /// </summary>
-        /// <param name="entityId"></param>
-        /// <returns></returns>
-        public override CustomerFavoriteSong GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Gets the first picture for the specified entity
-        /// </summary>
-        /// <param name="entityId"></param>
-        /// <returns></returns>
-        public override Picture GetFirstPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<CustomerFavoriteSong> GetAll(string term, int count)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public void UpdateFavoriteSongOrder(int favoriteSongId, int displayOrder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override List<CustomerFavoriteSong> GetAll(string Term, int Count = 15, int Page = 1)
         {
             throw new NotImplementedException();
         }

@@ -23,6 +23,7 @@ using Nop.Web.Controllers;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using System.Linq;
 using Nop.Core;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Plugin.Widgets.MobSocial.Extensions;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;

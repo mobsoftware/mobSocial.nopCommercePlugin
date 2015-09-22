@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Domain;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class VideoBattlePicture : BaseEntity
+    public class VideoBattlePicture : BaseMobPictureEntity
     {
-        public int VideoBattleId { get; set; }
-        public int PictureId { get; set; }
-        public int DisplayOrder { get; set; }
-
         public virtual VideoBattle VideoBattle { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
     }
 }

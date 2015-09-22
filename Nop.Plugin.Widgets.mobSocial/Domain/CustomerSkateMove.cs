@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mob.Core.Domain;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
     
-    public class CustomerSkateMove : BaseEntity
+    public class CustomerSkateMove : BaseMobEntity
     {
 
         public virtual int CustomerId { get; set; }

@@ -4,18 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class SongPicture : BaseEntity
+    public class SongPicture : BaseMobPictureEntity
     {
-        public int SongId { get; set; }
-        public int PictureId { get; set; }
-        public int DisplayOrder { get; set; }
 
         public virtual Song Song { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
     }
 }

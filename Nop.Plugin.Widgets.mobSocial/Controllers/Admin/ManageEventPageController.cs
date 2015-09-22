@@ -335,7 +335,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
             _eventPageService.InsertPicture(new EventPagePicture()
             {
                 PictureId = pictureId,
-                EventPageId = entityId,
+                EntityId = entityId,
                 DisplayOrder = displayOrder,
                 DateCreated = DateTime.Now,
                 DateUpdated = DateTime.Now
@@ -362,7 +362,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
                     return new PictureModel()
                     {
                         Id = x.Id,
-                        EntityId = x.EventPageId,
+                        EntityId = x.EntityId,
                         PictureId = x.PictureId,
                         PictureUrl = _pictureService.GetPictureUrl(x.PictureId),
                         DisplayOrder = x.DisplayOrder

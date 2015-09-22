@@ -4,16 +4,15 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
-    public class VideoBattleVideoMap: EntityTypeConfiguration<VideoBattleVideo>
+    public class VideoBattleVideoMap: BaseMobEntityTypeConfiguration<VideoBattleVideo>
     {
         public VideoBattleVideoMap()
         {
-            ToTable("VideoBattleVideo");
-            HasKey(x => x.Id);
             Property(x => x.ParticipantId);
             Property(x => x.VideoBattleId);
             Property(x => x.VideoPath);

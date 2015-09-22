@@ -44,6 +44,7 @@
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
+    <Compile Include="Core\FeatureToggle.cs" />
     <Compile Include="Services\ArtistPageAPIService.cs" />
     <Compile Include="Services\ArtistPageManagerService.cs" />
     <Compile Include="Services\ArtistPagePaymentService.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\FacebookWebsiteAppController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
-    <Compile Include="Services\AttendanceStatus.cs" />
+    <Compile Include="Enums\AttendanceStatus.cs" />
     <Compile Include="Services\CustomerProfileViewService.cs" />
     <Compile Include="Services\EventPageAttendanceService.cs" />
     <Compile Include="Services\IEventPageAttendanceService.cs" />
@@ -174,9 +175,7 @@
     <Compile Include="Services\EventPageHotelService.cs" />
     <Compile Include="Services\EventPageService.cs" />
     <Compile Include="Services\IEventPageHotelService.cs" />
-    <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\ITeamPageService.cs" />
-    <Compile Include="Services\IBaseService.cs" />
     <Compile Include="Services\IEventPageService.cs" />
     <Compile Include="Services\ICustomerVideoAlbumService.cs" />
     <Compile Include="Services\CustomerVideoAlbumService.cs" />
@@ -792,10 +791,9 @@
       <Name>Nop.Web</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\MobAds\Mob.Core\Mob.Core.csproj">
+    <ProjectReference Include="..\..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -822,22 +820,22 @@
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.Core.1.0.0\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Owin">
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.Owin.1.0.0\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.AspNet.SignalR.SystemWeb.1.0.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Microsoft.Owin.Host.SystemWeb.1.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
@@ -854,7 +852,7 @@
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.60_Source\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">

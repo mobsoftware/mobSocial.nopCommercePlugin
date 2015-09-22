@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class ArtistPagePayment : BaseEntity
+    public class ArtistPagePayment : BaseMobEntity
     {
         public enum PagePaymentType
         {

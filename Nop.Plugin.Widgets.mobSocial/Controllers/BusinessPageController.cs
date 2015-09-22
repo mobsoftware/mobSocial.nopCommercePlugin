@@ -25,6 +25,7 @@ using System.Linq;
 using System.Web;
 using Mob.Core;
 using Nop.Core;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Plugin.Widgets.MobSocial.Extensions;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;
@@ -613,7 +614,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     var businessPagePicture = new BusinessPagePicture()
                     {
-                        BusinessPageId = entityId,
+                        EntityId = entityId,
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
                         DisplayOrder = 1,
@@ -623,7 +624,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
                 else
                 {
-                    firstBusinessPagePicture.BusinessPageId = entityId;
+                    firstBusinessPagePicture.EntityId = entityId;
                     firstBusinessPagePicture.DateCreated = DateTime.Now;
                     firstBusinessPagePicture.DateUpdated = DateTime.Now;
                     firstBusinessPagePicture.DisplayOrder = 1;

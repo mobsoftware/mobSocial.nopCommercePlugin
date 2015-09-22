@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Core;
 using Autofac.Integration.Mvc;
+using Mob.Core;
 using Nop.Core.Data;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
@@ -14,12 +15,12 @@ using SitemapGenerator = Nop.Plugin.Widgets.MobSocial.Services.SitemapGenerator;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
-    public class DependencyRegistrar : IDependencyRegistrar
+    public class DependencyRegistrar : BaseMobDependencyRegistrar
     {
         private const string CONTEXT_NAME = "nop_object_context_social_network";
 
 
-        public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder)
+        public override void Register(ContainerBuilder builder, ITypeFinder typeFinder)
         {
             //Load custom data settings
             var dataSettingsManager = new DataSettingsManager();
@@ -31,174 +32,18 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             //Register services
             builder.RegisterType<MobSocialService>().As<IMobSocialService>();
-
-            //Override the repository injection
-            builder.RegisterType<EfRepository<GroupPage>>().As<IRepository<GroupPage>>()
-                        .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                        .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<GroupPageMember>>().As<IRepository<GroupPageMember>>()
-                        .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                        .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<SkateMove>>().As<IRepository<SkateMove>>()
-                      .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                      .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerSkateMove>>().As<IRepository<CustomerSkateMove>>()
-                      .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                      .InstancePerRequest();
-
-
-            builder.RegisterType<EfRepository<CustomerFriend>>().As<IRepository<CustomerFriend>>()
-                      .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                      .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<TeamPage>>().As<IRepository<TeamPage>>()
-                     .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                     .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerAlbum>>().As<IRepository<CustomerAlbum>>()
-                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerAlbumPicture>>().As<IRepository<CustomerAlbumPicture>>()
-                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerRequest();
-
-
-            builder.RegisterType<EfRepository<CustomerVideoAlbum>>().As<IRepository<CustomerVideoAlbum>>()
-                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerVideo>>().As<IRepository<CustomerVideo>>()
-                   .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                   .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerVideoLike>>().As<IRepository<CustomerVideoLike>>()
-                  .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                  .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<EventPage>>().As<IRepository<EventPage>>()
-                .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<EventPagePicture>>().As<IRepository<EventPagePicture>>()
-                .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<EventPageHotel>>().As<IRepository<EventPageHotel>>()
-               .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-               .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<EventPageAttendance>>().As<IRepository<EventPageAttendance>>()
-              .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-              .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<BusinessPage>>().As<IRepository<BusinessPage>>()
-               .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-               .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<BusinessPagePicture>>().As<IRepository<BusinessPagePicture>>()
-                .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-                .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<BusinessPageCoupon>>().As<IRepository<BusinessPageCoupon>>()
-             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-             .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerProfileView>>().As<IRepository<CustomerProfileView>>()
-             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-             .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerTimeline>>().As<IRepository<CustomerTimeline>>()
-             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-             .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<PictureTag>>().As<IRepository<PictureTag>>()
-             .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-             .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerProfile>>().As<IRepository<CustomerProfile>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<Notification>>().As<IRepository<Notification>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<CustomerFavoriteSong>>().As<IRepository<CustomerFavoriteSong>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-            builder.RegisterType<EfRepository<ArtistPage>>().As<IRepository<ArtistPage>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<ArtistPageManager>>().As<IRepository<ArtistPageManager>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<ArtistPagePicture>>().As<IRepository<ArtistPagePicture>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<ArtistPagePayment>>().As<IRepository<ArtistPagePayment>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-
-            builder.RegisterType<EfRepository<Song>>().As<IRepository<Song>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<SongPicture>>().As<IRepository<SongPicture>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<SharedSong>>().As<IRepository<SharedSong>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<VideoBattle>>().As<IRepository<VideoBattle>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<VideoBattleVote>>().As<IRepository<VideoBattleVote>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<VideoBattleVideo>>().As<IRepository<VideoBattleVideo>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<VideoBattleParticipant>>().As<IRepository<VideoBattleParticipant>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<VideoBattleGenre>>().As<IRepository<VideoBattleGenre>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-
-            builder.RegisterType<EfRepository<VideoGenre>>().As<IRepository<VideoGenre>>()
-            .WithParameter(ResolvedParameter.ForNamed<IDbContext>(CONTEXT_NAME))
-            .InstancePerRequest();
-            // Service Injection
-            builder.RegisterGeneric(typeof(BaseService<,>)).As(typeof(IBaseService<,>)).InstancePerLifetimeScope();
+            builder.RegisterType<ArtistPageAPIService>().As<IArtistPageAPIService>();
+            builder.RegisterType<ArtistPageManagerService>().As<IArtistPageManagerService>();
+            builder.RegisterType<ArtistPagePaymentService>().As<IArtistPagePaymentService>();
+     
             //builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
             builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerRequest();
             builder.RegisterType<CustomerAlbumPictureService>().As<ICustomerAlbumPictureService>().InstancePerRequest();
             builder.RegisterType<CustomerVideoAlbumService>().As<ICustomerVideoAlbumService>().InstancePerRequest();
-            builder.RegisterType<EventPageService>().As<IEventPageService>().InstancePerRequest();
-            builder.RegisterType<EventPageAttendanceService>().As<IEventPageAttendanceService>().InstancePerRequest();
-            builder.RegisterType<EventPageHotelService>().As<IEventPageHotelService>().InstancePerRequest();
-            builder.RegisterType<BusinessPageService>().As<IBusinessPageService>().InstancePerRequest();
-            builder.RegisterType<BusinessPageCouponService>().As<IBusinessPageCouponService>().InstancePerRequest();
+
             builder.RegisterType<CustomerProfileViewService>().As<CustomerProfileViewService>().InstancePerRequest();
             builder.RegisterType<CustomerTimelineService>().As<CustomerTimelineService>().InstancePerRequest();
             builder.RegisterType<CustomerProfileService>().As<CustomerProfileService>().InstancePerRequest();
-            builder.RegisterType<TeamPageService>().As<TeamPageService>().InstancePerRequest();
-            builder.RegisterType<NotificationService>().As<INotificationService>().InstancePerRequest();
-            builder.RegisterType<CustomerFavoriteSongService>().As<ICustomerFavoriteSongService>().InstancePerRequest();
             builder.RegisterType<EchoNestMusicService>().As<IMusicService>().InstancePerRequest();
             builder.RegisterType<MusicApiCredentials>().As<IOAuthCredentials>().InstancePerRequest();
             builder.RegisterType<MusicApiUri>().As<IApiUri>().InstancePerRequest();
@@ -206,24 +51,11 @@ namespace Nop.Plugin.Widgets.MobSocial
             
 
 
-            builder.RegisterType<ArtistPageService>().As<IArtistPageService>().InstancePerRequest();
-            builder.RegisterType<ArtistPageAPIService>().As<IArtistPageAPIService>().InstancePerRequest();
-            builder.RegisterType<ArtistPageManagerService>().As<IArtistPageManagerService>().InstancePerRequest();
-            builder.RegisterType<SongService>().As<ISongService>().InstancePerRequest();
-            builder.RegisterType<SharedSongService>().As<ISharedSongService>().InstancePerRequest();
-            builder.RegisterType<ArtistPagePaymentService>().As<IArtistPagePaymentService>().InstancePerRequest();
-
-            builder.RegisterType<VideoBattleService>().As<IVideoBattleService>().InstancePerRequest();
-            builder.RegisterType<VideoBattleVideoService>().As<IVideoBattleVideoService>().InstancePerRequest();
-            builder.RegisterType<VideoBattleParticipantService>().As<IVideoBattleParticipantService>().InstancePerRequest();
-            builder.RegisterType<VideoBattleGenreService>().As<IVideoBattleGenreService>().InstancePerRequest();
-            builder.RegisterType<VideoBattleVoteService>().As<IVideoBattleVoteService>().InstancePerRequest();
-            builder.RegisterType<VideoGenreService>().As<IVideoGenreService>().InstancePerRequest();
-            
-            
             // Override any NopCommerce Services below:
             builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 
+            //call the core registrar
+            base.Register(builder, typeFinder);
 
             
         }
@@ -251,6 +83,11 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int Order
         {
             get { return 1; }
+        }
+
+        public override string ContextName
+        {
+            get { return CONTEXT_NAME; }
         }
     }
 }

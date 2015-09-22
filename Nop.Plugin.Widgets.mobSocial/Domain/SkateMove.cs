@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Mob.Core.Domain;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
     //todo Make this into a Social Network plugin - leggeb02
-    public class SkateMove : BaseEntity
+    public class SkateMove : BaseMobEntity
     {
 
         public string Name { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System;
 using Nop.Core;
 using Mob.Core;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class CustomerFavoriteSong : BaseEntity, ISortableSupported, ISoftDeletable
+    public class CustomerFavoriteSong : BaseMobEntity, ISortableSupported, ISoftDeletable
     {
         public CustomerFavoriteSong()
         {
@@ -18,8 +19,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public string PreviewUrl { get; set; }
         public int DisplayOrder { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
 
     }
 

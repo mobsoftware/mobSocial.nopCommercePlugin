@@ -1,19 +1,15 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using Mob.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
 
-    public class GroupPageMap : EntityTypeConfiguration<GroupPage>
+    public class GroupPageMap : BaseMobEntityTypeConfiguration<GroupPage>
     {
 
         public GroupPageMap()
         {
-            ToTable("GroupPage");
-
-            //Map the primary key
-            HasKey(m => m.Id);
-
             //Map the additional properties
             Property(m => m.Description);
 

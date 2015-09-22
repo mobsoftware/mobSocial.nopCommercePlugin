@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using Mob.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
@@ -8,15 +9,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
 
 
-    public class BusinessPageMap : EntityTypeConfiguration<BusinessPage>
+    public class BusinessPageMap : BaseMobEntityTypeConfiguration<BusinessPage>
     {
 
         public BusinessPageMap()
         {
-            ToTable(typeof(BusinessPage).Name);
-
-            //Map the primary key
-            HasKey(m => m.Id);
 
             //Map the additional properties
             Property(m => m.Name);

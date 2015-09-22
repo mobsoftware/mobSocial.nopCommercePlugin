@@ -725,7 +725,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                         var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false));
                         var artistPicture = new ArtistPagePicture() {
-                            ArtistPageId = artistPage.Id,
+                            EntityId = artistPage.Id,
                             DateCreated = DateTime.Now,
                             DateUpdated = DateTime.Now,
                             DisplayOrder = 1,
@@ -969,7 +969,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (firstArtistPagePicture == null)
                 {
                     firstArtistPagePicture = new ArtistPagePicture() {                        
-                        ArtistPageId = ArtistPageId,
+                        EntityId = ArtistPageId,
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
                         DisplayOrder = 1,
@@ -979,7 +979,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
                 else
                 {
-                    firstArtistPagePicture.ArtistPageId = ArtistPageId;
+                    firstArtistPagePicture.EntityId = ArtistPageId;
                     firstArtistPagePicture.DateCreated = DateTime.Now;
                     firstArtistPagePicture.DateUpdated = DateTime.Now;
                     firstArtistPagePicture.DisplayOrder = 1;
@@ -1184,7 +1184,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     var picture = _pictureService.InsertPicture(imageBytes, contentType, artistPage.GetSeName(_workContext.WorkingLanguage.Id, true, false));
                     var artistPicture = new ArtistPagePicture() {
-                        ArtistPageId = artistPage.Id,
+                        EntityId = artistPage.Id,
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
                         DisplayOrder = 1,

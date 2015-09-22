@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Mob.Core.Services;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public interface ICustomerFavoriteSongService : IBaseService<CustomerFavoriteSong, CustomerFavoriteSong>
+    public interface ICustomerFavoriteSongService : IBaseEntityService<CustomerFavoriteSong>
     {
         List<CustomerFavoriteSong> GetTop10(int CustomerId);
 

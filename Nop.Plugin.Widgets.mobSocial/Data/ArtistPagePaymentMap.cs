@@ -5,15 +5,14 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Data;
 
 namespace Nop.Plugin.Widgets.MobSocial.Data
 {
-    public class ArtistPagePaymentMap : EntityTypeConfiguration<ArtistPagePayment>
+    public class ArtistPagePaymentMap : BaseMobEntityTypeConfiguration<ArtistPagePayment>
     {
         public ArtistPagePaymentMap()
         {
-            ToTable("ArtistPagePayment");
-
             Property(x => x.ArtistPageId);
             Property(x => x.PaymentType);
             Property(x => x.PaypalEmail).IsOptional();

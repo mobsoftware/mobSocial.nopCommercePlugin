@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class ArtistPage : BaseEntity, ISlugSupported, INameSupported
+    public class ArtistPage : BaseMobEntity, ISlugSupported, INameSupported
     {
         public int PageOwnerId { get; set; }
         public string Name { get; set; }

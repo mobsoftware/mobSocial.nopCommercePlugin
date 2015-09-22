@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class VideoBattleVideoService : BaseService<VideoBattleVideo, VideoBattleVideo>, IVideoBattleVideoService
+    public class VideoBattleVideoService : BaseEntityService<VideoBattleVideo>, IVideoBattleVideoService
     {
-        private readonly IRepository<VideoBattleVideo> _videoBattleVideoRepository;
+        private readonly IMobRepository<VideoBattleVideo> _videoBattleVideoRepository;
 
         private readonly IWorkContext _workContext;
 
-        public VideoBattleVideoService(IRepository<VideoBattleVideo> videoBattleVideoRepository,                        
+        public VideoBattleVideoService(IMobRepository<VideoBattleVideo> videoBattleVideoRepository,                        
             IWorkContext workContext) :
-            base(videoBattleVideoRepository, workContext)
+            base(videoBattleVideoRepository)
         {
             _videoBattleVideoRepository = videoBattleVideoRepository;
             _workContext = workContext;
@@ -29,29 +31,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             return battleVideo;
         }
 
-        public override List<VideoBattleVideo> GetAll(string term, int count)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<VideoBattleVideo> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override VideoBattleVideo GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Nop.Core.Domain.Media.Picture GetFirstPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
         public IList<VideoBattleVideo> GetBattleVideos(int BattleId)
         {
             return _videoBattleVideoRepository.Table.Where(x => x.VideoBattleId == BattleId).ToList();
+        }
+
+        public override List<VideoBattleVideo> GetAll(string Term, int Count = 15, int Page = 1)
+        {
+            throw new NotImplementedException();
         }
     }
 }

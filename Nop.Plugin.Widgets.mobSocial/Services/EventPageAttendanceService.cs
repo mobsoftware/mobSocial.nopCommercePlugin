@@ -1,32 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Services.Customers;
 using Nop.Services.Seo;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class EventPageAttendanceService : BaseService<EventPageAttendance, EventPageAttendance>,
-        IEventPageAttendanceService
+    public class EventPageAttendanceService : BaseEntityService<EventPageAttendance>,IEventPageAttendanceService
     {
 
         private readonly ICustomerService _cutomerService;
         private readonly IMobSocialMessageService _messageService;
-        private readonly IRepository<CustomerFriend> _customerFriendRepository;
+        private readonly IMobRepository<CustomerFriend> _customerFriendRepository;
+        private readonly IWorkContext _workContext;
 
-        public EventPageAttendanceService(IRepository<EventPageAttendance> entityRepository,
+        public EventPageAttendanceService(IMobRepository<EventPageAttendance> entityRepository,
             IUrlRecordService urlRecordService, ICustomerService customerService,
             IMobSocialMessageService messageService, IWorkContext workContext,
-            IRepository<CustomerFriend> customerFriendRepository) : base(entityRepository, workContext, urlRecordService)
+            IMobRepository<CustomerFriend> customerFriendRepository) : base(entityRepository)
         {
             _cutomerService = customerService;
             _messageService = messageService;
             _customerFriendRepository = customerFriendRepository;
+            _workContext = workContext;
         }
 
 
@@ -120,7 +124,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
                 var customer = _cutomerService.GetCustomerById(customerId);
                 invitedCustomers.Add(customer);
-                _messageService.SendEventInvitationNotification(customer, WorkContext.WorkingLanguage.Id, 0);
+                _messageService.SendEventInvitationNotification(customer, _workContext.WorkingLanguage.Id, 0);
 
             }
 
@@ -137,8 +141,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         public EventPageAttendance GetCustomerAttendanceStatus(int customerId, int eventPageId)
         {
             return Repository.Table
-                .Where(x => x.CustomerId == customerId && x.EventPageId == eventPageId)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.CustomerId == customerId && x.EventPageId == eventPageId);
         }
 
         public int GetInvitedCount()
@@ -148,29 +151,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public List<EventPageAttendance> GetAllAttendances(int eventPageId)
         {
-            return Repository.Table.Where(x => x.EventPageId == eventPageId).ToList();
+            return base.Repository.Table.Where(x => x.EventPageId == eventPageId).ToList();
         }
 
-        public override List<EventPageAttendance> GetAllPictures(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override EventPageAttendance GetFirstEntityPicture(int entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<EventPageAttendance> GetAll(string term, int count)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-
-
-        public override Picture GetFirstPicture(int entityId)
+        public override List<EventPageAttendance> GetAll(string Term, int Count = 15, int Page = 1)
         {
             throw new NotImplementedException();
         }
