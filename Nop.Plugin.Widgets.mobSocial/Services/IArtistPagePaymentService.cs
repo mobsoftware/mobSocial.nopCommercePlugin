@@ -1,8 +1,9 @@
-﻿using Nop.Plugin.Widgets.MobSocial.Domain;
+﻿using Mob.Core.Services;
+using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public interface IArtistPagePaymentService
+    public interface IArtistPagePaymentService : IBaseEntityService<ArtistPagePayment>
     {
         void InsertPaymentMethod(ArtistPagePayment ArtistPagePayment);
 

@@ -13,66 +13,64 @@
 }
 
 <div data-ng-controller="VideoBattleEditorController" ng-init="init(@json)">
-    <div ng-show="recordSaved">
+    <div ng-show="recordSaved" class="text-center">
         Video Battle @(Model.Id == 0 ? "created" : "updated") successfully. Redirecting to battle page to upload a video...
     </div>
     <form name="createBattleForm" ng-show="!recordSaved">
-        <table class="table-form">
-            <tr>
-                <td style="text-align:center;"><h1>Video Battle Editor</h1></td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="control-group">
-                        <label class="control-label" for="title">Title <span class="required">*</span></label><br />
-                        <input type="text" name="title" id="title" data-ng-model="VideoBattle.Title" required />
-                        <span ng-show="createBattleForm.title.$invalid && createBattleForm.title.$dirty">Title is required</span>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="description">Description</label><br />
-                        <textarea name="description" id="description" data-ng-model="VideoBattle.Description"></textarea>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Voting Start Date</label><br />
-                        <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Voting Last Date</label><br/>
-                        <datetimepicker current-date="VideoBattle.VotingLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+        <div class="fieldset">
+            <div class="title">
+                <strong>Video Battle Editor</strong>
+            </div>
+            <div class="form-fields">
+                <div class="inputs">
+                    <label for="title">Title <span class="required">*</span></label>
+                    <input type="text" name="title" id="title" data-ng-model="VideoBattle.Title" required />
+                    <span ng-show="createBattleForm.title.$invalid && createBattleForm.title.$dirty">Title is required</span>
+                </div>
+                <div class="inputs">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" data-ng-model="VideoBattle.Description"></textarea>
+                </div>
+                <div class="inputs">
+                    <label>Voting Start Date</label>
+                    <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+                </div>
+                <div class="inputs">
+                    <label>Voting Last Date</label>
+                    <datetimepicker current-date="VideoBattle.VotingLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
 
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Battle Type</label><br/>
-                        <select data-ng-model="VideoBattle.VideoBattleType">
-                            <option value="@((int) VideoBattleType.Open)">@(VideoBattleType.Open)</option>
-                            <option value="@((int) VideoBattleType.InviteOnly)">@(VideoBattleType.InviteOnly)</option>
-                            <option value="@((int) VideoBattleType.SignUp)">@(VideoBattleType.SignUp)</option>
-                        </select>
+                </div>
+                <div class="inputs">
+                    <label class="control-label">Battle Type</label>
+                    <select data-ng-model="VideoBattle.VideoBattleType">
+                        <option value="@((int) VideoBattleType.Open)">@(VideoBattleType.Open)</option>
+                        <option value="@((int) VideoBattleType.InviteOnly)">@(VideoBattleType.InviteOnly)</option>
+                        <option value="@((int) VideoBattleType.SignUp)">@(VideoBattleType.SignUp)</option>
+                    </select>
 
-                    </div>
-                    <div class="control-group" ng-show="VideoBattle.VideoBattleType == @((int)VideoBattleType.Open)">
-                        <label class="control-label" for="maxcount">Maximum Participants Allowed</label><br />
-                        <input type="number" min="0" step="1" name="MaximumParticipantCount" id="maxcount" data-ng-model="VideoBattle.MaximumParticipantCount" />
-                        <em>0 for no limit</em>
-                    </div>
-                    <div class="control-group">
-                        <div ng-show="processing">
-                            Please wait...
-                        </div>
-                       @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
-                       {
-                        <text>The battle can't be edited now.</text>
-                       }
-                       else
-                       {
-                        <input type="button" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle" />
+                </div>
+                <div class="inputs" ng-show="VideoBattle.VideoBattleType == @((int) VideoBattleType.Open)">
+                    <label class="control-label" for="maxcount">Maximum Participants Allowed</label>
+                    <input type="number" min="0" step="1" name="MaximumParticipantCount" id="maxcount" data-ng-model="VideoBattle.MaximumParticipantCount"/>
+                    <em>0 for no limit</em>
+                </div>
 
-                       }
-                    </div>
-                </td>
+            </div>
+        </div>
+        <div class="buttons">
+            <div ng-show="processing">
+                Please wait...
+            </div>
+            @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
+            {
+                <text>The battle can't be edited now.</text>
+            }
+            else
+            {
+                <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle" />
 
-            </tr>
-        </table>
+            }
+        </div>
     </form>
 </div>
 

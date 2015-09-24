@@ -103,7 +103,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             model.NavigationModel = SessionState.Instance.CustomerNavigationModel;
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/ProfileInformation.cshtml", model);
+            return View("mobSocial/WidgetZones/ProfileInformation", model);
 
         }
 
@@ -119,6 +119,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/WidgetZones/head_html_tag");
         }
 
+        public ActionResult GlobalSearchOptions()
+        {
+            return View("mobSocial/WidgetZones/searchbox_before_search_button");
+        }
         
         public ActionResult Configure()
         {

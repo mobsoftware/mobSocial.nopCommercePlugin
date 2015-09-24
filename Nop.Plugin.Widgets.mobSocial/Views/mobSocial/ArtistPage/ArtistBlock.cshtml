@@ -5,15 +5,20 @@
             <div class="artist-image">
                 <img ng-src="{{artist.ImageUrl}}" />
             </div>
-            <div>{{artist.Name}}</div>            
+            <div class="artist-name">{{artist.Name}}</div>            
         </a>
     </div>
     <div class="artist-title" ng-if="artist.RemoteArtist">
         <a href="/remote-artist/{{artist.SeName}}">
-            <div class="artist-image">
-                <img ng-src="{{artist.ImageUrl}}" />
+            <div class="artist-image" ng-if="!artist.ImageUrl">
+                <img src="/content/images/default-image.png" />
             </div>
-            <div>{{artist.Name}}</div>
+            <div class="artist-image" ng-if="artist.ImageUrl">
+                <img ng-src="{{artist.ImageUrl}}"/>
+            </div>
+           
+
+            <div class="artist-name">{{artist.Name}}</div>
         </a>
     </div>
 </div>

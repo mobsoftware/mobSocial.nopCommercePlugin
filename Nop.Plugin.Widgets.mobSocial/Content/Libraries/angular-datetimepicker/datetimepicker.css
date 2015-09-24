@@ -16,7 +16,14 @@
     display: none;
     border:solid 1px #aaa;
     z-index: 5;
+    font-size: 12px;
+    left: 0;
     
+}
+.datepicker-area select {
+    padding: 3px;
+    height: auto !important;
+    min-height: auto !important;
 }
 .datepicker-area table
 {

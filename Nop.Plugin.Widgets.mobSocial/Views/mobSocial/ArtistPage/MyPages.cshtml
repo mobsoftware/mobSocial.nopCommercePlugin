@@ -30,7 +30,7 @@
                 <div>
                     <div class="clear">
                     </div>
-                    <div style="text-align:right"><a href="@Url.RouteUrl("ArtistsPage", new { action = "Editor" })">Create New Page</a></div>
+                    <div style="text-align:right"><a href="@Url.RouteUrl("ArtistsPage", new { action = "Editor" })"><i class="fa fa-plus-circle"></i> Create New Page</a></div>
                     <div class="clear">
                     </div>
                     <div ng-show="Artists.length == 0">You have not created any page</div>
@@ -64,7 +64,7 @@
 
                 </div>
                 <div>
-                    <div ng-show="AsManagerArtists.length == 0">You are not managing any page</div>
+                    <div ng-show="AsManagerArtists == null || AsManagerArtists.length == 0">You are not managing any page</div>
                     <div ng-hide="AsManagerArtists.length == 0">
                         <div data-ng-repeat="artist in AsManagerArtists">
                             <div class="artist-row">

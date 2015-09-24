@@ -4,7 +4,7 @@
 
 @using Nop.Web.Framework.UI
 @{
-    Layout = "~/Views/Shared/_ColumnsThree.cshtml";
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
 
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/business-pages/business-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/business-pages/business-pages-search.js");
@@ -53,13 +53,6 @@
     </div>
 }
 
-@section right {
-
-
-
-
-
-}
 
 
 <div ng-controller="BusinessPageSearchController">

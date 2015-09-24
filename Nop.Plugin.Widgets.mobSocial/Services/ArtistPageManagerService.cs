@@ -1,20 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class ArtistPageManagerService:IArtistPageManagerService
+    public class ArtistPageManagerService: BaseEntityService<ArtistPageManager>, IArtistPageManagerService
     {
-        private readonly IRepository<ArtistPageManager> _managerRepository;
-        private readonly IRepository<ArtistPage> _pageRepository;
+        private readonly IMobRepository<ArtistPageManager> _managerRepository;
+        private readonly IMobRepository<ArtistPage> _pageRepository;
 
-        public ArtistPageManagerService(IRepository<ArtistPageManager> managerRepository, IRepository<ArtistPage> pageRepository)
+        public ArtistPageManagerService(IMobRepository<ArtistPageManager> managerRepository,
+            IMobRepository<ArtistPage> pageRepository)
+            : base(managerRepository)
         {
             _managerRepository = managerRepository;
             _pageRepository = pageRepository;
         }
+
         public void AddPageManager(ArtistPageManager Manager)
         {
             _managerRepository.Insert(Manager);
@@ -46,6 +51,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         }
 
 
-       
+        public override List<ArtistPageManager> GetAll(string Term, int Count = 15, int Page = 1)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

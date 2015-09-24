@@ -21,17 +21,18 @@
 
 
 <div class="artist-left-content">
-    <div class="artist-page-image">
+    <div class="artist-page-image text-center">
         <img src="@Model.MainPictureUrl" id="artist-page-image" style="width:100%" />
         @if (Model.CanEdit)
         {
             var uploadUrl = "/artists/UploadPicture/" + Model.Id;
             <button file-upload-button
+                    class="c2a-maroon"
                     id="profilepicture"
                     fieldname="profilepicture"
                     imagesrc="artist-page-image"
                     url="@uploadUrl">
-                <i class="fa fa-upload"></i> Upload
+                <i class="fa fa-upload"></i> Upload Picture
             </button>
         }
 
@@ -40,10 +41,12 @@
         <h2 class="text-center">Artist Songs</h2>
         @if (Model.CanEdit)
         {
-            <button ng-click="GotoSongEditor()"><i class="fa fa-music"></i> Add Song</button>
+            <div class="text-center" style="margin-bottom: 20px;">
+                <button class="c2a-maroon" ng-click="GotoSongEditor()"><i class="fa fa-music"></i> Add Song</button>
+            </div>
         }
         <div ng-hide="songsLoaded">Loading...</div>
-        <div ng-show="songs.length == 0">No songs found</div>
+        <div class="text-center" ng-show="songs.length == 0">No songs found</div>
         <div data-ng-repeat="song in songs">
             @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
         </div>
@@ -256,76 +259,77 @@
                     
                     <!--begin payments page-->
                     <div>
-                        <p>@T("ArtistPages.SendPaymentMessageText")</p>
-                        <strong ng-show="PaymentMethodSaved">Payment Method saved successfully</strong>
-                        <table class="table-form">
-                            <tr>
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label" for="name">Payment Type</label><br />
-                                        <select data-ng-model="PaymentMethod.PaymentTypeId" value="{{PaymentMethod.PaymentTypeId}}" >
-                                            <option ng-repeat="item in PaymentTypes" value="{{item.value}}">{{item.text}}</option>
-                                        </select>
+                        
+                        
+                        <div class="fieldset">
+                            <div class="title">@T("ArtistPages.SendPaymentMessageText")</div>
+                            <div style="margin: 5px 0;font-weight: bold" class="text-center" ng-show="PaymentMethodSaved">Payment Method saved successfully</div>
+                            <div class="form-fields">
+                                <div class="inputs">
+                                    <label class="control-label" for="name">Payment Type</label>
+                                    <select data-ng-model="PaymentMethod.PaymentTypeId" value="{{PaymentMethod.PaymentTypeId}}">
+                                        <option ng-repeat="item in PaymentTypes" value="{{item.value}}">{{item.text}}</option>
+                                    </select>
+                                </div>
+                                <div ng-if="PaymentMethod.PaymentTypeId == '1'">
+                                    <div class="inputs">
+                                        <label class="control-label" for="paypalemail">Paypal Email</label>
+                                        <input ng-model="PaymentMethod.PaypalEmail" type="text" id="paypalemail"/>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div ng-if="PaymentMethod.PaymentTypeId == '1'">
-                                        <div class="control-group">
-                                            <label class="control-label" for="paypalemail">Paypal Email</label><br />
-                                            <input ng-model="PaymentMethod.PaypalEmail" id="paypalemail" />
-                                        </div>
+                                </div>
+                                <div ng-if="PaymentMethod.PaymentTypeId == '2'">
+                                    <div class="inputs">
+                                        <label class="control-label" for="bankname">Bank Name</label>
+                                        <input ng-model="PaymentMethod.BankName" type="text" id="bankname"/>
                                     </div>
-                                    <div ng-if="PaymentMethod.PaymentTypeId == '2'">
-                                        <div class="control-group">
-                                            <label class="control-label" for="bankname">Bank Name</label><br />
-                                            <input ng-model="PaymentMethod.BankName" id="bankname" />
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label" for="routingnumber">Routing Number</label><br />
-                                            <input ng-model="PaymentMethod.RoutingNumber" id="routingnumber" />
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label" for="accountnumber">Account Number</label><br />
-                                            <input ng-model="PaymentMethod.AccountNumber" id="accountnumber" />
-                                        </div>
+                                    <div class="inputs">
+                                        <label class="control-label" for="routingnumber">Routing Number</label>
+                                        <input ng-model="PaymentMethod.RoutingNumber" type="text" id="routingnumber"/>
                                     </div>
-                                    <div ng-if="PaymentMethod.PaymentTypeId == '3'">
-                                        <div class="control-group">
-                                            <label class="control-label" for="payableto">Payable To</label><br />
-                                            <input ng-model="PaymentMethod.PayableTo" id="payableto" />
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label" for="address">Address</label><br />
-                                            <input ng-model="PaymentMethod.Address" id="address" />
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label" for="city">City</label><br />
-                                            <input ng-model="PaymentMethod.City" id="city" />
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label" for="country">Country</label><br />
-                                            <input ng-model="PaymentMethod.Country" id="country" />
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label" for="postalcode">Postal Code</label><br />
-                                            <input ng-model="PaymentMethod.PostalCode" id="postalcode" />
-                                        </div>
+                                    <div class="inputs">
+                                        <label class="control-label" for="accountnumber">Account Number</label>
+                                        <input ng-model="PaymentMethod.AccountNumber" type="text" id="accountnumber"/>
                                     </div>
-                                    <div ng-show="PaymentMethod.PaymentTypeId">
-                                        <input type="button" value="Save" ng-click="SavePaymentMethod()" />
+                                </div>
+                                <div ng-if="PaymentMethod.PaymentTypeId == '3'">
+                                    <div class="inputs">
+                                        <label class="control-label" for="payableto">Payable To</label>
+                                        <input ng-model="PaymentMethod.PayableTo" type="text" id="payableto"/>
                                     </div>
-                                </td>
-                            </tr>
-                        </table>
+                                    <div class="inputs">
+                                        <label class="control-label" for="address">Address</label>
+                                        <input ng-model="PaymentMethod.Address" type="text" id="address"/>
+                                    </div>
+                                    <div class="inputs">
+                                        <label class="control-label" for="city">City</label>
+                                        <input ng-model="PaymentMethod.City" type="text" id="city"/>
+                                    </div>
+                                    <div class="inputs">
+                                        <label class="control-label" for="country">Country</label>
+                                        <input ng-model="PaymentMethod.Country" type="text" id="country"/>
+                                    </div>
+                                    <div class="inputs">
+                                        <label class="control-label" for="postalcode">Postal Code</label>
+                                        <input ng-model="PaymentMethod.PostalCode" type="text" id="postalcode"/>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                           
+                        </div>
+                        <div class="buttons">
+                            <div ng-show="PaymentMethod.PaymentTypeId">
+                                <input type="button" value="Save" class="c2a-maroon" ng-click="SavePaymentMethod()" />
+                            </div>
+                        </div>
                     </div>
                     <!--end payments page-->
                     
                     <!--begin delete page-->
-                    <div>
-                        Deleting an artist page will delete all the data associated with artist. Are you sure you wish to delete this page?<br />
-                        <input type="button" ng-click="DeleteArtist()" value="Delete Page" />
+                    <div class="text-center">
+                        <br/>
+                        Deleting an artist page will delete all the data associated with artist. Are you sure you wish to delete this page?<br/><br/>
+                        <input type="button" ng-click="DeleteArtist()" value="Delete Page"/>
 
                     </div>
                     <!--end delete page-->

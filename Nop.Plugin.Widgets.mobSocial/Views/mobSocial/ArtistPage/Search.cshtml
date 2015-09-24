@@ -8,62 +8,51 @@
 }
 <div class="artist-left-content">
     <div data-ng-controller="ArtistPageSearchCriteriaController">
-        <table class="table-form">
-            <tr>
-                <td>
-                    <h2>Music Search</h2>
-                    <br />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Search:<br />
-                    <select data-ng-model="searchType" ng-options="type for type in searchTypes track by type"></select><br /><br />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Search Term: <input data-ng-model="term" type="text" required /><br />
-                    <input type="hidden" data-ng-model="page" />
-                </td>
-            </tr>
-            <tr>
-                <td>
+        <div class="artist-search-filter-area">
+            <h2>Music Search</h2>
+            <div class="search-target filter-box">
+                <label for="search-target">Search:</label>
+                <select id="search-target" data-ng-model="searchType" ng-options="type for type in searchTypes track by type"></select>
+            </div>
+            <div class="search-term filter-box">
+                <label for="search-term">Search Term:</label>
+                <input data-ng-model="term" type="text" required />
+                <input type="hidden" data-ng-model="page" />
+            </div>
+            <div class="search-description filter-box">
+                <label>
                     <input type="checkbox" data-ng-model="searchDescription" /> Search Descriptions
-                    <br />
-
-                </td>
-            </tr>
-            <tr ng-show="searchType == 'Songs'">
-                <td>
-                    <input type="checkbox" data-ng-model="searchArtists" /> Restrict to Artist
-                    <br />
-                    <div ng-show="searchArtists">
-                        Artist: <input type="text" data-ng-model="artistName" />
-                    </div>
-                    <br /><br />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Results per page: <select data-ng-model="count" ng-options="val for val in [15, 30, 50]"></select>
-                </td>
-            </tr>
-        </table>
-        <table class="table-form">
-            <tr>
-                <td>
-                    <a href="@Url.RouteUrl("ArtistsPage", new { action = "MyArtistPages" })"><i class="fa fa-music"></i> Sell Music</a>
-                </td>
-            </tr>
-        </table>
+                </label>
+            </div>
+            <div class="search-artists filter-box" ng-show="searchType == 'Songs'">
+                <label>
+                    <input type="checkbox" data-ng-model="searchArtists"/> Restrict to Artist
+                </label>
+            </div>
+            <div class="search-artist-name filter-box" ng-show="searchArtists">
+                <label for="artist-name">Artist Name:</label>
+                <input id="artist-name" type="text" data-ng-model="artistName" />
+            </div>
+            <div class="search-results-count filter-box">
+                <label for="search-result-count">Results per page:</label>
+                <select id="search-result-count" data-ng-model="count" ng-options="val for val in [15, 30, 50]"></select>
+            </div>
+            <div class="sell-music">
+                <a class="c2a-maroon" href="@Url.RouteUrl("ArtistsPage", new {action = "MyArtistPages"})"><i class="fa fa-music"></i> Sell Music</a>
+            </div>
+        </div>
+      
     </div>
 </div>
-<div class="artist-right-content">
+<div class="artist-center-content">
 
     <div data-ng-controller="ArtistPageSearchController">
-        <div ng-show="searching">Searching for '{{term}}'</div>
-        <div ng-show="!searching && results.length == 0">Nothing found for '{{term}}' with selected filters. Please try again by changing the filters.</div>
+        <div ng-show="!searching && results == null" class="text-center start-search-notification-box">
+            <i class="fa fa-music"></i>
+            <h3>Start typing in the search box. Results will appear here.</h3>
+        </div>
+        <div ng-show="searching" class="text-center">Searching for '{{term}}'</div>
+        <div ng-show="!searching && results.length == 0" class="text-center">Nothing found for '{{term}}' with selected filters. Please try again by changing the filters.</div>
         <div ng-if="searchType == 'Artists'">
             <h1 ng-if="results.length > 0">Showing artists for '{{term}}'</h1>
             <div data-ng-repeat="artist in results">
@@ -71,7 +60,7 @@
             </div>
         </div>
         <div ng-if="searchType == 'Songs'">
-            
+
             <h1 ng-if="results.length > 0">Showing songs for '{{term}}'</h1>
             <div data-ng-repeat="song in results">
                 @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")

@@ -1,14 +1,18 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Mob.Core.Data;
+using Mob.Core.Services;
 using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
-    public class ArtistPagePaymentService: IArtistPagePaymentService
+    public class ArtistPagePaymentService: BaseEntityService<ArtistPagePayment>, IArtistPagePaymentService
     {
-         private readonly IRepository<ArtistPagePayment> _paymentMethodRepository;
+         private readonly IMobRepository<ArtistPagePayment> _paymentMethodRepository;
 
-        public ArtistPagePaymentService(IRepository<ArtistPagePayment> pmRepository)
+        public ArtistPagePaymentService(IMobRepository<ArtistPagePayment> pmRepository)
+            : base(pmRepository)
         {
             _paymentMethodRepository = pmRepository;
         }
@@ -32,7 +36,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public Domain.ArtistPagePayment GetPaymentMethod(int ArtistPageId)
         {
-            return _paymentMethodRepository.Table.Where(x => x.ArtistPageId == ArtistPageId).FirstOrDefault();
+            return _paymentMethodRepository.Table.FirstOrDefault(x => x.ArtistPageId == ArtistPageId);
+        }
+
+        public override List<ArtistPagePayment> GetAll(string Term, int Count = 15, int Page = 1)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

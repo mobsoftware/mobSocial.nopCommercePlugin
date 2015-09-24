@@ -54,7 +54,7 @@ app.controller("VideoBattleEditorController", [
 	        if ($scope.FormValid) {
                 //check for dates
                 if ($scope.VideoBattle.VotingLastDate < $scope.VideoBattle.AcceptanceLastDate) {
-                    alert("Voting Last Date must be greater than Acceptance Last Date");
+                    alert("Voting Last Date must be greater than Voting Start Date");
                     return;
                 }
 	            $scope.processing = true;

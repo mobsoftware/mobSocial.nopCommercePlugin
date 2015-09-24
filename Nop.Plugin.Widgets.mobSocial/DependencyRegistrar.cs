@@ -33,8 +33,6 @@ namespace Nop.Plugin.Widgets.MobSocial
             //Register services
             builder.RegisterType<MobSocialService>().As<IMobSocialService>();
             builder.RegisterType<ArtistPageAPIService>().As<IArtistPageAPIService>();
-            builder.RegisterType<ArtistPageManagerService>().As<IArtistPageManagerService>();
-            builder.RegisterType<ArtistPagePaymentService>().As<IArtistPagePaymentService>();
      
             //builder.RegisterType<MobSocialPictureService>().As<IPictureService>().InstancePerRequest();
             builder.RegisterType<MobSocialMessageService>().As<IMobSocialMessageService>().InstancePerRequest();

@@ -6,7 +6,7 @@
 
     Html.AppendTitleParts(Model.Name);
 
-   Html.AppendMetaDescriptionParts(Model.MetaDescription);
+    Html.AppendMetaDescriptionParts(Model.MetaDescription);
     Html.AppendMetaKeywordParts(Model.MetaKeywords);
 
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/song-pages/song-pages.js");
@@ -16,38 +16,37 @@
     var songModel = @Html.Raw(json);
 </script>
 <div data-ng-controller="SongPageEditorController">
-    <div ng-show="recordSaved">
+    <div ng-show="recordSaved" class="text-center">
         Song added successfully. Redirecting to song page to upload the song files...
     </div>
     <form name="createSongForm" ng-show="!recordSaved">
-        <table class="table-form">
-            <tr>
-                <td style="text-align:center;"><h1>Add Song</h1></td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="control-group">
-                        <label class="control-label" for="name">Song Name <span class="required">*</span></label><br />
-                        <input type="text" name="name" id="name" data-ng-model="song.Name" required />
-                        <span ng-show="createSongForm.name.$invalid && createSongForm.name.$dirty">Name is required</span>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="description">Description</label><br />
-                        <textarea name="description" id="description" data-ng-model="song.Description"></textarea>
-                    </div>                  
-                    <div class="control-group">
-                        <label class="control-label" for="price">Selling Price <span class="required">*</span></label><br />
-                        <input type="number" name="price" id="price" data-ng-model="song.Price" required />
-                        <span ng-show="createSongForm.price.$invalid && createSongForm.price.$dirty">Price is required</span>
-                    </div>
-                    <input type="hidden" data-ng-model="song.ArtistPageId" />
-                    <div class="control-group">
-                        <input type="button" ng-click="SaveSong()" value="Save Song" />
-                    </div>
-                </td>
-
-            </tr>
-        </table>
+        <div class="fieldset">
+            <div class="title">
+                <strong>Song Editor</strong>
+            </div>
+            <div class="form-fields">
+                <div class="inputs">
+                    <label class="control-label" for="name">Song Name <span class="required">*</span></label>
+                    <input type="text" name="name" id="name" data-ng-model="song.Name" required/>
+                    <span ng-show="createSongForm.name.$invalid && createSongForm.name.$dirty">Name is required</span>
+                </div>
+                <div class="inputs">
+                    <label class="control-label" for="description">Description</label>
+                    <textarea name="description" id="description" data-ng-model="song.Description"></textarea>
+                </div>
+                <div class="inputs">
+                    <label class="control-label" for="price">Selling Price <span class="required">*</span></label>
+                    <input type="number" name="price" id="price" data-ng-model="song.Price" required/>
+                    <span ng-show="createSongForm.price.$invalid && createSongForm.price.$dirty">Price is required</span>
+                </div>
+                <input type="hidden" data-ng-model="song.ArtistPageId"/>
+            </div>
+        </div>
+        <div class="buttons">
+            <div ng-show="processing">
+                Please wait...
+            </div>
+            <input type="button" class="c2a-maroon" ng-click="SaveSong()" value="Save Song" />
+        </div>
     </form>
 </div>
-

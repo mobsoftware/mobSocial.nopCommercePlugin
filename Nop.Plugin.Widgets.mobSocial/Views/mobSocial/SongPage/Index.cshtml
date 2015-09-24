@@ -24,18 +24,19 @@
 
 <div data-ng-controller="SongPageDisplayController">
     <div class="artist-left-content">
-        <div class="artist-page-image">
+        <div class="artist-page-image text-center">
             <img src="@Model.MainPictureUrl" id="song-page-image" style="width:100%" />
             @if (Model.CanEdit && string.IsNullOrEmpty(Model.RemoteEntityId))
             {
                 var uploadUrl = "/songs/UploadPicture/" + Model.Id;
                 <button file-upload-button
+                        class="c2a-maroon"
                         id="profilepicture"
                         fieldname="profilepicture"
                         imagesrc="song-page-image"
                         uploadtype="image"
                         url="@uploadUrl">
-                    <i class="fa fa-upload"></i> Upload Image
+                    <i class="fa fa-upload"></i> Upload Picture
                 </button>
             }
         </div>
@@ -66,8 +67,8 @@
         </div>
         <div class="similar-songs">
             <h2 class="text-center">Similar Songs</h2>
-            <div ng-hide="songsLoaded">Loading...</div>
-            <div ng-show="SimilarSongs.length == 0">No similar songs found</div>
+            <div ng-hide="songsLoaded" class="text-center">Loading...</div>
+            <div ng-show="SimilarSongs.length == 0" class="text-center">No similar songs found</div>
             <div data-ng-repeat="song in SimilarSongs">
                 @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
             </div>
@@ -125,58 +126,50 @@
                     @if (Model.CanEdit)
                     {
                         <div>
-                            <table class="table-form">
-                                <tr>
-                                    <td>
-                                        <label>Song File (max. @(maxUploadSizeSongFile / 1024)MB):</label><br/>                                        
-                                        <button file-upload-button
-                                                id="songfile"
-                                                fieldname="SongFile"
-                                                extradata='{"SongId": {{song.Id}}, "FieldName": "SongFile"}'
-                                                uploadtype="music"
-                                                maxsize="@(maxUploadSizeSongFile * 1024)"
-                                                url="/songs/UploadSongFile">
-                                            <i class="fa fa-upload"></i> Upload Song File
-                                        </button><br/>
-                                        <em>
-                                            Note: You may only upload songs that you own and that are not protected by another's copyright or international treaty
-                                        </em>
-                                        <br /><br />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>Song File Sample (max. @(maxUploadSizeSampleSongFile / 1024)MB):</label><br />                                     
-                                        <button file-upload-button
-                                                id="songsamplefile"
-                                                fieldname="SampleFile"
-                                                extradata='{"SongId": {{song.Id}}, "FieldName": "SampleFile"}'
-                                                uploadtype="music"
-                                                maxsize="@(maxUploadSizeSampleSongFile * 1024)"
-                                                url="/songs/UploadSongFile">
-                                            <i class="fa fa-upload"></i> Upload Sample Song File
-                                        </button>
-                                        <br /><br />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>Publish:</label><br /><br />
-                                        <span href="#" editable-select="song.Published" e-ng-options="s.value as s.text for s in statuses" onbeforesave="UpdateSong('Published', $data)" e-rows="7" e-cols="40">
-                                            {{ song.Published == 1 ? 'Published' : 'Not Published' || 'Not Published' }}
-                                        </span>
-                                        
-                                    </td>
-                                </tr>
-                            </table>
+                            <div class="song-file-uploader song-file-block">
+                                <label>Song File (max. @(maxUploadSizeSongFile/1024)MB):</label>
+                                <button file-upload-button
+                                        class="c2a-maroon"
+                                        id="songfile"
+                                        fieldname="SongFile"
+                                        extradata='{"SongId": {{song.Id}}, "FieldName": "SongFile"}'
+                                        uploadtype="music"
+                                        maxsize="@(maxUploadSizeSongFile*1024)"
+                                        url="/songs/UploadSongFile">
+                                    <i class="fa fa-upload"></i> Upload Song File
+                                </button>
+                                <em>
+                                    Note: You may only upload songs that you own and that are not protected by another's copyright or international treaty
+                                </em>
+                            </div>
+                            <div class="sample-song-file-uploader song-file-block">
+                                <label>Song File Sample (max. @(maxUploadSizeSampleSongFile / 1024)MB):</label>
+                                <button file-upload-button
+                                        id="songsamplefile"
+                                        class="c2a-maroon"
+                                        fieldname="SampleFile"
+                                        extradata='{"SongId": {{song.Id}}, "FieldName": "SampleFile"}'
+                                        uploadtype="music"
+                                        maxsize="@(maxUploadSizeSampleSongFile*1024)"
+                                        url="/songs/UploadSongFile">
+                                    <i class="fa fa-upload"></i> Upload Sample Song File
+                                </button>
+                            </div>
+                            <div class="song-publish song-file-block">
+                                <label>Publish:</label>
+                                <span href="#" editable-select="song.Published" e-ng-options="s.value as s.text for s in statuses" onbeforesave="UpdateSong('Published', $data)" e-rows="7" e-cols="40">
+                                    {{ song.Published == 1 ? 'Published' : 'Not Published' || 'Not Published' }}
+                                </span>
+                            </div>
                         </div>
                     }
                     @if (Model.CanDelete)
                     {
 
-                        <div>
-                            Deleting a song page will delete all the data associated with song. Are you sure you wish to delete this page?<br />
-                            <input type="button" ng-click="DeleteSong()" value="Delete Page" />
+                        <div class="text-center">
+                            <br />
+                            Deleting a song page will delete all the data associated with song. Are you sure you wish to delete this page?<br/><br/>
+                            <input type="button" ng-click="DeleteSong()" value="Delete Page"/>
                         </div>
                     }
                 </div>

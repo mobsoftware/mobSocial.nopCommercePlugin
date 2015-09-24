@@ -9,7 +9,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                 currentDate: "=",
                 includeTime: "@"
             },
-            template: "<div class='datepicker-container'><input readonly type='text' ng-focus='expandMe();' class='datepicker-input' ng-model='currentDate' /> <button class='ng-hide datepicker-close' ng-click='closeMe();'>&#10006;</button><br/></div>",
+            template: "<span class='datepicker-container'><input readonly type='text' ng-focus='expandMe();' class='datepicker-input' ng-model='currentDate' /> <button class='ng-hide datepicker-close' ng-click='closeMe();'>&#10006;</button><br/></span>",
             replace: true,
             link: function($scope, $elem, $attr) {
                 //let's add the current scope to root scope to maintain the list of all the datetime pickers on the page
@@ -33,6 +33,9 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                     $scope._maxDate = new Date($scope.maxDate);
                 }
 
+                if ($scope.currentDate == undefined) {
+                    $scope.currentDate = new Date();
+                }
                 $scope._visibleMonth = $scope.currentDate.getMonth();
                 $scope._visibleDay = $scope.currentDate.getDate();
                 $scope._visibleYear = $scope.currentDate.getFullYear();
@@ -251,6 +254,19 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                     $elem.find("button").removeClass("ng-hide");
                     $scope.reloadDate();
                     $scope._datePickerArea.css("display", "block").addClass("datepicker-expanded");
+                    
+                    jQuery(document).bind('click', function (event) {
+                        var isClickedElementChildOfPopup = $elem
+                            .find(event.target)
+                            .length > 0;
+
+                        if (isClickedElementChildOfPopup)
+                            return;
+
+                        $scope.$apply(function () {
+                            $scope.closeMe();
+                        });
+                    });
                 };
                 $scope.closeMe = function(){
                     $elem.find("button").addClass("ng-hide");

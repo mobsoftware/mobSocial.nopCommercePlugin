@@ -678,10 +678,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
 
             if (!ModelState.IsValid)
-                return RedirectToRoute("HomePage");
+                return Json(new { Success = false, Message = "Invalid data submitted. Please check all fields and try again." });
 
             if (!_workContext.CurrentCustomer.IsRegistered())
-                return InvokeHttp404();
+                return Json(new { Success = false, Message = "Unauthorized" });
 
             /*
              * returns two parameters as Json
