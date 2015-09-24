@@ -1,0 +1,3 @@
+[submodule "Mob.Core"]
+	path = Mob.Core
+	url = https://github.com/mobsoftware/mob.core.git
