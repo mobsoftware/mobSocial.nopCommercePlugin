@@ -1,6 +1,6 @@
 #Free open-source social network (ASP.NET MVC)#
 
-Features
+General Features
 =========
 Search, Friends, Business Pages, Events, Video Battles™, Picture Battles™, SEO, and more!
 
