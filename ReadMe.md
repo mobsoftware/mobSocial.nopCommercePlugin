@@ -1,4 +1,4 @@
-#Free open-source social network (ASP.NET MVC)#
+Free open-source social network (ASP.NET MVC)
 
 
 Contribute
