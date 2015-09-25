@@ -1,4 +1,9 @@
-Free open-source social network (ASP.NET MVC)
+#Free open-source social network (ASP.NET MVC)#
+
+
+Contribute
+===========
+If you would like to contribute, please create a fork
 
 Support
 ===========
