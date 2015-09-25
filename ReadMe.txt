@@ -9,10 +9,3 @@ Quick Source Code Setup:
      c. Copy the "Views/mobSocial/Admin" subfolders into the nopCommerce "Administration/Views" folder.
      
      
-Support
-=======
-
-If you make money using this timepicker, please consider 
-supporting its development.
-
-<a href="http://www.pledgie.com/campaigns/19125"><img alt="Click here to support bootstrap-timepicker!" src="" border="0" target="_blank"/></a> <a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://jdewit.github.com/bootstrap-timepicker"></a> <noscript><a href="" target="_blank"> <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a></noscript>
