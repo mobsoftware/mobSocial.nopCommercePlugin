@@ -6,7 +6,7 @@ Search, Friends, Business Pages, Events, Video Battles™, Picture Battles™, S
 
 Bonus Features
 =========
-Request Product Review Notifications, 
+Request Product Review Notifications, Birthday Notifications, Ad Network Functionality
 
 Contribute
 ===========
