@@ -7,3 +7,5 @@ Quick Source Code Setup:
      a. Copy the the mobSocial theme folder to the nopCommerce themes folder and set mobSocial as the active theme within the nopCommerce administration. 
      b. You may also choose to manually merge the mobSocial theme with the theme you have installed.
      c. Copy the "Views/mobSocial/Admin" subfolders into the nopCommerce "Administration/Views" folder.
+     
+     
