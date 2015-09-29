@@ -126,7 +126,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                     }
 
                     //let's see if there are enough participants to open the battle (at least two)
-                    if (participants.Count(x => x.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted) > 1)
+                    if (participants.Count(x => x.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted) > 0)
                     {
                         //and do we have at least two videos for competition
                         var battleVideoCount = _videoBattleVideoRepository.Table.Count(x => x.VideoBattleId == battle.Id);

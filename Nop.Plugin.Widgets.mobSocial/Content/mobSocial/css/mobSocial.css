@@ -12,7 +12,7 @@
 }
 
 /*default buttons*/
-button, input[type='button'],input[type='submit'] {
+button, input[type='button'],input[type='submit'], a.button {
     padding: 5px 10px;
     outline: none;
     border: solid 1px #ccc;
@@ -728,7 +728,7 @@ table.table-form .control-group{
 .participant-box {
 	float: left;
 	width: 45%;
-	height: 350px;
+	height: 390px;
 	text-align: center;
 	margin: 10px;
 	position: relative;
@@ -838,6 +838,10 @@ table.table-form .control-group{
 .participant-box videogular {
 	height: 237px;
  }
+.participant-box .voting-stats {
+        padding: 10px 0px;
+    
+}
 .battle-status {
 		   text-align: center;
 	margin-bottom: 20px;
@@ -861,26 +865,30 @@ table.table-form .control-group{
 	border-bottom: dotted 1px #ccc;
 }
 h1.battle-page-heading {
-		text-align: center;
-	font-size: 2em;
-	padding-top: 20px;
+    text-align: center;
+    font-size: 2em;
+    padding-top: 20px;
+    margin-bottom: 30px;
 }
+h1.battle-page-heading .fa {
+    
+}
+
 .challengees-to-invite {
 	border-top: dashed 1px #ccc;
 	margin-top: 10px;
 	padding-top: 5px;
 }
 .battle-timer {
-		  text-align: center;
-	font-size: 1.3em;
-	background-color: #faa;
-	padding: 10px 0px;
-	font-weight: bold;
-	color: black;
-	border: dashed 2px white;
-	border-bottom: none;
-	width: 80%;
-	margin: 5px auto 0px;
+text-align: center;
+    font-size: 1.3em;
+    background-color: #555;
+    padding: 10px 0px;
+    font-weight: bold;
+    color: white;
+    border: dashed 1px white;
+    width: 80%;
+    margin: 5px auto 0px;
 }
 .participant-voting {
 	padding: 10px 0;
@@ -1015,6 +1023,19 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
         text-align: center;
 }
 
+.join-battle-area {
+    margin: 40px 0;  
+}
+
+.join-battle-area a.c2a-maroon {
+        font-size: 20px;
+    padding: 15px;
+    margin: 20px;
+}
+.autoplay-video-battle-area {
+    text-align: right;
+    padding: 15px;
+}
 /*** OVERRIDE NOPCOMMERCE STYLES ***/
 /*Fix Overflows*/
 .master-wrapper-main .center-3 { overflow:visible; }

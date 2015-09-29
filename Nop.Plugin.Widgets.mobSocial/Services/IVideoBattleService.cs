@@ -8,7 +8,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
     public interface IVideoBattleService : IBaseEntityWithPictureService<VideoBattle, VideoBattlePicture>
     {
         IList<VideoBattle> GetAll(int? ChallengerId, int? ParticipantId, int? VideoGenreId, VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, out int TotalPages, int Page = 1, int Count = 15);
-
+        //TODO: Move to a separate file for scheduler
         void SetScheduledBattlesOpenOrClosed();
     }
 }

@@ -109,6 +109,9 @@ app.controller("VideoBattlePageController", [
             return $sce.trustAsHtml(html_code);
         };
 
+	    //autoplay by default
+        $scope.Autoplay = true;
+
         //constructor...huh...yes
         $scope.init = function (model) {
             //initialize the battle
@@ -154,7 +157,7 @@ app.controller("VideoBattlePageController", [
 	                return;
 	            }
 	                //it's been 10 seconds and we don't have any ads yet, let's put a fallback
-	                window["mobads_video_inline"] = { };
+	                window["mobads_video_inline"] = get_video_ad(); //function defined dynamically. in Mobads public
 	            }
 	           
                 //clear now
@@ -163,12 +166,17 @@ app.controller("VideoBattlePageController", [
 	            var randomPartIndex = Math.floor(Math.random() * ($scope.VideoBattle.Participants.length));
 	            
 	            if (randomPartIndex < $scope.VideoBattle.Participants.length) {
-	                eval("$scope._video_inline_data = " + window["mobads_video_inline"]);
+	                if (typeof window["mobads_video_inline"] == "object") {
+	                    $scope._video_inline_data = window["mobads_video_inline"];
+	                } else {
+	                    eval("$scope._video_inline_data = " + window["mobads_video_inline"]);
+	                }
+
 	                $scope.ExtraData = $scope._video_inline_data;
 	                var participant = $scope.VideoBattle.Participants[randomPartIndex];
                     //assign temporarily to another variable because otherwise it'll start immediately
 	                participant.adextras = $scope.ExtraData;
-	               
+
 	            }
 	        }, 500);
 	        
@@ -225,11 +233,12 @@ app.controller("VideoBattlePageController", [
                     alert("Another video is already playing.");
                     return;
                 }
+	      
                if (participant.adextras && !participant.extras.network && !$scope.IsAdPlaying) {
                    participant.extras = participant.adextras;
                    $scope.IsAdPlaying = true;
                }
-               
+	            console.log(participant);
                $scope.IsVideoPlaying = true;
 	           $scope.PlayingParticipant = participant;
 	          
@@ -244,11 +253,17 @@ app.controller("VideoBattlePageController", [
 
 	    $scope.WatchedVideo = function (participantId) {
 
+	        var nextParticipant = null; //to 
+
 	        //mark video as watched
 	        for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
 	            var participant = $scope.VideoBattle.Participants[i];
 	            if (participant.Id === participantId) {
 	                participant.VideoWatched = true;
+
+                    if ($scope.VideoBattle.Participants.length - 1 > i) {
+                        nextParticipant = $scope.VideoBattle.Participants[i + 1];
+                    }
 	                break;
 	            }
 	        }
@@ -256,6 +271,13 @@ app.controller("VideoBattlePageController", [
             //video played. stop now
 	        $scope.IsAdPlaying = false;
 	        $scope.IsVideoPlaying = false;
+
+	        //if auto play is on then we'll play the next video in sequence
+            if ($scope.Autoplay) {
+                if (nextParticipant != null) {
+                    nextParticipant.API.play();
+                }
+            }
 	    };
         
 	    $scope.CheckVotingEligibility = function () {
