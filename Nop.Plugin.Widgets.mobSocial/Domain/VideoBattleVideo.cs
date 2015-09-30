@@ -24,5 +24,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public DateTime DateUploaded { get; set; }
 
         public virtual VideoBattle VideoBattle { get; set; }
+
+        public string ThumbnailPath { get; set; }
     }
 }

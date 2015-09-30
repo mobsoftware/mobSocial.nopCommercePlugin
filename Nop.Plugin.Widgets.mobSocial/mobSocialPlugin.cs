@@ -237,7 +237,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 SevenDigitalPartnerId = "9378",
                 SongFileMaximumUploadSize = _config.MaxRequestLength,
                 SongFileSampleMaximumUploadSize = _config.MaxRequestLength,
-                PurchasedSongFeePercentage = 30
+                PurchasedSongFeePercentage = 30,
+                ShowVideoThumbnailsForBattles = true
 
             };
 

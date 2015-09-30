@@ -91,13 +91,13 @@ app.controller("VideoBattlePageController", [
 	    }
 	    //create a url based on the root 
 	    var rootUrl = window.location.origin;
-
+        var defaultPoster = rootUrl + "/Plugins/Widgets.mobSocial/Content/mobsocial/images/poweredby.jpg";
 	    //config for video player
 	    this.config = {
 	        theme: rootUrl + "/Plugins/Widgets.mobSocial/Content/Libraries/videogular/theme/videogular.css",
 	        preload: "metadata",
 	        plugins: {
-	            poster: "/Plugins/Widgets.mobSocial/Content/mobsocial/images/poweredby.jpg"
+	            poster: defaultPoster
 	        }
 	    };
 	    $scope.GlobalVotingStatus = false; //keeps track if user has voted for at least a video and then shows watched on all participants
@@ -133,6 +133,12 @@ app.controller("VideoBattlePageController", [
                         { src: $sce.trustAsResourceUrl(participant.VideoPath.replace("~", rootUrl)), type: participant.MimeType }
                     );
 	            }
+                if (participant.ThumbnailPath == null || participant.ThumbnailPath === "") {
+                    participant.ThumbnailPath = defaultPoster;
+                } else {
+                    //make the url absolute for the thumbnail of video
+                    participant.ThumbnailPath = participant.ThumbnailPath.replace("~", rootUrl);
+                }
 	            if (participant.CurrentUserVote != null) {
 	                participant.VideoWatched = true;
 	                $scope.GlobalVotingStatus = true;

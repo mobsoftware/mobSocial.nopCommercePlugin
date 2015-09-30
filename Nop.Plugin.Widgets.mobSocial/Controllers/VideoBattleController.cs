@@ -17,6 +17,7 @@ using Mob.Core;
 using Nop.Plugin.Widgets.MobSocial.Extensions;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Customers;
+using NReco.VideoConverter;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -32,6 +33,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IVideoGenreService _videoGenreService;
         private readonly ICustomerService _customerService;
         private readonly IMobSocialMessageService _mobsocialMessageService;
+        private readonly mobSocialSettings _mobSocialSettings;
 
         #region ctor
 
@@ -45,7 +47,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          IVideoBattleVoteService videoBattleVoteService,
          IVideoGenreService videoGenreService,
          ICustomerService customerService,
-            IMobSocialMessageService mobsocialMessageService)
+         IMobSocialMessageService mobsocialMessageService,
+         mobSocialSettings mobSocialSettings)
         {
             _workContext = workContext;
             _storeContext = storeContext;
@@ -57,6 +60,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _videoGenreService = videoGenreService;
             _customerService = customerService;
             _mobsocialMessageService = mobsocialMessageService;
+            _mobSocialSettings = mobSocialSettings;
         }
         #endregion
 
@@ -249,6 +253,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (challengerVideo != null && (videoBattle.VideoBattleStatus != VideoBattleStatus.Pending || challenger.Id == _workContext.CurrentCustomer.Id))
             {
                 challengerVideoModel.VideoPath = challengerVideo.VideoPath;
+                challengerVideoModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ?  challengerVideo.ThumbnailPath : "";
                 challengerVideoModel.MimeType = challengerVideo.MimeType;
             }
 
@@ -292,6 +297,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     {
                         cModel.VideoPath = video.VideoPath;
                         cModel.MimeType = video.MimeType;
+                        cModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ?  video.ThumbnailPath : "";
                     }
                 }
                 model.Participants.Add(cModel);
@@ -782,10 +788,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         contentType = VideoUtility.GetContentType(fileExtension);
                     }
 
-
-                    var savePath = ControllerUtil.MobSocialPluginsFolder + "Uploads/" + DateTime.Now.Ticks.ToString() + fileExtension;
+                    var tickString = DateTime.Now.Ticks.ToString();
+                    var savePath = ControllerUtil.MobSocialPluginsFolder + "Uploads/" + tickString + fileExtension;
                     //save the file
                     File.SaveAs(Server.MapPath(savePath));
+
+                    //wanna generate the thumbnails for videos...ffmpeg is our friend
+                    var ffmpeg = new FFMpegConverter();
+                    var thumbnailFilePath = ControllerUtil.MobSocialPluginsFolder + "Uploads/" + tickString + ".thumb.jpg";
+                    ffmpeg.GetVideoThumbnail(Server.MapPath(savePath), Server.MapPath(thumbnailFilePath));
+                    //TODO: Generate thumbnails of different sizes to save bandwidth
 
                     var videoBattleVideo = _videoBattleVideoService.GetBattleVideo(VideoBattleId, ParticipantId);
                     if (videoBattleVideo == null)
@@ -798,7 +810,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             VideoPath = savePath,
                             //TODO: Set video status to pending so that admin can approve 
                             VideoStatus = VideoStatus.Approved,
-                            DateUploaded = DateTime.UtcNow
+                            DateUploaded = DateTime.UtcNow,
+                            ThumbnailPath = thumbnailFilePath
                         };
                         _videoBattleVideoService.Insert(videoBattleVideo);
 
@@ -838,6 +851,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         videoBattleVideo.VideoPath = savePath;
                         //TODO: Set video status to pending so that admin can approve 
                         videoBattleVideo.VideoStatus = VideoStatus.Approved;
+
+                        //set the thumbnail 
+                        //TODO: Delete existing thunbnail?
+                        videoBattleVideo.ThumbnailPath = savePath;
                         _videoBattleService.Update(videoBattle);
                     }
 

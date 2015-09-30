@@ -16,6 +16,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public string VideoPath { get; set; }
 
+        public string ThumbnailPath { get; set; }
+
         public string MimeType { get; set; }
 
         public string ParticipantName { get; set; }
