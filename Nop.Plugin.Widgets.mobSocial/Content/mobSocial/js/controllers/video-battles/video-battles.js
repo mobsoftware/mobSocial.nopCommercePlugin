@@ -116,6 +116,8 @@ app.controller("VideoBattlePageController", [
         $scope.init = function (model) {
             //initialize the battle
             $scope.VideoBattle = model;
+            //cookie to store the videos already watched
+            $scope.CookieName = "watchedVideo[" + $scope.VideoBattle.Id + "][" + $scope.VideoBattle.LoggedInUserId + "]";
             //currently visible page. initialize to zero
             $scope.VisiblePage = 0;
             //total count to be shown per page
@@ -186,6 +188,9 @@ app.controller("VideoBattlePageController", [
 	            }
 	        }, 500);
 	        
+            //load cookies
+	        $scope.ReloadCookies();
+
 	        $scope.CheckVotingEligibility();
 
             //load the data initially
@@ -200,6 +205,8 @@ app.controller("VideoBattlePageController", [
                     $scope.$apply();
                 }
             });
+
+           
         };
 
         $scope.LoadNextPage = function () {
@@ -244,7 +251,7 @@ app.controller("VideoBattlePageController", [
                    participant.extras = participant.adextras;
                    $scope.IsAdPlaying = true;
                }
-	            console.log(participant);
+	           
                $scope.IsVideoPlaying = true;
 	           $scope.PlayingParticipant = participant;
 	          
@@ -265,7 +272,7 @@ app.controller("VideoBattlePageController", [
 	        for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
 	            var participant = $scope.VideoBattle.Participants[i];
 	            if (participant.Id === participantId) {
-	                participant.VideoWatched = true;
+	                $scope.SetVideoWatched(participant);
 
                     if ($scope.VideoBattle.Participants.length - 1 > i) {
                         nextParticipant = $scope.VideoBattle.Participants[i + 1];
@@ -280,7 +287,7 @@ app.controller("VideoBattlePageController", [
 
 	        //if auto play is on then we'll play the next video in sequence
             if ($scope.Autoplay) {
-                if (nextParticipant != null) {
+                if (nextParticipant != null && !$scope.VideoBattleComplete) {
                     nextParticipant.API.play();
                 }
             }
@@ -442,6 +449,53 @@ app.controller("VideoBattlePageController", [
 	            }
 	        }
 	    };
+
+	    //store video play status in cookies so that after page refresh, user don't have to watch already watched videos again
+	    //we use jquery.cookie library to store/read cookie information
+	    $scope.ReloadCookies = function () {
+	        //we first read the data from the cookie
+	        var watchedVideosIds = jQuery.cookie($scope.CookieName);
+	       
+            if (watchedVideosIds !== undefined) {
+                watchedVideosIds = watchedVideosIds.split(",");
+                
+                for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
+                    var participant = $scope.VideoBattle.Participants[i];
+                    if (watchedVideosIds.indexOf(participant.Id.toString()) !== -1) {
+                        //video already watched so set that
+                        participant.VideoWatched = true;
+                    }
+                }
+            } else {
+                watchedVideosIds = [];
+                //365 days expiration
+                var date = new Date();
+                var days = 365;
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                jQuery.cookie($scope.CookieName, watchedVideosIds, { expires: date });
+            }
+	    }
+       
+
+        //marks a participant video watched and sets cookie for it
+	    $scope.SetVideoWatched = function (participant) {
+            if (participant.VideoWatched) {
+                //we already have that video watched in our cookie, so no need to do anything
+                //user might have watched a video more than once
+                return;
+            }
+            //we first read the data from the cookie
+            var watchedVideosIds = jQuery.cookie($scope.CookieName);
+            if (watchedVideosIds !== undefined) {
+                watchedVideosIds = watchedVideosIds.split(",");
+            }
+            else {
+                watchedVideosIds = [];
+            }
+            watchedVideosIds.push(participant.Id);
+            jQuery.cookie($scope.CookieName, watchedVideosIds);
+	        participant.VideoWatched = true;
+	    }
 
 	}
 ]);

@@ -73,8 +73,12 @@
                     <vg-controls>
                         <vg-play-pause-button></vg-play-pause-button>
                         <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
-                        <span>/</span>
+                        <vg-scrub-bar ng-show="participant.VideoWatched">
+                            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                        </vg-scrub-bar>
+                        <span ng-hide="participant.VideoWatched"></span>
                         <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
+                        
                         <vg-volume>
                             <vg-mute-button></vg-mute-button>
                             <vg-volume-bar></vg-volume-bar>

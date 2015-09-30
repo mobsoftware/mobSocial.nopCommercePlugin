@@ -197,7 +197,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(new {Success = true});
 
         }
-        public ActionResult Index(int VideoBattleId)
+        public ActionResult Index(int VideoBattleId, VideoViewMode ViewMode = VideoViewMode.Regular)
         {
             var videoBattle = _videoBattleService.GetById(VideoBattleId);
 
@@ -270,7 +270,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 Id = VideoBattleId,
                 RemainingSeconds = GetRemainingSeconds(videoBattle),
                 MaximumParticipantCount = videoBattle.MaximumParticipantCount,
-                IsUserLoggedIn = _workContext.CurrentCustomer.IsRegistered()
+                IsUserLoggedIn = _workContext.CurrentCustomer.IsRegistered(),
+                LoggedInUserId = _workContext.CurrentCustomer.Id
             };
 
             //add challenger as participant
@@ -379,7 +380,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //ofcourse with Invite Voters title
             model.IsParticipant = model.Participants.Select(x => x.Id).Contains(_workContext.CurrentCustomer.Id);
             model.IsEditable = CanEdit(videoBattle);
-            return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/Single.cshtml", model);
+            return View(ViewMode == VideoViewMode.Regular ? "mobSocial/VideoBattle/Single" : "mobSocial/VideoBattle/Single.TheatreView", model);
         }
 
         public ActionResult VideoBattles()

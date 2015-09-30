@@ -54,5 +54,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public int MaximumParticipantCount { get; set; }
 
         public bool IsUserLoggedIn { get; set; }
+
+        public int LoggedInUserId { get; set; }
     }
 }

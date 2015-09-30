@@ -206,7 +206,7 @@
     }
 
     <span ng-repeat="participant in VisibleParticipants">
-        @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/ParticipantBox.cshtml")
+        @Html.Partial("mobSocial/VideoBattle/ParticipantBox")
     </span>
     <div ng-show="VisibleParticipants.length < VideoBattle.Participants.length" class="pagination-load-more">
         <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
