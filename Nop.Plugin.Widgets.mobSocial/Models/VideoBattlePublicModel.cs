@@ -56,5 +56,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public bool IsUserLoggedIn { get; set; }
 
         public int LoggedInUserId { get; set; }
+
+        public VideoViewMode ViewMode { get; set; }
     }
 }

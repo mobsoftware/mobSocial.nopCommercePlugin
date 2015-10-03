@@ -85,6 +85,9 @@ app.controller("VideoBattleEditorController", [
 app.controller("VideoBattlePageController", [
 	"$scope", "VideoBattleService", "$sce", function ($scope, VideoBattleService, $sce) {
 
+        //TODO: Organize the VideoBattleController as it's too big 
+	    var controller = this;
+
         //ie fix
 	    if (!window.location.origin) {
 	        window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
@@ -100,6 +103,20 @@ app.controller("VideoBattlePageController", [
 	            poster: defaultPoster
 	        }
 	    };
+
+
+	    //global api for theater mode because we have single player there.
+        this.PlayerReady = function(API) {
+            controller.API = API;
+
+            //play first participant in case view mode is theater
+            if ($scope.VideoBattle.ViewMode == 1) {
+                $scope.PlayParticipant($scope.VideoBattle.Participants[0]);
+            }
+
+        }
+
+
 	    $scope.GlobalVotingStatus = false; //keeps track if user has voted for at least a video and then shows watched on all participants
 	    $scope.IsVideoPlaying = false;
 	    $scope.PlayingParticipant = null;
@@ -114,6 +131,7 @@ app.controller("VideoBattlePageController", [
 
         //constructor...huh...yes
         $scope.init = function (model) {
+            
             //initialize the battle
             $scope.VideoBattle = model;
             //cookie to store the videos already watched
@@ -205,8 +223,6 @@ app.controller("VideoBattlePageController", [
                     $scope.$apply();
                 }
             });
-
-           
         };
 
         $scope.LoadNextPage = function () {
@@ -261,6 +277,11 @@ app.controller("VideoBattlePageController", [
 	            $scope.IsVideoPlaying = false;
 	            $scope.IsAdPlaying = false;
 	        }
+	        else if (state === "pause" && participant.VideoWatched) {
+
+	            $scope.IsVideoPlaying = false;
+	            $scope.IsAdPlaying = false;
+	        }
 
 	    };
 
@@ -286,13 +307,40 @@ app.controller("VideoBattlePageController", [
 	        $scope.IsVideoPlaying = false;
 
 	        //if auto play is on then we'll play the next video in sequence
-            if ($scope.Autoplay) {
-                if (nextParticipant != null && !$scope.VideoBattleComplete) {
-                    nextParticipant.API.play();
+	        if ($scope.Autoplay) {
+	           
+	            if (nextParticipant != null && !$scope.VideoBattleComplete) {
+	              
+                    //for theater mode we need to call the playparticipant method directly
+                    if ($scope.VideoBattle.ViewMode == 1)
+                        $scope.PlayParticipant(nextParticipant, true);
+                    else
+                        nextParticipant.API.play();
                 }
             }
 	    };
         
+	    $scope.PlayParticipant = function (participant, playImmediately) {
+	        if ($scope.PlayingParticipant == participant || $scope.IsVideoPlaying)
+	            return;
+	       
+	        controller.API.clearMedia();
+
+            //if the view mode is theater, let's set the first participant as playing participant
+            $scope.PlayingParticipant = participant;
+            //we use controller's api method for that
+            controller.API.changeSource(participant.VideoSource);
+	        //due to some weird bug videogular doesn't update source and we'll have to manually update sources
+            controller.API.sources = participant.VideoSource;
+
+            window.controller = controller;
+           
+	        if (playImmediately) {
+	            setTimeout(function() { controller.API.play()}, 500);
+
+	        }
+
+	    }
 	    $scope.CheckVotingEligibility = function () {
 	        $scope.VideoBattleComplete = true; //tracks if all the videos have been watched when voting is being done.
 	        for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {

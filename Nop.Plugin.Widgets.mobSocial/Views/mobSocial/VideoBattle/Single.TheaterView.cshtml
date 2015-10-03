@@ -1,1 +1,157 @@
-﻿
+﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+@using Nop.Plugin.Widgets.MobSocial.Models
+@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattlePublicModel
+@{
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppLayoutTheater.cshtml";
+
+    Html.AppendTitleParts(Model.Title);
+
+    Html.AppendMetaDescriptionParts(Model.Description);
+    Html.AppendMetaKeywordParts(Model.Description);
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+
+
+    var json = Json.Encode(Model);
+    var videouploadUrl = "/VideoBattles/UploadVideo/";
+    var timerFormat = "{{ddays}} day{{daysS}} {{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
+    var maxSeconds = 0;
+    var maxUnit = "";
+    var now = DateTime.UtcNow;
+    var endDate = DateTime.UtcNow;
+
+    if (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.AcceptanceLastDate > now)
+    {
+        endDate = Model.AcceptanceLastDate;
+    }
+    else if (Model.VideoBattleStatus == VideoBattleStatus.Open)
+    {
+        endDate = Model.VotingLastDate;
+    }
+    var diffDate = endDate.Subtract(now);
+
+    maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
+
+    if (diffDate.TotalDays > 1)
+    {
+        maxUnit = "day";
+    }
+    else if (diffDate.TotalHours > 1)
+    {
+        maxUnit = "hour";
+    }
+    else if (diffDate.TotalMinutes > 1)
+    {
+        maxUnit = "minute";
+    }
+    else
+    {
+        maxUnit = "second";
+    }
+
+}
+
+<div class="battle-participants" ng-controller="VideoBattlePageController as controller" ng-init="init(@json)">
+
+    <div class="details-slider-container">
+        <a class="toggle-details-slider-container collapsed" href="">
+            <i class="fa fa-info-circle"></i>
+        </a>
+        <a class="slider-close">
+            <i class="fa fa-times"></i>
+        </a>
+        <script type="text/javascript">
+            jQuery(".toggle-details-slider-container").click(function (e) {
+                if (jQuery(this).hasClass("collapsed")) {
+                    jQuery(".details-slider-container").animate({ right: "0%" });
+                } else {
+                    jQuery(".details-slider-container").animate({ right: "-50%" });
+                }
+
+                jQuery(this).toggleClass("collapsed").toggleClass("expanded");
+                e.preventDefault();
+            });
+
+            jQuery(".slider-close").click(function (e) {
+                jQuery(".toggle-details-slider-container").trigger("click");
+                e.preventDefault();
+            });
+        </script>
+        <h1 class="battle-page-heading">
+
+            <span ng-switch on="VideoBattle.VideoBattleStatus">
+                <span ng-switch-when="@((int) VideoBattleStatus.Pending)"><i class="fa fa-clock-o" title="The battle is open to join"></i></span>
+                <span ng-switch-when="@((int) VideoBattleStatus.Locked)"><i class="fa fa-lock" title="The battle is locked"></i></span>
+                <span ng-switch-when="@((int) VideoBattleStatus.Open)"><i class="fa fa-thumbs-o-up" title="The battle is open to vote. Watch all videos to vote."></i></span>
+                <span ng-switch-when="@((int) VideoBattleStatus.Closed)"><i class="fa  fa-flag-checkered" title="The battle is closed now."></i></span>
+                <span ng-switch-when="@((int) VideoBattleStatus.Complete)"><i class="fa fa-trophy" title="The battle is complete and we have a winner"></i></span>
+            </span>
+            @Model.Title
+        </h1>
+        @if (maxSeconds > 0)
+        {
+            <div class="battle-timer">
+                @if (Model.VideoBattleStatus == VideoBattleStatus.Pending)
+                {
+                    <text>
+                        Starts in
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        Ends in
+                    </text>
+                }
+                <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval=" 1000">@timerFormat</timer>
+            </div>
+        }
+
+        <div class="battle-description">
+            <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
+
+
+            @if (Model.VideoBattleStatus == VideoBattleStatus.Open)
+            {
+                <br />
+                <br />
+                <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
+            }
+        </div>
+
+    </div>
+
+    <div class="actions-theater-view">
+        <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="@Url.RouteUrl("VideoBattlePage", new { VideoBattleId = Model.Id})"><i class="fa fa-reply"></i> Exit Theater Mode</a>
+    </div>
+
+    <div class="theater-view-videoplayer">
+        @Html.Partial("mobSocial/VideoBattle/TheaterView.VideoPlayer")
+    </div>
+
+    <div class="theater-view-participants">
+        <span ng-repeat="participant in VisibleParticipants">
+            @for (int i = 1; i < 5; i++)
+            {
+                @Html.Partial("mobSocial/VideoBattle/ParticipantBox.TheaterView")
+
+            }
+        </span>
+    </div>
+
+    <div ng-show="VisibleParticipants.length < VideoBattle.Participants.length" class="pagination-load-more">
+        <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
+    </div>
+</div>
+
+<script type='text/javascript'>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        var gads = document.createElement('script');
+        gads.async = true; gads.type = 'text/javascript';
+        gads.src = 'http://www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+    })();
+</script>
+<script src="http://imasdk.googleapis.com/js/sdkloader/ima3.js" type="text/javascript"></script>

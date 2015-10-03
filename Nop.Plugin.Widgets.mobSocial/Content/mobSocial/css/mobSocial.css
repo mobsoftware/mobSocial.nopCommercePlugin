@@ -1116,3 +1116,114 @@ span.required
 	}
 
 }
+
+
+/*Video Battle Theater Mode Layout*/
+.theater-page-bg {
+    background-color: black;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    
+}
+
+.theater-page-bg .details-slider-container {
+    position: absolute;
+    right: -50%;
+    width: 50%;
+    height: 100%;
+    background-color: #eee;
+    z-index: 1000;
+    box-shadow: -2px -4px 0 rgba(0,0,0,0.5);
+}
+
+.theater-page-bg .details-slider-container .toggle-details-slider-container {
+       padding: 5px 10px;
+    color: white;
+    top: 40%;
+    position: absolute;
+    left: -56px;
+    background-color: #205081;
+    font-size: 3em;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+}
+.theater-page-bg .details-slider-container .slider-close {
+    color: #555;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 2em;
+}
+
+.participant-box-theater-view {
+    display: inline-block;
+    margin: 0px 5px;
+    border: solid 3px transparent;
+    position: relative;
+}
+
+.participant-box-theater-view.playing {
+    border: solid 3px white;
+}
+.participant-box-theater-view.watched {
+    border: solid 3px green;
+}
+
+.participant-box-theater-view .participant-box-overlay .fa-lock {
+        color: darkgray;
+    font-size: 2.5em;
+    position: absolute;
+    top: 34%;
+    left: 40%;
+}
+
+.participant-box-theater-view .video-watched-status {
+    position: absolute;
+    background-color: green;
+    color: white;
+    z-index: 5;
+    padding: 3px;
+
+}
+.participant-box-theater-view .video-thumbnail {
+     width: 150px;
+    height: 100px;
+
+}
+
+.participant-box-theater-view .video-thumbnail img {
+    width: 100%;
+    height: 100%;
+}
+.theater-page-bg .theater-view-participants {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    overflow-y: hidden;
+    max-height: 125px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.theater-view-videoplayer {
+    background-color: rgba(85,0,0,0.1);
+    width: 100%;
+    height: 75%;
+    margin: auto;
+    border-bottom: solid 1px #111;
+    position: fixed;
+    top: 40px;
+}
+.actions-theater-view {
+    text-align: center;
+    padding: 10px;
+    color: gray;
+}
+.actions-theater-view:hover {
+    color: white;
+}

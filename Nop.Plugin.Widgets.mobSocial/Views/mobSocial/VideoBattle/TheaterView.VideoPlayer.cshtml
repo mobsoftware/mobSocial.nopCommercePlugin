@@ -1,0 +1,30 @@
+﻿<videogular vg-player-ready="controller.PlayerReady($API)" vg-complete="WatchedVideo(PlayingParticipant.Id)" vg-update-state="UpdateState(PlayingParticipant, $state)" vg-theme="controller.config.theme" vg-responsive="true">
+    <vg-media vg-src="participant.VideoSource" vg-tracks="" preload="metadata">
+    </vg-media>
+
+    <vg-controls>
+        <vg-play-pause-button></vg-play-pause-button>
+        <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
+        <vg-scrub-bar ng-show="PlayingParticipant.VideoWatched">
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+        </vg-scrub-bar>
+        <span ng-hide="PlayingParticipant.VideoWatched"></span>
+        <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
+
+        <vg-volume>
+            <vg-mute-button></vg-mute-button>
+            <vg-volume-bar></vg-volume-bar>
+        </vg-volume>
+        <vg-fullscreen-button></vg-fullscreen-button>
+    </vg-controls>
+    <vg-overlay-play></vg-overlay-play>
+    <vg-ima-ads vg-network="PlayingParticipant.extras.network"
+                vg-unit-path="PlayingParticipant.extras.unitPath"
+                vg-companion="PlayingParticipant.extras.companion"
+                vg-companion-size="PlayingParticipant.extras.companionSize"
+                vg-ad-tag-url="PlayingParticipant.extras.adTagUrl"
+                vg-skip-button="PlayingParticipant.extras.skipButton">
+    </vg-ima-ads>
+    <vg-poster vg-url='PlayingParticipant.ThumbnailPath'></vg-poster>
+
+</videogular>

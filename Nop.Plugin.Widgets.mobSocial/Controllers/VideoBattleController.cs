@@ -380,7 +380,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //ofcourse with Invite Voters title
             model.IsParticipant = model.Participants.Select(x => x.Id).Contains(_workContext.CurrentCustomer.Id);
             model.IsEditable = CanEdit(videoBattle);
-            return View(ViewMode == VideoViewMode.Regular ? "mobSocial/VideoBattle/Single" : "mobSocial/VideoBattle/Single.TheatreView", model);
+            model.ViewMode = ViewMode;
+
+            return View(ViewMode == VideoViewMode.Regular ? "mobSocial/VideoBattle/Single" : "mobSocial/VideoBattle/Single.TheaterView", model);
         }
 
         public ActionResult VideoBattles()

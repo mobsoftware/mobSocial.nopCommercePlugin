@@ -1,0 +1,19 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+@{
+    var videouploadUrl = "/VideoBattles/UploadVideo/";
+}
+<a ng-click="PlayParticipant(participant, true)">
+    <div class="participant-box-theater-view" ng-class="{'watched' : participant.VideoWatched || GlobalVotingStatus, 'playing' :(IsVideoPlaying) && PlayingParticipant == participant}">
+        <div title="Another video is already playing" class="participant-box-overlay" ng-show="(IsVideoPlaying) && PlayingParticipant !== participant"><i class="fa fa-lock"></i></div>
+        <div ng-if="(participant.IsLeading || participant.IsWinner) && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Complete))" class="leader-status">
+            {{participant.IsWinner ? "Winner" : "Leading"}}
+        </div>
+        <div class="video-watched-status" ng-if="participant.VideoWatched || GlobalVotingStatus" title="You have watched this video">
+            <i class="fa fa-check"></i>
+        </div>
+        <div class="video-thumbnail">
+            <img src="{{participant.ThumbnailPath}}" />
+        </div>
+
+    </div>
+</a>

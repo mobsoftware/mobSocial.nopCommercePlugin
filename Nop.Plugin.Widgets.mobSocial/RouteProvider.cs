@@ -245,8 +245,8 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                           );
             routes.MapLocalizedRoute("VideoBattlePage",
-                          "VideoBattles/VideoBattle/{VideoBattleId}",
-                          new { controller = "VideoBattle", action = "Index" },
+                          "VideoBattles/VideoBattle/{VideoBattleId}/{ViewMode}",
+                          new { controller = "VideoBattle", action = "Index", ViewMode = UrlParameter.Optional },
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );

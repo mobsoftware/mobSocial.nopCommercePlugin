@@ -1,0 +1,9 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+}
+<div ng-app="mobSocialApp" ng-cloak>
+    <div class="theater-page-bg">
+        @RenderBody()
+    </div>
+    @Html.Widget("footer")
+</div>
