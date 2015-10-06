@@ -45,6 +45,9 @@
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Core\FeatureToggle.cs" />
+    <Compile Include="Data\WatchedVideoMap.cs" />
+    <Compile Include="Domain\WatchedVideo.cs" />
+    <Compile Include="Enums\VideoType.cs" />
     <Compile Include="Enums\VideoViewMode.cs" />
     <Compile Include="Services\ArtistPageAPIService.cs" />
     <Compile Include="Services\ArtistPageManagerService.cs" />
@@ -75,6 +78,7 @@
     <Compile Include="Services\IVideoBattleVideoService.cs" />
     <Compile Include="Services\IVideoBattleVoteService.cs" />
     <Compile Include="Services\IVideoGenreService.cs" />
+    <Compile Include="Services\IWatchedVideoService.cs" />
     <Compile Include="Services\MusicApiCredentials.cs" />
     <Compile Include="Services\MusicApiUri.cs" />
     <Compile Include="Services\NotificationService.cs" />
@@ -257,6 +261,7 @@
     <Compile Include="Models\VideoParticipantPublicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
+    <Compile Include="Services\WatchedVideoService.cs" />
     <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
     <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />

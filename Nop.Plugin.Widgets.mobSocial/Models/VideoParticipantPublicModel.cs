@@ -12,6 +12,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
     {
         public int Id { get; set; }
 
+        public int VideoId { get; set; }
+
         public DateTime LastUpdated { get; set; }
 
         public string VideoPath { get; set; }
@@ -40,7 +42,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public VideoBattleParticipantStatus VideoBattleParticipantStatus { get; set; }
 
+        /// <summary>
+        /// Has the logged in user voted for this participant
+        /// </summary>
         public VideoBattleVotePublicModel CurrentUserVote { get; set; }
+
+        /// <summary>
+        /// Has the logged in user has watched the video of participant
+        /// </summary>
+        public bool VideoWatched { get; set; }
 
     }
 }

@@ -205,9 +205,7 @@ app.controller("VideoBattlePageController", [
 
 	            }
 	        }, 500);
-	        
-            //load cookies
-	        $scope.ReloadCookies();
+	       
 
 	        $scope.CheckVotingEligibility();
 
@@ -339,8 +337,8 @@ app.controller("VideoBattlePageController", [
 	            setTimeout(function() { controller.API.play()}, 500);
 
 	        }
-
 	    }
+
 	    $scope.CheckVotingEligibility = function () {
 	        $scope.VideoBattleComplete = true; //tracks if all the videos have been watched when voting is being done.
 	        for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
@@ -380,6 +378,7 @@ app.controller("VideoBattlePageController", [
 	    $scope.searchAPI = function (userInputString, timeoutPromise) {
 	        return VideoBattleService.searchAPI(userInputString, timeoutPromise);
 	    }
+
 	    $scope.challengees = [];
 	    $scope.CustomerSelected = function (callbackObject) {
 	        $scope.challengees.push(callbackObject.originalObject);
@@ -498,50 +497,19 @@ app.controller("VideoBattlePageController", [
 	        }
 	    };
 
-	    //store video play status in cookies so that after page refresh, user don't have to watch already watched videos again
-	    //we use jquery.cookie library to store/read cookie information
-	    $scope.ReloadCookies = function () {
-	        //we first read the data from the cookie
-	        var watchedVideosIds = jQuery.cookie($scope.CookieName);
-	       
-            if (watchedVideosIds !== undefined) {
-                watchedVideosIds = watchedVideosIds.split(",");
-                
-                for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
-                    var participant = $scope.VideoBattle.Participants[i];
-                    if (watchedVideosIds.indexOf(participant.Id.toString()) !== -1) {
-                        //video already watched so set that
-                        participant.VideoWatched = true;
-                    }
-                }
-            } else {
-                watchedVideosIds = [];
-                //365 days expiration
-                var date = new Date();
-                var days = 365;
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                jQuery.cookie($scope.CookieName, watchedVideosIds, { expires: date });
-            }
-	    }
-       
-
-        //marks a participant video watched and sets cookie for it
+	   //marks a participant video watched and sends it to server
 	    $scope.SetVideoWatched = function (participant) {
             if (participant.VideoWatched) {
                 //we already have that video watched in our cookie, so no need to do anything
                 //user might have watched a video more than once
                 return;
             }
-            //we first read the data from the cookie
-            var watchedVideosIds = jQuery.cookie($scope.CookieName);
-            if (watchedVideosIds !== undefined) {
-                watchedVideosIds = watchedVideosIds.split(",");
-            }
-            else {
-                watchedVideosIds = [];
-            }
-            watchedVideosIds.push(participant.Id);
-            jQuery.cookie($scope.CookieName, watchedVideosIds);
+	        //send the watched video information to server
+            VideoBattleService.MarkVideoWatched($scope.VideoBattle.Id, participant.Id, participant.VideoId, function() {
+                //success
+            }, function() {
+                //failure
+            });
 	        participant.VideoWatched = true;
 	    }
 

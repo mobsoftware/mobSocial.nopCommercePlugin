@@ -2,7 +2,7 @@
 @{
     var videouploadUrl = "/VideoBattles/UploadVideo/";
 }
-<div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && participant.VideoPath == null">
+<div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-class="{'me' : participant.CanEdit}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && participant.VideoPath == null">
 
     <div class="participant-box-overlay" ng-show="(IsVideoPlaying) && PlayingParticipant !== participant"><i class="fa fa-lock"></i></div>
     <div ng-if="(participant.IsLeading || participant.IsWinner) && (VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Complete))" class="leader-status">

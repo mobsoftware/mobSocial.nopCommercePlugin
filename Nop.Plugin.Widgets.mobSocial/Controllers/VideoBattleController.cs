@@ -33,6 +33,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IVideoGenreService _videoGenreService;
         private readonly ICustomerService _customerService;
         private readonly IMobSocialMessageService _mobsocialMessageService;
+        private readonly IWatchedVideoService _watchedVideoService;
+
         private readonly mobSocialSettings _mobSocialSettings;
 
         #region ctor
@@ -48,6 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          IVideoGenreService videoGenreService,
          ICustomerService customerService,
          IMobSocialMessageService mobsocialMessageService,
+         IWatchedVideoService watchedVideoService,
          mobSocialSettings mobSocialSettings)
         {
             _workContext = workContext;
@@ -60,6 +63,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _videoGenreService = videoGenreService;
             _customerService = customerService;
             _mobsocialMessageService = mobsocialMessageService;
+            _watchedVideoService = watchedVideoService;
             _mobSocialSettings = mobSocialSettings;
         }
         #endregion
@@ -197,6 +201,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(new {Success = true});
 
         }
+
         public ActionResult Index(int VideoBattleId, VideoViewMode ViewMode = VideoViewMode.Regular)
         {
             var videoBattle = _videoBattleService.GetById(VideoBattleId);
@@ -255,6 +260,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 challengerVideoModel.VideoPath = challengerVideo.VideoPath;
                 challengerVideoModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ?  challengerVideo.ThumbnailPath : "";
                 challengerVideoModel.MimeType = challengerVideo.MimeType;
+                challengerVideoModel.VideoId = challengerVideo.Id;
+                //video is marked watched if 1. participant is viewing his own video 2. he has viewed the video
+                challengerVideoModel.VideoWatched = challengerVideo.ParticipantId == _workContext.CurrentCustomer.Id || _watchedVideoService.IsVideoWatched(
+                    _workContext.CurrentCustomer.Id, challengerVideo.Id, VideoType.BattleVideo);
             }
 
             var model = new VideoBattlePublicModel {
@@ -299,6 +308,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         cModel.VideoPath = video.VideoPath;
                         cModel.MimeType = video.MimeType;
                         cModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ?  video.ThumbnailPath : "";
+                        cModel.VideoId = video.Id;
+                        //video is marked watched if 1. participant is viewing his own video 2. he has viewed the video
+                        cModel.VideoWatched = video.ParticipantId == _workContext.CurrentCustomer.Id || _watchedVideoService.IsVideoWatched(
+                            _workContext.CurrentCustomer.Id, video.Id, VideoType.BattleVideo); 
                     }
                 }
                 model.Participants.Add(cModel);
@@ -382,7 +395,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.IsEditable = CanEdit(videoBattle);
             model.ViewMode = ViewMode;
 
-            return View(ViewMode == VideoViewMode.Regular ? "mobSocial/VideoBattle/Single" : "mobSocial/VideoBattle/Single.TheaterView", model);
+            return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
         public ActionResult VideoBattles()
@@ -814,11 +827,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             //TODO: Set video status to pending so that admin can approve 
                             VideoStatus = VideoStatus.Approved,
                             DateUploaded = DateTime.UtcNow,
+                            DateCreated = DateTime.UtcNow,
+                            DateUpdated = DateTime.UtcNow,
                             ThumbnailPath = thumbnailFilePath
                         };
                         _videoBattleVideoService.Insert(videoBattleVideo);
 
-                        //UNCOMMENT THE LINES BELOW IF YOU WISH TO OPEN THE BATTLES AS SOON AS VIDEOS ARE UPLOADED. NOT IT USES APPROPRIATE CHECKS BEFORE MARKING THE BATTLE LOCKED
+                        //UNCOMMENT THE LINES BELOW IF YOU WISH TO OPEN THE BATTLES AS SOON AS VIDEOS ARE UPLOADED. NOTE IT USES APPROPRIATE CHECKS BEFORE MARKING THE BATTLE LOCKED
 
                         /*
                         //let's get all the videos already uploaded, we mark the video battle open immediately if all the participants have uploaded videos or time limit has reached
@@ -857,7 +872,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                         //set the thumbnail 
                         //TODO: Delete existing thunbnail?
-                        videoBattleVideo.ThumbnailPath = savePath;
+                        videoBattleVideo.ThumbnailPath = thumbnailFilePath;
+
+                        videoBattleVideo.DateUpdated = DateTime.UtcNow;
                         _videoBattleService.Update(videoBattle);
                     }
 
@@ -878,6 +895,45 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             return Json(new { Success = false, Message = "Unauthorized" });
+        }
+
+        /// <summary>
+        /// Marks the video battle video watched
+        /// </summary>
+        /// <param name="VideoBattleVideoId">The ID of Video Battle video</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public ActionResult MarkVideoWatched(int VideoBattleId, int ParticipantId, int VideoBattleVideoId)
+        {
+
+            //has the user already watched the video?
+            if (_watchedVideoService.IsVideoWatched(_workContext.CurrentCustomer.Id, VideoBattleVideoId,
+                VideoType.BattleVideo))
+            {
+                return Json(new {Success = true});
+            }
+
+            //the video must exist before it can be marked watched
+            var videoBattleVideo =_videoBattleVideoService.GetBattleVideo(VideoBattleId, ParticipantId);
+            if (videoBattleVideo == null)
+            {
+                return Json(new {Success = false, Message = "Invalid Video"});
+            }
+
+            //mark the video watched now
+            var watchedVideo = new WatchedVideo()
+            {
+                CustomerId = _workContext.CurrentCustomer.Id,
+                VideoId = VideoBattleVideoId,
+                VideoType = VideoType.BattleVideo,
+                DateCreated = DateTime.Now,
+                DateUpdated = DateTime.Now
+            };
+            _watchedVideoService.Insert(watchedVideo);
+
+            return Json(new { Success = true });
+
         }
         #endregion
 
@@ -900,6 +956,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(new { Success = false, Message = "You can't vote yourself" });
             }
 
+            //has the person watched all the videos before voting can be done
+            //get all the videos of current battle
+            var battleVideos = _videoBattleVideoService.GetBattleVideos(VideoBattleId);
+            //and now watched videos
+            var watchedVideos = _watchedVideoService.GetWatchedVideos(null, customer.Id, VideoType.BattleVideo);
+
+            var watchedVideosIds = watchedVideos.Select(x => x.VideoId);
+            var battleVideosIds = battleVideos.Select(x => x.Id);
+
+            var videosIds = battleVideosIds as int[] ?? battleVideosIds.ToArray();
+            if (watchedVideosIds.Intersect(videosIds).Count() < videosIds.Count())
+            {
+                return Json(new { Success = false, Message = "You haven't watched all videos" });
+            }
 
             //first find the video battle
             var videoBattle = _videoBattleService.GetById(VideoBattleId);

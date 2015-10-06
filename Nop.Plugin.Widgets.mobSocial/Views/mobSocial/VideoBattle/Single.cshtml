@@ -105,7 +105,7 @@
             <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
         }
     </div>
-    @if (Model.VideoBattleStatus == VideoBattleStatus.Open)
+    @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
     {
         <div class="autoplay-video-battle-area">
             <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="@Url.RouteUrl("VideoBattlePage", new { VideoBattleId = Model.Id, ViewMode = VideoViewMode.TheaterMode})"><i class="fa fa-television"></i> Enter Theater Mode</a>

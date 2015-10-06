@@ -54,4 +54,10 @@
            .error(Error);
     }
 
+    this.MarkVideoWatched = function (VideoBattleId, ParticipantId, VideoBattleVideoId, Success, Error) {
+        $http.post("/VideoBattles/MarkVideoWatched", { VideoBattleId: VideoBattleId, ParticipantId: ParticipantId, VideoBattleVideoId: VideoBattleVideoId })
+          .success(Success)
+          .error(Error);
+    }
+
 }]);
