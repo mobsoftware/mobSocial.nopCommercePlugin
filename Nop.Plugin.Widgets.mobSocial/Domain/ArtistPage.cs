@@ -25,5 +25,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public virtual IList<ArtistPageManager> PageManagers { get; set; }
         public virtual IList<ArtistPagePicture> Pictures { get; set; }
         public virtual IList<Song> Songs { get; set; }
+
     }
 }

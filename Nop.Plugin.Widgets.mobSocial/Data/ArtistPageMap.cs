@@ -23,7 +23,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(m => m.ShortDescription);
 
 
-
+            
 
         }
     }

@@ -1,13 +1,17 @@
+using System.Data.Entity.Migrations;
+using System.Linq;
 using Autofac;
 using Autofac.Core;
 using Autofac.Integration.Mvc;
 using Mob.Core;
+using Mob.Core.Migrations;
 using Nop.Core.Data;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
 using Nop.Data;
 using Nop.Plugin.Widgets.MobSocial.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Migrations;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Media;
 using Nop.Services.Seo;
@@ -29,6 +33,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             //Register custom object context
             builder.Register<IDbContext>(c => RegisterIDbContext(c, dataSettings)).Named<IDbContext>(CONTEXT_NAME).InstancePerRequest();
             builder.Register(c => RegisterIDbContext(c, dataSettings)).InstancePerRequest();
+
+         
 
             //Register services
             builder.RegisterType<MobSocialService>().As<IMobSocialService>();
@@ -54,6 +60,11 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             //call the core registrar
             base.Register(builder, typeFinder);
+
+            //db migrations, lets update if needed
+            var migrator = new DbMigrator(new Configuration());
+            migrator.Update();
+            
 
             
         }

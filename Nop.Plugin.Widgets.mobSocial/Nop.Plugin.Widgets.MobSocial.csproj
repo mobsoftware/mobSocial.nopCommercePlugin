@@ -49,6 +49,9 @@
     <Compile Include="Domain\WatchedVideo.cs" />
     <Compile Include="Enums\VideoType.cs" />
     <Compile Include="Enums\VideoViewMode.cs" />
+    <Compile Include="Migrations\MigrationsContextFactory.cs" />
+    <Compile Include="Migrations\MobSocialMigration.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\ArtistPageAPIService.cs" />
     <Compile Include="Services\ArtistPageManagerService.cs" />
     <Compile Include="Services\ArtistPagePaymentService.cs" />
@@ -818,7 +821,7 @@
     <ProjectReference Include="..\..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
