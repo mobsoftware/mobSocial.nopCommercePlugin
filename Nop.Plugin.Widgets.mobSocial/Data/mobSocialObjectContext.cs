@@ -7,6 +7,7 @@ using Mob.Core;
 using Mob.Core.Data;
 using Mob.Core.Domain;
 using Nop.Core;
+using Nop.Core.Data;
 using Nop.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 
@@ -15,6 +16,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
 
     public class MobSocialObjectContext : MobDbContext
     {
+        
         public MobSocialObjectContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
 
@@ -40,6 +42,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         {
             //It's required to set initializer to null (for SQL Server Compact).
             //otherwise, you'll get something like "The model backing the 'your context name' context has changed since the database was created. Consider using Code First Migrations to update the database"
+          
             Database.SetInitializer<MobSocialObjectContext>(null);
 
             base.Install();
@@ -83,6 +86,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<Notification>();
                 this.DropTable<CustomerProfileView>();
 
+                this.DropTable<WatchedVideo>();
                 this.DropTable<ArtistPagePicture>();
                 this.DropTable<ArtistPageManager>();
                 this.DropTable<ArtistPagePayment>();
@@ -98,6 +102,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<VideoBattleVideo>();
                 this.DropTable<VideoBattlePicture>();
                 this.DropTable<VideoBattle>();
+                
 
                 
                 SaveChanges();
