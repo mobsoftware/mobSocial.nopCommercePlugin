@@ -1,8 +1,66 @@
 #Free open-source social network (ASP.NET MVC)#
 
+
+
 General Features
 =========
-Search, Friends, Business Pages, Events, Video Battles™, Picture Battles™, SEO, and more!
+Search, Friends, Events, Business Pages, Video Battles™, Picture Battles™, SEO, and more!
+
+Features
+=========
+1. Search
+    *   Search People, Events, Businesses, and Products from any screen   
+2. Business Pages
+    *   Hours of Operation
+    *   Map
+    *   Address
+    *   Phone, Fax Number
+    *   Friends
+    *   Pictures/Videos
+    *   Up to Date Info provided by the Business Owner 
+    *   SEO Friendly URLs and optimization
+    *   Live Search
+3. Profile Pages
+    *    Profile Picture
+    *    About Tab
+    *    Website
+    *    Picture Albums
+    *    Videos
+    *    Featured Video on home page
+    *    Add and Invite Friends
+    *    SEO Friendly URLs and optimization 
+4. Email Notifications
+    *    Friend Request Notification
+    *    Pending Friend Request Notifications
+    *    Event Invite Notifications
+5. Business Pages
+    *    Hours of Operation, Map, Address, Phone, Fax Number
+    *    Friends
+    *    Pictures/Videos
+    *    Up to Date Info provided by the Business Owner 
+    *    SEO Friendly URLs and optimization
+    *    Live Search
+6. Event Pages 
+    *    Address
+    *    Hotel Information
+    *    Attendance Information
+    *    Results
+    *    SEO Friendly URLs and optimization
+    *    Mobile Device Support
+    *    Responsive User Interface
+7. Video Battles™
+    *    Anyone can host their own battle
+    *    Spectators are invited to vote by all participants
+    *    The video with the most votes at the end wins
+    *    Search Engine Optimized
+    *    Phone App (under development)
+8. Picture Battles™ (coming very soon)
+    *    Same as video battles except using pictures
+9. Search Engine Optimization
+    *    Includes Profile, Business, and Event Pages in the SiteMap.xml
+    *    Meta tags
+    *    Friendly URLs
+    *    SEO friendly named images
 
 Bonus Features
 =========
@@ -10,7 +68,7 @@ Request Product Review Notifications, Birthday Notifications, Ad Network Functio
 
 Contribute
 ===========
-If you would like to contribute, please create a fork
+If you would like to contribute to the fastest growing open source social network, create a fork and don't hesitate to contact the team!
 
 Support
 ===========
