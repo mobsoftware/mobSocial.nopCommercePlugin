@@ -104,7 +104,7 @@ app.controller("VideoBattleEditorController", [
                 alert("An error occured while saving prize");
             });
         }
-        $scope.RemovePrize = function(prize) {
+        $scope.DeletePrize = function(prize) {
 
             var removed = true;
             if (prize.Id != 0) {
@@ -112,7 +112,7 @@ app.controller("VideoBattleEditorController", [
                     return;
                 }
                 //ajax
-                VideoBattleService.RemovePrize(prize, function(response) {
+                VideoBattleService.DeletePrize(prize, function(response) {
                     if (!response.Success) {
                         removed = false;
                         alert(response.Message);
