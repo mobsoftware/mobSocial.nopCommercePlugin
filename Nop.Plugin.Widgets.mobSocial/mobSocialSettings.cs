@@ -53,5 +53,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public bool ShowVideoThumbnailsForBattles { get; set; }
 
         public decimal DefaultVotingChargeForPaidVoting { get; set; }
+
+        public bool EnableAutomaticMigrations { get; set; }
     }
 }
