@@ -51,5 +51,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public int PurchasedSongFeePercentage { get; set; }
 
         public bool ShowVideoThumbnailsForBattles { get; set; }
+
+        public decimal DefaultVotingChargeForPaidVoting { get; set; }
     }
 }

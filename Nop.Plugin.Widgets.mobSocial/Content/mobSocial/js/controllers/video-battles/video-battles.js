@@ -78,6 +78,61 @@ app.controller("VideoBattleEditorController", [
 					});
 	        }
 	    }
+
+	    $scope.NewPrize = function () {
+	        $scope.VideoBattle.Prizes.push({
+	            VideoBattleId: $scope.VideoBattle.Id,
+                Id: 0
+	        });
+	        $scope.RefreshWinnerPositions();
+	    }
+
+        $scope.RefreshWinnerPositions = function() {
+            for (var i = 0; i < $scope.VideoBattle.Prizes.length; i++) {
+                $scope.VideoBattle.Prizes[i].WinnerPosition = i + 1;
+            }
+        }
+
+        $scope.SavePrize = function(prize) {
+            VideoBattleService.SavePrize(prize, function (response) {
+                if (response.Success) {
+                    prize.Id = response.Id;
+                }
+                //success
+            }, function() {
+                //error
+                alert("An error occured while saving prize");
+            });
+        }
+        $scope.RemovePrize = function(prize) {
+
+            var removed = true;
+            if (prize.Id != 0) {
+                if (!confirm("Are you sure you wish to remove this prize?")) {
+                    return;
+                }
+                //ajax
+                VideoBattleService.RemovePrize(prize, function(response) {
+                    if (!response.Success) {
+                        removed = false;
+                        alert(response.Message);
+                    }
+                }, function() {
+                    removed = false;
+                    alert("An error occured while removing prize");
+                });
+            }
+            if (removed) {
+                for (var i = 0; i < $scope.VideoBattle.Prizes.length; i++) {
+                    var p = $scope.VideoBattle.Prizes[i];
+                    if (p === prize) {
+                        $scope.VideoBattle.Prizes.splice(i, 1);
+                    }
+                }
+                $scope.RefreshWinnerPositions();
+            }
+           
+        }
 	}
 ]);
 

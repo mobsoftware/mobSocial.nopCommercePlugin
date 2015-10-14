@@ -17,7 +17,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         [AllowHtml]
         public string Description { get; set; }
 
-
         public int ChallengerId { get; set; }
 
         public DateTime AcceptanceLastDate { get; set; }
@@ -31,5 +30,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public VideoBattleVoteType VideoBattleVoteType { get; set; }
 
         public int MaximumParticipantCount { get; set; }
+
+        public bool IsVotingPayable { get; set; }
+
+        public decimal MinimumVotingCharge { get; set; }
+
+        public bool CanVoterIncreaseVotingCharge { get; set; }
+
+        public decimal ParticipantPercentagePerVote { get; set; }
+
+        public IList<VideoBattlePrize> Prizes { get; set; } 
+        
     }
 }

@@ -11,7 +11,6 @@
 
     var json = Json.Encode(Model);
 }
-
 <div data-ng-controller="VideoBattleEditorController" ng-init="init(@json)">
     <div ng-show="recordSaved" class="text-center">
         Video Battle @(Model.Id == 0 ? "created" : "updated") successfully. Redirecting to battle page to upload a video...
@@ -21,56 +20,137 @@
             <div class="title">
                 <strong>Video Battle Editor</strong>
             </div>
-            <div class="form-fields">
-                <div class="inputs">
-                    <label for="title">Title <span class="required">*</span></label>
-                    <input type="text" name="title" id="title" data-ng-model="VideoBattle.Title" required />
-                    <span ng-show="createBattleForm.title.$invalid && createBattleForm.title.$dirty">Title is required</span>
-                </div>
-                <div class="inputs">
-                    <label for="description">Description</label>
-                    <textarea name="description" id="description" data-ng-model="VideoBattle.Description"></textarea>
-                </div>
-                <div class="inputs">
-                    <label>Voting Start Date</label>
-                    <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
-                </div>
-                <div class="inputs">
-                    <label>Voting Last Date</label>
-                    <datetimepicker current-date="VideoBattle.VotingLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+            <div id="editor-tabs">
+                <ul class="resp-tabs-list">
+                    <li><i class="fa fa-info"></i> Battle Details</li>
+                    <li><i class="fa fa-trophy"></i> Prizes</li>
+                </ul>
+                <div class="resp-tabs-container">
+                    <div>
+                        <div class="form-fields">
+                            <div class="inputs">
+                                <label for="title">Title <span class="required">*</span></label>
+                                <input type="text" name="title" id="title" data-ng-model="VideoBattle.Title" required />
+                                <span ng-show="createBattleForm.title.$invalid && createBattleForm.title.$dirty">Title is required</span>
+                            </div>
+                            <div class="inputs">
+                                <label for="description">Description</label>
+                                <textarea name="description" id="description" data-ng-model="VideoBattle.Description"></textarea>
+                            </div>
+                            <div class="inputs">
+                                <label>Voting Start Date</label>
+                                <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+                            </div>
+                            <div class="inputs">
+                                <label>Voting Last Date</label>
+                                <datetimepicker current-date="VideoBattle.VotingLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+                            </div>
+                            <div class="inputs">
+                                <label class="control-label">Battle Type</label>
+                                <select data-ng-model="VideoBattle.VideoBattleType">
+                                    <option value="@((int) VideoBattleType.Open)">@(VideoBattleType.Open)</option>
+                                    <option value="@((int) VideoBattleType.InviteOnly)">@(VideoBattleType.InviteOnly)</option>
+                                    <option value="@((int) VideoBattleType.SignUp)">@(VideoBattleType.SignUp)</option>
+                                </select>
 
-                </div>
-                <div class="inputs">
-                    <label class="control-label">Battle Type</label>
-                    <select data-ng-model="VideoBattle.VideoBattleType">
-                        <option value="@((int) VideoBattleType.Open)">@(VideoBattleType.Open)</option>
-                        <option value="@((int) VideoBattleType.InviteOnly)">@(VideoBattleType.InviteOnly)</option>
-                        <option value="@((int) VideoBattleType.SignUp)">@(VideoBattleType.SignUp)</option>
-                    </select>
+                            </div>
+                            <div class="inputs" ng-show="VideoBattle.VideoBattleType == @((int) VideoBattleType.Open)">
+                                <label class="control-label" for="maxcount">Maximum Participants Allowed</label>
+                                <input type="number" min="0" step="1" name="MaximumParticipantCount" id="maxcount" data-ng-model="VideoBattle.MaximumParticipantCount" />
+                                <em>0 for no limit</em>
+                            </div>
+                            <div class="inputs">
+                                <label class="control-label" for="voting-payable">Enable Paid Voting</label>
+                                <input type="checkbox" name="IsVotingPayable" id="voting-payable" data-ng-model="VideoBattle.IsVotingPayable" />
+                            </div>
+                            <div ng-show="VideoBattle.IsVotingPayable">
+                                <div class="inputs">
+                                    <label class="control-label" for="">Minimum Voting Charge</label>
+                                    <input type="text" name="MinimumVotingCharge" id="minimum-voting-count" data-ng-model="VideoBattle.MinimumVotingCharge" />
+                                </div>
+                                <div class="inputs">
+                                    <label class="control-label" for="can-voter-increase-voting-charge">Can voter change voting amount?</label>
+                                    <input type="checkbox" name="CanVoterIncreaseVotingCharge" id="can-voter-increase-voting-charge" data-ng-model="VideoBattle.CanVoterIncreaseVotingCharge" />
+                                </div>
+                                <div class="inputs">
+                                    <label class="control-label" for="pp-per-vote">Participant Percentage Per Vote</label>
+                                    <input type="text" name="ParticipantPercentagePerVote" id="pp-per-vote" data-ng-model="VideoBattle.ParticipantPercentagePerVote" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="buttons text-center">
+                            <div ng-show="processing">
+                                Please wait...
+                            </div>
+                            @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
+                            {
+                                <text>The battle can't be edited now.</text>
+                            }
+                            else
+                            {
+                                <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle" />
 
-                </div>
-                <div class="inputs" ng-show="VideoBattle.VideoBattleType == @((int) VideoBattleType.Open)">
-                    <label class="control-label" for="maxcount">Maximum Participants Allowed</label>
-                    <input type="number" min="0" step="1" name="MaximumParticipantCount" id="maxcount" data-ng-model="VideoBattle.MaximumParticipantCount"/>
-                    <em>0 for no limit</em>
-                </div>
+                            }
+                        </div>
+                    </div><!--battle details-->
+                    <div>
+                        @if (Model.Id == 0)
+                        {
+                            <p class="text-center">Please save video battle to add prizes</p>
+                        }
+                        else
+                        {
+                            <div class="text-right">
+                                <a ng-click="NewPrize()"><i class="fa fa-plus-circle"></i> Add New Prize</a>
+                            </div>
+                            <div ng-repeat="prize in VideoBattle.Prizes">
+                                <div class="prize-editor-block">
+                                    <div class="winner-position">Winner Position # {{prize.WinnerPosition}}</div>
+                                    <div class="form-fields">
+                                        <div class="inputs">
+                                            <label>Prize Type</label>
+                                            <select ng-model="prize.PrizeType">
+                                                <option value="@((int) VideoBattlePrizeType.FixedAmount)">Fixed Amount</option>
+                                                <option value="@((int) VideoBattlePrizeType.PercentageAmount)">Percentage Amount</option>
+                                                <option value="@((int) VideoBattlePrizeType.FixedProduct)">Fixed Product</option>
+                                                <option value="@((int) VideoBattlePrizeType.Other)">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.FixedAmount)">
+                                            <label>Prize Amount</label>
+                                            <input ng-model="prize.PrizeAmount" type="number" step="any" min="0" />
+                                        </div>
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.PercentageAmount)">
+                                            <label>Prize Percentage</label>
+                                            <input ng-model="prize.PrizePercentage" type="number" step="any" min="0" />
+                                        </div>
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.FixedProduct)">
+                                            <label>Product</label>
+                                            <input ng-model="prize.ProductId" type="number" min="0" />
+                                        </div>
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.Other)">
+                                            <label>Other</label>
+                                            <input ng-model="prize.PrizeOther" type="text" />
+                                        </div>
+                                        <div class="buttons text-center">
+                                            <input type="button" class="c2a-maroon" ng-click="SavePrize(prize)" value="Save Prize" />
+                                            <a ng-click="RemovePrize(prize)">Remove</a>
+                                        </div>
+                                    </div>
+                                </div>
+                               
 
+                            </div>
+                        }
+                    </div><!--prizes-->
+                </div>
             </div>
         </div>
-        <div class="buttons">
-            <div ng-show="processing">
-                Please wait...
-            </div>
-            @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
-            {
-                <text>The battle can't be edited now.</text>
-            }
-            else
-            {
-                <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle" />
 
-            }
-        </div>
     </form>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#editor-tabs").easyResponsiveTabs(1);
+    });
+</script>

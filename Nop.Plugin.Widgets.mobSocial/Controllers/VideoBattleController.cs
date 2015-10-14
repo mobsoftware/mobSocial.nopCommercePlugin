@@ -30,6 +30,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IVideoBattleGenreService _videoBattleGenreService;
         private readonly IVideoBattleVideoService _videoBattleVideoService;
         private readonly IVideoBattleVoteService _videoBattleVoteService;
+        private readonly IVideoBattlePrizeService _videoBattlePrizeService;
         private readonly IVideoGenreService _videoGenreService;
         private readonly ICustomerService _customerService;
         private readonly IMobSocialMessageService _mobsocialMessageService;
@@ -47,6 +48,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          IVideoBattleGenreService videoBattleGenreService,
          IVideoBattleVideoService videoBattleVideoService,
          IVideoBattleVoteService videoBattleVoteService,
+         IVideoBattlePrizeService videoBattlePrizeService,
          IVideoGenreService videoGenreService,
          ICustomerService customerService,
          IMobSocialMessageService mobsocialMessageService,
@@ -60,6 +62,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _videoBattleGenreService = videoBattleGenreService;
             _videoBattleVideoService = videoBattleVideoService;
             _videoBattleVoteService = videoBattleVoteService;
+            _videoBattlePrizeService = videoBattlePrizeService;
             _videoGenreService = videoGenreService;
             _customerService = customerService;
             _mobsocialMessageService = mobsocialMessageService;
@@ -91,8 +94,32 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 VideoBattleStatus = videoBattle.VideoBattleStatus,
                 VideoBattleType = VideoBattleId == 0 ? VideoBattleType.InviteOnly : videoBattle.VideoBattleType,
                 VideoBattleVoteType = videoBattle.VideoBattleVoteType,
-                MaximumParticipantCount = VideoBattleId == 0 ? 10 : videoBattle.MaximumParticipantCount
+                MaximumParticipantCount = VideoBattleId == 0 ? 10 : videoBattle.MaximumParticipantCount,
+                MinimumVotingCharge = _mobSocialSettings.DefaultVotingChargeForPaidVoting
             };
+
+            //let's get prizes associated with this battle. prizes can only be added to saved battles
+            if (model.Id != 0)
+            {
+                var prizes = _videoBattlePrizeService.GetBattlePrizes(model.Id);
+                foreach (var prize in prizes)
+                {
+                    model.Prizes.Add(new VideoBattlePrizeModel()
+                    {
+                        Id = prize.Id,
+                        VideoBattleId = prize.VideoBattleId,
+                        PrizeType = prize.PrizeType,
+                        WinnerId = prize.WinnerId,
+                        PrizeAmount = prize.PrizeAmount,
+                        Description = prize.Description,
+                        PrizeOther = prize.PrizeOther,
+                        PrizePercentage = prize.PrizePercentage,
+                        WinnerPosition = prize.WinnerPosition,
+                        PrizeProductId = prize.PrizeProductId
+                    });
+                }
+
+            }
             return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/VideoBattleEditor.cshtml", model);
         }
 
@@ -155,6 +182,75 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
             }
             return Json(new { Success = true, RedirectTo = Url.RouteUrl("VideoBattlePage", new { VideoBattleId = videoBattle.Id }) });
+        }
+
+        [HttpPost]
+        public ActionResult SavePrize(VideoBattlePrizeModel Model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { Success = false, Message = "Invalid" });
+
+            //does the person adding or updating prize own this battle?
+            var videoBattle = _videoBattleService.GetById(Model.VideoBattleId);
+            if (videoBattle == null || videoBattle.ChallengerId != _workContext.CurrentCustomer.Id)
+            {
+                return Json(new { Success = false, Message = "Unauthorized" }); 
+            }
+
+            VideoBattlePrize prize = null;
+            //let's check if the prize is being edited or added
+            if (Model.Id == 0)
+            {
+                prize = new VideoBattlePrize()
+                {
+                    DateCreated = DateTime.UtcNow
+                };
+            }
+            else
+            {
+                prize = _videoBattlePrizeService.GetById(Model.Id);
+            }
+            prize.DateUpdated = DateTime.UtcNow;
+            prize.Description = Model.Description;
+            prize.PrizeAmount = Model.PrizeAmount;
+            prize.PrizeOther = Model.PrizeOther;
+            prize.PrizePercentage = Model.PrizePercentage;
+            prize.PrizeProductId = Model.PrizeProductId;
+            prize.PrizeOther = Model.PrizeOther;
+            prize.WinnerId = Model.WinnerId;
+            prize.WinnerPosition = Model.WinnerPosition;
+            prize.PrizeType = Model.PrizeType;
+            prize.VideoBattleId = Model.VideoBattleId;
+            
+            if(prize.Id == 0)
+                _videoBattlePrizeService.Insert(prize);
+            else
+                _videoBattlePrizeService.Update(prize);
+
+            return Json(new { Success = true, Id = prize.Id }); 
+            
+        }
+
+        [HttpPost]
+        public ActionResult DeletePrize(VideoBattlePrizeModel Model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { Success = false, Message = "Invalid" });
+
+            //does the person adding or updating prize own this battle?
+            var videoBattle = _videoBattleService.GetById(Model.VideoBattleId);
+            if (videoBattle == null || videoBattle.ChallengerId != _workContext.CurrentCustomer.Id)
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
+            }
+
+            var prize = _videoBattlePrizeService.GetById(Model.Id);
+            if (prize == null)
+            {
+                return Json(new { Success = false, Message = "Prize doesn't exist" });
+            }
+            _videoBattlePrizeService.Delete(prize);
+            return Json(new { Success = true, Id = prize.Id }); 
         }
 
         [HttpPost]

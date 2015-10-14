@@ -12,6 +12,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 {
     public class VideoBattleModel : BaseNopEntityModel
     {
+        public VideoBattleModel()
+        {
+            Prizes = new List<VideoBattlePrizeModel>();
+        }
+
         [Required]
         public string Title { get; set; }
 
@@ -36,5 +41,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public VideoBattleVoteType VideoBattleVoteType { get; set; }
 
         public int MaximumParticipantCount { get; set; }
+
+        public bool IsVotingPayable { get; set; }
+
+        public decimal MinimumVotingCharge { get; set; }
+
+        public bool CanVoterIncreaseVotingCharge { get; set; }
+
+        public decimal ParticipantPercentagePerVote { get; set; }
+
+        public IList<VideoBattlePrizeModel> Prizes { get; set; } 
     }
 }

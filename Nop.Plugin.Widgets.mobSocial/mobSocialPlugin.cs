@@ -239,8 +239,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                 SongFileSampleMaximumUploadSize = _config.MaxRequestLength,
                 PurchasedSongFeePercentage = 30,
                 ShowVideoThumbnailsForBattles = true,
-                EnableAutomaticMigrations = true
-
+                DefaultVotingChargeForPaidVoting = 0.99m
             };
 
 

@@ -45,8 +45,12 @@
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Core\FeatureToggle.cs" />
+    <Compile Include="Data\VideoBattlePrizeMap.cs" />
     <Compile Include="Data\WatchedVideoMap.cs" />
+    <Compile Include="Domain\VideoBattlePrize.cs" />
+    <Compile Include="Models\VideoBattlePrizeModel.cs" />
     <Compile Include="Domain\WatchedVideo.cs" />
+    <Compile Include="Enums\VideoBattlePrizeType.cs" />
     <Compile Include="Enums\VideoType.cs" />
     <Compile Include="Enums\VideoViewMode.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
@@ -77,6 +81,7 @@
     <Compile Include="Services\ISongService.cs" />
     <Compile Include="Services\IVideoBattleGenreService.cs" />
     <Compile Include="Services\IVideoBattleParticipantService.cs" />
+    <Compile Include="Services\IVideoBattlePrizeService.cs" />
     <Compile Include="Services\IVideoBattleService.cs" />
     <Compile Include="Services\IVideoBattleVideoService.cs" />
     <Compile Include="Services\IVideoBattleVoteService.cs" />
@@ -90,6 +95,7 @@
     <Compile Include="Services\SharedSongService.cs" />
     <Compile Include="Services\SitemapGenerator.cs" />
     <Compile Include="Services\SongService.cs" />
+    <Compile Include="Services\VideBattlePrizeService.cs" />
     <Compile Include="Services\VideoGenreService.cs" />
     <Compile Include="Services\VideoBattleVoteService.cs" />
     <Compile Include="Services\VideoBattleGenreService.cs" />

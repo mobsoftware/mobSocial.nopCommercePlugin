@@ -934,6 +934,15 @@ text-align: center;
 	color: red;
 }
 
+
+.prize-editor-block .winner-position {
+    padding: 10px;
+    text-align: center;
+    border: solid 1px #ddd;
+    border-bottom: none;
+    margin-top: 20px;
+}
+
 .pagination-load-more {
 		clear: both;
 	text-align: center;
