@@ -9,11 +9,11 @@ namespace Nop.Plugin.Widgets.MobSocial.ViewEngines
         {
             PartialViewLocationFormats = new[]{
                 MobSocialConstant.PluginPath + "/Views/{0}.cshtml",
-                MobSocialConstant.ThemePath + "/Views/{0}.cshtml"
+                MobSocialConstant.ThemePath + "/Views/{1}/{0}.cshtml"
             };
             ViewLocationFormats = new[]{
                 MobSocialConstant.PluginPath + "/Views/{0}.cshtml",
-                MobSocialConstant.ThemePath + "/Views/{0}.cshtml"
+                MobSocialConstant.ThemePath + "/Views/{1}/{0}.cshtml"
             };
         }
     }

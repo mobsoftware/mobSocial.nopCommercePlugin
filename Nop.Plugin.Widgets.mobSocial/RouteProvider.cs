@@ -3,6 +3,8 @@ using System.Web.Routing;
 using Nop.Plugin.Widgets.MobSocial.ViewEngines;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc.Routes;
+using Nop.Web.Framework.Themes;
+using System.Linq;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -10,9 +12,9 @@ namespace Nop.Plugin.Widgets.MobSocial
     {
         public void RegisterRoutes(RouteCollection routes)
         {
-
-            System.Web.Mvc.ViewEngines.Engines.Add(new MobSocialViewEngine());
-
+            // Make MobSocialViewEngine views the Highest Priority
+            System.Web.Mvc.ViewEngines.Engines.Insert(0, new MobSocialViewEngine());
+            
             // redirects to your store
             routes.MapRoute("FacebookWebsiteApp",
                 "FacebookWebsiteApp",
