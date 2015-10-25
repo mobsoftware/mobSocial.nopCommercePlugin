@@ -60,4 +60,15 @@
           .error(Error);
     }
 
+    this.SavePrize = function (Prize, Success, Error) {
+        $http.post("/VideoBattles/SavePrize", Prize)
+          .success(Success)
+          .error(Error);
+    }
+    this.DeletePrize = function (Prize, Success, Error) {
+        $http.post("/VideoBattles/DeletePrize", Prize)
+          .success(Success)
+          .error(Error);
+    }
+
 }]);
