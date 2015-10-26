@@ -52,8 +52,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<MusicApiCredentials>().As<IOAuthCredentials>().InstancePerRequest();
             builder.RegisterType<MusicApiUri>().As<IApiUri>().InstancePerRequest();
             builder.RegisterType<OAuthService>().As<IOAuthService>().InstancePerRequest();
-            
 
+            builder.RegisterType<MobSecurityService>().As<IMobSecurityService>().InstancePerRequest();
 
             // Override any NopCommerce Services below:
             builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();

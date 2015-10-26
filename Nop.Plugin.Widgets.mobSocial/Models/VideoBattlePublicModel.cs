@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Web.Framework.Mvc;
 
@@ -58,5 +59,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public int LoggedInUserId { get; set; }
 
         public VideoViewMode ViewMode { get; set; }
+
+        public bool IsVotingPayable { get; set; }
+
+        public decimal MinimumVotingCharge { get; set; }
+
+        public bool CanVoterIncreaseVotingCharge { get; set; }
+
+        public IList<VideoBattlePrizeModel> Prizes { get; set; } 
     }
 }

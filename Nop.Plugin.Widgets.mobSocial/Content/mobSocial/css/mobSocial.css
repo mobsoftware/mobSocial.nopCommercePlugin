@@ -1238,3 +1238,20 @@ span.required
 .actions-theater-view:hover {
     color: white;
 }
+
+#payment-form-popup-container {
+    display: none;
+}
+#payment-form-popup-container .overlay {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+#payment-form-popup {
+    position: absolute;
+    z-index: 1001;
+}

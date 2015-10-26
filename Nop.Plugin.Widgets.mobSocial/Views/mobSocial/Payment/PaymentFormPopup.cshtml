@@ -1,0 +1,51 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerPaymentPublicModel
+@{
+    Layout = "";
+}
+<div id="payment-form-popup-container" ng-show="VoterPass.Process">
+    <div class="overlay"></div>
+    <div id="payment-form-popup">
+        <form name="createPaymentForm">
+            <div class="fieldset">
+                <div class="form-fields">
+                    <div class="inputs">
+                        <label for="select-payment-method">Select a card</label>
+                        <select id="select-payment-method" ng-model="VoterPass.CustomerPaymentMethodId">
+                            @{
+                                foreach (var pm in Model.CustomerPaymentMethods)
+                                {
+                                    <option value="@pm.Value">@pm.Text</option>
+                                }
+                            }
+                            <option value="0">New...</option>
+                        </select>
+                    </div>
+                    <div id="debit-credit-card" ng-show="VoterPass.CustomerPaymentMethodId == 0">
+                        <div class="inputs">
+                            <label for="card-number">Credit Card Number</label>
+                            <input id="card-number" type="text" ng-model="VoterPass.CardNumber"/>
+                        </div>
+                        <div class="inputs">
+                            <label for="month">Expiration Date</label>
+                            <input id="month" ng-model="VoterPass.ExpireMonth"/>
+                            <input id="year" ng-model="VoterPass.ExpireYear"/>
+                        </div>
+                        <div class="inputs">
+                            <label for="month">Name on Card</label>
+                            <input id="name" ng-model="VoterPass.NameOnCard"/>
+                        </div>
+                        <div class="inputs">
+                            <label for="security-code">CSC/CVV/CVV2</label>
+                            <input id="name" ng-model="VoterPass.SecurityCode" type="password"/>
+                        </div>
+                        <input type="hidden" ng-model="VoterPass.CardIssuerType"/>
+                    </div>
+                    <div class="buttons">
+                        <input type="button" value="PAY & VOTE"/>
+                        <input type="button" value="Cancel"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

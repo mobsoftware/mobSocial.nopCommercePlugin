@@ -311,6 +311,21 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                        );
 
+            //payments
+            routes.MapLocalizedRoute("PaymentFormPopup",
+                       "Payment/PaymentFormPopup",
+                       new { controller = "Payment", action = "PaymentFormPopup" },
+                       new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                       );
+
+            routes.MapLocalizedRoute("PurchaseVoterPass",
+                       "Payment/PurchaseVoterPass",
+                       new { controller = "Payment", action = "PurchaseVoterPass" },
+                       new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                       );
+
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             routes.MapHubs();
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,15 +15,24 @@ using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using System.Web;
 using Mob.Core;
+using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.Orders;
+using Nop.Core.Domain.Payments;
+using Nop.Plugin.Widgets.MobSocial.Constants;
 using Nop.Plugin.Widgets.MobSocial.Extensions;
+using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Services.Catalog;
 using Nop.Services.Customers;
+using Nop.Services.Orders;
 using NReco.VideoConverter;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     public class VideoBattleController : BasePublicController
     {
+        
+
         private readonly IWorkContext _workContext;
         private readonly IStoreContext _storeContext;
         private readonly IVideoBattleService _videoBattleService;
@@ -35,7 +45,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly ICustomerService _customerService;
         private readonly IMobSocialMessageService _mobsocialMessageService;
         private readonly IWatchedVideoService _watchedVideoService;
-
+        private readonly IProductService _productService;
+        private readonly IGiftCardService _giftCardService;
+        private readonly IOrderService _orderService;
+        private readonly IMobSecurityService _mobSecurityService;
         private readonly mobSocialSettings _mobSocialSettings;
 
         #region ctor
@@ -53,6 +66,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          ICustomerService customerService,
          IMobSocialMessageService mobsocialMessageService,
          IWatchedVideoService watchedVideoService,
+         IProductService productService,
+         IGiftCardService giftCardService,
+         IOrderService orderService,
+         IMobSecurityService mobSecurityService,
          mobSocialSettings mobSocialSettings)
         {
             _workContext = workContext;
@@ -67,7 +84,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _customerService = customerService;
             _mobsocialMessageService = mobsocialMessageService;
             _watchedVideoService = watchedVideoService;
+            _productService = productService;
+            _giftCardService = giftCardService;
+            _orderService = orderService;
+            _mobSecurityService = mobSecurityService;
             _mobSocialSettings = mobSocialSettings;
+
         }
         #endregion
 
@@ -704,61 +726,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(new { Success = false, Message = "No more participants allowed" });
 
         }
-        [HttpPost]
-        [Authorize]
-        public ActionResult InviteVoters(int VideoBattleId, IList<int> VoterIds)
-        {
-            //first check if it's a valid videobattle and the logged in user can actually invite
-            var videoBattle = _videoBattleService.GetById(VideoBattleId);
-            if (videoBattle == null)
-                return Json(new { Success = false, Message = "Invalid battle" });
-
-            var participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId,
-                VideoBattleParticipantStatus.ChallengeAccepted);
-
-            var model = new List<object>();
-            if (CanInvite(videoBattle) || participants.Select(x => x.ParticipantId).Contains(_workContext.CurrentCustomer.Id))
-            {
-                var votes = _videoBattleVoteService.GetVideoBattleVotes(VideoBattleId, null);
-
-                foreach (var vi in VoterIds)
-                {
-                    var vote = votes.FirstOrDefault(x => x.UserId == vi);
-                    if (vote == null)
-                    {
-                        vote = new VideoBattleVote() {
-                            VideoBattleId = VideoBattleId,
-                            ParticipantId = _workContext.CurrentCustomer.Id,
-                            VoteStatus = VideoBattleVoteStatus.NotVoted,
-                            VoteValue = 0,
-                            UserId = vi
-                        };
-                        _videoBattleVoteService.Insert(vote);
-
-                        //send the notification
-                        var receiver = _customerService.GetCustomerById(vi);
-                        _mobsocialMessageService.SendVotingReminderNotification(_workContext.CurrentCustomer, receiver,
-                            videoBattle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-                        model.Add(new {
-                            Success = true,
-                            VoterId = vi,
-                        });
-                    }
-                    else
-                    {
-                        model.Add(new {
-                            Success = false,
-                            VoterId = vi,
-                            Message = "Already invited"
-                        });
-                    }
-                }
-
-                return Json(model);
-
-            }
-            return Json(new { Success = false, Message = "Unauthorized" });
-        }
+       
         [Authorize]
         [HttpPost]
         public ActionResult UpdateParticipantStatus(int VideoBattleId, VideoBattleParticipantStatus VideoBattleParticipantStatus, int ParticipantId)
@@ -1108,6 +1076,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         case VideoBattleVoteType.LikeDislike:
                             break;
                     }
+
+                    //is this a paid battle, if it is, then user must pay first before proceeding
+                    if (videoBattle.IsVotingPayable)
+                    {
+                        var voterPass = GetPurchasedVoterPass();
+
+                        if (voterPass == null)
+                        {
+                            //not paid yet...return an error to pay
+                            return Json(new { Success = false, Message = "No voterpass purchased" });
+                        }
+
+                    }
+
                     //user can vote now. let's create a new vote
                     var videoBattleVote = new VideoBattleVote() {
                         ParticipantId = ParticipantId,
@@ -1128,6 +1110,63 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult InviteVoters(int VideoBattleId, IList<int> VoterIds)
+        {
+            //first check if it's a valid videobattle and the logged in user can actually invite
+            var videoBattle = _videoBattleService.GetById(VideoBattleId);
+            if (videoBattle == null)
+                return Json(new { Success = false, Message = "Invalid battle" });
+
+            var participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId,
+                VideoBattleParticipantStatus.ChallengeAccepted);
+
+            var model = new List<object>();
+            if (CanInvite(videoBattle) || participants.Select(x => x.ParticipantId).Contains(_workContext.CurrentCustomer.Id))
+            {
+                var votes = _videoBattleVoteService.GetVideoBattleVotes(VideoBattleId, null);
+
+                foreach (var vi in VoterIds)
+                {
+                    var vote = votes.FirstOrDefault(x => x.UserId == vi);
+                    if (vote == null)
+                    {
+                        vote = new VideoBattleVote() {
+                            VideoBattleId = VideoBattleId,
+                            ParticipantId = _workContext.CurrentCustomer.Id,
+                            VoteStatus = VideoBattleVoteStatus.NotVoted,
+                            VoteValue = 0,
+                            UserId = vi
+                        };
+                        _videoBattleVoteService.Insert(vote);
+
+                        //send the notification
+                        var receiver = _customerService.GetCustomerById(vi);
+                        _mobsocialMessageService.SendVotingReminderNotification(_workContext.CurrentCustomer, receiver,
+                            videoBattle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+                        model.Add(new {
+                            Success = true,
+                            VoterId = vi,
+                        });
+                    }
+                    else
+                    {
+                        model.Add(new {
+                            Success = false,
+                            VoterId = vi,
+                            Message = "Already invited"
+                        });
+                    }
+                }
+
+                return Json(model);
+
+            }
+            return Json(new { Success = false, Message = "Unauthorized" });
+        }
+
         #endregion
 
         #region Utilities
@@ -1194,6 +1233,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
             return maxSeconds;
         }
+
+
+        GiftCard GetPurchasedVoterPass()
+        {
+            var orderItems = _orderService.GetAllOrderItems(null, _workContext.CurrentCustomer.Id, null, null, OrderStatus.Complete,
+                 PaymentStatus.Paid, null, false);
+
+            var availableGiftCards = orderItems.Where(x => x.Product.Sku == MobSocialConstant.VideoBattleVoterPassSKU).SelectMany(x => x.AssociatedGiftCards);
+            return availableGiftCards.FirstOrDefault(x => x.IsGiftCardValid());
+        }
+
+        
         #endregion
     }
 }

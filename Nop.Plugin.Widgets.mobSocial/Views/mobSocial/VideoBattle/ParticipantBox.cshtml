@@ -116,7 +116,7 @@
             <div ng-if="VideoBattleComplete && participant.CurrentUserVote == null && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) && !participant.CanEdit && (participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged))">
                 <div ng-switch on="VideoBattle.VideoBattleVoteType">
                     <div ng-switch-when="@((int) VideoBattleVoteType.SelectOneWinner)">
-                        <button ng-hide="voted" ng-click="VoteBattle(VideoBattle.Id, participant.Id, 1)">SELECT AS WINNER</button>
+                        <button ng-hide="voted" ng-click="VoteBattle(VideoBattle.Id, participant.Id, 1, VideoBattle.IsVotingPayable)">SELECT AS WINNER</button>
                     </div>
                     <div ng-switch-when="@((int) VideoBattleVoteType.LikeDislike)">
                     </div>

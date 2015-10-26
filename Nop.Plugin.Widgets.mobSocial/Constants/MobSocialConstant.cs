@@ -9,7 +9,10 @@
 
         public static string ThemePath = "~/Themes/MobSocialDefault";
         public static string ThemeContentPath = ThemePath + "/Content";
-        
+
+        public static string EncryptionKeyName = "encryptionkey";
+        public static string VideoBattleVoterPassSKU = "MobSocialVideoBattleVoterPass";
+        public static string PictureBattleVoterPassSKU = "MobSocialPictureBattleVoterPass";
     }
 }
 

@@ -138,7 +138,7 @@ app.controller("VideoBattleEditorController", [
 
 
 app.controller("VideoBattlePageController", [
-	"$scope", "VideoBattleService", "$sce", function ($scope, VideoBattleService, $sce) {
+	"$scope", "VideoBattleService", "PaymentService", "$sce", function ($scope, VideoBattleService, PaymentService, $sce) {
 
         //TODO: Organize the VideoBattleController as it's too big 
 	    var controller = this;
@@ -175,6 +175,7 @@ app.controller("VideoBattlePageController", [
 	    $scope.GlobalVotingStatus = false; //keeps track if user has voted for at least a video and then shows watched on all participants
 	    $scope.IsVideoPlaying = false;
 	    $scope.PlayingParticipant = null;
+	    $scope.VoterPass = {};
 
         //for rendering html for description
         $scope.renderHtml = function (html_code) {
@@ -404,8 +405,13 @@ app.controller("VideoBattlePageController", [
 
 	    }
 
-	    $scope.VoteBattle = function (VideoBattleId, ParticipantId, VoteValue, Success, Error) {
+	    $scope.VoteBattle = function (VideoBattleId, ParticipantId, VoteValue, IsPaid, Success, Error) {
 	        
+            if (IsPaid) {
+                //payment needs to be done
+
+            }
+
 	        VideoBattleService.VoteBattle(VideoBattleId,
 	            ParticipantId,
 	            VoteValue,
@@ -428,6 +434,9 @@ app.controller("VideoBattlePageController", [
                     alert("Operation failed");
                 });
 	    }
+
+	   
+
 
 	    $scope.processing = false;
 	    $scope.searchAPI = function (userInputString, timeoutPromise) {

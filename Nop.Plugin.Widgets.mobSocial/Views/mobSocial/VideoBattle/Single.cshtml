@@ -212,6 +212,12 @@
         <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
     </div>
 
+
+    @if (Model.IsVotingPayable)
+    {
+        Html.Action("PaymentFormPopup", "Payment", new {BattleId = Model.Id, BattleType = Model.VideoBattleType});
+    }
+
 </div>
 
 
