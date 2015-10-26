@@ -103,25 +103,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             model.NavigationModel = SessionState.Instance.CustomerNavigationModel;
 
-            return View("mobSocial/WidgetZones/ProfileInformation", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/WidgetZones/ProfileInformation", model);
 
         }
 
         [ChildActionOnly]
         public ActionResult SocialNetworkByMobSocial(string widgetZone)
         {
-            return Content("social network by <a href=\"http://mobSocial.codeplex.com\">mobSocial</a>");
+            return Content("social network by <a href=\"http://github.com/mobsoftware/mobsocial\">mobSocial</a>");
         }
 
 
         public ActionResult HeadTagInclusions()
         {
-            return View("mobSocial/WidgetZones/head_html_tag");
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/WidgetZones/head_html_tag.cshtml");
         }
 
         public ActionResult GlobalSearchOptions()
         {
-            return View("mobSocial/WidgetZones/searchbox_before_search_button");
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/WidgetZones/searchbox_before_search_button.cshtml");
         }
         
         public ActionResult Configure()
@@ -137,7 +137,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.AvailableZones.Add(new SelectListItem() { Text = "Before right side column", Value = "right_side_column_before" });
             model.AvailableZones.Add(new SelectListItem() { Text = "After right side column", Value = "right_side_column_after" });
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Configure.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/Configure.cshtml", model);
 
         }
 
@@ -318,7 +318,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_CustomerFriendBlock.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/_CustomerFriendBlock.cshtml", model);
 
         }
 
@@ -355,7 +355,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/MyHealth.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/MyHealth.cshtml", model);
 
         }
 
@@ -393,7 +393,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/FriendRequests.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/FriendRequests.cshtml", model);
 
         }
         
@@ -435,7 +435,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_CustomerFriends.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/_CustomerFriends.cshtml", model);
 
         }
 
@@ -455,7 +455,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.ShowConfirmFriendButton = friendStatus == FriendStatus.NeedsConfirmed;
             model.ShowFriendRequestSent = friendStatus == FriendStatus.FriendRequestSent;
             
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_AddFriendButton.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/_AddFriendButton.cshtml", model);
 
         } 
 
@@ -524,7 +524,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             }
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/TeamPage.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/TeamPage.cshtml", model);
 
         }
 
@@ -572,7 +572,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
             }
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_CustomerAlbumPictures.cshtml", albumModel);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/_CustomerAlbumPictures.cshtml", albumModel);
 
         }
 
@@ -609,7 +609,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_FeaturedVideosBlock.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/_FeaturedVideosBlock.cshtml", model);
 
 
         }
@@ -662,7 +662,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
             }
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_CustomerVideoAlbums.cshtml", videoAlbumModel);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/_CustomerVideoAlbums.cshtml", videoAlbumModel);
 
         }
 
@@ -892,7 +892,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 FullSizeAvatarUrl = fullSizeAvatarUrl 
             };
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/_ProfilePicture.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/mobSocial/_ProfilePicture.cshtml", model);
 
         }
 /*

@@ -12,18 +12,19 @@ using Nop.Services.Configuration;
 using Nop.Services.Events;
 using Nop.Services.Logging;
 using Nop.Services.Media;
+using Mob.Core.Data;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
     public class CustomerAlbumPictureService : ICustomerAlbumPictureService
     {
-        private readonly IRepository<CustomerAlbum> _customerAlbumRepository;
-        private readonly IRepository<CustomerAlbumPicture> _customerAlbumPictureRepository;
+        private readonly IMobRepository<CustomerAlbum> _customerAlbumRepository;
+        private readonly IMobRepository<CustomerAlbumPicture> _customerAlbumPictureRepository;
         private readonly MediaSettings _nopMediaSettings;
 
 
-        public CustomerAlbumPictureService(ISettingService settingService, IWebHelper webHelper, ILogger logger, IEventPublisher eventPublisher, 
-           IRepository<CustomerAlbum> customerAlbumRepository, IRepository<CustomerAlbumPicture> customerAlbumPictureRepository, MediaSettings mediaSettings)
+        public CustomerAlbumPictureService(ISettingService settingService, IWebHelper webHelper, ILogger logger, IEventPublisher eventPublisher,
+           IMobRepository<CustomerAlbum> customerAlbumRepository, IMobRepository<CustomerAlbumPicture> customerAlbumPictureRepository, MediaSettings mediaSettings)
         {
             _customerAlbumRepository = customerAlbumRepository;
             _customerAlbumPictureRepository = customerAlbumPictureRepository;
