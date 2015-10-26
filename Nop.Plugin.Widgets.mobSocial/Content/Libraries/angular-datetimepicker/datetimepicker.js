@@ -9,7 +9,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                 currentDate: "=",
                 includeTime: "@"
             },
-            template: "<span class='datepicker-container'><input readonly type='text' ng-focus='expandMe();' class='datepicker-input' ng-model='currentDate' /> <button class='ng-hide datepicker-close' ng-click='closeMe();'>&#10006;</button><br/></span>",
+            template: "<span class='datepicker-container'><input readonly type='text' ng-focus='expandMe();' class='datepicker-input' ng-model='currentDate' /> <button class='ng-hide datepicker-close' ng-click='revert();'>&#10006;</button><br/></span>",
             replace: true,
             link: function($scope, $elem, $attr) {
                 //let's add the current scope to root scope to maintain the list of all the datetime pickers on the page
@@ -170,7 +170,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                                 isCurrentDate = "isCurrentDate";
                             }
                             
-                            dates_str += "<td class='" + isCurrentDate + "'><a href=''  ng-click='setDate(" + day_val + ")'>" + day_val + "</a></td>";
+                            dates_str += "<td class='" + isCurrentDate + "'><a class='set-date-"+ day_val + "' href=''  ng-click='setDate(" + day_val + ", true)'>" + day_val + "</a></td>";
 
                         }
 
@@ -184,7 +184,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                     dates_str += "</tr>";
                     var time_html = "<tr class='time_row'><td colspan='7'>" + hourSelect + minSelect + periodSelect + "</td></tr>";
                     
-                    var close_button = "" ; //+ "<tr class='time_row'><td colspan='7'><button ng-click='closeMe()'>Close</button></td></tr>";
+                    var close_button = "<tr class='time_row'><td colspan='7'><a style='display:inline' ng-click='closeMe()'>OK</a> <a style='display:inline' ng-click='revert()'>Cancel</a></td></tr>";
                     var cal_string = "<table>" + year_html + day_html + dates_str + time_html + close_button + "</table>";
 
                     $scope.calLock = false;
@@ -222,8 +222,12 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                    
                     $scope.currentDate = new Date($scope._visibleYear, $scope._visibleMonth, day, vhour, $scope._visibleMinute, 0);
                     $scope._visibleDay = $scope.currentDate.getDate();
-                    if(noClose !== true)
+                    if (noClose !== true)
                         $scope.closeMe();
+                    
+                    $scope._datePickerArea.find("td.isCurrentDate").removeClass("isCurrentDate");
+                    $scope._datePickerArea.find("a.set-date-" + day).parent().addClass("isCurrentDate");
+
                 };
 
                 $scope.reloadDate = function() {
@@ -251,6 +255,19 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                         $rootScope.DateTimePickerScopes[i].closeMe();
                     }
 
+                    //let's save the date first
+                    var vhour = parseInt($scope._visibleHour);
+                    if ($scope._visiblePeriod === "AM") {
+                        if (vhour > 11)
+                            vhour = vhour - 12;
+
+                    } else {
+                        if (vhour < 12)
+                            vhour = vhour + 12;
+                    }
+
+                    $scope._previousDate = new Date($scope._visibleYear, $scope._visibleMonth, $scope._visibleDay, vhour, $scope._visibleMinute);
+                  
                     $elem.find("button").removeClass("ng-hide");
                     $scope.reloadDate();
                     $scope._datePickerArea.css("display", "block").addClass("datepicker-expanded");
@@ -260,14 +277,31 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                             .find(event.target)
                             .length > 0;
 
-                        if (isClickedElementChildOfPopup)
+                        if (isClickedElementChildOfPopup) {
+                            return;
+                        }
+
+                        //is it previous or next button clicked
+                        if (event.target.classList.contains('datepicker-prev') || event.target.classList.contains('datepicker-next'))
                             return;
 
                         $scope.$apply(function () {
-                            $scope.closeMe();
+                           $scope.closeMe();
                         });
                     });
                 };
+
+                $scope.revert = function() {
+                    $scope._visibleDay = $scope._previousDate.getDate();
+                    $scope._visibleMonth = $scope._previousDate.getMonth();
+                    $scope._visibleYear = $scope._previousDate.getFullYear();
+
+                    $scope.currentDate = new Date($scope._visibleYear, $scope._visibleMonth, $scope._visibleDay, $scope._previousDate.getHours(), $scope._visibleMinute, 0);
+
+                    $elem.find("button").addClass("ng-hide");
+                    $scope._datePickerArea.css("display", "none").removeClass("datepicker-expanded");
+
+                }
                 $scope.closeMe = function(){
                     $elem.find("button").addClass("ng-hide");
                     $scope._visibleDay = $scope.currentDate.getDate();
