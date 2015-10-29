@@ -30,6 +30,10 @@ input[type='number'] {
 .inputs em, .inputs span {
     font-size: 12px;
 }
+.inputs input.half-width {
+    width: 200px;
+    max-width: 50%;
+}
 .profile-center-content {
 	padding-top: 1px;
 	display: inline-block;
@@ -1239,10 +1243,9 @@ span.required
     color: white;
 }
 
-#payment-form-popup-container {
-    display: none;
+#payment-form-popup-area {
 }
-#payment-form-popup-container .overlay {
+#payment-form-popup-area .overlay {
     position: fixed;
     left: 0px;
     top: 0px;
@@ -1254,4 +1257,10 @@ span.required
 #payment-form-popup {
     position: absolute;
     z-index: 1001;
+    width: 100%;
+
+}
+span.payment-method.fa {
+    margin-left: 10px;
+    font-size: 32px;
 }

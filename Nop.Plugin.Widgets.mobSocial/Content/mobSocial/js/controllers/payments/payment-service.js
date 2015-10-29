@@ -1,8 +1,8 @@
 ﻿"use strict";
 
 app.service("PaymentService", ["$http", function ($http) {
-    this.PaymentFormPopup = function (Success, Error) {
-        $http.post("/Payment/PaymentFormPopup")
+    this.PaymentFormPopup = function (BattleId, BattleType, Success, Error) {
+        $http.post("/Payment/PaymentFormPopup", {BattleId: BattleId, BattleType: BattleType})
        .success(Success)
        .error(Error);
     }

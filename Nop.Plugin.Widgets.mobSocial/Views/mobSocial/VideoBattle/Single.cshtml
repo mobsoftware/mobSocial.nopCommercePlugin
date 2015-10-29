@@ -112,7 +112,7 @@
         </div>
     }
     @{
-        if (Model.VideoBattleType != VideoBattleType.InviteOnly && !Model.IsParticipant && !Model.IsEditable)
+        if (Model.VideoBattleType != VideoBattleType.InviteOnly && Model.VideoBattleStatus == VideoBattleStatus.Pending && !Model.IsParticipant && !Model.IsEditable)
         {
             <div class="text-center join-battle-area">
                 @if (Model.IsUserLoggedIn)
@@ -212,10 +212,10 @@
         <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
     </div>
 
-
     @if (Model.IsVotingPayable)
     {
-        Html.Action("PaymentFormPopup", "Payment", new {BattleId = Model.Id, BattleType = Model.VideoBattleType});
+        <div id="payment-form-popup-area" ng-show="VoterPass.ShowPaymentPopup">
+        </div>
     }
 
 </div>

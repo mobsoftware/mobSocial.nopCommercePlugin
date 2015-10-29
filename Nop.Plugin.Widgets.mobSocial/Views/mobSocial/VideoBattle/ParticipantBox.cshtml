@@ -114,7 +114,7 @@
         </div>
         <div class="participant-voting text-center">
             <div ng-if="VideoBattleComplete && participant.CurrentUserVote == null && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open) && !participant.CanEdit && (participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.ChallengeAccepted) || participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged))">
-                <div ng-switch on="VideoBattle.VideoBattleVoteType">
+                <div ng-switch on="VideoBattle.VideoBattleVoteType" ng-hide="VoterPass.ShowPaymentPopup && VideoBattle.IsVotingPayable">
                     <div ng-switch-when="@((int) VideoBattleVoteType.SelectOneWinner)">
                         <button ng-hide="voted" ng-click="VoteBattle(VideoBattle.Id, participant.Id, 1, VideoBattle.IsVotingPayable)">SELECT AS WINNER</button>
                     </div>
@@ -122,6 +122,9 @@
                     </div>
                     <div ng-switch-when="@((int) VideoBattleVoteType.Rating)">
                     </div>
+                </div>
+                <div ng-show="VoterPass.ShowPaymentPopup && VideoBattle.IsVotingPayable">
+                    Please wait...
                 </div>
             </div>
             <div ng-if="participant.CurrentUserVote != null">

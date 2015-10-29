@@ -45,10 +45,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly ICustomerService _customerService;
         private readonly IMobSocialMessageService _mobsocialMessageService;
         private readonly IWatchedVideoService _watchedVideoService;
-        private readonly IProductService _productService;
-        private readonly IGiftCardService _giftCardService;
-        private readonly IOrderService _orderService;
-        private readonly IMobSecurityService _mobSecurityService;
+        private readonly IVoterPassService _voterPassService;
         private readonly mobSocialSettings _mobSocialSettings;
 
         #region ctor
@@ -66,10 +63,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          ICustomerService customerService,
          IMobSocialMessageService mobsocialMessageService,
          IWatchedVideoService watchedVideoService,
-         IProductService productService,
-         IGiftCardService giftCardService,
-         IOrderService orderService,
-         IMobSecurityService mobSecurityService,
+         IVoterPassService voterPassService,
          mobSocialSettings mobSocialSettings)
         {
             _workContext = workContext;
@@ -84,10 +78,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _customerService = customerService;
             _mobsocialMessageService = mobsocialMessageService;
             _watchedVideoService = watchedVideoService;
-            _productService = productService;
-            _giftCardService = giftCardService;
-            _orderService = orderService;
-            _mobSecurityService = mobSecurityService;
+            _voterPassService = voterPassService;
             _mobSocialSettings = mobSocialSettings;
 
         }
@@ -117,7 +108,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 VideoBattleType = VideoBattleId == 0 ? VideoBattleType.InviteOnly : videoBattle.VideoBattleType,
                 VideoBattleVoteType = videoBattle.VideoBattleVoteType,
                 MaximumParticipantCount = VideoBattleId == 0 ? 10 : videoBattle.MaximumParticipantCount,
-                MinimumVotingCharge = _mobSocialSettings.DefaultVotingChargeForPaidVoting
+                MinimumVotingCharge = VideoBattleId == 0 ? _mobSocialSettings.DefaultVotingChargeForPaidVoting : videoBattle.MinimumVotingCharge,
+                IsVotingPayable = videoBattle.IsVotingPayable,
+                CanVoterIncreaseVotingCharge = videoBattle.CanVoterIncreaseVotingCharge,
+                ParticipantPercentagePerVote = videoBattle.ParticipantPercentagePerVote
             };
 
             //let's get prizes associated with this battle. prizes can only be added to saved battles
@@ -173,6 +167,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             videoBattle.VideoBattleVoteType = VideoBattleVoteType.SelectOneWinner; // Model.VideoBattleVoteType;
             videoBattle.Title = Model.Title;
             videoBattle.MaximumParticipantCount = (int)Math.Round((decimal)Model.MaximumParticipantCount);
+            videoBattle.IsVotingPayable = Model.MinimumVotingCharge > 0 && Model.IsVotingPayable;
+            videoBattle.CanVoterIncreaseVotingCharge = Model.CanVoterIncreaseVotingCharge;
+            videoBattle.MinimumVotingCharge = Model.MinimumVotingCharge;
+            videoBattle.ParticipantPercentagePerVote = Model.ParticipantPercentagePerVote;
+
+
 
             if (Model.Id == 0)
             {
@@ -191,7 +191,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     if (participants.Count > 0)
                     {
                         //nop, somebody has accepted the challenge. date can only be exended
-                        return Json(new { Success = false, Message = "Acceptance and Voting dates can only be extended now, because a challengee has accepted the challenge" });
+                        return Json(new { Success = false, Message = "Acceptance and Voting dates can only be extended now, because a participant has accepted the challenge" });
                     }
                 }
                 videoBattle.AcceptanceLastDate = Model.AcceptanceLastDate.ToUniversalTime();
@@ -398,7 +398,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 RemainingSeconds = GetRemainingSeconds(videoBattle),
                 MaximumParticipantCount = videoBattle.MaximumParticipantCount,
                 IsUserLoggedIn = _workContext.CurrentCustomer.IsRegistered(),
-                LoggedInUserId = _workContext.CurrentCustomer.Id
+                LoggedInUserId = _workContext.CurrentCustomer.Id,
+                IsVotingPayable = videoBattle.IsVotingPayable,
+                CanVoterIncreaseVotingCharge = videoBattle.CanVoterIncreaseVotingCharge,
+                MinimumVotingCharge = videoBattle.MinimumVotingCharge
             };
 
             //add challenger as participant
@@ -1011,7 +1014,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult VoteBattle(int VideoBattleId, int ParticipantId, int VoteValue)
+        public ActionResult VoteBattle(int VideoBattleId, int ParticipantId, int VoteValue, int VoterPassOrderId = 0)
         {
             var customer = _workContext.CurrentCustomer;
             //should not vote himself or herself
@@ -1026,11 +1029,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //and now watched videos
             var watchedVideos = _watchedVideoService.GetWatchedVideos(null, customer.Id, VideoType.BattleVideo);
 
-            var watchedVideosIds = watchedVideos.Select(x => x.VideoId);
-            var battleVideosIds = battleVideos.Select(x => x.Id);
+         
 
-            var videosIds = battleVideosIds as int[] ?? battleVideosIds.ToArray();
-            if (watchedVideosIds.Intersect(videosIds).Count() < videosIds.Count())
+
+            var watchedVideosIds = watchedVideos.Select(x => x.VideoId);
+            //if the person voting is already a participant in the battle then one of his own videos need not be watched. 
+            var battleVideosIds = battleVideos.Where(x => x.ParticipantId != customer.Id).Select(x => x.Id);
+
+            if (watchedVideosIds.Count() != battleVideosIds.Count())
             {
                 return Json(new { Success = false, Message = "You haven't watched all videos" });
             }
@@ -1080,14 +1086,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     //is this a paid battle, if it is, then user must pay first before proceeding
                     if (videoBattle.IsVotingPayable)
                     {
-                        var voterPass = GetPurchasedVoterPass();
-
-                        if (voterPass == null)
+                        if (VoterPassOrderId == 0)
                         {
                             //not paid yet...return an error to pay
                             return Json(new { Success = false, Message = "No voterpass purchased" });
                         }
-
+                        var voterPassOrder = _voterPassService.GetVoterPassOrder(VoterPassOrderId);
+                        //did the current customer place this order?
+                        if (voterPassOrder == null || voterPassOrder.CustomerId != _workContext.CurrentCustomer.Id)
+                        {
+                            //not paid yet...return an error to pay
+                            return Json(new { Success = false, Message = "Invalid voter pass id" });
+                        }
+                        
+                        //so let's mark this voter pass as used
+                        _voterPassService.MarkVoterPassUsed(VoterPassOrderId);
+                       
                     }
 
                     //user can vote now. let's create a new vote
@@ -1104,11 +1118,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
                 return Json(new { Success = true });
             }
-            else
-            {
-                return Json(new { Success = false, Message = "Closed For Voting" });
-            }
-
+            return Json(new { Success = false, Message = "Closed For Voting" });
         }
 
         [HttpPost]
@@ -1233,17 +1243,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
             return maxSeconds;
         }
-
-
-        GiftCard GetPurchasedVoterPass()
-        {
-            var orderItems = _orderService.GetAllOrderItems(null, _workContext.CurrentCustomer.Id, null, null, OrderStatus.Complete,
-                 PaymentStatus.Paid, null, false);
-
-            var availableGiftCards = orderItems.Where(x => x.Product.Sku == MobSocialConstant.VideoBattleVoterPassSKU).SelectMany(x => x.AssociatedGiftCards);
-            return availableGiftCards.FirstOrDefault(x => x.IsGiftCardValid());
-        }
-
         
         #endregion
     }

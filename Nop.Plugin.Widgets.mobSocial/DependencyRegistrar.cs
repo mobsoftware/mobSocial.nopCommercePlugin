@@ -54,6 +54,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<OAuthService>().As<IOAuthService>().InstancePerRequest();
 
             builder.RegisterType<MobSecurityService>().As<IMobSecurityService>().InstancePerRequest();
+            builder.RegisterType<PaymentProcessingService>().As<IPaymentProcessingService>().InstancePerRequest();
+            builder.RegisterType<VoterPassService>().As<IVoterPassService>().InstancePerRequest();
 
             // Override any NopCommerce Services below:
             builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();

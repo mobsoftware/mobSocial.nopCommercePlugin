@@ -30,8 +30,8 @@
            .error(Error);
     }
 
-    this.VoteBattle = function (VideoBattleId, ParticipantId, VoteValue, Success, Error) {
-        $http.post("/VideoBattles/VoteBattle", { VideoBattleId: VideoBattleId, ParticipantId: ParticipantId, VoteValue: VoteValue })
+    this.VoteBattle = function (VideoBattleId, ParticipantId, VoteValue, VoterPassOrderId, Success, Error) {
+        $http.post("/VideoBattles/VoteBattle", { VideoBattleId: VideoBattleId, ParticipantId: ParticipantId, VoteValue: VoteValue, VoterPassOrderId: VoterPassOrderId })
            .success(Success)
            .error(Error);
     }

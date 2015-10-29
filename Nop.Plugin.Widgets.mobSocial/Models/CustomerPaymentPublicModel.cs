@@ -9,10 +9,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public CustomerPaymentPublicModel()
         {
             CustomerPaymentMethods = new List<SelectListItem>();
+            CustomerPendingOrders = new List<SelectListItem>();
         }
 
         public IList<SelectListItem> CustomerPaymentMethods { get; set; }
 
+        public IList<SelectListItem> CustomerPendingOrders { get; set; }
+
+        public decimal MinimumPaymentAmount { get; set; }
+
+        public bool IsAmountVariable { get; set; }
 
     }
 }

@@ -23,31 +23,44 @@ namespace Nop.Plugin.Widgets.MobSocial.Helpers
         public static bool IsCardNumberValid(string cardNumber)
         {
             //Luhn's test
-
-            //Clean the card number- remove dashes and spaces
-            cardNumber = cardNumber.Replace("-", "").Replace(" ", "");
-
-            //Convert card number into digits array
-            var digits = new int[cardNumber.Length];
-            for (var len = 0; len < cardNumber.Length; len++)
+            try
             {
-                digits[len] = Int32.Parse(cardNumber.Substring(len, 1));
-            }
+                //Clean the card number- remove dashes and spaces
+                cardNumber = cardNumber.Replace("-", "").Replace(" ", "");
 
-            var sum = 0;
-            for (var i = digits.Length - 1; i >= 0; i -= 2)
-            {
-                var curDigit = digits[i];
-                curDigit *= 2;
-                if (curDigit > 9)
+                //Convert card number into digits array
+                var digits = new int[cardNumber.Length];
+                for (var len = 0; len < cardNumber.Length; len++)
                 {
-                    curDigit -= 9;
+                    digits[len] = Int32.Parse(cardNumber.Substring(len, 1));
                 }
-                sum += curDigit;
-            }
 
-            //If Mod 10 equals 0, the number is good and this will return true
-            return sum % 10 == 0;
+                var sum = 0;
+                var isEven = false;
+                for (var i = digits.Length - 1; i >= 0; i -= 1)
+                {
+                    var curDigit = digits[i];
+                    if (isEven)
+                    {
+                        curDigit *= 2;
+
+                    }
+                    if (curDigit > 9)
+                    {
+                        curDigit -= 9;
+                    }
+                    isEven = !isEven;
+                    sum += curDigit;
+                }
+
+                //If Mod 10 equals 0, the number is good and this will return true
+                return sum % 10 == 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+           
         }
 
         private const string cardRegex = @"^(?:(?<Visa>4\\d{3})|(?<MasterCard>5[1-5]\\d{2})|(?<Discover>6011)|(?<DinersClub>(?:3[68]\\d{2})|(?:30[0-5]\\d))|(?<Amex>3[47]\\d{2}))([ -]?)(?(DinersClub)(?:\\d{6}\\1\\d{4})|(?(Amex)(?:\\d{6}\\1\\d{5})|(?:\\d{4}\\1\\d{4}\\1\\d{4})))$";
@@ -87,6 +100,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Helpers
                 // card types as it pertains to your application)
                 return null;
             }
+        }
+
+        public static string StripCharacters(string CardNumber)
+        {
+            var strippedCardNumber =  CardNumber.Trim().Replace("-", "");
+            return strippedCardNumber;
+        }
+        public static string MaskCardNumber(string CardNumber)
+        {
+            //find last 4 digits
+            string lastFour = CardNumber.Substring(CardNumber.Length - 4);
+            return string.Concat("xxxx-xxxx-xxxx-", lastFour);
         }
     }
 }

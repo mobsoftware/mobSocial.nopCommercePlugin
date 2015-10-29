@@ -14,6 +14,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         {
             Property(x => x.CardIssuerType);
             Property(x => x.CardNumber);
+            Property(x => x.CardNumberMasked);
             Property(x => x.CustomerId);
             Property(x => x.ExpireMonth);
             Property(x => x.ExpireYear);

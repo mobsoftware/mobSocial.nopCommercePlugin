@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Nop.Plugin.Widgets.MobSocial.Constants;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
@@ -28,19 +30,36 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             return sBuilder.ToString();
         }
 
-        public string Encrypt(string PlainText, string Key)
+        public string GetSavedEncryptionKey()
+        {
+            var key = ConfigurationManager.AppSettings.Get(MobSocialConstant.EncryptionKeyName);
+            if (key == null)
+            {
+                key = MobSocialConstant.EncryptionKeyDefault;
+            }
+            return key;
+        }
+
+        public string GetSavedSalt()
+        {
+            return MobSocialConstant.EncryptionSalt;
+        }
+
+        public string Encrypt(string PlainText, string Key, string Salt)
         {
             if (string.IsNullOrEmpty(PlainText))
                 return string.Empty;
             //let's md5 the key itself.
             var md5 = MD5.Create();
             Key = this.GetMd5Hash(md5, Key);
+            Salt = this.GetMd5Hash(md5, Salt);
 
             string cipherText;
             var rijndael = new RijndaelManaged() {
                 Key = Encoding.UTF8.GetBytes(Key),
                 Mode = CipherMode.CBC,
                 BlockSize = 128,
+                IV = Encoding.UTF8.GetBytes(Salt.ToCharArray(), 0, 16)
             };
             ICryptoTransform encryptor = rijndael.CreateEncryptor(rijndael.Key, rijndael.IV);
 
@@ -59,7 +78,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             return cipherText;
         }
 
-        public string Decrypt(string CipherText, string Key)
+        public string Decrypt(string CipherText, string Key, string Salt)
         {
             if (string.IsNullOrEmpty(CipherText))
                 return string.Empty;
@@ -67,13 +86,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             //let's md5 the key itself.
             var md5 = MD5.Create();
             Key = this.GetMd5Hash(md5, Key);
+            Salt = this.GetMd5Hash(md5, Salt);
 
             string plainText;
             byte[] cipherArray = Convert.FromBase64String(CipherText);
             var rijndael = new RijndaelManaged() {
                 Key = Encoding.UTF8.GetBytes(Key),
                 Mode = CipherMode.CBC,
-                BlockSize = 128
+                BlockSize = 128,
+                IV = Encoding.UTF8.GetBytes(Salt.ToCharArray(), 0, 16)
             };
             ICryptoTransform decryptor = rijndael.CreateDecryptor(rijndael.Key, rijndael.IV);
 

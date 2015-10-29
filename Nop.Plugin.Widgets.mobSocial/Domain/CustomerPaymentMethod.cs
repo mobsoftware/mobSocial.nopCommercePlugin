@@ -16,6 +16,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public string CardNumber { get; set; }
 
+        public string CardNumberMasked { get; set; }
+
         public string NameOnCard { get; set; }
 
         public string ExpireMonth { get; set; }

@@ -8,8 +8,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 {
     public interface IMobSecurityService
     {
-        string Encrypt(string PlainText, string Key);
+        string GetSavedEncryptionKey();
 
-        string Decrypt(string CipherText, string Key);
+        string GetSavedSalt();
+
+        string Encrypt(string PlainText, string Key, string Salt);
+
+        string Decrypt(string CipherText, string Key, string Salt);
     }
 }

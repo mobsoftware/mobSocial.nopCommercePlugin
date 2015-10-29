@@ -48,11 +48,14 @@
     <Compile Include="Core\FeatureToggle.cs" />
     <Compile Include="Data\CustomerPaymentMethodMap.cs" />
     <Compile Include="Data\VideoBattlePrizeMap.cs" />
+    <Compile Include="Data\VoterPassMap.cs" />
     <Compile Include="Data\WatchedVideoMap.cs" />
     <Compile Include="Domain\CustomerPaymentMethod.cs" />
     <Compile Include="Domain\VideoBattlePrize.cs" />
+    <Compile Include="Domain\VoterPass.cs" />
     <Compile Include="Enums\BattleType.cs" />
     <Compile Include="Enums\PaymentMethodType.cs" />
+    <Compile Include="Enums\VoterPassStatus.cs" />
     <Compile Include="Helpers\CardHelper.cs" />
     <Compile Include="Models\CustomerPaymentPublicModel.cs" />
     <Compile Include="Models\CustomerPaymentRequestModel.cs" />
@@ -99,6 +102,7 @@
     <Compile Include="Services\IVideoBattleVideoService.cs" />
     <Compile Include="Services\IVideoBattleVoteService.cs" />
     <Compile Include="Services\IVideoGenreService.cs" />
+    <Compile Include="Services\IVoterPassService.cs" />
     <Compile Include="Services\IWatchedVideoService.cs" />
     <Compile Include="Services\MobSecurityService.cs" />
     <Compile Include="Services\MusicApiCredentials.cs" />
@@ -285,12 +289,15 @@
     <Compile Include="Models\VideoParticipantPublicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
+    <Compile Include="Services\VoterPassService.cs" />
     <Compile Include="Services\WatchedVideoService.cs" />
     <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
     <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
-    <None Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml" />
+    <Content Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />

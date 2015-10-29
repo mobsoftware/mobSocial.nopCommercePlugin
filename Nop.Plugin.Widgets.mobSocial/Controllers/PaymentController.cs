@@ -7,6 +7,7 @@ using Nop.Core;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
+using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Widgets.MobSocial.Constants;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
@@ -22,6 +23,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     public class PaymentController : BasePublicController
     {
+        private readonly IWebHelper _webHelper;
         private readonly IProductService _productService;
         private readonly ICustomerService _customerService;
         private readonly ICustomerPaymentMethodService _paymentMethodService;
@@ -32,9 +34,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IGiftCardService _giftCardService;
         private readonly IOrderService _orderService;
         private readonly IVideoBattleService _videoBattleService;
+        private readonly IVoterPassService _voterPassService;
         private readonly mobSocialSettings _mobSocialSettings;
 
         public PaymentController(IWorkContext workContext,
+         IWebHelper webHelper,
          IStoreContext storeContext,
          ICustomerService customerService,
          IProductService productService,
@@ -44,6 +48,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          IMobSecurityService mobSecurityService,
          IPaymentProcessingService paymentProcessingService,
          IVideoBattleService videoBattleService,
+         IVoterPassService voterPassService,
          mobSocialSettings mobSocialSettings)
         {
             _workContext = workContext;
@@ -56,30 +61,48 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mobSecurityService = mobSecurityService;
             _paymentProcessingService = paymentProcessingService;
             _videoBattleService = videoBattleService;
+            _voterPassService = voterPassService;
             _mobSocialSettings = mobSocialSettings;
+            _webHelper = webHelper;
         }
 
-        [ChildActionOnly]
         public ActionResult PaymentFormPopup(int BattleId, BattleType BattleType)
         {
-            //let's get the payment methods for the logged in user
-            var paymentMethods = _paymentMethodService.GetCustomerPaymentMethods(_workContext.CurrentCustomer.Id);
 
             //TODO: Remove comment when picture battles are ready
             var battle = _videoBattleService.GetById(BattleId); // Model.BattleType == BattleType.Video ? _videoBattleService.GetById(Model.BattleId) : null;
 
             var model = new CustomerPaymentPublicModel();
+            model.IsAmountVariable = battle.CanVoterIncreaseVotingCharge;
+            model.MinimumPaymentAmount = battle.MinimumVotingCharge;
 
+            //also check if there are any paid orders which haven't been used for voting yet?
+            var passes = _voterPassService.GetPurchasedVoterPasses(_workContext.CurrentCustomer.Id, VoterPassStatus.NotUsed);
+            var orders = passes.Count > 0 ? _orderService.GetOrdersByIds(passes.Select(x => x.VoterPassOrderId).ToArray()) : null;
+
+            if (orders != null)
+            {
+                foreach (var order in orders)
+                {
+                    model.CustomerPendingOrders.Add(new SelectListItem() {
+                        Text = "Order#" + order.Id + " (" + order.OrderTotal + ")",
+                        Value = order.Id.ToString()
+                    });
+                }
+            }
+
+            //let's get the payment methods for the logged in user
+            var paymentMethods = _paymentMethodService.GetCustomerPaymentMethods(_workContext.CurrentCustomer.Id);
             foreach (var pm in paymentMethods)
             {
                 model.CustomerPaymentMethods.Add(new SelectListItem()
                 {
-                    Text = pm.NameOnCard,
+                    Text = pm.NameOnCard + " (" + pm.CardNumberMasked + ")",
                     Value = pm.Id.ToString()
                 });
             }
             //battle should not be complete before payment form can be opened
-            return battle.VideoBattleStatus == VideoBattleStatus.Complete ? null : View("mobSocial/Payment/PaymentFormPopup", model);
+            return battle.VideoBattleStatus == VideoBattleStatus.Complete ? null : PartialView("mobSocial/Payment/PaymentFormPopup", model);
         }
 
         [Authorize]
@@ -93,7 +116,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 paymentMethod = new CustomerPaymentMethod() {
                     CustomerId = _workContext.CurrentCustomer.Id,
-                    IsVerified = false
+                    IsVerified = false,
+                    PaymentMethod = Model.CustomerPaymentRequest.PaymentMethod
 
                 };
 
@@ -103,14 +127,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     case PaymentMethodType.DebitCard:
                         //if it's a card, it should be valid. why send to payment processor if basic checks fail?
 
-                        var cardNumber = Model.CustomerPaymentRequest.CardNumber;
+                        var cardNumber = CardHelper.StripCharacters(Model.CustomerPaymentRequest.CardNumber);
                         //let's validate the card for level 1 check (luhn's test) first before storing
                         var isCardValid = CardHelper.IsCardNumberValid(cardNumber);
-
+                        
                         if (isCardValid)
                         {
-                            var key = ConfigurationManager.AppSettings.Get(MobSocialConstant.EncryptionKeyName);
-                            cardNumber = _mobSecurityService.Encrypt(cardNumber, key); //encrypt the card info
+                            var cardIssuer = CardHelper.GetCardTypeFromNumber(cardNumber);
+                            var cardNumberMasked = CardHelper.MaskCardNumber(cardNumber);
+
+                            var key = _mobSecurityService.GetSavedEncryptionKey();
+                            var salt = _mobSecurityService.GetSavedSalt();
+                            cardNumber = _mobSecurityService.Encrypt(cardNumber, key, salt); //encrypt the card info
 
                             //fine if the card is valid, but is the card number already in our record, then not possible to save the same again
                             if (_paymentMethodService.DoesCardNumberExist(cardNumber))
@@ -120,8 +148,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             //all good so far, but payment method will still be non-verified till first transaction is done.
                            
                             paymentMethod.CardNumber = cardNumber;
+                            paymentMethod.CardNumberMasked = cardNumberMasked;
                             paymentMethod.ExpireMonth = Model.CustomerPaymentRequest.ExpireMonth;
                             paymentMethod.ExpireYear = Model.CustomerPaymentRequest.ExpireYear;
+                            paymentMethod.NameOnCard = Model.CustomerPaymentRequest.NameOnCard;
+                            paymentMethod.CardIssuerType = cardIssuer.ToString().ToLower();
+                            paymentMethod.DateCreated = DateTime.UtcNow;
+                            paymentMethod.DateUpdated = DateTime.UtcNow;
                         }
                         else
                         {
@@ -156,7 +189,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //we need to make sure that purchase amount is at least as minimum as battle
             //TODO: Remove comment when picture battles are ready
             var battle = _videoBattleService.GetById(Model.BattleId); // Model.BattleType == BattleType.Video ? _videoBattleService.GetById(Model.BattleId) : null;
-            if (Model.VotingAmount < battle.MinimumVotingCharge)
+            if (Model.Amount < battle.MinimumVotingCharge)
             {
                 return Json(new { Success = false, Message = "Payment amount is less than minimum voting amount" });
             }
@@ -164,88 +197,21 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var paymentResponse = _paymentProcessingService.ProcessPayment(_workContext.CurrentCustomer, paymentMethod);
             if (paymentResponse.Success)
             {
-                //let's verify the payment method first
-                paymentMethod.IsVerified = true;
-                _paymentMethodService.Update(paymentMethod);
-
-                //first we'll create an order, let's first get the associated product for voter pass
-                var voterPass = GetVoterPassProduct(Model.BattleType);
-                var giftCard = new GiftCard()
+                //let's verify the payment method first if it's not
+                if (!paymentMethod.IsVerified)
                 {
-                   Amount = Model.VotingAmount,
-                   GiftCardType = voterPass.GiftCardType,
-                   IsGiftCardActivated = true,
-                   IsRecipientNotified = true,
-                   CreatedOnUtc = DateTime.UtcNow,
-                   GiftCardCouponCode = _giftCardService.GenerateGiftCardCode()
-                };
-                _giftCardService.InsertGiftCard(giftCard);
+                    paymentMethod.IsVerified = true;
+                    _paymentMethodService.Update(paymentMethod);
+                }
+
+                //let's create voter pass
+                var voterPassId = _voterPassService.CreateVoterPass(Model.BattleType, Model.BattleId, paymentResponse, paymentMethod, Model.Amount);
                 
-                               
-                //place an order on user's behalf for this order
-                var order = new Order()
-                {
-                    CreatedOnUtc = DateTime.UtcNow,
-                    CustomerId = _workContext.CurrentCustomer.Id,
-                    StoreId = _storeContext.CurrentStore.Id,
-                    BillingAddress = _workContext.CurrentCustomer.BillingAddress,
-                    AuthorizationTransactionCode = paymentResponse.AuthorizationTransactionCode,
-                    AuthorizationTransactionId = paymentResponse.AuthorizationTransactionId,
-                    AuthorizationTransactionResult = paymentResponse.AuthorizationTransactionResult,
-                    CustomerIp = Request.UserHostAddress,
-                    OrderStatus = OrderStatus.Complete,
-                    OrderGuid = Guid.NewGuid()
-                };
-                var orderItem = new OrderItem()
-                {
-                    OrderItemGuid = Guid.NewGuid(),
-                    ProductId = voterPass.Id,
-                    UnitPriceExclTax = giftCard.Amount,
-                    UnitPriceInclTax = giftCard.Amount,
-                    PriceInclTax = giftCard.Amount,
-                    PriceExclTax = giftCard.Amount,
-
-                };
-                orderItem.AssociatedGiftCards.Add(giftCard);
-                order.OrderItems.Add(orderItem);
-                //save the order now
-                _orderService.InsertOrder(order);
-                return Json(new {Success = true});
-
-
+                return Json(new {Success = true, VoterPassId = voterPassId});
             }
-            return Json(new { Success = false, Errors = paymentResponse.Errors });
-
+            return Json(new { Success = false, Message = "Payment failed", Errors = paymentResponse.Errors });
+            
         }
-
-        #region helpers
-
-        Product GetVoterPassProduct(BattleType BattleType)
-        {
-            var voterPass = _productService.GetProductBySku(BattleType == BattleType.Video ? MobSocialConstant.VideoBattleVoterPassSKU : MobSocialConstant.PictureBattleVoterPassSKU);
-            if (voterPass == null)
-            {
-                //the product doesn't exist...so let's create the product first
-                voterPass = new Product() {
-                    Name = "Voter Pass for " + BattleType.ToString(),
-                    Sku = BattleType == BattleType.Video ? MobSocialConstant.VideoBattleVoterPassSKU : MobSocialConstant.PictureBattleVoterPassSKU,
-                    VisibleIndividually = false,
-                    IsShipEnabled = false,
-                    IsDownload = false,
-                    IsGiftCard = true,
-                    GiftCardType = GiftCardType.Virtual,
-                    CustomerEntersPrice = true,
-                    MinimumCustomerEnteredPrice = _mobSocialSettings.DefaultVotingChargeForPaidVoting,
-                    MaximumCustomerEnteredPrice = decimal.MaxValue, //will the customer pay more than this?
-                    Price = _mobSocialSettings.DefaultVotingChargeForPaidVoting,
-                    AllowCustomerReviews = false,
-                };
-                _productService.InsertProduct(voterPass);
-            }
-
-            return voterPass;
-        }
-
-        #endregion
+      
     }
 }
