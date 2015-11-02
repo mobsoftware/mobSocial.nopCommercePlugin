@@ -954,6 +954,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     return Json(new {
                         Success = true,
                         VideoPath = savePath,
+                        ThumbnailPath = videoBattleVideo.ThumbnailPath,
                         MimeType = videoBattleVideo.MimeType,
                         ParticipantId = videoBattleParticipant != null ? videoBattleParticipant.ParticipantId : _workContext.CurrentCustomer.Id
                     });

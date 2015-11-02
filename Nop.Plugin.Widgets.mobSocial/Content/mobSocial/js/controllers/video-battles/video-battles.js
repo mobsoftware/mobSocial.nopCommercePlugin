@@ -96,15 +96,19 @@ app.controller("VideoBattleEditorController", [
 		$scope.SavePrize = function (prize) {
 			VideoBattleService.SavePrize(prize, function (response) {
 				if (response.Success) {
-					prize.Id = response.Id;
-				}
-				//success
-			}, function () {
-				//error
-				alert("An error occured while saving prize");
-			});
-		}
-		$scope.DeletePrize = function (prize) {
+	                prize.Id = response.Id;
+	                prize.Saved = true;
+	            } else {
+	                if (response.Message)
+	                    alert(response.Message);
+	            }
+	            //success
+	        }, function () {
+	            //error
+	            alert("An error occured while saving prize");
+	        });
+	    }
+	    $scope.DeletePrize = function (prize) {
 
 			var removed = true;
 			if (prize.Id != 0) {
@@ -188,111 +192,111 @@ app.controller("VideoBattlePageController", [
 		    PaymentProcessSuccess: false,
             Response: null
 		};
-		
 
 
 
-		//for rendering html for description
-		$scope.renderHtml = function (html_code) {
-			return $sce.trustAsHtml(html_code);
-		};
 
-		//autoplay by default
-		$scope.Autoplay = true;
+	    //for rendering html for description
+	    $scope.renderHtml = function (html_code) {
+	        return $sce.trustAsHtml(html_code);
+	    };
 
-		//constructor...huh...yes
-		$scope.init = function (model) {
+	    //autoplay by default
+	    $scope.Autoplay = true;
 
-			//initialize the battle
-			$scope.VideoBattle = model;
-			//cookie to store the videos already watched
-			$scope.CookieName = "watchedVideo[" + $scope.VideoBattle.Id + "][" + $scope.VideoBattle.LoggedInUserId + "]";
-			//currently visible page. initialize to zero
-			$scope.VisiblePage = 0;
-			//total count to be shown per page
-			$scope.VisiblePerPage = 10;
-			//the participants which are visible for current page
-			$scope.VisibleParticipants = [];
+	    //constructor...huh...yes
+	    $scope.init = function (model) {
 
-			//setup sources for each video
-			for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
-				var participant = $scope.VideoBattle.Participants[i];
-				participant.VideoSource = [];
-				if (participant.VideoPath !== null) {
+	        //initialize the battle
+	        $scope.VideoBattle = model;
+	        //cookie to store the videos already watched
+	        $scope.CookieName = "watchedVideo[" + $scope.VideoBattle.Id + "][" + $scope.VideoBattle.LoggedInUserId + "]";
+	        //currently visible page. initialize to zero
+	        $scope.VisiblePage = 0;
+	        //total count to be shown per page
+	        $scope.VisiblePerPage = 10;
+	        //the participants which are visible for current page
+	        $scope.VisibleParticipants = [];
 
-					participant.VideoSource.push(
+	        //setup sources for each video
+	        for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
+	            var participant = $scope.VideoBattle.Participants[i];
+	            participant.VideoSource = [];
+	            if (participant.VideoPath !== null) {
+
+	                participant.VideoSource.push(
 						{ src: $sce.trustAsResourceUrl(participant.VideoPath.replace("~", rootUrl)), type: participant.MimeType }
 					);
-				}
-				if (participant.ThumbnailPath == null || participant.ThumbnailPath === "") {
-					participant.ThumbnailPath = defaultPoster;
-				} else {
-					//make the url absolute for the thumbnail of video
-					participant.ThumbnailPath = participant.ThumbnailPath.replace("~", rootUrl);
-				}
-				if (participant.CurrentUserVote != null) {
-					participant.VideoWatched = true;
-					$scope.GlobalVotingStatus = true;
-				}
+	            }
+	            if (participant.ThumbnailPath == null || participant.ThumbnailPath === "") {
+	                participant.ThumbnailPath = defaultPoster;
+	            } else {
+	                //make the url absolute for the thumbnail of video
+	                participant.ThumbnailPath = participant.ThumbnailPath.replace("~", rootUrl);
+	            }
+	            if (participant.CurrentUserVote != null) {
+	                participant.VideoWatched = true;
+	                $scope.GlobalVotingStatus = true;
+	            }
 
-				//an extra object as well
-				participant.extras = {};
-				participant.adextras = false;
-			}//end of loop
-
-
-
-			//randomly select any participant to include extra data
-			//TODO: select participant using some algorithm
-
-			//setup a timeout to check if the ajax request is complete for ad loading or not
-			var doFallbackTimeout = 10; //seconds
-			var ajaxNotComplete = setInterval(function () {
-				if (window["mobads_video_inline"] == null) { //why not $window injection? TODO:
-					doFallbackTimeout -= 0.5; //half a second reduced in each iteration
-					if (doFallbackTimeout > 0) {
-						return;
-					}
-					//it's been 10 seconds and we don't have any ads yet, let's put a fallback
-					window["mobads_video_inline"] = get_video_ad(); //function defined dynamically. in Mobads public
-				}
-
-				//clear now
-				clearInterval(ajaxNotComplete);
-
-				var randomPartIndex = Math.floor(Math.random() * ($scope.VideoBattle.Participants.length));
-
-				if (randomPartIndex < $scope.VideoBattle.Participants.length) {
-					if (typeof window["mobads_video_inline"] == "object") {
-						$scope._video_inline_data = window["mobads_video_inline"];
-					} else {
-						eval("$scope._video_inline_data = " + window["mobads_video_inline"]);
-					}
-
-					$scope.ExtraData = $scope._video_inline_data;
-					var participant = $scope.VideoBattle.Participants[randomPartIndex];
-					//assign temporarily to another variable because otherwise it'll start immediately
-					participant.adextras = $scope.ExtraData;
-
-				}
-			}, 500);
+	            //an extra object as well
+	            participant.extras = {};
+	            participant.adextras = false;
+	        }//end of loop
 
 
-			$scope.CheckVotingEligibility();
 
-			//load the data initially
-			$scope.LoadNextPage();
+	        //randomly select any participant to include extra data
+	        //TODO: select participant using some algorithm
 
-			//also setup a scroller so that next page is loaded as soon as load more comes into view
-			//jquery dependency
-			jQuery(window).scroll(function () {
-				if (isScrolledIntoView(".pagination-load-more")) {
+	        //setup a timeout to check if the ajax request is complete for ad loading or not
+	        var doFallbackTimeout = 10; //seconds
+	        var ajaxNotComplete = setInterval(function () {
+	            if (window["mobads_video_inline"] == null) { //why not $window injection? TODO:
+	                doFallbackTimeout -= 0.5; //half a second reduced in each iteration
+	                if (doFallbackTimeout > 0) {
+	                    return;
+	                }
+	                //it's been 10 seconds and we don't have any ads yet, let's put a fallback
+	                window["mobads_video_inline"] = get_video_ad(); //function defined dynamically. in Mobads public
+	            }
 
-					$scope.LoadNextPage();
-					$scope.$apply();
-				}
-			});
-		};
+	            //clear now
+	            clearInterval(ajaxNotComplete);
+
+	            var randomPartIndex = Math.floor(Math.random() * ($scope.VideoBattle.Participants.length));
+
+	            if (randomPartIndex < $scope.VideoBattle.Participants.length) {
+	                if (typeof window["mobads_video_inline"] == "object") {
+	                    $scope._video_inline_data = window["mobads_video_inline"];
+	                } else {
+	                    eval("$scope._video_inline_data = " + window["mobads_video_inline"]);
+	                }
+
+	                $scope.ExtraData = $scope._video_inline_data;
+	                var participant = $scope.VideoBattle.Participants[randomPartIndex];
+	                //assign temporarily to another variable because otherwise it'll start immediately
+	                participant.adextras = $scope.ExtraData;
+
+	            }
+	        }, 500);
+
+
+	        $scope.CheckVotingEligibility();
+
+	        //load the data initially
+	        $scope.LoadNextPage();
+
+	        //also setup a scroller so that next page is loaded as soon as load more comes into view
+	        //jquery dependency
+	        jQuery(window).scroll(function () {
+	            if (isScrolledIntoView(".pagination-load-more")) {
+
+	                $scope.LoadNextPage();
+	                $scope.$apply();
+	            }
+	        });
+	    };
 
 		$scope.LoadNextPage = function () {
 
@@ -460,188 +464,189 @@ app.controller("VideoBattlePageController", [
 			    }
 			    
 
-			    $scope.PaymentProcessMessage = "You are voting for " + $scope.ProposedParticipant.ParticipantName;
 
-                //show popup form for payment
-			    $scope.RequestPaymentPopupForm(VideoBattleId, 1/*video battle type = 1*/);
+	            $scope.PaymentProcessMessage = "You are voting for " + $scope.ProposedParticipant.ParticipantName;
 
-				//now wait till payment is done
-			    $scope.PaymentProcessInfo.PaymentProgressChecker = $interval(function () {
-			        if (!$scope.PaymentProcessInfo.PaymentProcessComplete || $scope.PaymentProcessInfo.PaymentProcessCancelled) {
-						return;//not done yet
-					}
+	            //show popup form for payment
+	            $scope.RequestPaymentPopupForm(VideoBattleId, 1/*video battle type = 1*/);
 
-					if ($scope.PaymentProcessInfo.PaymentProcessSuccess) {
-					    $scope.VoterPass.ShowPaymentPopup = false;
-					    //so now complete the voting because payment has been done
-					    completeVoting($scope.PaymentProcessInfo.Response.VoterPassId);
-					}
+	            //now wait till payment is done
+	            $scope.PaymentProcessInfo.PaymentProgressChecker = $interval(function () {
+	                if (!$scope.PaymentProcessInfo.PaymentProcessComplete || $scope.PaymentProcessInfo.PaymentProcessCancelled) {
+	                    return;//not done yet
+	                }
 
-					$interval.cancel($scope.PaymentProcessInfo.PaymentProgressChecker);
-				}, 500);
+	                if ($scope.PaymentProcessInfo.PaymentProcessSuccess) {
+	                    $scope.VoterPass.ShowPaymentPopup = false;
+	                    //so now complete the voting because payment has been done
+	                    completeVoting($scope.PaymentProcessInfo.Response.VoterPassId);
+	                }
 
-			} else {
-				completeVoting();
-			}
+	                $interval.cancel($scope.PaymentProcessInfo.PaymentProgressChecker);
+	            }, 500);
 
-		}
+	        } else {
+	            completeVoting();
+	        }
 
-		$scope.RequestPaymentPopupForm = function (BattleId, BattleType) {
-		    //payment needs to be done, show the payment popup
-		    $scope.VoterPass.ShowPaymentPopup = true;
-		    var popuparea = "#payment-form-popup-area";
-		    jQuery(popuparea).html("");
-		    PaymentService.PaymentFormPopup(BattleId, BattleType, function(response) {
-                
-                jQuery(popuparea).html(response);
+	    }
 
-                $compile(jQuery(popuparea))($scope);
+	    $scope.RequestPaymentPopupForm = function (BattleId, BattleType) {
+	        //payment needs to be done, show the payment popup
+	        $scope.VoterPass.ShowPaymentPopup = true;
+	        var popuparea = "#payment-form-popup-area";
+	        jQuery(popuparea).html("");
+	        PaymentService.PaymentFormPopup(BattleId, BattleType, function (response) {
 
-		        
-            });
-        };
-		
-		$scope.StartPaymentProcess = function (VoterPassId) {
-		  
-		    if (VoterPassId) {
-		        //because the customer already has a voter pass, why not use it if he wants to...
-                //just fake the process of payment and everything else should work
-		        $scope.PaymentProcessInfo.PaymentProcessComplete = true;
-		        $scope.PaymentProcessInfo.PaymentProcessSuccess = true;
-                $scope.PaymentProcessInfo.Response = {
-                    VoterPassId: VoterPassId
-                };
-                return;
+	            jQuery(popuparea).html(response);
 
-		    }
-
-            //remove previous invalidation for card number
-		    $scope.createPaymentForm.cardNumber.$setValidity("invalid_number", true);
-
-		    if ($scope.VoterPass.CustomerPaymentMethodId == 0 && !$scope.createPaymentForm.$valid)
-				return;
-
-		    $scope.PaymentProcessInfo.PaymentProcessComplete = false;
-			
-			if ($scope.VoterPass.CustomerPaymentMethodId == 0) {
-				//it's a new card so let's validate first
-			  
-				if (!isValidCreditCard($scope.VoterPass.CustomerPaymentRequest.CardNumber)) {
-					$scope.createPaymentForm.cardNumber.$setValidity("invalid_number", false);
-					return;
-				}
-				
-			}
-
-			$scope.VoterPass.BattleId = $scope.VideoBattle.Id;
-			$scope.VoterPass.BattleType = 1;//video battle
-			$scope.VoterPass.PurchasingInProgress = true;
-
-		    //also we won't be sending the voter pass id information because user didn't opt to pay by that
-		    $scope.VoterPass.VoterPassId = 0;
-		    //let's submit form information to server
-			PaymentService.PurchaseVoterPass($scope.VoterPass, function (response) {
-			    //set response status
-			    if (response.Success) {
-			        $scope.PaymentProcessInfo.Response = response;
-			    } else {
-                    //some error occured while processing payment, let the user know that
-			        $scope.PaymentProcessMessage = response.Message;
-			    }
-			    $scope.PaymentProcessInfo.PaymentProcessComplete = true;
-			    $scope.PaymentProcessInfo.PaymentProcessSuccess = response.Success;
-
-			}, function () {
-			    $scope.PaymentProcessInfo.PaymentProcessComplete = true;
-
-			});
-
-		}
-		//stop payment explicit
-		$scope.StopPaymentProcess = function() {
-		    $scope.PaymentProcessInfo.PaymentProcessCancelled = true;
-			$scope.VoterPass.ShowPaymentPopup = false;
-		}
+	            $compile(jQuery(popuparea))($scope);
 
 
-		$scope.processing = false;
-		$scope.searchAPI = function (userInputString, timeoutPromise) {
-			return VideoBattleService.searchAPI(userInputString, timeoutPromise);
-		}
+	        });
+	    };
 
-		$scope.challengees = [];
-		$scope.CustomerSelected = function (callbackObject) {
-			$scope.challengees.push(callbackObject.originalObject);
-			$scope.$broadcast('angucomplete-alt:clearInput', 'customer-autocomplete');
-		}
+	    $scope.StartPaymentProcess = function (VoterPassId) {
 
-		$scope.RemoveChallengee = function (Id) {
-			//remove the manager from the array
-			for (var i = 0; i < $scope.challengees.length; i++) {
-				var mgr = $scope.challengees[i];
-				if (mgr.Id === Id) {
-					$scope.challengees.splice(i, 1);
-					break;
-				}
-			}
-		}
+	        if (VoterPassId) {
+	            //because the customer already has a voter pass, why not use it if he wants to...
+	            //just fake the process of payment and everything else should work
+	            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
+	            $scope.PaymentProcessInfo.PaymentProcessSuccess = true;
+	            $scope.PaymentProcessInfo.Response = {
+	                VoterPassId: VoterPassId
+	            };
+	            return;
 
-		$scope.invited = false;
-		$scope.InviteParticipants = function () {
-			var participantIds = [];
-			for (var i = 0; i < $scope.challengees.length; i++) {
-				participantIds.push($scope.challengees[i].Id);
-			}
-			$scope.processing = true;
-			VideoBattleService.InviteParticipants($scope.VideoBattle.Id,
+	        }
+
+	        //remove previous invalidation for card number
+	        $scope.createPaymentForm.cardNumber.$setValidity("invalid_number", true);
+
+	        if ($scope.VoterPass.CustomerPaymentMethodId == 0 && !$scope.createPaymentForm.$valid)
+	            return;
+
+	        $scope.PaymentProcessInfo.PaymentProcessComplete = false;
+
+	        if ($scope.VoterPass.CustomerPaymentMethodId == 0) {
+	            //it's a new card so let's validate first
+
+	            if (!isValidCreditCard($scope.VoterPass.CustomerPaymentRequest.CardNumber)) {
+	                $scope.createPaymentForm.cardNumber.$setValidity("invalid_number", false);
+	                return;
+	            }
+
+	        }
+
+	        $scope.VoterPass.BattleId = $scope.VideoBattle.Id;
+	        $scope.VoterPass.BattleType = 1;//video battle
+	        $scope.VoterPass.PurchasingInProgress = true;
+
+	        //also we won't be sending the voter pass id information because user didn't opt to pay by that
+	        $scope.VoterPass.VoterPassId = 0;
+	        //let's submit form information to server
+	        PaymentService.PurchaseVoterPass($scope.VoterPass, function (response) {
+	            //set response status
+	            if (response.Success) {
+	                $scope.PaymentProcessInfo.Response = response;
+	            } else {
+	                //some error occured while processing payment, let the user know that
+	                $scope.PaymentProcessMessage = response.Message;
+	            }
+	            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
+	            $scope.PaymentProcessInfo.PaymentProcessSuccess = response.Success;
+
+	        }, function () {
+	            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
+
+	        });
+
+	    }
+	    //stop payment explicit
+	    $scope.StopPaymentProcess = function () {
+	        $scope.PaymentProcessInfo.PaymentProcessCancelled = true;
+	        $scope.VoterPass.ShowPaymentPopup = false;
+	    }
+
+
+	    $scope.processing = false;
+	    $scope.searchAPI = function (userInputString, timeoutPromise) {
+	        return VideoBattleService.searchAPI(userInputString, timeoutPromise);
+	    }
+
+	    $scope.challengees = [];
+	    $scope.CustomerSelected = function (callbackObject) {
+	        $scope.challengees.push(callbackObject.originalObject);
+	        $scope.$broadcast('angucomplete-alt:clearInput', 'customer-autocomplete');
+	    }
+
+	    $scope.RemoveChallengee = function (Id) {
+	        //remove the manager from the array
+	        for (var i = 0; i < $scope.challengees.length; i++) {
+	            var mgr = $scope.challengees[i];
+	            if (mgr.Id === Id) {
+	                $scope.challengees.splice(i, 1);
+	                break;
+	            }
+	        }
+	    }
+
+	    $scope.invited = false;
+	    $scope.InviteParticipants = function () {
+	        var participantIds = [];
+	        for (var i = 0; i < $scope.challengees.length; i++) {
+	            participantIds.push($scope.challengees[i].Id);
+	        }
+	        $scope.processing = true;
+	        VideoBattleService.InviteParticipants($scope.VideoBattle.Id,
 				participantIds,
 				function (data) { //success
-					$scope.processing = false;
-					$scope.invited = true;
-					//clear the challengees
-					$scope.challengees.splice(0, $scope.challengees.length);
+				    $scope.processing = false;
+				    $scope.invited = true;
+				    //clear the challengees
+				    $scope.challengees.splice(0, $scope.challengees.length);
 
 				}, function () { //error
-					$scope.processing = false;
-					alert("Error occured");
+				    $scope.processing = false;
+				    alert("Error occured");
 				});
-		};
+	    };
 
-		$scope.joinBattleProcessed = false;
-		$scope.JoinBattle = function () {
-			VideoBattleService.JoinBattle($scope.VideoBattle.Id,
+	    $scope.joinBattleProcessed = false;
+	    $scope.JoinBattle = function () {
+	        VideoBattleService.JoinBattle($scope.VideoBattle.Id,
 			 function (data) { //success
-				 if (data.Success) {
-					 $scope.joinBattleProcessed = true;
+			     if (data.Success) {
+			         $scope.joinBattleProcessed = true;
 
-				 } else {
-					 alert(data.Message);
-				 }
+			     } else {
+			         alert(data.Message);
+			     }
 
 			 }, function () { //error
-				 alert("Error occured");
+			     alert("Error occured");
 			 });
-		};
+	    };
 
-		$scope.InviteVoters = function () {
-			var participantIds = [];
-			for (var i = 0; i < $scope.challengees.length; i++) {
-				participantIds.push($scope.challengees[i].Id);
-			}
-			$scope.processing = true;
-			VideoBattleService.InviteVoters($scope.VideoBattle.Id,
+	    $scope.InviteVoters = function () {
+	        var participantIds = [];
+	        for (var i = 0; i < $scope.challengees.length; i++) {
+	            participantIds.push($scope.challengees[i].Id);
+	        }
+	        $scope.processing = true;
+	        VideoBattleService.InviteVoters($scope.VideoBattle.Id,
 				participantIds,
 				function (data) { //success
-					$scope.processing = false;
-					$scope.invited = true;
-					//clear the challengees
-					$scope.challengees.splice(0, $scope.challengees.length);
+				    $scope.processing = false;
+				    $scope.invited = true;
+				    //clear the challengees
+				    $scope.challengees.splice(0, $scope.challengees.length);
 
 				}, function () { //error
-					$scope.processing = false;
-					alert("Error occured");
+				    $scope.processing = false;
+				    alert("Error occured");
 				});
-		};
+	    };
 
 		$scope.processingAcceptOrDenyInvite = false;
 		$scope.inviteAccepted = false;
@@ -678,30 +683,39 @@ app.controller("VideoBattlePageController", [
 				var participant = $scope.VideoBattle.Participants[i];
 				if (participant.Id === data.ParticipantId) {
 
-					participant.VideoSource = [];
-					participant.VideoSource.push(
-					   { src: $sce.trustAsResourceUrl(data.VideoPath.replace("~", rootUrl)), type: data.MimeType }
-					);
-					break;
-				}
-			}
-		};
+	                participant.ThumbnailPath = data.ThumbnailPath;
+	                participant.VideoSource = [];
+	                participant.VideoPath = data.VideoPath.replace("~", rootUrl);
 
-		//marks a participant video watched and sends it to server
-		$scope.SetVideoWatched = function (participant) {
-			if (participant.VideoWatched) {
-				//we already have that video watched in our cookie, so no need to do anything
-				//user might have watched a video more than once
-				return;
-			}
-			//send the watched video information to server
-			VideoBattleService.MarkVideoWatched($scope.VideoBattle.Id, participant.Id, participant.VideoId, function () {
-				//success
-			}, function () {
-				//failure
-			});
-			participant.VideoWatched = true;
-		}
+	                participant.VideoSource.push(
+                        { src: $sce.trustAsResourceUrl(data.VideoPath.replace("~", rootUrl)), type: data.MimeType }
+                    );
+	                
+
+	                participant.API.changeSource(participant.VideoSource);
+	                //due to some weird bug videogular doesn't update source and we'll have to manually update sources
+	                participant.API.sources = participant.VideoSource;
+
+	                break;
+	            }
+	        }
+	    };
+
+	    //marks a participant video watched and sends it to server
+	    $scope.SetVideoWatched = function (participant) {
+	        if (participant.VideoWatched) {
+	            //we already have that video watched in our cookie, so no need to do anything
+	            //user might have watched a video more than once
+	            return;
+	        }
+	        //send the watched video information to server
+	        VideoBattleService.MarkVideoWatched($scope.VideoBattle.Id, participant.Id, participant.VideoId, function () {
+	            //success
+	        }, function () {
+	            //failure
+	        });
+	        participant.VideoWatched = true;
+	    }
 
 	}
 ]);
