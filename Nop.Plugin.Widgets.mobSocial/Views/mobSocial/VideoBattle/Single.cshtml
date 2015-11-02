@@ -14,7 +14,7 @@
 
     var json = Json.Encode(Model);
     var videouploadUrl = "/VideoBattles/UploadVideo/";
-    var timerFormat = "{{ddays}} day{{daysS}} {{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
+    var timerFormat = "";
     var maxSeconds = 0;
     var maxUnit = "";
     var now = DateTime.UtcNow;
@@ -32,22 +32,39 @@
 
     maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
 
+    var timeFormatParts = new string[]
+    {
+        "{{days}} day{{daysS}}",
+        "{{hours}} hour{{hoursS}}",
+        "{{minutes}} minute{{minutesS}}",
+        "{{seconds > 0 ? seconds + ' second' + secondsS : ''}}" //to hide 0 seconds
+    };
+
     if (diffDate.TotalDays > 1)
     {
         maxUnit = "day";
+        //keep all parts intact
     }
     else if (diffDate.TotalHours > 1)
     {
         maxUnit = "hour";
+        timeFormatParts[0] = ""; //strip days part
     }
     else if (diffDate.TotalMinutes > 1)
     {
-        maxUnit = "minute";
+        maxUnit = "minute"; //strip days and hour
+        timeFormatParts[0] = "";
+        timeFormatParts[1] = "";
     }
     else
     {
         maxUnit = "second";
+        timeFormatParts[0] = "";
+        timeFormatParts[1] = "";
+        timeFormatParts[2] = "";
     }
+
+    timerFormat = string.Join(" ", timeFormatParts);
 
 }
 
@@ -163,7 +180,7 @@
         else if (Model.VideoBattleType == VideoBattleType.Open)
         {
             //anybody can invite so battle should only be pending for invitations to work
-            showInvitationBox = showInvitationBox && (Model.VideoBattleStatus == VideoBattleStatus.Pending);
+            showInvitationBox = showInvitationBox && (Model.VideoBattleStatus == VideoBattleStatus.Pending || Model.VideoBattleStatus == VideoBattleStatus.Open);
         }
 
     }
@@ -182,8 +199,8 @@
                                   placeholder="Type name of a friend or a user..."
                                   selected-object="CustomerSelected"
                                   remote-api-handler="searchAPI"
-                                  minlength="1"
-                                  pause="100"
+                                  minlength="3"
+                                  pause="300"
                                   image-field="PictureUrl"
                                   title-field="DisplayName"
                                   input-class="form-control form-control-small"></angucomplete-alt>
