@@ -133,7 +133,8 @@
                                             <input ng-model="prize.PrizeOther" type="text" />
                                         </div>
                                         <div class="buttons text-center">
-                                            <input type="button" class="c2a-maroon" ng-click="SavePrize(prize)" value="Save Prize" />
+                                            <div ng-show="prize.Saved">Prize saved successfully!</div>
+                                            <input type="button" class="c2a-maroon" ng-click="SavePrize(prize)" value="Save Prize"/>
                                             <a ng-click="DeletePrize(prize)">Remove</a>
                                         </div>
                                     </div>
