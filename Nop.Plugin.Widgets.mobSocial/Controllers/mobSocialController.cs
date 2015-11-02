@@ -180,20 +180,47 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         
-        public ActionResult SearchTermAutoComplete(string term)
+        public ActionResult SearchTermAutoComplete(string term, bool excludeLoggedInUser = true)
         {
             if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.PeopleSearchTermMinimumLength)
                 return Json(new object());
 
             _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults = 10;
 
-            var customers = _customerService.GetAllCustomers(null, null, 0, 0, null, null, null, term, null, 0, 0,
-                                                            null, null, null, false, null, 0, _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults);
+            //TODO: Find a better way to implement this search
             
-            
+            //a search term may be first name or last name...nopcommerce puts an 'and' filter rather than an 'or' filter.
+            //we therefore need to first get all the customers and then filter them according to name
+
+            var customerRole = _customerService.GetCustomerRoleBySystemName("Registered");
+            var customerRoleIds = new int[1];
+            if (customerRole != null)
+                customerRoleIds[0] = customerRole.Id;
+
+            var customers = _customerService.GetAllCustomers(null, null, 0, 0, customerRoleIds).ToList();
+
+            customers = excludeLoggedInUser ? customers.Where(x => x.Id != _workContext.CurrentCustomer.Id).ToList() : customers;
+            var count = _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults;
+            term = term.ToLowerInvariant();
+            var filteredCustomers = new List<Customer>();
+            customers.ForEach(x =>
+            {
+
+                if (filteredCustomers.Count >= _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults) return;
+                
+                var firstName = x.GetAttribute<string>(SystemCustomerAttributeNames.FirstName).ToLowerInvariant();
+                var lastName = x.GetAttribute<string>(SystemCustomerAttributeNames.LastName).ToLowerInvariant();
+                
+                if (!firstName.Contains(term) && !lastName.Contains(term)) return;
+                
+                count--;
+                filteredCustomers.Add(x);
+            });
+           
+           
             var models = new List<object>();
 
-            foreach (var c in customers)
+            foreach (var c in filteredCustomers)
             {
 
                 models.Add(new

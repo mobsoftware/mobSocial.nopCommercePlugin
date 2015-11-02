@@ -671,7 +671,8 @@ table.table-form .control-group{
 }
 .angucomplete-dropdown {
 	overflow-y: auto;
-	max-height: 200px; 
+	max-height: 200px;
+    text-align: left;
 }
  .editable-click {
 		color: black;
