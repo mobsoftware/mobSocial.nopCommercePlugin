@@ -204,7 +204,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     return Json(new { Success = false, Message = "Unauthorized" });
                 }
             }
-            return Json(new { Success = true, RedirectTo = Url.RouteUrl("VideoBattlePage", new { SeName = videoBattle.GetSeName(0) }) });
+            return Json(new { Success = true, RedirectTo = Url.RouteUrl("VideoBattlePage", new { SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false) }) });
         }
 
         [HttpPost]
@@ -594,8 +594,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         Id = videoBattle.Id,
                         IsEditable = CanEdit(videoBattle),
                         ChallengerName = challenger.GetFullName(),
-                        ChallengerUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = challenger.GetSeName(0) }),
-                        VideoBattleUrl = Url.RouteUrl("VideoBattlePage", new {SeName = videoBattle.GetSeName(0)}),
+                        ChallengerUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = challenger.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
+                        VideoBattleUrl = Url.RouteUrl("VideoBattlePage", new { SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
                         RemainingSeconds = GetRemainingSeconds(videoBattle)
                     });
                 }
