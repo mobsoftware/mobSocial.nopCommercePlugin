@@ -15,6 +15,7 @@ using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using System.Web;
 using Mob.Core;
+using Mob.Core.Services;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
@@ -96,13 +97,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return InvokeHttp404();
 
             var model = new VideoBattleModel() {
-                AcceptanceLastDate = VideoBattleId == 0 ? DateTime.UtcNow.AddDays(10) : videoBattle.AcceptanceLastDate.ToLocalTime(), //10 days
+                VotingStartDate = VideoBattleId == 0 ? DateTime.UtcNow.AddDays(10) : videoBattle.VotingStartDate.ToLocalTime(), //10 days
                 ChallengerId = videoBattle.ChallengerId,
                 DateCreated = VideoBattleId == 0 ? DateTime.UtcNow : videoBattle.DateCreated,
                 DateUpdated = VideoBattleId == 0 ? DateTime.UtcNow : videoBattle.DateUpdated,
-                VotingLastDate = VideoBattleId == 0 ? DateTime.UtcNow.AddDays(20) : videoBattle.VotingLastDate.ToLocalTime(), //20 days
+                VotingEndDate = VideoBattleId == 0 ? DateTime.UtcNow.AddDays(20) : videoBattle.VotingEndDate.ToLocalTime(), //20 days
                 Description = videoBattle.Description,
-                Title = videoBattle.Title,
+                Name = videoBattle.Name,
                 Id = videoBattle.Id,
                 VideoBattleStatus = videoBattle.VideoBattleStatus,
                 VideoBattleType = VideoBattleId == 0 ? VideoBattleType.InviteOnly : videoBattle.VideoBattleType,
@@ -165,7 +166,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             videoBattle.VideoBattleStatus = VideoBattleStatus.Pending;
             videoBattle.VideoBattleType = Model.VideoBattleType;
             videoBattle.VideoBattleVoteType = VideoBattleVoteType.SelectOneWinner; // Model.VideoBattleVoteType;
-            videoBattle.Title = Model.Title;
+            videoBattle.Name = Model.Name;
             videoBattle.MaximumParticipantCount = (int)Math.Round((decimal)Model.MaximumParticipantCount);
             videoBattle.IsVotingPayable = Model.MinimumVotingCharge > 0 && Model.IsVotingPayable;
             videoBattle.CanVoterIncreaseVotingCharge = Model.CanVoterIncreaseVotingCharge;
@@ -176,14 +177,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             if (Model.Id == 0)
             {
-                videoBattle.AcceptanceLastDate = Model.AcceptanceLastDate.ToUniversalTime();
-                videoBattle.VotingLastDate = Model.VotingLastDate.ToUniversalTime();
+                videoBattle.VotingStartDate = Model.VotingStartDate.ToUniversalTime();
+                videoBattle.VotingEndDate = Model.VotingEndDate.ToUniversalTime();
                 _videoBattleService.Insert(videoBattle);
             }
             else
             {
                 //its an update...if there is any participant who has accepted the challenge then acceptance date and voting date can only be extended and not shrinked
-                if (Model.AcceptanceLastDate.ToUniversalTime() < videoBattle.AcceptanceLastDate || Model.VotingLastDate.ToUniversalTime() < videoBattle.VotingLastDate)
+                if (Model.VotingStartDate.ToUniversalTime() < videoBattle.VotingStartDate || Model.VotingEndDate.ToUniversalTime() < videoBattle.VotingEndDate)
                 {
                     //so this is the case. lets see if we have any participants who have accepted the challenge
                     var participants = _videoBattleParticipantService.GetVideoBattleParticipants(Model.Id,
@@ -194,8 +195,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         return Json(new { Success = false, Message = "Acceptance and Voting dates can only be extended now, because a participant has accepted the challenge" });
                     }
                 }
-                videoBattle.AcceptanceLastDate = Model.AcceptanceLastDate.ToUniversalTime();
-                videoBattle.VotingLastDate = Model.VotingLastDate.ToUniversalTime();
+                videoBattle.VotingStartDate = Model.VotingStartDate.ToUniversalTime();
+                videoBattle.VotingEndDate = Model.VotingEndDate.ToUniversalTime();
                 if (CanEdit(videoBattle))
                     _videoBattleService.Update(videoBattle);
                 else
@@ -203,7 +204,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     return Json(new { Success = false, Message = "Unauthorized" });
                 }
             }
-            return Json(new { Success = true, RedirectTo = Url.RouteUrl("VideoBattlePage", new { VideoBattleId = videoBattle.Id }) });
+            return Json(new { Success = true, RedirectTo = Url.RouteUrl("VideoBattlePage", new { SeName = videoBattle.GetSeName(0) }) });
         }
 
         [HttpPost]
@@ -320,20 +321,23 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
-        public ActionResult Index(int VideoBattleId, VideoViewMode ViewMode = VideoViewMode.Regular)
+        public ActionResult Index(string SeName, VideoViewMode ViewMode = VideoViewMode.Regular)
         {
-            var videoBattle = _videoBattleService.GetById(VideoBattleId);
+            
+           //let's get the video battle by it's slug
+            var videoBattle = _videoBattleService.GetBySeName(SeName);
 
             //does the video battle exist?
             if (videoBattle == null)
                 return InvokeHttp404();
 
+            var VideoBattleId = videoBattle.Id;
             IList<VideoBattleParticipant> participants = null;
 
             //it's quite possible that battle is about to open/close and we are waiting for scheduler to open/close the battle...we should lock it then
             //so that nobody can do anything with it now.
-            if ((videoBattle.AcceptanceLastDate <= DateTime.UtcNow && videoBattle.VideoBattleStatus == VideoBattleStatus.Pending) ||
-                (videoBattle.VotingLastDate <= DateTime.UtcNow && videoBattle.VideoBattleStatus == VideoBattleStatus.Open))
+            if ((videoBattle.VotingStartDate <= DateTime.UtcNow && videoBattle.VideoBattleStatus == VideoBattleStatus.Pending) ||
+                (videoBattle.VotingEndDate <= DateTime.UtcNow && videoBattle.VideoBattleStatus == VideoBattleStatus.Open))
             {
                 videoBattle.VideoBattleStatus = VideoBattleStatus.Locked;
                 _videoBattleService.Update(videoBattle);
@@ -385,10 +389,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             var model = new VideoBattlePublicModel {
-                Title = videoBattle.Title,
+                Name = videoBattle.Name,
                 Description = videoBattle.Description,
-                AcceptanceLastDate = videoBattle.AcceptanceLastDate,
-                VotingLastDate = videoBattle.VotingLastDate,
+                VotingStartDate = videoBattle.VotingStartDate,
+                VotingEndDate = videoBattle.VotingEndDate,
                 DateCreated = videoBattle.DateCreated,
                 DateUpdated = videoBattle.DateUpdated,
                 VideoBattleStatus = videoBattle.VideoBattleStatus,
@@ -578,10 +582,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     var challenger = _customerService.GetCustomerById(videoBattle.ChallengerId);
 
                     model.Add(new VideoBattlePublicModel() {
-                        Title = videoBattle.Title,
+                        Name = videoBattle.Name,
                         Description = videoBattle.Description,
-                        AcceptanceLastDate = videoBattle.AcceptanceLastDate,
-                        VotingLastDate = videoBattle.VotingLastDate,
+                        VotingStartDate = videoBattle.VotingStartDate,
+                        VotingEndDate = videoBattle.VotingEndDate,
                         DateCreated = videoBattle.DateCreated,
                         DateUpdated = videoBattle.DateUpdated,
                         VideoBattleStatus = videoBattle.VideoBattleStatus,
@@ -591,7 +595,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         IsEditable = CanEdit(videoBattle),
                         ChallengerName = challenger.GetFullName(),
                         ChallengerUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = challenger.GetSeName(0) }),
-                        VideoBattleUrl = Url.RouteUrl("VideoBattlePage", new { VideoBattleId = videoBattle.Id }),
+                        VideoBattleUrl = Url.RouteUrl("VideoBattlePage", new {SeName = videoBattle.GetSeName(0)}),
                         RemainingSeconds = GetRemainingSeconds(videoBattle)
                     });
                 }
@@ -608,49 +612,69 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult InviteParticipants(int VideoBattleId, IList<int> ParticipantIds)
+        public ActionResult InviteParticipants(int VideoBattleId, IList<int> ParticipantIds, IList<string> Emails)
         {
             //first check if it's a valid videobattle and the logged in user can actually invite
             var videoBattle = _videoBattleService.GetById(VideoBattleId);
             var model = new List<object>();
             if (CanInvite(videoBattle))
             {
-                foreach (var pi in ParticipantIds)
+                if (ParticipantIds != null)
                 {
-                    var status = _videoBattleParticipantService.GetParticipationStatus(VideoBattleId, pi);
-                    //only people who have not been challenged
-                    if (status == VideoBattleParticipantStatus.NotChallenged)
+                    foreach (var pi in ParticipantIds)
                     {
-                        var videoBattleParticipant = new VideoBattleParticipant() {
-                            ParticipantId = pi,
-                            ParticipantStatus = VideoBattleParticipantStatus.Challenged,
-                            VideoBattleId = VideoBattleId,
-                            LastUpdated = DateTime.UtcNow
-                        };
-                        _videoBattleParticipantService.Insert(videoBattleParticipant);
-                        model.Add(new {
-                            Success = true,
-                            ParticipantId = pi
-                        });
+                        var status = _videoBattleParticipantService.GetParticipationStatus(VideoBattleId, pi);
+                        //only people who have not been challenged
+                        if (status == VideoBattleParticipantStatus.NotChallenged)
+                        {
+                            var videoBattleParticipant = new VideoBattleParticipant() {
+                                ParticipantId = pi,
+                                ParticipantStatus = VideoBattleParticipantStatus.Challenged,
+                                VideoBattleId = VideoBattleId,
+                                LastUpdated = DateTime.UtcNow
+                            };
+                            _videoBattleParticipantService.Insert(videoBattleParticipant);
+                            model.Add(new {
+                                Success = true,
+                                ParticipantId = pi
+                            });
 
-                        //send email notification to the participant
-                        var challengee = _customerService.GetCustomerById(pi);
-                        _mobsocialMessageService.SendSomeoneChallengedYouForABattleNotification(
-                            _workContext.CurrentCustomer, challengee, videoBattle, _workContext.WorkingLanguage.Id,
-                            _storeContext.CurrentStore.Id);
-                    }
-                    else
-                    {
-                        model.Add(new {
-                            Success = false,
-                            ParticipantId = pi,
-                            Status = status
-                        });
+                            //send email notification to the participant
+                            var challengee = _customerService.GetCustomerById(pi);
+                            _mobsocialMessageService.SendSomeoneChallengedYouForABattleNotification(
+                                _workContext.CurrentCustomer, challengee, videoBattle, _workContext.WorkingLanguage.Id,
+                                _storeContext.CurrentStore.Id);
+                        }
+                        else
+                        {
+                            model.Add(new {
+                                Success = false,
+                                ParticipantId = pi,
+                                Status = status
+                            });
+                        }
                     }
                 }
 
+                if (Emails != null)
+                {
+                    //and direct email invites
+                    foreach (var email in Emails)
+                    {
+                        _mobsocialMessageService.SendSomeoneChallengedYouForABattleNotification(
+                            _workContext.CurrentCustomer, email, email, videoBattle, _workContext.WorkingLanguage.Id,
+                            _storeContext.CurrentStore.Id);
+
+                        model.Add(new {
+                            Success = true,
+                            Email = email,
+                        });
+
+                    }
+                }
+               
                 return Json(model);
-                ;
+                
             }
             return Json(new { Success = false, Message = "Unauthorized" });
             ;
@@ -756,7 +780,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //lets first check the battle for validations
 
             if (videoBattle.VideoBattleStatus != VideoBattleStatus.Pending
-                || videoBattle.AcceptanceLastDate < DateTime.UtcNow)
+                || videoBattle.VotingStartDate < DateTime.UtcNow)
             {
                 return Json(new { Success = false, Message = "Battle Closed Or Expired" });
             }
@@ -1124,7 +1148,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult InviteVoters(int VideoBattleId, IList<int> VoterIds)
+        public ActionResult InviteVoters(int VideoBattleId, IList<int> VoterIds, IList<string> Emails)
         {
             //first check if it's a valid videobattle and the logged in user can actually invite
             var videoBattle = _videoBattleService.GetById(VideoBattleId);
@@ -1137,40 +1161,59 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var model = new List<object>();
             if (CanInvite(videoBattle) || participants.Select(x => x.ParticipantId).Contains(_workContext.CurrentCustomer.Id))
             {
-                var votes = _videoBattleVoteService.GetVideoBattleVotes(VideoBattleId, null);
-
-                foreach (var vi in VoterIds)
+                if (VoterIds != null)
                 {
-                    var vote = votes.FirstOrDefault(x => x.UserId == vi);
-                    if (vote == null)
-                    {
-                        vote = new VideoBattleVote() {
-                            VideoBattleId = VideoBattleId,
-                            ParticipantId = _workContext.CurrentCustomer.Id,
-                            VoteStatus = VideoBattleVoteStatus.NotVoted,
-                            VoteValue = 0,
-                            UserId = vi
-                        };
-                        _videoBattleVoteService.Insert(vote);
+                    var votes = _videoBattleVoteService.GetVideoBattleVotes(VideoBattleId, null);
 
-                        //send the notification
-                        var receiver = _customerService.GetCustomerById(vi);
-                        _mobsocialMessageService.SendVotingReminderNotification(_workContext.CurrentCustomer, receiver,
-                            videoBattle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+                    foreach (var vi in VoterIds)
+                    {
+                        var vote = votes.FirstOrDefault(x => x.UserId == vi);
+                        if (vote == null)
+                        {
+                            vote = new VideoBattleVote() {
+                                VideoBattleId = VideoBattleId,
+                                ParticipantId = _workContext.CurrentCustomer.Id,
+                                VoteStatus = VideoBattleVoteStatus.NotVoted,
+                                VoteValue = 0,
+                                UserId = vi
+                            };
+                            _videoBattleVoteService.Insert(vote);
+
+                            //send the notification
+                            var receiver = _customerService.GetCustomerById(vi);
+                            _mobsocialMessageService.SendVotingReminderNotification(_workContext.CurrentCustomer, receiver,
+                                videoBattle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+                            model.Add(new {
+                                Success = true,
+                                VoterId = vi,
+                            });
+                        }
+                        else
+                        {
+                            model.Add(new {
+                                Success = false,
+                                VoterId = vi,
+                                Message = "Already invited"
+                            });
+                        }
+                    }
+                }
+
+                if (Emails != null)
+                {
+                    //and direct email invites
+                    foreach (var email in Emails)
+                    {
+                        _mobsocialMessageService.SendVotingReminderNotification(
+                            _workContext.CurrentCustomer, email, email, videoBattle, _workContext.WorkingLanguage.Id,
+                            _storeContext.CurrentStore.Id);
                         model.Add(new {
                             Success = true,
-                            VoterId = vi,
-                        });
-                    }
-                    else
-                    {
-                        model.Add(new {
-                            Success = false,
-                            VoterId = vi,
-                            Message = "Already invited"
+                            Email = email,
                         });
                     }
                 }
+                
 
                 return Json(model);
 
@@ -1232,13 +1275,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var now = DateTime.UtcNow;
             var endDate = DateTime.UtcNow;
 
-            if (VideoBattle.VideoBattleStatus == VideoBattleStatus.Pending && VideoBattle.AcceptanceLastDate > now)
+            if (VideoBattle.VideoBattleStatus == VideoBattleStatus.Pending && VideoBattle.VotingStartDate > now)
             {
-                endDate = VideoBattle.AcceptanceLastDate;
+                endDate = VideoBattle.VotingStartDate;
             }
             else if (VideoBattle.VideoBattleStatus == VideoBattleStatus.Open)
             {
-                endDate = VideoBattle.VotingLastDate;
+                endDate = VideoBattle.VotingEndDate;
             }
             var diffDate = endDate.Subtract(now);
             var maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);

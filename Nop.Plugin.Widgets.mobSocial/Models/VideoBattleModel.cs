@@ -18,7 +18,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         }
 
         [Required]
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         [AllowHtml]
         public string Description { get; set; }
@@ -30,9 +30,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         [Required]
         public int ChallengerId { get; set; }
 
-        public DateTime AcceptanceLastDate { get; set; }
+        public DateTime VotingStartDate { get; set; }
 
-        public DateTime VotingLastDate { get; set; }
+        public DateTime VotingEndDate { get; set; }
 
         public VideoBattleType VideoBattleType { get; set; }
 

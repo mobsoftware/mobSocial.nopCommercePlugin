@@ -262,6 +262,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         public int SendSomeoneChallengedYouForABattleNotification(Customer challenger, Customer challengee, VideoBattle videoBattle,
             int languageId, int storeId)
         {
+            return SendSomeoneChallengedYouForABattleNotification(challenger, challenger.Email,
+                challenger.GetFullName().ToTitleCase(), videoBattle, languageId, storeId);
+        }
+
+        public int SendSomeoneChallengedYouForABattleNotification(Customer challenger, string challengeeEmail, string challengeeName, VideoBattle videoBattle,
+            int languageId, int storeId)
+        {
             var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
 
             languageId = EnsureLanguageIsActive(languageId, store.Id);
@@ -277,7 +284,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             //tokens
             var tokens = new List<Token>
             {
-                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Title", videoBattle.Name, true),
                 new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
                 new Token("Challenger.Name", challenger.GetFullName() , true)
 
@@ -290,8 +297,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
 
 
-            var toEmail = challengee.Email;
-            var toName = challengee.GetFullName().ToTitleCase();
+            var toEmail = challengeeEmail;
+            var toName = challengeeName;
 
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
@@ -313,7 +320,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             //tokens
             var tokens = new List<Token>
             {
-                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Title", videoBattle.Name, true),
                 new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
 
             };
@@ -333,6 +340,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public int SendVotingReminderNotification(Customer sender, Customer receiver, VideoBattle videoBattle, int languageId, int storeId)
         {
+            return SendVotingReminderNotification(sender, receiver.Email, receiver.GetFullName().ToTitleCase(), videoBattle,
+                languageId, storeId);
+        }
+
+        public int SendVotingReminderNotification(Customer sender, string receiverEmail, string receiverName, VideoBattle videoBattle, int languageId,
+            int storeId)
+        {
             var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
 
             languageId = EnsureLanguageIsActive(languageId, store.Id);
@@ -348,7 +362,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             //tokens
             var tokens = new List<Token>
             {
-                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Title", videoBattle.Name, true),
                 new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
                 new Token("Inviter.Name", sender.GetFullName() , true)
 
@@ -361,8 +375,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
 
 
-            var toEmail = receiver.Email;
-            var toName = receiver.GetFullName().ToTitleCase();
+            var toEmail = receiverEmail;
+            var toName = receiverName;
 
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
@@ -601,7 +615,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             //tokens
             var tokens = new List<Token>
             {
-                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Title", videoBattle.Name, true),
                 new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
                 new Token("Challenger.Name", challengee.GetFullName() , true)
 
@@ -637,7 +651,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             //tokens
             var tokens = new List<Token>
             {
-                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Title", videoBattle.Name, true),
                 new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
                 new Token("Challenger.Name", challengee.GetFullName() , true)
 
@@ -674,7 +688,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             //tokens
             var tokens = new List<Token>
             {
-                new Token("VideoBattle.Title", videoBattle.Title, true),
+                new Token("VideoBattle.Title", videoBattle.Name, true),
                 new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
                 new Token("Challenger.Name", challengee.GetFullName() , true)
 

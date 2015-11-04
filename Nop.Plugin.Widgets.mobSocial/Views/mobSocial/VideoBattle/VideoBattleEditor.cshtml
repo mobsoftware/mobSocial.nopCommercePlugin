@@ -3,7 +3,7 @@
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
-    Html.AppendTitleParts(Model.Title);
+    Html.AppendTitleParts(Model.Name);
 
     Html.AppendMetaDescriptionParts(Model.Description);
     Html.AppendMetaKeywordParts(Model.Description);
@@ -29,9 +29,9 @@
                     <div>
                         <div class="form-fields">
                             <div class="inputs">
-                                <label for="title">Title <span class="required">*</span></label>
-                                <input type="text" name="title" id="title" data-ng-model="VideoBattle.Title" required />
-                                <span ng-show="createBattleForm.title.$invalid && createBattleForm.title.$dirty">Title is required</span>
+                                <label for="title">Name <span class="required">*</span></label>
+                                <input type="text" name="name" id="name" data-ng-model="VideoBattle.Name" required />
+                                <span ng-show="createBattleForm.name.$invalid && createBattleForm.name.$dirty">Name is required</span>
                             </div>
                             <div class="inputs">
                                 <label for="description">Description</label>
@@ -39,11 +39,11 @@
                             </div>
                             <div class="inputs">
                                 <label>Voting Start Date</label>
-                                <datetimepicker current-date="VideoBattle.AcceptanceLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+                                <datetimepicker current-date="VideoBattle.VotingStartDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
                             </div>
                             <div class="inputs">
-                                <label>Voting Last Date</label>
-                                <datetimepicker current-date="VideoBattle.VotingLastDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
+                                <label>Voting End Date</label>
+                                <datetimepicker current-date="VideoBattle.VotingEndDate" include-time="1" min-date="@(DateTime.UtcNow.ToString())"></datetimepicker>
                             </div>
                             <div class="inputs">
                                 <label class="control-label">Battle Type</label>

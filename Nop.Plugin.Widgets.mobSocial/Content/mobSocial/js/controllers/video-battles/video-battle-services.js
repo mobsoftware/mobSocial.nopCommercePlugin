@@ -18,8 +18,8 @@
         return $http.post('/MobSocial/SearchTermAutoComplete/', { term: userInputString }, { timeout: timeoutPromise });
     }
 
-    this.InviteParticipants = function(VideoBattleId, ParticipantIds, Success, Error) {
-        $http.post("/VideoBattles/InviteParticipants", {VideoBattleId: VideoBattleId, ParticipantIds: ParticipantIds})
+    this.InviteParticipants = function(VideoBattleId, ParticipantIds, Emails, Success, Error) {
+        $http.post("/VideoBattles/InviteParticipants", {VideoBattleId: VideoBattleId, ParticipantIds: ParticipantIds,Emails: Emails})
            .success(Success)
            .error(Error);
     }
@@ -42,8 +42,8 @@
            .error(Error);
     }
 
-    this.InviteVoters = function (VideoBattleId, ParticipantIds, Success, Error) {
-        $http.post("/VideoBattles/InviteVoters", { VideoBattleId: VideoBattleId, VoterIds: ParticipantIds })
+    this.InviteVoters = function (VideoBattleId, ParticipantIds,Emails, Success, Error) {
+        $http.post("/VideoBattles/InviteVoters", { VideoBattleId: VideoBattleId, VoterIds: ParticipantIds,Emails: Emails })
            .success(Success)
            .error(Error);
     }

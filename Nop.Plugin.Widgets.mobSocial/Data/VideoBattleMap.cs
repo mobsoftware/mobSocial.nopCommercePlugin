@@ -9,10 +9,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
         public VideoBattleMap()
         {
             Property(x => x.ChallengerId);
-            Property(x => x.Title);
+            Property(x => x.Name);
             Property(x => x.Description);
-            Property(x => x.AcceptanceLastDate).HasColumnType("datetime2");
-            Property(x => x.VotingLastDate).HasColumnType("datetime2");
+            Property(x => x.VotingStartDate).HasColumnType("datetime2");
+            Property(x => x.VotingEndDate).HasColumnType("datetime2");
 
             Property(x => x.VideoBattleType);
             Property(x => x.VideoBattleVoteType);

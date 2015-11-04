@@ -4,24 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Mob.Core;
 using Mob.Core.Domain;
 using Nop.Core;
+using Nop.Core.Domain.Seo;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class VideoBattle : BaseMobEntity
+    public class VideoBattle : BaseMobEntity, ISlugSupported, INameSupported
     {
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         [AllowHtml]
         public string Description { get; set; }
 
         public int ChallengerId { get; set; }
 
-        public DateTime AcceptanceLastDate { get; set; }
+        public DateTime VotingStartDate { get; set; }
 
-        public DateTime VotingLastDate { get; set; }
+        public DateTime VotingEndDate { get; set; }
 
         public VideoBattleType VideoBattleType { get; set; }
 

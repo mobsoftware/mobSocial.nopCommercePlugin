@@ -210,8 +210,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 
                 var firstName = x.GetAttribute<string>(SystemCustomerAttributeNames.FirstName).ToLowerInvariant();
                 var lastName = x.GetAttribute<string>(SystemCustomerAttributeNames.LastName).ToLowerInvariant();
-                
-                if (!firstName.Contains(term) && !lastName.Contains(term)) return;
+                var email = x.Email;
+                if (!firstName.Contains(term) && !lastName.Contains(term) && email != term) return;
                 
                 count--;
                 filteredCustomers.Add(x);

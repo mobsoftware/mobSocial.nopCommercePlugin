@@ -38,8 +38,8 @@ app.controller("VideoBattleEditorController", [
 			//date time handling for json date
 			$scope.VideoBattle.DateCreated = parseJsonDate(model.DateCreated);
 			$scope.VideoBattle.DateUpdated = parseJsonDate(model.DateUpdated);
-			$scope.VideoBattle.AcceptanceLastDate = parseJsonDate(model.AcceptanceLastDate);
-			$scope.VideoBattle.VotingLastDate = parseJsonDate(model.VotingLastDate);
+			$scope.VideoBattle.VotingStartDate = parseJsonDate(model.VotingStartDate);
+			$scope.VideoBattle.VotingEndDate = parseJsonDate(model.VotingEndDate);
 
 		};
 
@@ -53,7 +53,7 @@ app.controller("VideoBattleEditorController", [
 		$scope.SaveVideoBattle = function () {
 			if ($scope.FormValid) {
 				//check for dates
-				if ($scope.VideoBattle.VotingLastDate < $scope.VideoBattle.AcceptanceLastDate) {
+				if ($scope.VideoBattle.VotingEndDate < $scope.VideoBattle.VotingStartDate) {
 					alert("Voting Last Date must be greater than Voting Start Date");
 					return;
 				}
@@ -571,7 +571,14 @@ app.controller("VideoBattlePageController", [
 
 	    $scope.processing = false;
 	    $scope.searchAPI = function (userInputString, timeoutPromise) {
-	        return VideoBattleService.searchAPI(userInputString, timeoutPromise);
+	        var response = VideoBattleService.searchAPI(userInputString, timeoutPromise);
+	        response.success(function (res) {
+	            if (res.length == 0 && validateEmail(userInputString)) {
+                    //because the response is zero, let's see if it's an email, if it is, we can add it for direct email invitation
+	                res.push({ DisplayName: userInputString, Id: userInputString, EmailInvite: true });
+                }
+	        });
+	        return response;
 	    }
 
 	    $scope.challengees = [];
@@ -594,12 +601,17 @@ app.controller("VideoBattlePageController", [
 	    $scope.invited = false;
 	    $scope.InviteParticipants = function () {
 	        var participantIds = [];
+	        var emails = [];
 	        for (var i = 0; i < $scope.challengees.length; i++) {
-	            participantIds.push($scope.challengees[i].Id);
+	            if ($scope.challengees[i].EmailInvite)
+	                emails.push($scope.challengees[i].Id);
+                else
+	                participantIds.push($scope.challengees[i].Id);
 	        }
 	        $scope.processing = true;
 	        VideoBattleService.InviteParticipants($scope.VideoBattle.Id,
 				participantIds,
+                emails,
 				function (data) { //success
 				    $scope.processing = false;
 				    $scope.invited = true;
@@ -630,12 +642,17 @@ app.controller("VideoBattlePageController", [
 
 	    $scope.InviteVoters = function () {
 	        var participantIds = [];
+	        var emails = [];
 	        for (var i = 0; i < $scope.challengees.length; i++) {
-	            participantIds.push($scope.challengees[i].Id);
+	            if ($scope.challengees[i].EmailInvite)
+	                emails.push($scope.challengees[i].Id);
+	            else
+	                participantIds.push($scope.challengees[i].Id);
 	        }
 	        $scope.processing = true;
 	        VideoBattleService.InviteVoters($scope.VideoBattle.Id,
 				participantIds,
+                emails,
 				function (data) { //success
 				    $scope.processing = false;
 				    $scope.invited = true;

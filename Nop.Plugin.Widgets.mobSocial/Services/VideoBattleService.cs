@@ -101,19 +101,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             var videoBattles =
                 _videoBattleRepository.Table.Where(
                     x =>
-                        (x.AcceptanceLastDate <= now || x.VotingLastDate <= now) &&
+                        (x.VotingStartDate <= now || x.VotingEndDate <= now) &&
                         (x.VideoBattleStatus == VideoBattleStatus.Pending ||
                          x.VideoBattleStatus == VideoBattleStatus.Locked)).ToList();
 
             foreach (var battle in videoBattles)
             {
                 //do we need to open or complete the battle?
-                if (battle.VotingLastDate <= now)
+                if (battle.VotingEndDate <= now)
                 {
                     //lets complete the battle as it's more than voting last date
                     battle.VideoBattleStatus = VideoBattleStatus.Complete;
                 }
-                else if (battle.AcceptanceLastDate <= now)
+                else if (battle.VotingStartDate <= now)
                 {
                     //get participants of this battle
                     var participants = _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == battle.Id);

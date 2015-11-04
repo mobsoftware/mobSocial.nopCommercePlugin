@@ -5,7 +5,7 @@
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
-    Html.AppendTitleParts(Model.Title);
+    Html.AppendTitleParts(Model.Name);
 
     Html.AppendMetaDescriptionParts(Model.Description);
     Html.AppendMetaKeywordParts(Model.Description);
@@ -20,13 +20,13 @@
     var now = DateTime.UtcNow;
     var endDate = DateTime.UtcNow;
 
-    if (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.AcceptanceLastDate > now)
+    if (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.VotingStartDate > now)
     {
-        endDate = Model.AcceptanceLastDate;
+        endDate = Model.VotingStartDate;
     }
     else if (Model.VideoBattleStatus == VideoBattleStatus.Open)
     {
-        endDate = Model.VotingLastDate;
+        endDate = Model.VotingEndDate;
     }
     var diffDate = endDate.Subtract(now);
 
@@ -82,7 +82,7 @@
                 <span ng-switch-when="@((int) VideoBattleStatus.Closed)"><i class="fa  fa-flag-checkered" title="The battle is closed now."></i></span>
                 <span ng-switch-when="@((int) VideoBattleStatus.Complete)"><i class="fa fa-trophy" title="The battle is complete and we have a winner"></i></span>
             </span>
-       @Model.Title
+       @Model.Name
     </h1>
     @if (Model.IsEditable && Model.VideoBattleStatus == VideoBattleStatus.Pending)
     {
@@ -190,13 +190,13 @@
                             || (Model.VideoBattleStatus == VideoBattleStatus.Open) && (Model.IsEditable || Model.IsParticipant);
 
 
-        <div class="participant-box pending">
+        <div class="participant-box pending invitation-box">
 
             <div class="participant-name">Invite to @(isVoterInvite ? "Vote" : "Battle")</div>
             <div class="video-placeholder">
                 <i class="fa fa-plus-circle big"></i>
                 <angucomplete-alt id="customer-autocomplete"
-                                  placeholder="Type name of a friend or a user..."
+                                  placeholder="Type a name or an email"
                                   selected-object="CustomerSelected"
                                   remote-api-handler="searchAPI"
                                   minlength="3"
@@ -217,7 +217,24 @@
                     Successfully invited selected users to @(isVoterInvite ? "vote on this battle" : "battle").<br/> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
                 </div>
                 <div class="clearfix clear"></div><br/>
-                <button ng-if="!processing" ng-click="@(isVoterInvite ? "InviteVoters()" : "InviteParticipants()")">Invite Now</button>
+                <button ng-if="!processing && challengees.length > 0" ng-click="@(isVoterInvite ? "InviteVoters()" : "InviteParticipants()")">Invite Now</button>
+                <!--div>or send invitation on Facebook</!--div>
+
+                <div id="fb-root"></div>
+                <script>
+                    (function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1589296314681910";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+
+                  
+                </script>
+
+                <div class="fb-send" data-href="http://www.google.com"></div!-->
             </div>
         </div>
     }
