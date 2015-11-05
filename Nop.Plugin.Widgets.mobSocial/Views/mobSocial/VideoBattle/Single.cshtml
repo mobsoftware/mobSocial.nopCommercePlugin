@@ -1,7 +1,8 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+﻿@using Mob.Core.UI
+@using Nop.Core.Infrastructure
+@using Nop.Plugin.Widgets.MobSocial.Enums
 @using Nop.Plugin.Widgets.MobSocial.Models
 @model Nop.Plugin.Widgets.MobSocial.Models.VideoBattlePublicModel
-
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
@@ -9,9 +10,13 @@
 
     Html.AppendMetaDescriptionParts(Model.Description);
     Html.AppendMetaKeywordParts(Model.Description);
+
     @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
 
+    //set open graph tags
+    Html.SetOpenGraphTags(Model.Name, Model.Description, Model.VideoBattleUrl, "video", Model.VideoBattleFeaturedImageUrl);
 
+    var mobSocialSettings = EngineContext.Current.Resolve<Nop.Plugin.Widgets.MobSocial.mobSocialSettings>();
     var json = Json.Encode(Model);
     var videouploadUrl = "/VideoBattles/UploadVideo/";
     var timerFormat = "";
@@ -67,22 +72,20 @@
     timerFormat = string.Join(" ", timeFormatParts);
 
 }
-
-
 @Html.Widget("video_inline")
 
 <div class="battle-participants" ng-controller="VideoBattlePageController as controller" ng-init="init(@json)">
 
     <h1 class="battle-page-heading">
-       
-            <span ng-switch on="VideoBattle.VideoBattleStatus">
-                <span ng-switch-when="@((int) VideoBattleStatus.Pending)"><i class="fa fa-clock-o" title="The battle is open to join"></i></span>
-                <span ng-switch-when="@((int) VideoBattleStatus.Locked)"><i class="fa fa-lock" title="The battle is locked"></i></span>
-                <span ng-switch-when="@((int) VideoBattleStatus.Open)"><i class="fa fa-thumbs-o-up" title="The battle is open to vote. Watch all videos to vote."></i></span>
-                <span ng-switch-when="@((int) VideoBattleStatus.Closed)"><i class="fa  fa-flag-checkered" title="The battle is closed now."></i></span>
-                <span ng-switch-when="@((int) VideoBattleStatus.Complete)"><i class="fa fa-trophy" title="The battle is complete and we have a winner"></i></span>
-            </span>
-       @Model.Name
+
+        <span ng-switch on="VideoBattle.VideoBattleStatus">
+            <span ng-switch-when="@((int) VideoBattleStatus.Pending)"><i class="fa fa-clock-o" title="The battle is open to join"></i></span>
+            <span ng-switch-when="@((int) VideoBattleStatus.Locked)"><i class="fa fa-lock" title="The battle is locked"></i></span>
+            <span ng-switch-when="@((int) VideoBattleStatus.Open)"><i class="fa fa-thumbs-o-up" title="The battle is open to vote. Watch all videos to vote."></i></span>
+            <span ng-switch-when="@((int) VideoBattleStatus.Closed)"><i class="fa  fa-flag-checkered" title="The battle is closed now."></i></span>
+            <span ng-switch-when="@((int) VideoBattleStatus.Complete)"><i class="fa fa-trophy" title="The battle is complete and we have a winner"></i></span>
+        </span>
+        @Model.Name
     </h1>
     @if (Model.IsEditable && Model.VideoBattleStatus == VideoBattleStatus.Pending)
     {
@@ -110,22 +113,22 @@
             <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval=" 1000">@timerFormat</timer>
         </div>
     }
-  
+
     <div class="battle-description">
         <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
 
 
         @if (Model.VideoBattleStatus == VideoBattleStatus.Open)
         {
-            <br/>
-            <br/>
+            <br />
+            <br />
             <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
         }
     </div>
     @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
     {
         <div class="autoplay-video-battle-area">
-            <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="@Url.RouteUrl("VideoBattlePage", new { VideoBattleId = Model.Id, ViewMode = VideoViewMode.TheaterMode})"><i class="fa fa-television"></i> Enter Theater Mode</a>
+            <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay" /> Autoplay Videos</label> &middot; <a href="@Url.RouteUrl("VideoBattlePage", new { VideoBattleId = Model.Id, ViewMode = VideoViewMode.TheaterMode})"><i class="fa fa-television"></i> Enter Theater Mode</a>
         </div>
     }
     @{
@@ -138,7 +141,8 @@
 
                     if (Model.VideoBattleType == VideoBattleType.Open)
                     {
-                        <div ng-show="joinBattleProcessed"><i class="fa fa-check-circle"></i> You have successfully joined the battle. <a onclick="window.location.reload()">Refresh</a> page to upload video
+                        <div ng-show="joinBattleProcessed">
+                            <i class="fa fa-check-circle"></i> You have successfully joined the battle. <a onclick="window.location.reload()">Refresh</a> page to upload video
                         </div>
                         <a class="button-primary button-1 c2a-maroon" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Join Battle</a>
                     }
@@ -155,7 +159,7 @@
                 }
                 else
                 {
-                    <a class="button-primary button c2a-maroon" href="@Url.RouteUrl("login", new {ReturnUrl = Url.RouteUrl("VideoBattlePage", new {VideoBattleId = Model.Id})})">Join Battle</a>
+                    <a class="button-primary button c2a-maroon" href="@Url.RouteUrl("login", new {ReturnUrl = Model.VideoBattleUrl})">Join Battle</a>
 
                 }
             </div>
@@ -214,27 +218,16 @@
                 </div>
 
                 <div ng-if="invited" class="text-center">
-                    Successfully invited selected users to @(isVoterInvite ? "vote on this battle" : "battle").<br/> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
+                    Successfully invited selected users to @(isVoterInvite ? "vote on this battle" : "battle").<br /> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
                 </div>
-                <div class="clearfix clear"></div><br/>
+                <div class="clearfix clear"></div><br />
                 <button ng-if="!processing && challengees.length > 0" ng-click="@(isVoterInvite ? "InviteVoters()" : "InviteParticipants()")">Invite Now</button>
-                <!--div>or send invitation on Facebook</!--div>
-
-                <div id="fb-root"></div>
-                <script>
-                    (function(d, s, id) {
-                        var js, fjs = d.getElementsByTagName(s)[0];
-                        if (d.getElementById(id)) return;
-                        js = d.createElement(s);
-                        js.id = id;
-                        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1589296314681910";
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }(document, 'script', 'facebook-jssdk'));
-
-                  
-                </script>
-
-                <div class="fb-send" data-href="http://www.google.com"></div!-->
+                @if (mobSocialSettings.EnableFacebookInvite)
+                {
+                    <div>or send invitation on Facebook</div>
+                    <div class="fb-send" data-href="@Model.VideoBattleUrl"></div>
+                }
+               
             </div>
         </div>
     }
@@ -253,7 +246,6 @@
     }
 
 </div>
-
 
 <script type='text/javascript'>
     var googletag = googletag || {};

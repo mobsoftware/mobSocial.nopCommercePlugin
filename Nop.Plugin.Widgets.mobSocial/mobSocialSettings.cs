@@ -55,5 +55,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public decimal DefaultVotingChargeForPaidVoting { get; set; }
 
         public bool EnableAutomaticMigrations { get; set; }
+
+        public bool EnableFacebookInvite { get; set; }
     }
 }

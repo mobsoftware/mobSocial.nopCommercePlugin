@@ -66,6 +66,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public bool CanVoterIncreaseVotingCharge { get; set; }
 
-        public IList<VideoBattlePrizeModel> Prizes { get; set; } 
+        public IList<VideoBattlePrizeModel> Prizes { get; set; }
+
+        public string VideoBattleFeaturedImageUrl { get; set; }
     }
 }

@@ -519,6 +519,21 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.IsParticipant = model.Participants.Select(x => x.Id).Contains(_workContext.CurrentCustomer.Id);
             model.IsEditable = CanEdit(videoBattle);
             model.ViewMode = ViewMode;
+            model.VideoBattleUrl = _storeContext.CurrentStore.Url + Url.RouteUrl("VideoBattlePage",
+                new {SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)});
+
+            //the featured image will be used to display the image on social networks. depending on the status of battle, we either show a default image or 
+            //the image of the leader as the featured image 
+            model.VideoBattleFeaturedImageUrl = MobSocialConstant.VideoBattleFeaturedImageUrl;
+            if (model.VideoBattleStatus != VideoBattleStatus.Pending)
+            {
+                if (winnerOrLeader != null)
+                {
+                    model.VideoBattleFeaturedImageUrl = winnerOrLeader.ThumbnailPath;
+                }
+            }
+            //and because the image path starts with ~ (a relative path), we need to convert this to url based on store url
+            model.VideoBattleFeaturedImageUrl = model.VideoBattleFeaturedImageUrl.Replace("~", _storeContext.CurrentStore.Url);
 
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }

@@ -1,6 +1,9 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+﻿@using Mob.Core.UI
+@using Nop.Core.Infrastructure
+@using Nop.Plugin.Widgets.MobSocial
+@using Nop.Plugin.Widgets.MobSocial.Constants
 @{
-    
+
     //THIRD PARTY RESOURCES
 
     //font-awesome icons
@@ -11,16 +14,16 @@
 
     //jquery core
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery/jquery-1.11.min.js");
-    
+
     //jquery ui
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.min.css");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.structure.min.css");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui//jquery-ui.theme.min.css");
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui-1.11.min.js");
-    
+
     //cookie
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery.cookie/jquery.cookie.js");
-        
+
     //datepicker
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-datetimepicker/datetimepicker.css");
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-datetimepicker/datetimepicker.js");
@@ -29,32 +32,32 @@
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easy-responsive-tabs.css");
 
-   
+
     //x-editable
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/js/xeditable.min.js");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/css/xeditable.css");
-    
+
     //audio
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-audio/js/angular.audio.js");
-    
+
     //autocomplete
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.js");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.css");
-    
+
 
     //signalr
     //Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/RTCMultiConnection.js");
     //Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/jquery.signalR-1.2.2.min.js");
-   // Html.AddScriptParts("~/signalr/hubs");
-    
+    // Html.AddScriptParts("~/signalr/hubs");
+
     //file upload
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
-    
+
 
     //main app
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/mobSocial.js");
-    
-        
+
+
     //custom css
     Html.AddCssFileParts(MobSocialConstant.PluginContentPathInternal + "/css/mobSocial.css");
     Html.AddCssFileParts(MobSocialConstant.PluginContentPathInternal + "/css/mobSocial-custom.css");
@@ -62,11 +65,11 @@
     //services
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/services/song-service.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/services/dialogservice.js");
-    
+
     //filters'
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/filters/ms2timestr.js");
-    
-    
+
+
 
     //custom directives
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/contenteditable.directive.js");
@@ -78,15 +81,42 @@
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-live-video.directive.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/fileupload.directive.js");
 
-        
+
     //controllers
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/my-health.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-profile.js");
-    
+
 
     //common js
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/common.js");
     //Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mob-video.js");
 
-    
+
+    var mobSettings = EngineContext.Current.Resolve<mobSocialSettings>();
+
+}
+
+@if (mobSettings.EnableFacebookInvite)
+{
+    <!--og tags-->
+    <meta property="og:title" content="@Html.MobOpenGraphTitle()" />
+    <meta property="og:type" content="@Html.MobOpenGraphType()" />
+    <meta property="og:url" content="@Html.MobOpenGraphUrl()" />
+    <meta property="og:imageurl" content="@Html.MobOpenGraphImageUrl()" />
+    <meta property="og:description" content="@Html.MobOpenGraphDescription()" />
+
+    <!--fb registration-->
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=@mobSettings.FacebookWebsiteAppId";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+
+    </script>
 }
