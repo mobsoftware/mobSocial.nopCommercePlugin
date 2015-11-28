@@ -17,6 +17,7 @@ using System.Web;
 using Mob.Core;
 using Mob.Core.Services;
 using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Plugin.Widgets.MobSocial.Constants;
@@ -24,7 +25,9 @@ using Nop.Plugin.Widgets.MobSocial.Extensions;
 using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Catalog;
+using Nop.Services.Common;
 using Nop.Services.Customers;
+using Nop.Services.Media;
 using Nop.Services.Orders;
 using NReco.VideoConverter;
 
@@ -32,7 +35,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     public class VideoBattleController : BasePublicController
     {
-        
+
 
         private readonly IWorkContext _workContext;
         private readonly IStoreContext _storeContext;
@@ -47,6 +50,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IMobSocialMessageService _mobsocialMessageService;
         private readonly IWatchedVideoService _watchedVideoService;
         private readonly IVoterPassService _voterPassService;
+        private readonly IPictureService _pictureService;
+        private readonly MediaSettings _mediaSettings;
         private readonly mobSocialSettings _mobSocialSettings;
 
         #region ctor
@@ -65,6 +70,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          IMobSocialMessageService mobsocialMessageService,
          IWatchedVideoService watchedVideoService,
          IVoterPassService voterPassService,
+         IPictureService pictureService,
+         MediaSettings mediaSettings,
          mobSocialSettings mobSocialSettings)
         {
             _workContext = workContext;
@@ -81,6 +88,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _watchedVideoService = watchedVideoService;
             _voterPassService = voterPassService;
             _mobSocialSettings = mobSocialSettings;
+
+            _pictureService = pictureService;
+            _mediaSettings = mediaSettings;
 
         }
         #endregion
@@ -121,8 +131,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var prizes = _videoBattlePrizeService.GetBattlePrizes(model.Id);
                 foreach (var prize in prizes)
                 {
-                    model.Prizes.Add(new VideoBattlePrizeModel()
-                    {
+                    model.Prizes.Add(new VideoBattlePrizeModel() {
                         Id = prize.Id,
                         VideoBattleId = prize.VideoBattleId,
                         PrizeType = prize.PrizeType,
@@ -137,7 +146,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
 
             }
-            return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/VideoBattleEditor.cshtml", model);
+            return View("mobSocial/VideoBattle/VideoBattleEditor", model);
         }
 
         [HttpPost]
@@ -217,15 +226,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var videoBattle = _videoBattleService.GetById(Model.VideoBattleId);
             if (videoBattle == null || videoBattle.ChallengerId != _workContext.CurrentCustomer.Id)
             {
-                return Json(new { Success = false, Message = "Unauthorized" }); 
+                return Json(new { Success = false, Message = "Unauthorized" });
             }
 
             VideoBattlePrize prize = null;
             //let's check if the prize is being edited or added
             if (Model.Id == 0)
             {
-                prize = new VideoBattlePrize()
-                {
+                prize = new VideoBattlePrize() {
                     DateCreated = DateTime.UtcNow
                 };
             }
@@ -244,14 +252,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             prize.WinnerPosition = Model.WinnerPosition;
             prize.PrizeType = Model.PrizeType;
             prize.VideoBattleId = Model.VideoBattleId;
-            
-            if(prize.Id == 0)
+
+            if (prize.Id == 0)
                 _videoBattlePrizeService.Insert(prize);
             else
                 _videoBattlePrizeService.Update(prize);
 
-            return Json(new { Success = true, Id = prize.Id }); 
-            
+            return Json(new { Success = true, Id = prize.Id });
+
         }
 
         [HttpPost]
@@ -273,7 +281,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 return Json(new { Success = false, Message = "Prize doesn't exist" });
             }
             _videoBattlePrizeService.Delete(prize);
-            return Json(new { Success = true, Id = prize.Id }); 
+            return Json(new { Success = true, Id = prize.Id });
         }
 
         [HttpPost]
@@ -313,18 +321,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     _videoBattleParticipantService.Delete(participant);
                 }
-                
+
             }
             //now delete video battle
             _videoBattleService.Delete(videoBattle);
-            return Json(new {Success = true});
+            return Json(new { Success = true });
 
         }
 
         public ActionResult Index(string SeName, VideoViewMode ViewMode = VideoViewMode.Regular)
         {
-            
-           //let's get the video battle by it's slug
+
+            //let's get the video battle by it's slug
             var videoBattle = _videoBattleService.GetBySeName(SeName);
 
             //does the video battle exist?
@@ -344,8 +352,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             //only open video battles can be viewed or ofcourse if I am the owner, I should be able to see it open or closed right?
-            var canOpen = videoBattle.VideoBattleStatus != VideoBattleStatus.Pending 
-                        || CanEdit(videoBattle) 
+            var canOpen = videoBattle.VideoBattleStatus != VideoBattleStatus.Pending
+                        || CanEdit(videoBattle)
                         || (videoBattle.VideoBattleType != VideoBattleType.InviteOnly);
 
             //still can't open, let's see if it's a participant accessting the page
@@ -362,6 +370,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (participants == null)
                 participants = _videoBattleParticipantService.GetVideoBattleParticipants(VideoBattleId, null);
 
+            //let's exclude participants who haven't accepted the challenge
+            if (videoBattle.VideoBattleStatus != VideoBattleStatus.Pending)
+            {
+                participants =
+                    participants.Where(x => x.ParticipantStatus != VideoBattleParticipantStatus.ChallengeDenied).ToList();
+            }
 
             //lets get the videos associated with battle
             var battleVideos = _videoBattleVideoService.GetBattleVideos(VideoBattleId);
@@ -373,14 +387,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 ParticipantName = challenger.GetFullName(),
                 Id = challenger.Id,
                 CanEdit = _workContext.CurrentCustomer.Id == videoBattle.ChallengerId,
-                ParticipantUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = _workContext.CurrentCustomer.GetSeName(0) })
-
+                ParticipantUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = _workContext.CurrentCustomer.GetSeName(0) }),
+                ParticipantProfileImageUrl =  _pictureService.GetPictureUrl(challenger.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),_mediaSettings.AvatarPictureSize,false)
             };
 
             if (challengerVideo != null && (videoBattle.VideoBattleStatus != VideoBattleStatus.Pending || challenger.Id == _workContext.CurrentCustomer.Id))
             {
                 challengerVideoModel.VideoPath = challengerVideo.VideoPath;
-                challengerVideoModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ?  challengerVideo.ThumbnailPath : "";
+                challengerVideoModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ? challengerVideo.ThumbnailPath : "";
                 challengerVideoModel.MimeType = challengerVideo.MimeType;
                 challengerVideoModel.VideoId = challengerVideo.Id;
                 //video is marked watched if 1. participant is viewing his own video 2. he has viewed the video
@@ -405,7 +419,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 LoggedInUserId = _workContext.CurrentCustomer.Id,
                 IsVotingPayable = videoBattle.IsVotingPayable,
                 CanVoterIncreaseVotingCharge = videoBattle.CanVoterIncreaseVotingCharge,
-                MinimumVotingCharge = videoBattle.MinimumVotingCharge
+                MinimumVotingCharge = videoBattle.MinimumVotingCharge,
+                ChallengerName = challenger.GetFullName(),
+                ChallengerUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = challenger.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
+                ChallengerProfileImageUrl = challengerVideoModel.ParticipantProfileImageUrl
             };
 
             //add challenger as participant
@@ -419,6 +436,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var cModel = new VideoParticipantPublicModel() {
                     ParticipantName = challengee.GetFullName(),
                     ParticipantUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = challengee.GetSeName(0) }),
+                    ParticipantProfileImageUrl = _pictureService.GetPictureUrl(challengee.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, false),
                     Id = challengee.Id,
                     CanEdit = _workContext.CurrentCustomer.Id == participant.ParticipantId,
                     VideoBattleParticipantStatus = participant.ParticipantStatus
@@ -432,11 +450,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     {
                         cModel.VideoPath = video.VideoPath;
                         cModel.MimeType = video.MimeType;
-                        cModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ?  video.ThumbnailPath : "";
+                        cModel.ThumbnailPath = _mobSocialSettings.ShowVideoThumbnailsForBattles ? video.ThumbnailPath : "";
                         cModel.VideoId = video.Id;
                         //video is marked watched if 1. participant is viewing his own video 2. he has viewed the video
                         cModel.VideoWatched = video.ParticipantId == _workContext.CurrentCustomer.Id || _watchedVideoService.IsVideoWatched(
-                            _workContext.CurrentCustomer.Id, video.Id, VideoType.BattleVideo); 
+                            _workContext.CurrentCustomer.Id, video.Id, VideoType.BattleVideo);
                     }
                 }
                 model.Participants.Add(cModel);
@@ -458,6 +476,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 if (forParticipant.Count > 0)
                 {
                     participant.TotalVoters = forParticipant.Count();
+
+                    //accumulate all vote count
+                    model.TotalVotes += participant.TotalVoters;
 
                     //we store 1 for like 0 for dislike
                     participant.RatingCountLike =
@@ -519,8 +540,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.IsParticipant = model.Participants.Select(x => x.Id).Contains(_workContext.CurrentCustomer.Id);
             model.IsEditable = CanEdit(videoBattle);
             model.ViewMode = ViewMode;
+            model.SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false);
             model.VideoBattleUrl = _storeContext.CurrentStore.Url + Url.RouteUrl("VideoBattlePage",
-                new {SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)});
+                new { SeName = model.SeName });
 
             //the featured image will be used to display the image on social networks. depending on the status of battle, we either show a default image or 
             //the image of the leader as the featured image 
@@ -538,15 +560,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
-        public ActionResult VideoBattles()
+        public ActionResult VideoBattles(string ViewType = "open", string SearchTerm = "")
         {
-            return View(ControllerUtil.MobSocialViewsFolder + "/VideoBattle/VideoBattles.cshtml");
+            var model = new VideoBattleQueryModel()
+            {
+                SearchTerm = SearchTerm,
+                ViewType = ViewType
+            };
+            return View("mobSocial/VideoBattle/VideoBattles", model);
         }
 
         /// <summary>
         /// Loads battles using ajax
         /// </summary>
-        public ActionResult GetBattles(string ViewType, int Page = 1, int Count = 15)
+        public ActionResult GetBattles(string ViewType = "open", string SearchTerm = "", int Page = 1, int Count = 15)
         {
             //let's get all the battles depending on view type
             ViewType = ViewType.ToLowerInvariant();
@@ -555,20 +582,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             switch (ViewType)
             {
                 case "open":
-                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, null, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, null, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "open-to-join":
-                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Pending, VideoBattleType.Open, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Pending, VideoBattleType.Open, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "challenged":
-                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, null, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, null, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "closed":
                     //either closed or complete..whichever it is so first get all of them
-                    battles = _videoBattleService.GetAll(null, null, null, null, null, out totalPages, 1, int.MaxValue);
+                    battles = _videoBattleService.GetAll(null, null, null, null, null, string.Empty, out totalPages, 1, int.MaxValue);
 
                     battles =
                         battles.Where(
@@ -583,7 +610,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     break;
                 case "my":
-                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, string.Empty, out totalPages, Page, Count);
+                    battles = battles.ToList();
+                    break;
+                case "search":
+                    battles = _videoBattleService.GetAll(null, null, null, null, VideoBattleType.Open, SearchTerm,
+                        out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
             }
@@ -595,6 +627,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     //get the owner of battle 
                     var challenger = _customerService.GetCustomerById(videoBattle.ChallengerId);
+                    var battleVideos = _videoBattleVideoService.GetBattleVideos(videoBattle.Id);
+
+                    var thumbnailVideo = battleVideos.FirstOrDefault(x => !string.IsNullOrEmpty(x.ThumbnailPath));
+
+                    var thumbnailUrl = MobSocialConstant.VideoBattleFeaturedImageUrl;
+                    if (thumbnailVideo != null && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending)
+                        thumbnailUrl = thumbnailVideo.ThumbnailPath;
+
+                    //and relative path to url
+                    thumbnailUrl = thumbnailUrl.Replace("~", _storeContext.CurrentStore.Url);
+
 
                     model.Add(new VideoBattlePublicModel() {
                         Name = videoBattle.Name,
@@ -611,7 +654,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         ChallengerName = challenger.GetFullName(),
                         ChallengerUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = challenger.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
                         VideoBattleUrl = Url.RouteUrl("VideoBattlePage", new { SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
-                        RemainingSeconds = GetRemainingSeconds(videoBattle)
+                        RemainingSeconds = GetRemainingSeconds(videoBattle),
+                        VideoBattleFeaturedImageUrl = thumbnailUrl,
+                        ChallengerProfileImageUrl = _pictureService.GetPictureUrl(challenger.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),_mediaSettings.AvatarPictureSize,false)
                     });
                 }
             }
@@ -687,9 +732,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     }
                 }
-               
+
                 return Json(model);
-                
+
             }
             return Json(new { Success = false, Message = "Unauthorized" });
             ;
@@ -759,7 +804,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         _mobsocialMessageService.SendVideoBattleSignupNotification(challenger, challengee, videoBattle,
                                _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
 
-                        
+
                     }
                     return Json(new { Success = true, Status = videoBattleParticipant.ParticipantStatus });
 
@@ -768,7 +813,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(new { Success = false, Message = "No more participants allowed" });
 
         }
-       
+
         [Authorize]
         [HttpPost]
         public ActionResult UpdateParticipantStatus(int VideoBattleId, VideoBattleParticipantStatus VideoBattleParticipantStatus, int ParticipantId)
@@ -1018,19 +1063,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (_watchedVideoService.IsVideoWatched(_workContext.CurrentCustomer.Id, VideoBattleVideoId,
                 VideoType.BattleVideo))
             {
-                return Json(new {Success = true});
+                return Json(new { Success = true });
             }
 
             //the video must exist before it can be marked watched
-            var videoBattleVideo =_videoBattleVideoService.GetBattleVideo(VideoBattleId, ParticipantId);
+            var videoBattleVideo = _videoBattleVideoService.GetBattleVideo(VideoBattleId, ParticipantId);
             if (videoBattleVideo == null)
             {
-                return Json(new {Success = false, Message = "Invalid Video"});
+                return Json(new { Success = false, Message = "Invalid Video" });
             }
 
             //mark the video watched now
-            var watchedVideo = new WatchedVideo()
-            {
+            var watchedVideo = new WatchedVideo() {
                 CustomerId = _workContext.CurrentCustomer.Id,
                 VideoId = VideoBattleVideoId,
                 VideoType = VideoType.BattleVideo,
@@ -1069,12 +1113,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //and now watched videos
             var watchedVideos = _watchedVideoService.GetWatchedVideos(null, customer.Id, VideoType.BattleVideo);
 
-         
 
 
-            var watchedVideosIds = watchedVideos.Select(x => x.VideoId);
+
+           
             //if the person voting is already a participant in the battle then one of his own videos need not be watched. 
             var battleVideosIds = battleVideos.Where(x => x.ParticipantId != customer.Id).Select(x => x.Id);
+            //only current battle videos
+            var watchedVideosIds = watchedVideos.Where(x => battleVideosIds.Contains(x.VideoId)).Select(x => x.VideoId);
 
             if (watchedVideosIds.Count() != battleVideosIds.Count())
             {
@@ -1138,10 +1184,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             //not paid yet...return an error to pay
                             return Json(new { Success = false, Message = "Invalid voter pass id" });
                         }
-                        
+
                         //so let's mark this voter pass as used
                         _voterPassService.MarkVoterPassUsed(VoterPassOrderId);
-                       
+
                     }
 
                     //user can vote now. let's create a new vote
@@ -1228,7 +1274,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         });
                     }
                 }
-                
+
 
                 return Json(model);
 
@@ -1302,7 +1348,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
             return maxSeconds;
         }
-        
+
         #endregion
     }
 }

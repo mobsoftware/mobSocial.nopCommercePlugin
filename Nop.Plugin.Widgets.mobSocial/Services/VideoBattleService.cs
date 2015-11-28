@@ -50,7 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         /// <summary>
         /// A multipurpose method for getting the video battles
         /// </summary>
-        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, out int TotalPages, int Page = 1, int Count = 15)
+        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, string SearchTerm, out int TotalPages, int Page = 1, int Count = 15)
         {
             var battles = _videoBattleRepository.Table;
             if (OwnerId != null)
@@ -85,6 +85,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 battles = battles.Where(x => x.VideoBattleType == BattleType.Value);
             }
 
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                battles = battles.Where(x => x.Name.ToLower().Contains(SearchTerm.ToLower()));
+            }
             TotalPages = int.Parse(Math.Ceiling((decimal)battles.Count() / Count).ToString());
             //return paginated result
             return battles.OrderByDescending(x => x.DateUpdated).Skip((Page - 1) * Count).Take(Count).ToList();
@@ -119,7 +123,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                     var participants = _videoBattleParticipantRepository.Table.Where(x => x.VideoBattleId == battle.Id);
 
                     //all the participants who have not accepted will now be changed to denied
-                    foreach (var participant in participants.Where(x => x.ParticipantStatus == VideoBattleParticipantStatus.Challenged || x.ParticipantStatus == VideoBattleParticipantStatus.SignedUp))
+                    foreach (var participant in participants.Where(x => x.ParticipantStatus == VideoBattleParticipantStatus.Challenged || x.ParticipantStatus == VideoBattleParticipantStatus.SignedUp).ToList())
                     {
                         participant.ParticipantStatus = participant.ParticipantStatus == VideoBattleParticipantStatus.SignedUp ? VideoBattleParticipantStatus.ChallengeCancelled : VideoBattleParticipantStatus.ChallengeDenied;
                         _videoBattleParticipantRepository.Update(participant);

@@ -1,12 +1,13 @@
-﻿@{
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleQueryModel
+@{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
 
     @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
-
+    var json = Json.Encode(Model);
 }
 
 
-<div ng-controller="VideoBattlesPageController">
+<div ng-controller="VideoBattlesPageController" ng-init="init(@json)">
     <div class="page-title">
         <h1>Video Battles</h1>
     </div>
@@ -34,7 +35,7 @@
                             <div style="text-align: right; margin-bottom: 10px">
                                 <a href="@Url.RouteUrl("VideoBattleEditor")"><i class="fa fa-plus-circle"></i> Create Video Battle</a>
                             </div>
-                               
+
                         }
                         <div class="battles-container">
                             <div ng-if="processing">
@@ -49,12 +50,11 @@
                         </div>
                     </div>
                 }
-                
+
             </div>
-            
+
         </div>
     </div>
-
 
 </div>
 <script type="text/javascript">

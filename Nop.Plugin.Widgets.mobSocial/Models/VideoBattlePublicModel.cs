@@ -48,7 +48,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public string ChallengerUrl { get; set; }
 
+        public string ChallengerProfileImageUrl { get; set; }
+
         public string VideoBattleUrl { get; set; }
+
+        public string SeName { get; set; }
 
         public bool IsParticipant { get; set; }
 

@@ -121,7 +121,7 @@
     </div>
 
     <div class="actions-theater-view">
-        <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="@Url.RouteUrl("VideoBattlePage", new { VideoBattleId = Model.Id})"><i class="fa fa-reply"></i> Exit Theater Mode</a>
+        <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="@Url.RouteUrl("VideoBattlePage", new {SeName = Model.SeName, ViewMode = VideoViewMode.Regular})"><i class="fa fa-reply"></i> Exit Theater Mode</a>
     </div>
 
     <div class="theater-view-videoplayer">

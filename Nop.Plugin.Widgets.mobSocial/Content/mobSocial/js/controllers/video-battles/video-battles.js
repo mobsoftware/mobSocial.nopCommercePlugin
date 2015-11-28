@@ -82,7 +82,10 @@ app.controller("VideoBattleEditorController", [
 		$scope.NewPrize = function () {
 			$scope.VideoBattle.Prizes.push({
 				VideoBattleId: $scope.VideoBattle.Id,
-				Id: 0
+				Id: 0,
+				PrizeType: 1,
+				PrizeAmount: 1000,
+				PrizePercentage: 50
 			});
 			$scope.RefreshWinnerPositions();
 		}
@@ -258,7 +261,7 @@ app.controller("VideoBattlePageController", [
 	                    return;
 	                }
 	                //it's been 10 seconds and we don't have any ads yet, let's put a fallback
-	                window["mobads_video_inline"] = get_video_ad(); //function defined dynamically. in Mobads public
+	                window["mobads_video_inline"] = typeof get_video_ad != "undefined" ? get_video_ad() : false; //function defined dynamically. in Mobads public
 	            }
 
 	            //clear now
@@ -499,7 +502,7 @@ app.controller("VideoBattlePageController", [
 	        PaymentService.PaymentFormPopup(BattleId, BattleType, function (response) {
 
 	            jQuery(popuparea).html(response);
-
+	            jQuery("body").addClass("payment-process-on");
 	            $compile(jQuery(popuparea))($scope);
 
 
@@ -555,6 +558,7 @@ app.controller("VideoBattlePageController", [
 	            }
 	            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
 	            $scope.PaymentProcessInfo.PaymentProcessSuccess = response.Success;
+	            jQuery("body").removeClass("payment-process-on");
 
 	        }, function () {
 	            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
@@ -566,6 +570,7 @@ app.controller("VideoBattlePageController", [
 	    $scope.StopPaymentProcess = function () {
 	        $scope.PaymentProcessInfo.PaymentProcessCancelled = true;
 	        $scope.VoterPass.ShowPaymentPopup = false;
+	        jQuery("body").removeClass("payment-process-on");
 	    }
 
 
@@ -700,7 +705,7 @@ app.controller("VideoBattlePageController", [
 				var participant = $scope.VideoBattle.Participants[i];
 				if (participant.Id === data.ParticipantId) {
 
-	                participant.ThumbnailPath = data.ThumbnailPath;
+	                participant.ThumbnailPath = data.ThumbnailPath.replace("~", rootUrl);
 	                participant.VideoSource = [];
 	                participant.VideoPath = data.VideoPath.replace("~", rootUrl);
 
@@ -739,14 +744,19 @@ app.controller("VideoBattlePageController", [
 
 app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
 	function ($scope, VideoBattleService) {
+
+        $scope.init = function(Query) {
+            $scope.GetVideoBattles(Query.ViewType, Query.SearchTerm); //load default view
+        }
+
 		$scope.Page = 1;
 		$scope.Count = 15;
 		$scope.processing = false;
 
-		$scope.GetVideoBattles = function (ViewType) {
+		$scope.GetVideoBattles = function (ViewType, SearchTerm) {
 			$scope.processing = true;
 			$scope.VideoBattles = [];
-			VideoBattleService.GetVideoBattles(ViewType, $scope.Page, $scope.Count,
+			VideoBattleService.GetVideoBattles(ViewType, SearchTerm, $scope.Page, $scope.Count,
 				function (data) {
 					if (data.Success) {
 						$scope.VideoBattles = data.VideoBattles;
@@ -759,7 +769,8 @@ app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
 					alert("error occurred");
 				});
 		};
-		$scope.GetVideoBattles('open'); //load default view
+	  
+		
 
 		$scope.EditVideoBattle = function (VideoBattleId) {
 			window.location.href = "/VideoBattles/Editor/" + VideoBattleId;
