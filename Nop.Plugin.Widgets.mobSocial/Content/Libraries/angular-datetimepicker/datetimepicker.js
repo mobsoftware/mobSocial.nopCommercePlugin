@@ -35,6 +35,8 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
 
                 if ($scope.currentDate == undefined) {
                     $scope.currentDate = new Date();
+                } else {
+                    $scope.currentDate = new Date($scope.currentDate);
                 }
                 $scope._visibleMonth = $scope.currentDate.getMonth();
                 $scope._visibleDay = $scope.currentDate.getDate();
@@ -46,8 +48,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                     $scope._visiblePeriod = "PM";
                     $scope._visibleHour = $scope._visibleHour - 12;
                 }
-                var daysInMonth = function(anyDateInMonth)
-                {
+                var daysInMonth = function(anyDateInMonth){
                     var month = anyDateInMonth.getMonth();
                     month++;
                     return new Date(anyDateInMonth.getFullYear(), month, 0).getDate();
@@ -126,7 +127,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                     
                     var hourSelect, minSelect, periodSelect;
                     if($scope.includeTime){
-                        hourSelect = " Hours: <select ng-model='_visibleHour'>";
+                        hourSelect = " Hours<br/> <select ng-model='_visibleHour'>";
                         hourSelect += "<option value='12'>12</option>";
                         for (var i = 1; i <= 11; i++) {
                             var hour = ("0" + i).slice(-2);
@@ -135,14 +136,14 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                         
                         hourSelect += "</select>";
                         
-                        minSelect = " Minutes: <select ng-model='_visibleMinute'>";
+                        minSelect = " Minutes<br/> <select ng-model='_visibleMinute'>";
                         for (var i = 0; i < 60; i++) {
                             var min = ("0" + i).slice(-2);
                             minSelect += "<option value='" + i + "'>" + min + "</option>";
                         }
                         minSelect += "</select>";
 
-                        periodSelect = " Period: <select ng-model='_visiblePeriod'>";
+                        periodSelect = " Period<br/> <select ng-model='_visiblePeriod'>";
                         periodSelect += "<option value='AM'>AM</option><option value='PM'>PM</option>";
                         periodSelect += "</select>";
                         
@@ -154,13 +155,11 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                     day_html += '</tr>';
 
                     var dates_str = '<tr>';
-                    for (var pos = 0; pos < first_day; pos++)
-                    {
+                    for (var pos = 0; pos < first_day; pos++){
                         dates_str += "<td></td>";
                     }
                     
-                    for (var day_val = 1; day_val <= days; day_val++)
-                    {
+                    for (var day_val = 1; day_val <= days; day_val++){
                         if (day_val < dayMin || day_val > dayMax) {
                             dates_str += "<td><a class='disabled'>" + day_val + "</a></td>";
                         }
@@ -175,8 +174,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                         }
 
                         first_day++;
-                        if (first_day === 7)
-                        {
+                        if (first_day === 7){
                             first_day = 0;
                             dates_str += "</tr><tr>";
                         }
@@ -302,7 +300,14 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                     $scope._datePickerArea.css("display", "none").removeClass("datepicker-expanded");
 
                 }
-                $scope.closeMe = function(){
+                $scope.closeMe = function () {
+                    if (typeof $scope.currentDate !== "object") {
+                        if ($scope.currentDate === "")
+                            $scope.currentDate = new Date();
+                        else
+                            $scope.currentDate = new Date($scope.currentDate);
+
+                    }
                     $elem.find("button").addClass("ng-hide");
                     $scope._visibleDay = $scope.currentDate.getDate();
                     $scope._visibleMonth = $scope.currentDate.getMonth();
