@@ -13,7 +13,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public void RegisterRoutes(RouteCollection routes)
         {
             // Make MobSocialViewEngine views the Highest Priority
-            System.Web.Mvc.ViewEngines.Engines.Insert(0, new MobSocialViewEngine());
+            System.Web.Mvc.ViewEngines.Engines.Add(new MobSocialViewEngine());
             
             // redirects to your store
             routes.MapRoute("FacebookWebsiteApp",
@@ -214,8 +214,8 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             //video battles
             routes.MapLocalizedRoute("VideoBattles",
-                          "VideoBattles",
-                          new { controller = "VideoBattle", action = "VideoBattles" },
+                          "VideoBattles/view/{ViewType}/{SearchTerm}",
+                          new { controller = "VideoBattle", action = "VideoBattles", ViewType = UrlParameter.Optional, SearchTerm = UrlParameter.Optional },
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );
@@ -247,7 +247,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                           );
             routes.MapLocalizedRoute("VideoBattlePage",
-                          "VideoBattles/{SeName}/{ViewMode}",
+                          "VideoBattle/{SeName}/{ViewMode}",
                           new { controller = "VideoBattle", action = "Index", ViewMode = UrlParameter.Optional },
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
