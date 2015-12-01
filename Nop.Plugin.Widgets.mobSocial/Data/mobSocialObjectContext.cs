@@ -56,7 +56,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 //TODO: Use reflection to delete the entity tables
 
                 // Remove Url Records
-                var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage' OR EntityName = 'ArtistPage' OR EntityName = 'Song'; ";
+                var dbScript = "DELETE FROM UrlRecord WHERE EntityName = 'Customer' OR EntityName = 'EventPage' OR EntityName = 'ArtistPage' OR EntityName = 'Song' OR EntityName = 'VideoBattle'; ";
                 Database.ExecuteSqlCommand(dbScript);
 
                 // DROP Tables
@@ -95,12 +95,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<Song>();
                 this.DropTable<ArtistPage>();
 
+                this.DropTable<CustomerPaymentMethod>();
+                this.DropTable<VoterPass>();
+
                 this.DropTable<VideoBattleGenre>();
                 this.DropTable<VideoGenre>();
                 this.DropTable<VideoBattleParticipant>();
                 this.DropTable<VideoBattleVote>();
                 this.DropTable<VideoBattleVideo>();
                 this.DropTable<VideoBattlePicture>();
+                this.DropTable<VideoBattlePrize>();
+
                 this.DropTable<VideoBattle>();
                 
 
