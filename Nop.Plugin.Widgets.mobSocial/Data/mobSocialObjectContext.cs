@@ -45,7 +45,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
           
             Database.SetInitializer<MobSocialObjectContext>(null);
 
-            base.Install();
+            //because migrations are enabled, the install method may try to install tables which will eventually be installed by the migrations script
+            //therefore commenting the install call below
+            //base.Install();
         }
 
         public override void Uninstall()
