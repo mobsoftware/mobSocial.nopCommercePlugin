@@ -739,6 +739,38 @@ app.controller("VideoBattlePageController", [
 	        participant.VideoWatched = true;
 	    }
 
+	    $scope.UploadCoverSuccess = function (fileItem, data, status, headers) {
+
+	       if (data.Success && data.Images.length > 0) {
+	           $scope.VideoBattle.TemporaryCoverImageUrl = data.Images[0].ImageUrl;
+	           $scope.VideoBattle.TemporaryCoverId = data.Images[0].ImageId;
+	           $scope.VideoBattle.TemporaryCover = true;
+	       }
+	    };
+
+	    $scope.SetPictureAsCover = function (VideoBattleId, PictureId, setOrReset) {
+            if (setOrReset) {
+                VideoBattleService.SetPictureAsCover(VideoBattleId, PictureId, function(data) {
+                    if (data.Success) {
+                        $scope.VideoBattle.VideoBattleCoverImageUrl = $scope.VideoBattle.TemporaryCoverImageUrl;
+                        $scope.VideoBattle.TemporaryCoverId = 0;
+                        $scope.VideoBattle.TemporaryCover = false;
+                        $scope.VideoBattle.TemporaryCoverImageUrl = false;
+
+                    }
+                }, function(data) {
+
+                });
+            } else {
+                $scope.VideoBattle.TemporaryCoverId = 0;
+                $scope.VideoBattle.TemporaryCover = false;
+                $scope.VideoBattle.TemporaryCoverImageUrl = false;
+            }
+           
+
+	    }
+
+
 	}
 ]);
 

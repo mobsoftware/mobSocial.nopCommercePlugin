@@ -60,6 +60,12 @@
           .error(Error);
     }
 
+    this.SetPictureAsCover = function (VideoBattleId, PictureId, Success, Error) {
+        $http.post("/VideoBattles/SetPictureAsCover", { VideoBattleId: VideoBattleId, PictureId: PictureId })
+          .success(Success)
+          .error(Error);
+    }
+
     this.SavePrize = function (Prize, Success, Error) {
         $http.post("/VideoBattles/SavePrize", Prize)
           .success(Success)

@@ -557,6 +557,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //and because the image path starts with ~ (a relative path), we need to convert this to url based on store url
             model.VideoBattleFeaturedImageUrl = model.VideoBattleFeaturedImageUrl.Replace("~", _storeContext.CurrentStore.Url);
 
+            //cover image
+            if (videoBattle.CoverImageId.HasValue)
+                model.VideoBattleCoverImageUrl = _pictureService.GetPictureUrl(videoBattle.CoverImageId.Value);
+
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
@@ -656,7 +660,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         VideoBattleUrl = Url.RouteUrl("VideoBattlePage", new { SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
                         RemainingSeconds = GetRemainingSeconds(videoBattle),
                         VideoBattleFeaturedImageUrl = thumbnailUrl,
-                        ChallengerProfileImageUrl = _pictureService.GetPictureUrl(challenger.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),_mediaSettings.AvatarPictureSize,false)
+                        ChallengerProfileImageUrl = _pictureService.GetPictureUrl(challenger.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, false)
                     });
                 }
             }
@@ -666,6 +670,79 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 TotalPages = totalPages
             });
         }
+
+        [HttpPost]
+        public ActionResult UploadPicture(int VideoBattleId, IEnumerable<HttpPostedFileBase> file)
+        {
+
+            //first get battle
+            var videoBattle = _videoBattleService.GetById(VideoBattleId);
+            if (!CanEdit(videoBattle))
+                return Json(new { Success = false, Message = "Unauthorized" });
+
+            var files = file.ToList();
+            var newImages = new List<object>();
+            foreach (var fi in files)
+            {
+                Stream stream = null;
+                var fileName = "";
+                var contentType = "";
+
+                if (file == null)
+                    throw new ArgumentException("No file uploaded");
+
+                stream = fi.InputStream;
+                fileName = Path.GetFileName(fi.FileName);
+                contentType = fi.ContentType;
+
+                var fileBinary = new byte[stream.Length];
+                stream.Read(fileBinary, 0, fileBinary.Length);
+
+                var fileExtension = Path.GetExtension(fileName);
+                if (!string.IsNullOrEmpty(fileExtension))
+                    fileExtension = fileExtension.ToLowerInvariant();
+
+
+                if (string.IsNullOrEmpty(contentType))
+                {
+                    contentType = PictureUtility.GetContentType(fileExtension);
+                }
+
+                var picture = _pictureService.InsertPicture(fileBinary, contentType, null);
+
+
+                var videoBattlePicture = new VideoBattlePicture() {
+                    EntityId = VideoBattleId,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    DisplayOrder = 1,
+                    PictureId = picture.Id
+                };
+
+                _videoBattleService.InsertPicture(videoBattlePicture);
+                newImages.Add(new {
+                    ImageUrl = _pictureService.GetPictureUrl(videoBattlePicture.PictureId),
+                    ImageId = videoBattlePicture.PictureId
+                });
+            }
+
+            return Json(new { Success = true, Images = newImages });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SetPictureAsCover(int VideoBattleId, int PictureId)
+        {
+            //first get battle & check if it's editable
+            var videoBattle = _videoBattleService.GetById(VideoBattleId);
+            if (!CanEdit(videoBattle))
+                return Json(new { Success = false, Message = "Unauthorized" });
+
+            videoBattle.CoverImageId = PictureId;
+            _videoBattleService.Update(videoBattle);
+            return Json(new { Success = true });
+        }
+
         #endregion
 
         #region Participants
@@ -1116,7 +1193,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-           
+
             //if the person voting is already a participant in the battle then one of his own videos need not be watched. 
             var battleVideosIds = battleVideos.Where(x => x.ParticipantId != customer.Id).Select(x => x.Id);
             //only current battle videos

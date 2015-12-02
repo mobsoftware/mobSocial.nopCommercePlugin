@@ -19,6 +19,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.VideoBattleStatus);
 
             Property(x => x.MaximumParticipantCount);
+
+            Property(x => x.CoverImageId).IsOptional();
         }
     }
 }

@@ -246,6 +246,18 @@ namespace Nop.Plugin.Widgets.MobSocial
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );
+            routes.MapLocalizedRoute("VideoBattleUploadPicture",
+                          "VideoBattles/UploadPicture",
+                          new { controller = "VideoBattle", action = "UploadPicture" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+            routes.MapLocalizedRoute("VideoBattleSetPictureAsCover",
+                         "VideoBattles/SetPictureAsCover",
+                         new { controller = "VideoBattle", action = "SetPictureAsCover" },
+                         new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                         );
             routes.MapLocalizedRoute("VideoBattlePage",
                           "VideoBattle/{SeName}/{ViewMode}",
                           new { controller = "VideoBattle", action = "Index", ViewMode = UrlParameter.Optional },

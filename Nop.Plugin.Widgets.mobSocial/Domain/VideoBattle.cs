@@ -41,7 +41,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public decimal ParticipantPercentagePerVote { get; set; }
 
-        public IList<VideoBattlePrize> Prizes { get; set; } 
-        
+        public IList<VideoBattlePrize> Prizes { get; set; }
+
+        public int? CoverImageId { get; set; }
     }
 }
