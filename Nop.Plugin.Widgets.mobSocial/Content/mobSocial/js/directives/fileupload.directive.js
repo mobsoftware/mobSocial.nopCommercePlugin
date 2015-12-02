@@ -86,6 +86,8 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
             uploader.onProgressItem = function (fileItem, progress) {
                 $(elem).hide();
                 htmlProgress.html(progress + "% complete");
+                htmlProgress.removeClass("upload-complete");
+                htmlProgress.addClass("upload-progress");
                 if (typeof scope[attrs.onprogressitem] == "function") {
                     scope[attrs.onprogressitem](fileItem, progress);
                 }
@@ -101,6 +103,8 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     if ($("#" + imageSrc))
                         $("#" + imageSrc).attr("src", response.Url);
                     htmlProgress.html("Upload Complete");
+                    htmlProgress.removeClass("upload-progress");
+                    htmlProgress.addClass("upload-complete");
                 }
                 else {
                     alert("Failed to upload file");
