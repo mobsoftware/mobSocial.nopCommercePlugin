@@ -47,6 +47,10 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                 if ($scope._visibleHour > 12) { //12 hour clock
                     $scope._visiblePeriod = "PM";
                     $scope._visibleHour = $scope._visibleHour - 12;
+                } else {
+                    $scope._visiblePeriod = "AM";
+                    if ($scope._visibleHour == 0)
+                        $scope._visibleHour = 12;
                 }
                 var daysInMonth = function(anyDateInMonth){
                     var month = anyDateInMonth.getMonth();
@@ -180,7 +184,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                         }
                     }
                     dates_str += "</tr>";
-                    var time_html = "<tr class='time_row'><td colspan='7'>" + hourSelect + minSelect + periodSelect + "</td></tr>";
+                    var time_html = "<tr class='time_row'><td colspan='7'><table style='width:100%'><tr>" + "<td>" + hourSelect + "</td><td>" + minSelect + "</td><td>" + periodSelect + "</td></tr></table></td></tr>";
                     
                     var close_button = "<tr class='time_row'><td colspan='7'><a style='display:inline' ng-click='closeMe()'>OK</a> <a style='display:inline' ng-click='revert()'>Cancel</a></td></tr>";
                     var cal_string = "<table>" + year_html + day_html + dates_str + time_html + close_button + "</table>";
