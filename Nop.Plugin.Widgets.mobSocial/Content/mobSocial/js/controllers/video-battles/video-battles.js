@@ -52,6 +52,11 @@ app.controller("VideoBattleEditorController", [
 		$scope.recordSaved = false;
 		$scope.SaveVideoBattle = function () {
 			if ($scope.FormValid) {
+		        //a bug occurs if none of calendar is ever touched. In that case the dates contain string
+		        //todo: find a solution to this problem
+		        //quickfix:
+		        $scope.VideoBattle.VotingEndDate = new Date($scope.VideoBattle.VotingEndDate);
+		        $scope.VideoBattle.VotingStartDate = new Date($scope.VideoBattle.VotingStartDate);
 				//check for dates
 				if ($scope.VideoBattle.VotingEndDate < $scope.VideoBattle.VotingStartDate) {
 					alert("Voting Last Date must be greater than Voting Start Date");
