@@ -8,7 +8,7 @@ using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class VoterPass : BaseMobEntity
+    public class Sponsor : BaseMobEntity
     {
         public int CustomerId { get; set; }
 
@@ -16,8 +16,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public BattleType BattleType { get; set; }
 
-        public int VoterPassOrderId { get; set; }
+        public decimal SponsorshipAmount { get; set; }
 
-        public PassStatus Status { get; set; }
+        public SponsorshipStatus SponsorshipStatus { get; set; }
     }
 }

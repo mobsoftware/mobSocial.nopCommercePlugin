@@ -1,6 +1,8 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerPaymentPublicModel
+﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+@model Nop.Plugin.Widgets.MobSocial.Models.CustomerPaymentPublicModel
 @{
     Layout = "";
+    var purchaseType = Model.PurchaseType;
 }
 <div id="payment-form-popup-container">
     <div class="overlay"></div>
@@ -16,8 +18,8 @@
                     @if (Model.CustomerPendingOrders.Count > 0)
                     {
                         <div class="inputs">
-                            <label for="select-voter-pass">Available Voter Passes</label>
-                            <select id="select-voter-pass" ng-init="VoterPass.VoterPassId='@Model.CustomerPendingOrders[0].Value'" ng-model="VoterPass.VoterPassId">
+                            <label for="select-voter-pass">Available @(purchaseType == PurchaseType.VoterPass ? "Voter" : "Sponsorship") Passes</label>
+                            <select id="select-voter-pass" ng-init="PurchasePass.PassId='@Model.CustomerPendingOrders[0].Value'" ng-model="PurchasePass.PassId">
                                 @{
                                     foreach (var pm in Model.CustomerPendingOrders)
                                     {
@@ -27,20 +29,20 @@
                             </select>
                         </div>
                         <div class="buttons text-center">
-                            <input type="button" value="VOTE NOW" ng-click="StartPaymentProcess(VoterPass.VoterPassId)" />
+                            <input type="button" value="@(purchaseType == PurchaseType.VoterPass ? "VOTE NOW" : "Buy Sponsorship")" ng-click="StartPaymentProcess(PurchasePass.PassId)" />
                         </div>
 
                         <h3 class="text-center">OR</h3>
                     }
                     <div class="inputs">
-                        <label for="voting-amount">Voting Amount</label>
+                        <label for="voting-amount">@(purchaseType == PurchaseType.VoterPass ? "Voting" : "Sponsorship") Amount</label>
                         @if (Model.IsAmountVariable)
                         {
-                            <input type="number" step="0.01" min="@Model.MinimumPaymentAmount" ng-init="VoterPass.Amount=@Model.MinimumPaymentAmount" ng-model="VoterPass.Amount" />
+                            <input type="number" step="0.01" min="@Model.MinimumPaymentAmount" ng-init="PurchasePass.Amount=@Model.MinimumPaymentAmount" ng-model="PurchasePass.Amount" />
                         }
                         else
                         {
-                            <input type="hidden" ng-init="VoterPass.Amount='@Model.MinimumPaymentAmount'" ng-model="VoterPass.Amount" /><text>{{VoterPass.Amount}}</text>
+                            <input type="hidden" ng-init="PurchasePass.Amount='@Model.MinimumPaymentAmount'" ng-model="PurchasePass.Amount" /><text>{{PurchasePass.Amount}}</text>
                         }
 
                     </div>
@@ -48,7 +50,7 @@
                     {
                         <div class="inputs">
                             <label for="select-payment-method">Select a card</label>
-                            <select id="select-payment-method" ng-init="VoterPass.CustomerPaymentMethodId='@Model.CustomerPaymentMethods[0].Value'" ng-model="VoterPass.CustomerPaymentMethodId">
+                            <select id="select-payment-method" ng-init="PurchasePass.CustomerPaymentMethodId='@Model.CustomerPaymentMethods[0].Value'" ng-model="PurchasePass.CustomerPaymentMethodId">
                                 @{
                         foreach (var pm in Model.CustomerPaymentMethods)
                         {
@@ -61,44 +63,44 @@
                     }
                     else
                     {
-                        <input type="hidden" ng-model="VoterPass.CustomerPaymentMethodId" ng-init="VoterPass.CustomerPaymentMethodId='0'" />
+                        <input type="hidden" ng-model="PurchasePass.CustomerPaymentMethodId" ng-init="PurchasePass.CustomerPaymentMethodId='0'" />
                     }
 
-                    <div id="debit-credit-card" ng-show="@(Model.CustomerPaymentMethods.Count > 0 ? "VoterPass.CustomerPaymentMethodId == 0" : "true")">
+                    <div id="debit-credit-card" ng-show="@(Model.CustomerPaymentMethods.Count > 0 ? "PurchasePass.CustomerPaymentMethodId == 0" : "true")">
                         <div class="inputs">
                             <label for="card-number">Credit Card Number</label>
-                            <input id="card-number" name="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" type="text" ng-model="VoterPass.CustomerPaymentRequest.CardNumber" required />
-                            <span class="payment-method fa fa-cc-visa" ng-show="VoterPass.CustomerPaymentRequest.CardIssuerType == 'visa'"></span>
-                            <span class="payment-method fa fa-cc-mastercard" ng-show="VoterPass.CustomerPaymentRequest.CardIssuerType == 'mastercard'"></span>
-                            <span class="payment-method fa fa-cc-amex" ng-show="VoterPass.CustomerPaymentRequest.CardIssuerType == 'amex'"></span>
-                            <span class="payment-method fa fa-cc-diners-club" ng-show="VoterPass.CustomerPaymentRequest.CardIssuerType == 'diners'"></span>
-                            <span class="payment-method fa fa-cc-discover" ng-show="VoterPass.CustomerPaymentRequest.CardIssuerType == 'discover'"></span>
+                            <input id="card-number" name="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" type="text" ng-model="PurchasePass.CustomerPaymentRequest.CardNumber" required />
+                            <span class="payment-method fa fa-cc-visa" ng-show="PurchasePass.CustomerPaymentRequest.CardIssuerType == 'visa'"></span>
+                            <span class="payment-method fa fa-cc-mastercard" ng-show="PurchasePass.CustomerPaymentRequest.CardIssuerType == 'mastercard'"></span>
+                            <span class="payment-method fa fa-cc-amex" ng-show="PurchasePass.CustomerPaymentRequest.CardIssuerType == 'amex'"></span>
+                            <span class="payment-method fa fa-cc-diners-club" ng-show="PurchasePass.CustomerPaymentRequest.CardIssuerType == 'diners'"></span>
+                            <span class="payment-method fa fa-cc-discover" ng-show="PurchasePass.CustomerPaymentRequest.CardIssuerType == 'discover'"></span>
                             <span ng-show="createPaymentForm.cardNumber.$invalid && createPaymentForm.cardNumber.$dirty"> Please check the card number and try again</span>
 
                         </div>
                         <div class="inputs">
                             <label for="month">Expiration Date</label>
-                            <input id="month" type="number" min="1" max="12" step="1" placeholder="MM" class="half-width" ng-model="VoterPass.CustomerPaymentRequest.ExpireMonth" required />/
-                            <input id="year" type="number" min="@DateTime.Now.Year" step="1" placeholder="YYYY" class="half-width" ng-model="VoterPass.CustomerPaymentRequest.ExpireYear" required />
+                            <input id="month" type="number" min="1" max="12" step="1" placeholder="MM" class="half-width" ng-model="PurchasePass.CustomerPaymentRequest.ExpireMonth" required />/
+                            <input id="year" type="number" min="@DateTime.Now.Year" step="1" placeholder="YYYY" class="half-width" ng-model="PurchasePass.CustomerPaymentRequest.ExpireYear" required />
                         </div>
                         <div class="inputs">
                             <label for="month">Name on Card</label>
-                            <input id="name" type="text" ng-model="VoterPass.CustomerPaymentRequest.NameOnCard" required />
+                            <input id="name" type="text" ng-model="PurchasePass.CustomerPaymentRequest.NameOnCard" required />
                         </div>
                         <div class="inputs">
                             <label for="security-code">CSC/CVV/CVV2</label>
-                            <input id="security-code" ng-model="VoterPass.CustomerPaymentRequest.SecurityCode" maxlength="4" type="password" />
+                            <input id="security-code" ng-model="PurchasePass.CustomerPaymentRequest.SecurityCode" maxlength="4" type="password" />
                         </div>
-                        <input type="hidden" ng-model="VoterPass.CustomerPaymentRequest.CardIssuerType" />
-                        <input type="hidden" ng-model="VoterPass.CustomerPaymentRequest.PaymentMethod" ng-init="VoterPass.CustomerPaymentRequest.PaymentMethod='@Nop.Plugin.Widgets.MobSocial.Enums.PaymentMethodType.CreditCard'" />
+                        <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.CardIssuerType" />
+                        <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.PaymentMethod" ng-init="PurchasePass.CustomerPaymentRequest.PaymentMethod='@Nop.Plugin.Widgets.MobSocial.Enums.PaymentMethodType.CreditCard'" />
                     </div>
 
                     <div class="buttons text-center">
-                        <div ng-show="!VoterPass.PurchasingInProgress">
-                            <input type="button" value="PAY & VOTE" ng-click="StartPaymentProcess()" />
+                        <div ng-show="!PurchasePass.PurchasingInProgress">
+                            <input type="button" value="@(purchaseType == PurchaseType.VoterPass ? "PAY & VOTE" : "Buy Sponsorship")" ng-click="StartPaymentProcess()" />
                             <input type="button" value="Cancel" ng-click="StopPaymentProcess()" />
                         </div>
-                        <div ng-show="VoterPass.PurchasingInProgress">
+                        <div ng-show="PurchasePass.PurchasingInProgress">
                             Please wait while your payment is being processed...
                         </div>
                     </div>

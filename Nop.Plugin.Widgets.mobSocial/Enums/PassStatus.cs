@@ -1,6 +1,6 @@
 ﻿namespace Nop.Plugin.Widgets.MobSocial.Enums
 {
-    public enum VoterPassStatus
+    public enum PassStatus
     {
         NotUsed = 0,
         Used = 1

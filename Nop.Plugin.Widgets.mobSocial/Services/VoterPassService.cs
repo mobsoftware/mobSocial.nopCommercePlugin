@@ -43,13 +43,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             _mobSocialSettings = mobSocialSettings;
         }
 
-        public Order GetVoterPassOrder(int VoterPassId)
+        public Order GetVoterPassOrder(int VoterPassOrderId)
         {
-            var order = _orderService.GetOrderById(VoterPassId);
+            var order = _orderService.GetOrderById(VoterPassOrderId);
             return order;
         }
 
-        public IList<VoterPass> GetPurchasedVoterPasses(int CustomerId, VoterPassStatus? VotePassStatus)
+        public IList<VoterPass> GetPurchasedVoterPasses(int CustomerId, PassStatus? VotePassStatus)
         {
             var passes = Repository.Table.Where(x => x.CustomerId == CustomerId);
             if (VotePassStatus.HasValue)
@@ -69,8 +69,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 CreatedOnUtc = DateTime.UtcNow,
                 CustomerId = _workContext.CurrentCustomer.Id,
                 StoreId = _storeContext.CurrentStore.Id,
-                BillingAddress = _workContext.CurrentCustomer.BillingAddress,
-                ShippingAddress = _workContext.CurrentCustomer.ShippingAddress,
+                BillingAddress = _workContext.CurrentCustomer.Addresses.First(),
+                ShippingAddress = _workContext.CurrentCustomer.Addresses.First(),
                 AuthorizationTransactionCode = PaymentResponse.AuthorizationTransactionCode,
                 AuthorizationTransactionId = PaymentResponse.AuthorizationTransactionId,
                 AuthorizationTransactionResult = PaymentResponse.AuthorizationTransactionResult,
@@ -82,7 +82,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 OrderTotal = Amount,
                 OrderSubtotalExclTax = Amount,
                 OrderSubTotalDiscountInclTax = Amount,
-                OrderGuid = Guid.NewGuid()
+                OrderGuid = Guid.NewGuid(),
+                CustomerCurrencyCode = _workContext.WorkingCurrency.CurrencyCode,
+                CurrencyRate = _workContext.WorkingCurrency.Rate
             };
             var orderItem = new OrderItem() {
                 OrderItemGuid = Guid.NewGuid(),
@@ -91,7 +93,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 UnitPriceInclTax = Amount,
                 PriceInclTax = Amount,
                 PriceExclTax = Amount,
-
+                Quantity = 1
             };
             order.OrderItems.Add(orderItem);
             //save the order now
@@ -105,7 +107,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 CustomerId = _workContext.CurrentCustomer.Id,
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
-                Status = VoterPassStatus.NotUsed,
+                Status = PassStatus.NotUsed,
                 VoterPassOrderId = order.Id
             };
             //save this pass details
@@ -117,7 +119,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         public void MarkVoterPassUsed(int VoterPassOrderId)
         {
             var voterPass = GetVoterPassByOrderId(VoterPassOrderId);
-            voterPass.Status = VoterPassStatus.Used;
+            voterPass.Status = PassStatus.Used;
             this.Update(voterPass);
         }
 

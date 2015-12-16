@@ -44,21 +44,39 @@
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\SongController.cs" />
+    <Compile Include="Controllers\SponsorController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Core\FeatureToggle.cs" />
     <Compile Include="Data\CustomerPaymentMethodMap.cs" />
+    <Compile Include="Data\SponsorMap.cs" />
+    <Compile Include="Data\SponsorPassMap.cs" />
+    <Compile Include="Data\SponsorDataMap.cs" />
     <Compile Include="Data\VideoBattlePrizeMap.cs" />
     <Compile Include="Data\VoterPassMap.cs" />
     <Compile Include="Data\WatchedVideoMap.cs" />
     <Compile Include="Domain\CustomerPaymentMethod.cs" />
+    <Compile Include="Domain\Sponsor.cs" />
+    <Compile Include="Domain\SponsorPass.cs" />
+    <Compile Include="Domain\SponsorData.cs" />
     <Compile Include="Domain\VideoBattlePrize.cs" />
     <Compile Include="Domain\VoterPass.cs" />
     <Compile Include="Enums\BattleType.cs" />
     <Compile Include="Enums\PaymentMethodType.cs" />
-    <Compile Include="Enums\VoterPassStatus.cs" />
+    <Compile Include="Enums\PassStatus.cs" />
+    <Compile Include="Enums\PurchaseType.cs" />
+    <Compile Include="Enums\SponsorshipStatus.cs" />
+    <Compile Include="Extensions\SponsorExtensions.cs" />
     <Compile Include="Helpers\CardHelper.cs" />
+    <Compile Include="Models\CustomerPaymentModel.cs" />
     <Compile Include="Models\CustomerPaymentPublicModel.cs" />
     <Compile Include="Models\CustomerPaymentRequestModel.cs" />
+    <Compile Include="Models\SponsorDataModel.cs" />
+    <Compile Include="Models\SponsorModel.cs" />
+    <Compile Include="Models\SponsorPublicModel.cs" />
+    <Compile Include="Models\SponsorTransactionModel.cs" />
+    <Compile Include="Models\SponsorTransactionRequestModel.cs" />
+    <Compile Include="Models\SponsorsRequestModel.cs" />
+    <Compile Include="Models\UpdateSponsorModel.cs" />
     <Compile Include="Models\VideoBattlePrizeModel.cs" />
     <Compile Include="Domain\WatchedVideo.cs" />
     <Compile Include="Enums\VideoBattlePrizeType.cs" />
@@ -68,7 +86,7 @@
     <Compile Include="Migrations\MobSocialMigration.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\VideoBattleQueryModel.cs" />
-    <Compile Include="Models\VoterPassModel.cs" />
+    <Compile Include="Models\PurchasePassModel.cs" />
     <Compile Include="Services\ArtistPageAPIService.cs" />
     <Compile Include="Services\ArtistPageManagerService.cs" />
     <Compile Include="Services\ArtistPagePaymentService.cs" />
@@ -96,6 +114,8 @@
     <Compile Include="Services\IPaymentProcessingService.cs" />
     <Compile Include="Services\ISharedSongService.cs" />
     <Compile Include="Services\ISongService.cs" />
+    <Compile Include="Services\ISponsorPassService.cs" />
+    <Compile Include="Services\ISponsorService.cs" />
     <Compile Include="Services\IVideoBattleGenreService.cs" />
     <Compile Include="Services\IVideoBattleParticipantService.cs" />
     <Compile Include="Services\IVideoBattlePrizeService.cs" />
@@ -115,6 +135,8 @@
     <Compile Include="Services\SharedSongService.cs" />
     <Compile Include="Services\SitemapGenerator.cs" />
     <Compile Include="Services\SongService.cs" />
+    <Compile Include="Services\SponsorPassService.cs" />
+    <Compile Include="Services\SponsorService.cs" />
     <Compile Include="Services\VideBattlePrizeService.cs" />
     <Compile Include="Services\VideoGenreService.cs" />
     <Compile Include="Services\VideoBattleVoteService.cs" />
@@ -296,6 +318,12 @@
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
     <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
+    <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -796,6 +824,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\VideoBattle\TheaterView.VideoPlayer.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Payment\AddressFormPopup.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">

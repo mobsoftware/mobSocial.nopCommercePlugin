@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Shipping;
@@ -15,9 +16,15 @@ using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Catalog;
+using Nop.Services.Common;
 using Nop.Services.Customers;
+using Nop.Services.Directory;
+using Nop.Services.Localization;
 using Nop.Services.Orders;
 using Nop.Web.Controllers;
+using Nop.Web.Extensions;
+using Nop.Web.Models.Common;
+using Nop.Web.Models.Customer;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -35,7 +42,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IOrderService _orderService;
         private readonly IVideoBattleService _videoBattleService;
         private readonly IVoterPassService _voterPassService;
+        private readonly ISponsorPassService _sponsorPassService;
         private readonly mobSocialSettings _mobSocialSettings;
+        private readonly AddressSettings _addressSettings;
+        private readonly ILocalizationService _localizationService;
+        private readonly IAddressAttributeService _addressAttributeService;
+        private readonly IAddressAttributeParser _addressAttributeParser;
+        private readonly ICountryService _countryService;
+        private readonly IStateProvinceService _stateProvinceService;
 
         public PaymentController(IWorkContext workContext,
          IWebHelper webHelper,
@@ -49,7 +63,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          IPaymentProcessingService paymentProcessingService,
          IVideoBattleService videoBattleService,
          IVoterPassService voterPassService,
-         mobSocialSettings mobSocialSettings)
+         ISponsorPassService sponsorPassService,
+         mobSocialSettings mobSocialSettings, IAddressAttributeService addressAttributeService, AddressSettings addressSettings, ILocalizationService localizationService, IAddressAttributeParser addressAttributeParser, ICountryService countryService, IStateProvinceService stateProvinceService)
         {
             _workContext = workContext;
             _storeContext = storeContext;
@@ -62,23 +77,59 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _paymentProcessingService = paymentProcessingService;
             _videoBattleService = videoBattleService;
             _voterPassService = voterPassService;
+            _sponsorPassService = sponsorPassService;
             _mobSocialSettings = mobSocialSettings;
+            _addressAttributeService = addressAttributeService;
+            _addressSettings = addressSettings;
+            _localizationService = localizationService;
+            _addressAttributeParser = addressAttributeParser;
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
             _webHelper = webHelper;
         }
 
-        public ActionResult PaymentFormPopup(int BattleId, BattleType BattleType)
+        [HttpPost]
+        [Authorize]
+        public ActionResult PaymentFormPopup(CustomerPaymentModel Model)
         {
+            if (!ModelState.IsValid)
+                return null;
+            //first check if the customer has an address, otherwise first address form will be shown
+
+            if (_workContext.CurrentCustomer.Addresses.Count == 0)
+            {
+                return AddressFormPopup();
+            }
+            var BattleId = Model.BattleId;
+            var BattleType = Model.BattleType;
+            var PurchaseType = Model.PurchaseType;
 
             //TODO: Remove comment when picture battles are ready
             var battle = _videoBattleService.GetById(BattleId); // Model.BattleType == BattleType.Video ? _videoBattleService.GetById(Model.BattleId) : null;
 
-            var model = new CustomerPaymentPublicModel();
-            model.IsAmountVariable = battle.CanVoterIncreaseVotingCharge;
-            model.MinimumPaymentAmount = battle.MinimumVotingCharge;
+            var model = new CustomerPaymentPublicModel
+            {
+                IsAmountVariable = PurchaseType == PurchaseType.SponsorPass || battle.CanVoterIncreaseVotingCharge,
+                MinimumPaymentAmount = PurchaseType == PurchaseType.SponsorPass ? battle.MinimumSponsorshipAmount : battle.MinimumVotingCharge,
+                PurchaseType = Model.PurchaseType
+            };
 
-            //also check if there are any paid orders which haven't been used for voting yet?
-            var passes = _voterPassService.GetPurchasedVoterPasses(_workContext.CurrentCustomer.Id, VoterPassStatus.NotUsed);
-            var orders = passes.Count > 0 ? _orderService.GetOrdersByIds(passes.Select(x => x.VoterPassOrderId).ToArray()) : null;
+            IList<Order> orders;
+            if (PurchaseType == PurchaseType.VoterPass)
+            {
+                //also check if there are any paid orders which haven't been used for voting yet?
+                var passes = _voterPassService.GetPurchasedVoterPasses(_workContext.CurrentCustomer.Id, PassStatus.NotUsed);
+                orders = passes.Count > 0
+                    ? _orderService.GetOrdersByIds(passes.Select(x => x.VoterPassOrderId).ToArray())
+                    : null;
+            }
+            else
+            {
+                //also check if there are any paid orders which haven't been used for sponsorship yet?
+                var passes = _sponsorPassService.GetPurchasedSponsorPasses(_workContext.CurrentCustomer.Id, PassStatus.NotUsed);
+                orders = passes.Count > 0 ? _orderService.GetOrdersByIds(passes.Select(x => x.SponsorPassOrderId).ToArray()) : null;
+            }
+            
 
             if (orders != null)
             {
@@ -106,8 +157,26 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [Authorize]
+        public ActionResult AddressFormPopup()
+        {
+            //because a customer might not have any address, order creation will trigger an error, therefore let's allow customer to add an address
+            var model = new CustomerAddressEditModel();
+            model.Address.PrepareModel(
+                address: null,
+                excludeProperties: false,
+                addressSettings: _addressSettings,
+                localizationService: _localizationService,
+                stateProvinceService: _stateProvinceService,
+                addressAttributeService: _addressAttributeService,
+                addressAttributeParser: _addressAttributeParser,
+                loadCountries: () => _countryService.GetAllCountries());
+
+            return View("mobSocial/Payment/AddressFormPopup", model);
+        }
+
+        [Authorize]
         [HttpPost]
-        public ActionResult PurchaseVoterPass(VoterPassModel Model)
+        public ActionResult PurchasePass(PurchasePassModel Model)
         {
 
             //check if the payment method provided by customer is new or an existing one
@@ -189,10 +258,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //we need to make sure that purchase amount is at least as minimum as battle
             //TODO: Remove comment when picture battles are ready
             var battle = _videoBattleService.GetById(Model.BattleId); // Model.BattleType == BattleType.Video ? _videoBattleService.GetById(Model.BattleId) : null;
-            if (Model.Amount < battle.MinimumVotingCharge)
+            if (Model.PurchaseType == PurchaseType.VoterPass && Model.Amount < battle.MinimumVotingCharge)
             {
                 return Json(new { Success = false, Message = "Payment amount is less than minimum voting amount" });
             }
+
+            if (Model.PurchaseType == PurchaseType.SponsorPass && Model.Amount < battle.MinimumSponsorshipAmount)
+            {
+                return Json(new { Success = false, Message = "Payment amount is less than minimum sponsorship amount" });
+            }
+
             //process the payment now
             var paymentResponse = _paymentProcessingService.ProcessPayment(_workContext.CurrentCustomer, paymentMethod);
             if (paymentResponse.Success)
@@ -204,10 +279,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     _paymentMethodService.Update(paymentMethod);
                 }
 
-                //let's create voter pass
-                var voterPassId = _voterPassService.CreateVoterPass(Model.BattleType, Model.BattleId, paymentResponse, paymentMethod, Model.Amount);
-                
-                return Json(new {Success = true, VoterPassId = voterPassId});
+                switch (Model.PurchaseType)
+                {
+                    case PurchaseType.VoterPass:
+                        //let's create voter pass
+                        var voterPassId = _voterPassService.CreateVoterPass(Model.BattleType, Model.BattleId,
+                            paymentResponse, paymentMethod, Model.Amount);
+                        return Json(new {Success = true, PassId = voterPassId});
+                    case PurchaseType.SponsorPass:
+                        //let's create sponsorship pass
+                        var sponsorPassId = _sponsorPassService.CreateSponsorPass(Model.BattleType, Model.BattleId, paymentResponse, paymentMethod, Model.Amount);
+                        return Json(new { Success = true, PassId = sponsorPassId });
+                }
             }
             return Json(new { Success = false, Message = "Payment failed", Errors = paymentResponse.Errors });
             

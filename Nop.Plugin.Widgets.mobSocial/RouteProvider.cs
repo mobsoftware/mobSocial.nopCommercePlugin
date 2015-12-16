@@ -333,13 +333,53 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                        );
 
-            routes.MapLocalizedRoute("PurchaseVoterPass",
-                       "Payment/PurchaseVoterPass",
-                       new { controller = "Payment", action = "PurchaseVoterPass" },
+            routes.MapLocalizedRoute("PurchasePass",
+                       "Payment/PurchasePass",
+                       new { controller = "Payment", action = "PurchasePass" },
                        new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                        );
 
+            //sponsors
+            routes.MapLocalizedRoute("SaveSponsor",
+                      "Sponsor/SaveSponsor",
+                      new { controller = "Sponsor", action = "SaveSponsor" },
+                      new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                      );
+
+            routes.MapLocalizedRoute("UpdateSponsor",
+                       "Sponsor/UpdateSponsor",
+                       new { controller = "Sponsor", action = "UpdateSponsor" },
+                       new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                       );
+
+            routes.MapLocalizedRoute("SaveSponsorData",
+                   "Sponsor/SaveSponsorData",
+                   new { controller = "Sponsor", action = "SaveSponsorData" },
+                   new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                   );
+            routes.MapLocalizedRoute("SponsorDashboard",
+                       "SponsorDashboard/{BattleType}/{BattleId}",
+                       new { controller = "Sponsor", action = "SponsorDashboard" },
+                       new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                       );
+            routes.MapLocalizedRoute("GetSponsors",
+                       "Sponsor/GetSponsors",
+                       new { controller = "Sponsor", action = "GetSponsors" },
+                       new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                       );
+
+            routes.MapLocalizedRoute("UploadSponsorPicture",
+                   "Sponsor/UploadPicture",
+                   new { controller = "Sponsor", action = "UploadPicture" },
+                   new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                   );
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             routes.MapHubs();
 

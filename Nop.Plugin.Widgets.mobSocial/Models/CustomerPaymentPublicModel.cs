@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Web.Framework.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
@@ -19,6 +20,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public decimal MinimumPaymentAmount { get; set; }
 
         public bool IsAmountVariable { get; set; }
+
+        public PurchaseType PurchaseType { get; set; }
 
     }
 }

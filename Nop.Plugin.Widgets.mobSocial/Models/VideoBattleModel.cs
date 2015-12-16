@@ -50,6 +50,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public decimal ParticipantPercentagePerVote { get; set; }
 
-        public IList<VideoBattlePrizeModel> Prizes { get; set; } 
+        public IList<VideoBattlePrizeModel> Prizes { get; set; }
+
+        public bool IsSponsorshipSupported { get; set; }
+
+        public decimal MinimumSponsorshipAmount { get; set; }
     }
 }

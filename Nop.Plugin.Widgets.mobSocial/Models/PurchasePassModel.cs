@@ -8,7 +8,7 @@ using Nop.Web.Framework.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {
-    public class VoterPassModel : BaseNopModel
+    public class PurchasePassModel : BaseNopModel
     {
 
         public int CustomerPaymentMethodId { get; set; }
@@ -22,5 +22,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public BattleType BattleType { get; set; }
 
         public CustomerPaymentRequestModel CustomerPaymentRequest { get; set; }
+
+        public PurchaseType PurchaseType { get; set; }
     }
 }

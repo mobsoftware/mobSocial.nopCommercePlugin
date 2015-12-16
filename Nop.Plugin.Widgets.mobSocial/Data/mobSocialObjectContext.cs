@@ -100,6 +100,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
                 this.DropTable<CustomerPaymentMethod>();
                 this.DropTable<VoterPass>();
 
+                this.DropTable<SponsorData>();
+                this.DropTable<SponsorPass>();
+                this.DropTable<Sponsor>();
                 this.DropTable<VideoBattleGenre>();
                 this.DropTable<VideoGenre>();
                 this.DropTable<VideoBattleParticipant>();

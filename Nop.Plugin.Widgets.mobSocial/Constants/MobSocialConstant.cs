@@ -16,6 +16,7 @@
         public static string EncryptionKeyName = "encryptionkey";
         public static string VideoBattleVoterPassSKU = "MobSocialVideoBattleVoterPass";
         public static string PictureBattleVoterPassSKU = "MobSocialPictureBattleVoterPass";
+        public static string SponsorPassSKU = "MobSocialSponsorPass";
 
         public static string EncryptionKeyDefault = "25E85C9D339FCFE1FB6E12FE98816";
         public static string EncryptionSalt = "428B648F262C4E2BC2637DD445D37";

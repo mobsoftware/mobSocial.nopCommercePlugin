@@ -1,14 +1,14 @@
 ﻿"use strict";
 
 app.service("PaymentService", ["$http", function ($http) {
-    this.PaymentFormPopup = function (BattleId, BattleType, Success, Error) {
-        $http.post("/Payment/PaymentFormPopup", {BattleId: BattleId, BattleType: BattleType})
+    this.PaymentFormPopup = function (BattleId, BattleType, PurchaseType, Success, Error) {
+        $http.post("/Payment/PaymentFormPopup", {BattleId: BattleId, BattleType: BattleType, PurchaseType: PurchaseType})
        .success(Success)
        .error(Error);
     }
 
-    this.PurchaseVoterPass = function (VoterPass, Success, Error) {
-        $http.post("/Payment/PurchaseVoterPass", VoterPass)
+    this.PurchasePurchasePass = function (PurchasePass, Success, Error) {
+        $http.post("/Payment/PurchasePass", PurchasePass)
        .success(Success)
        .error(Error);
     }

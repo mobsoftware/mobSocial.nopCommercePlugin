@@ -51,6 +51,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IWatchedVideoService _watchedVideoService;
         private readonly IVoterPassService _voterPassService;
         private readonly IPictureService _pictureService;
+        private readonly ISponsorService _sponsorService;
+        private readonly IPriceFormatter _priceFormatter;
         private readonly MediaSettings _mediaSettings;
         private readonly mobSocialSettings _mobSocialSettings;
 
@@ -71,6 +73,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          IWatchedVideoService watchedVideoService,
          IVoterPassService voterPassService,
          IPictureService pictureService,
+         ISponsorService sponsorService,
+            IPriceFormatter priceFormatter,
          MediaSettings mediaSettings,
          mobSocialSettings mobSocialSettings)
         {
@@ -88,8 +92,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _watchedVideoService = watchedVideoService;
             _voterPassService = voterPassService;
             _mobSocialSettings = mobSocialSettings;
-
+            _sponsorService = sponsorService;
             _pictureService = pictureService;
+            _priceFormatter = priceFormatter;
             _mediaSettings = mediaSettings;
 
         }
@@ -122,7 +127,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 MinimumVotingCharge = VideoBattleId == 0 ? _mobSocialSettings.DefaultVotingChargeForPaidVoting : videoBattle.MinimumVotingCharge,
                 IsVotingPayable = videoBattle.IsVotingPayable,
                 CanVoterIncreaseVotingCharge = videoBattle.CanVoterIncreaseVotingCharge,
-                ParticipantPercentagePerVote = videoBattle.ParticipantPercentagePerVote
+                ParticipantPercentagePerVote = videoBattle.ParticipantPercentagePerVote,
+                IsSponsorshipSupported = videoBattle.IsSponsorshipSupported,
+                MinimumSponsorshipAmount = videoBattle.MinimumSponsorshipAmount
             };
 
             //let's get prizes associated with this battle. prizes can only be added to saved battles
@@ -181,8 +188,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             videoBattle.CanVoterIncreaseVotingCharge = Model.CanVoterIncreaseVotingCharge;
             videoBattle.MinimumVotingCharge = Model.MinimumVotingCharge;
             videoBattle.ParticipantPercentagePerVote = Model.ParticipantPercentagePerVote;
-
-
+            videoBattle.IsSponsorshipSupported = Model.IsSponsorshipSupported;
+            videoBattle.MinimumSponsorshipAmount = Model.MinimumSponsorshipAmount;
 
             if (Model.Id == 0)
             {
@@ -422,7 +429,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 MinimumVotingCharge = videoBattle.MinimumVotingCharge,
                 ChallengerName = challenger.GetFullName(),
                 ChallengerUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = challenger.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
-                ChallengerProfileImageUrl = challengerVideoModel.ParticipantProfileImageUrl
+                ChallengerProfileImageUrl = challengerVideoModel.ParticipantProfileImageUrl,
+                IsSponsorshipSupported = videoBattle.IsSponsorshipSupported,
+                MinimumSponsorshipAmount = videoBattle.MinimumSponsorshipAmount
             };
 
             //add challenger as participant
@@ -549,7 +558,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.VideoBattleFeaturedImageUrl = MobSocialConstant.VideoBattleFeaturedImageUrl;
             if (model.VideoBattleStatus != VideoBattleStatus.Pending)
             {
-                if (winnerOrLeader != null)
+                if (winnerOrLeader != null && winnerOrLeader.ThumbnailPath != null)
                 {
                     model.VideoBattleFeaturedImageUrl = winnerOrLeader.ThumbnailPath;
                 }
@@ -560,6 +569,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //cover image
             if (videoBattle.CoverImageId.HasValue)
                 model.VideoBattleCoverImageUrl = _pictureService.GetPictureUrl(videoBattle.CoverImageId.Value);
+
+            //now the sponsors, is it supported? let's find out who are the sponsors
+            model.IsSponsorshipSupported = videoBattle.IsSponsorshipSupported;
+            var sponsors = _sponsorService.GetSponsorsGrouped(null, videoBattle.Id, BattleType.Video,null);
+
+            var sModel = sponsors.Select(s => s.ToPublicModel(_workContext, _customerService, _pictureService, _sponsorService, _priceFormatter, _mediaSettings)).OrderBy(x => x.SponsorData.DisplayOrder).ToList();
+            model.Sponsors = sModel;
+           
+            //and is the logged in user a sponsor?
+            model.CurrentSponsor = model.Sponsors.FirstOrDefault(x => x.CustomerId == _workContext.CurrentCustomer.Id);
+            model.IsSponsor = model.CurrentSponsor != null;
 
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
@@ -586,20 +606,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             switch (ViewType)
             {
                 case "open":
-                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, null, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, null, null, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "open-to-join":
-                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Pending, VideoBattleType.Open, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Pending, VideoBattleType.Open, null, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "challenged":
-                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, null, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, null, null, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "closed":
                     //either closed or complete..whichever it is so first get all of them
-                    battles = _videoBattleService.GetAll(null, null, null, null, null, string.Empty, out totalPages, 1, int.MaxValue);
+                    battles = _videoBattleService.GetAll(null, null, null, null, null, null, string.Empty, out totalPages, 1, int.MaxValue);
 
                     battles =
                         battles.Where(
@@ -614,12 +634,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                     break;
                 case "my":
-                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, null, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
                 case "search":
-                    battles = _videoBattleService.GetAll(null, null, null, null, VideoBattleType.Open, SearchTerm,
+                    battles = _videoBattleService.GetAll(null, null, null, null, VideoBattleType.Open, null, SearchTerm,
                         out totalPages, Page, Count);
+                    battles = battles.ToList();
+                    break;
+                case "sponsor":
+                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, true, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
             }
@@ -1254,11 +1278,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                             //not paid yet...return an error to pay
                             return Json(new { Success = false, Message = "No voterpass purchased" });
                         }
-                        var voterPassOrder = _voterPassService.GetVoterPassOrder(VoterPassOrderId);
-                        //did the current customer place this order?
-                        if (voterPassOrder == null || voterPassOrder.CustomerId != _workContext.CurrentCustomer.Id)
+
+                        //is the voter pass already used
+                        var voterPass = _voterPassService.GetVoterPassByOrderId(VoterPassOrderId);
+                        if (voterPass == null || voterPass.Status == PassStatus.Used)
                         {
-                            //not paid yet...return an error to pay
+                            return Json(new { Success = false, Message = "Voterpass already used" });
+                        }
+                        if (voterPass.CustomerId != _workContext.CurrentCustomer.Id)
+                        {
+                            //somebody else...return an error
                             return Json(new { Success = false, Message = "Invalid voter pass id" });
                         }
 

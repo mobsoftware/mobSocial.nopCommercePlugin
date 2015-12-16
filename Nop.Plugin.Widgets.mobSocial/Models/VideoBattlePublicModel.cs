@@ -14,6 +14,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public VideoBattlePublicModel()
         {
             Participants = new List<VideoParticipantPublicModel>();
+            Prizes = new List<VideoBattlePrizeModel>();
+            Sponsors = new List<SponsorPublicModel>();
         }
 
         public int Id { get; set; }
@@ -75,5 +77,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public string VideoBattleFeaturedImageUrl { get; set; }
 
         public string VideoBattleCoverImageUrl { get; set; }
+
+        public bool IsSponsorshipSupported { get; set; }
+
+        public decimal MinimumSponsorshipAmount { get; set; }
+
+        public bool IsSponsor { get; set; }
+
+        public IList<SponsorPublicModel> Sponsors { get; set; }
+
+        public SponsorPublicModel CurrentSponsor { get; set; }
     }
 }

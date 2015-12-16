@@ -44,5 +44,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public IList<VideoBattlePrize> Prizes { get; set; }
 
         public int? CoverImageId { get; set; }
+
+        public bool IsSponsorshipSupported { get; set; }
+
+        public decimal MinimumSponsorshipAmount { get; set; }
     }
 }

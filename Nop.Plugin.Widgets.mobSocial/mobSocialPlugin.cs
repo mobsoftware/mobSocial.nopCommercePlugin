@@ -596,6 +596,29 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             _messageTemplateService.InsertMessageTemplate(signupAcceptedNotification);
 
+
+            var sponsorAppliedNotification = new MessageTemplate() {
+                Name = "MobSocial.SponsorAppliedNotification",
+                Subject = "%Sponsor.Name% wants to sponsor %Battle.Title%!",
+                Body = "Visit <a href=\"%SponsorDashboard.Url%\">Sponsor Dashboard</a> to accept the sponsorship.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(sponsorAppliedNotification);
+
+            var sponsorshipStatusChangeNotification = new MessageTemplate() {
+                Name = "MobSocial.SponsorshipStatusChangeNotification",
+                Subject = "Sponsorship for %Battle.Title% has been %Sponsorship.Status%",
+                Body = "Visit <a href=\"%SponsorDashboard.Url%\">Sponsor Dashboard</a> to view the details.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(sponsorshipStatusChangeNotification);
+
         }
 
         private void DeleteMessageTemplates()
@@ -614,7 +637,10 @@ namespace Nop.Plugin.Widgets.MobSocial
                 "MobSocial.VoteReminderNotification",
                 "MobSocial.VideoBattleSignupNotification",
                 "MobSocial.VideoBattleJoinNotification",
-                "MobSocial.VideoBattleSignupAcceptedNotification"
+                "MobSocial.VideoBattleSignupAcceptedNotification",
+                "MobSocial.SponsorAppliedNotification",
+                "MobSocial.SponsorshipStatusChangeNotification"
+
             };
 
             foreach (var template in messageTemplates)

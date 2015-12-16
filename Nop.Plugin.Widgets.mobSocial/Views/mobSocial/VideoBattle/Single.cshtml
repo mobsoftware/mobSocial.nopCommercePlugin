@@ -95,6 +95,26 @@
         </div>
     }
 
+    @if (Model.IsSponsorshipSupported)
+    {
+        if (Model.IsSponsor)
+        {
+            
+            <p>
+                Your sponsorship status is @Model.CurrentSponsor.SponsorshipStatus.ToString()
+                <a href="@Url.RouteUrl("SponsorDashboard", new {BattleType = BattleType.Video, BattleId = Model.Id})">Sponsors Dashboard</a>
+            </p>
+        }
+        else if (Model.IsEditable)
+        {
+            <a href="@Url.RouteUrl("SponsorDashboard", new {BattleType = BattleType.Video, BattleId = Model.Id})">Sponsors Dashboard</a>
+        }
+        else
+        {
+            <input type="button" value="BECOME A SPONSOR" ng-click="BecomeSponsor(VideoBattle.Id)" />
+        }
+    }
+
     @if (maxSeconds > 0)
     {
         <div class="battle-timer">
@@ -239,9 +259,9 @@
         <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
     </div>
 
-    @if (Model.IsVotingPayable)
+    @if (Model.IsVotingPayable || Model.IsSponsorshipSupported)
     {
-        <div id="payment-form-popup-area" ng-show="VoterPass.ShowPaymentPopup">
+        <div id="payment-form-popup-area" ng-show="PurchasePass.ShowPaymentPopup">
         </div>
     }
 

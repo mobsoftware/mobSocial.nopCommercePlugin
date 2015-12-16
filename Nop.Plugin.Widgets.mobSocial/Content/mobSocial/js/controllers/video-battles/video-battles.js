@@ -150,7 +150,7 @@ app.controller("VideoBattleEditorController", [
 
 
 app.controller("VideoBattlePageController", [
-	"$scope", "VideoBattleService", "PaymentService", "$sce", "$interval", "$compile", function ($scope, VideoBattleService, PaymentService, $sce, $interval, $compile) {
+	"$scope", "VideoBattleService", "PaymentService", "SponsorService", "$sce", "$interval", "$compile", function ($scope, VideoBattleService, PaymentService, SponsorService, $sce, $interval, $compile) {
 
 		//TODO: Organize the VideoBattleController as it's too big 
 		var controller = this;
@@ -188,8 +188,8 @@ app.controller("VideoBattlePageController", [
 		$scope.IsVideoPlaying = false;
 		$scope.PlayingParticipant = null;
 
-		$scope.VoterPass = {};
-		$scope.VoterPass.CustomerPaymentRequest = {};
+		$scope.PurchasePass = {};
+		$scope.PurchasePass.CustomerPaymentRequest = {};
 
 
 	    //variables to track payment progress
@@ -434,8 +434,8 @@ app.controller("VideoBattlePageController", [
 
 		$scope.VoteBattle = function (VideoBattleId, ParticipantId, VoteValue, IsPaidVoting, Success, Error) {
 
-			var completeVoting = function (VoterPassOrderId) {
-				VideoBattleService.VoteBattle(VideoBattleId, ParticipantId, VoteValue, VoterPassOrderId,
+			var completeVoting = function (PurchasePassOrderId) {
+				VideoBattleService.VoteBattle(VideoBattleId, ParticipantId, VoteValue, PurchasePassOrderId,
 					function (data) {
 
 						if (data.Success) {
@@ -458,8 +458,8 @@ app.controller("VideoBattlePageController", [
 
 			if (IsPaidVoting) {
 				//let's watch the credit card number as user types it
-			    $scope.$watch("VoterPass.CustomerPaymentRequest.CardNumber", function (newVal) {
-					$scope.VoterPass.CustomerPaymentRequest.CardIssuerType = getCardType(newVal);
+			    $scope.$watch("PurchasePass.CustomerPaymentRequest.CardNumber", function (newVal) {
+					$scope.PurchasePass.CustomerPaymentRequest.CardIssuerType = getCardType(newVal);
 				});
 
                 //save the participant to show on popup
@@ -476,7 +476,7 @@ app.controller("VideoBattlePageController", [
 	            $scope.PaymentProcessMessage = "You are voting for " + $scope.ProposedParticipant.ParticipantName;
 
 	            //show popup form for payment
-	            $scope.RequestPaymentPopupForm(VideoBattleId, 1/*video battle type = 1*/);
+	            $scope.RequestPaymentPopupForm(VideoBattleId, 1 /*video battle type = 1*/, 1 /*Voter Pass = 1*/);
 
 	            //now wait till payment is done
 	            $scope.PaymentProcessInfo.PaymentProgressChecker = $interval(function () {
@@ -485,9 +485,9 @@ app.controller("VideoBattlePageController", [
 	                }
 
 	                if ($scope.PaymentProcessInfo.PaymentProcessSuccess) {
-	                    $scope.VoterPass.ShowPaymentPopup = false;
+	                    $scope.PurchasePass.ShowPaymentPopup = false;
 	                    //so now complete the voting because payment has been done
-	                    completeVoting($scope.PaymentProcessInfo.Response.VoterPassId);
+	                    completeVoting($scope.PaymentProcessInfo.Response.PassId);
 	                }
 
 	                $interval.cancel($scope.PaymentProcessInfo.PaymentProgressChecker);
@@ -499,30 +499,31 @@ app.controller("VideoBattlePageController", [
 
 	    }
 
-	    $scope.RequestPaymentPopupForm = function (BattleId, BattleType) {
+	    $scope.RequestPaymentPopupForm = function (BattleId, BattleType, PurchaseType) {
 	        //payment needs to be done, show the payment popup
-	        $scope.VoterPass.ShowPaymentPopup = true;
+	        $scope.PurchasePass.ShowPaymentPopup = true;
+	        $scope.PurchasePass.PurchaseType = PurchaseType;
+
 	        var popuparea = "#payment-form-popup-area";
 	        jQuery(popuparea).html("");
-	        PaymentService.PaymentFormPopup(BattleId, BattleType, function (response) {
+	        PaymentService.PaymentFormPopup(BattleId, BattleType, PurchaseType, function (response) {
 
 	            jQuery(popuparea).html(response);
 	            jQuery("body").addClass("payment-process-on");
 	            $compile(jQuery(popuparea))($scope);
 
-
 	        });
 	    };
+        //this method is called from payment/paymentform view
+	    $scope.StartPaymentProcess = function (PassId) {
 
-	    $scope.StartPaymentProcess = function (VoterPassId) {
-
-	        if (VoterPassId) {
-	            //because the customer already has a voter pass, why not use it if he wants to...
+	        if (PassId) {
+	            //because the customer already has a voter/sponsor pass, why not use it if he wants to...
 	            //just fake the process of payment and everything else should work
 	            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
 	            $scope.PaymentProcessInfo.PaymentProcessSuccess = true;
 	            $scope.PaymentProcessInfo.Response = {
-	                VoterPassId: VoterPassId
+	                PassId: PassId
 	            };
 	            return;
 
@@ -531,29 +532,29 @@ app.controller("VideoBattlePageController", [
 	        //remove previous invalidation for card number
 	        $scope.createPaymentForm.cardNumber.$setValidity("invalid_number", true);
 
-	        if ($scope.VoterPass.CustomerPaymentMethodId == 0 && !$scope.createPaymentForm.$valid)
+	        if ($scope.PurchasePass.CustomerPaymentMethodId == 0 && !$scope.createPaymentForm.$valid)
 	            return;
 
 	        $scope.PaymentProcessInfo.PaymentProcessComplete = false;
 
-	        if ($scope.VoterPass.CustomerPaymentMethodId == 0) {
+	        if ($scope.PurchasePass.CustomerPaymentMethodId == 0) {
 	            //it's a new card so let's validate first
 
-	            if (!isValidCreditCard($scope.VoterPass.CustomerPaymentRequest.CardNumber)) {
+	            if (!isValidCreditCard($scope.PurchasePass.CustomerPaymentRequest.CardNumber)) {
 	                $scope.createPaymentForm.cardNumber.$setValidity("invalid_number", false);
 	                return;
 	            }
 
 	        }
 
-	        $scope.VoterPass.BattleId = $scope.VideoBattle.Id;
-	        $scope.VoterPass.BattleType = 1;//video battle
-	        $scope.VoterPass.PurchasingInProgress = true;
+	        $scope.PurchasePass.BattleId = $scope.VideoBattle.Id;
+	        $scope.PurchasePass.BattleType = 1;//video battle
+	        $scope.PurchasePass.PurchasingInProgress = true;
 
 	        //also we won't be sending the voter pass id information because user didn't opt to pay by that
-	        $scope.VoterPass.VoterPassId = 0;
+	        $scope.PurchasePass.PassId = 0;
 	        //let's submit form information to server
-	        PaymentService.PurchaseVoterPass($scope.VoterPass, function (response) {
+	        PaymentService.PurchasePurchasePass($scope.PurchasePass, function (response) {
 	            //set response status
 	            if (response.Success) {
 	                $scope.PaymentProcessInfo.Response = response;
@@ -574,10 +575,51 @@ app.controller("VideoBattlePageController", [
 	    //stop payment explicit
 	    $scope.StopPaymentProcess = function () {
 	        $scope.PaymentProcessInfo.PaymentProcessCancelled = true;
-	        $scope.VoterPass.ShowPaymentPopup = false;
+	        $scope.PurchasePass.ShowPaymentPopup = false;
 	        jQuery("body").removeClass("payment-process-on");
 	    }
 
+	    $scope.BecomeSponsor = function (BattleId) {
+
+            //let's watch the credit card number as user types it
+            $scope.$watch("PurchasePass.CustomerPaymentRequest.CardNumber", function (newVal) {
+                $scope.PurchasePass.CustomerPaymentRequest.CardIssuerType = getCardType(newVal);
+            });
+
+
+            $scope.PaymentProcessMessage = "Sponsor " + $scope.VideoBattle.Name;
+
+            //show popup form for payment
+            $scope.RequestPaymentPopupForm(BattleId, 1 /*video battle type = 1*/, 2 /*Sponsor Pass = 2*/);
+            $scope.PaymentProcessInfo.PaymentProcessComplete = false;
+	        $scope.PaymentProcessInfo.PaymentProcessCancelled = false;
+            //now wait till payment is done
+            $scope.PaymentProcessInfo.PaymentProgressChecker = $interval(function () {
+                if (!$scope.PaymentProcessInfo.PaymentProcessComplete || $scope.PaymentProcessInfo.PaymentProcessCancelled) {
+                    return;//not done yet
+                }
+
+                if ($scope.PaymentProcessInfo.PaymentProcessSuccess) {
+                    
+                    //so now complete the sponsorship process because payment has been done
+                    SponsorService.SaveSponsor({
+                        BattleId: BattleId,
+                        BattleType: 1 /*video battle*/,
+                        SponsorPassId: $scope.PaymentProcessInfo.Response.PassId
+                    }, function(response) {
+                        //success
+                        $scope.PurchasePass.ShowPaymentPopup = false;
+
+                    }, function(response) {
+                        //failure
+                        alert("Failed to complete operation");
+                        $scope.PurchasePass.ShowPaymentPopup = false;
+                    });
+                }
+
+                $interval.cancel($scope.PaymentProcessInfo.PaymentProgressChecker);
+            }, 500);
+        };
 
 	    $scope.processing = false;
 	    $scope.searchAPI = function (userInputString, timeoutPromise) {

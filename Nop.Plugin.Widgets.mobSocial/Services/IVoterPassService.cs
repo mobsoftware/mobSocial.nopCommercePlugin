@@ -11,7 +11,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
     {
         Order GetVoterPassOrder(int VoterPassOrderId);
 
-        IList<VoterPass> GetPurchasedVoterPasses(int CustomerId, VoterPassStatus? VotePassStatus);
+        IList<VoterPass> GetPurchasedVoterPasses(int CustomerId, PassStatus? VotePassStatus);
 
         int CreateVoterPass(BattleType BattleType, int BattleId, ProcessPaymentResult PaymentResponse, CustomerPaymentMethod PaymentMethod, decimal Amount);
 

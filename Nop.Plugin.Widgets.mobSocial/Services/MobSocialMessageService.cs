@@ -48,7 +48,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         private readonly MessageTemplatesSettings _messageTemplateSettings;
         private readonly CatalogSettings _catalogSettings;
         private readonly IProductAttributeParser _productAttributeParser;
-
+        private readonly IWorkContext _workContext;
         #endregion
 
         #region Ctor
@@ -68,8 +68,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                                            ILocalizationService localizationService, 
                                            MessageTemplatesSettings messageTemplateSettings,
                                            CatalogSettings catalogSettings, 
-                                           IProductAttributeParser productAttributeParser
-            )
+                                           IProductAttributeParser productAttributeParser, IWorkContext workContext)
         {
             _messageTemplateService = messageTemplateService;
             _storeService = storeService;
@@ -85,6 +84,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             _messageTemplateSettings = messageTemplateSettings;
             _catalogSettings = catalogSettings;
             _productAttributeParser = productAttributeParser;
+            _workContext = workContext;
         }
 
         #endregion
@@ -652,7 +652,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             var tokens = new List<Token>
             {
                 new Token("VideoBattle.Title", videoBattle.Name, true),
-                new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
+                new Token("VideoBattle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
                 new Token("Challenger.Name", challengee.GetFullName() , true)
 
             };
@@ -689,7 +689,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             var tokens = new List<Token>
             {
                 new Token("VideoBattle.Title", videoBattle.Name, true),
-                new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
+                new Token("VideoBattle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
                 new Token("Challenger.Name", challengee.GetFullName() , true)
 
             };
@@ -703,6 +703,79 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
             var toEmail = challenger.Email;
             var toName = challenger.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        }
+
+        public int SendSponsorAppliedNotificationToBattleOwner(Customer owner, Customer sponsor, VideoBattle videoBattle, int languageId, int storeId)
+        {
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.SponsorAppliedNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("Battle.Title", videoBattle.Name, true),
+                new Token("Battle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
+                new Token("Sponsor.Name", sponsor.GetFullName() , true)
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, owner);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = owner.Email;
+            var toName = owner.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        }
+
+        public int SendSponsorshipStatusChangeNotification(Customer receiver, SponsorshipStatus sponsorshipStatus, VideoBattle videoBattle, int languageId,
+            int storeId)
+        {
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.SponsorshipStatusChangeNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("Battle.Title", videoBattle.Name, true),
+                new Token("Battle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
+                new Token("Sponsorship.Status", sponsorshipStatus.ToString() , true)
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, receiver);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = receiver.Email;
+            var toName = receiver.GetFullName().ToTitleCase();
 
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }

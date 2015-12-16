@@ -38,6 +38,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         int SendVideoBattleJoinNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
 
         int SendVideoBattleSignupAcceptedNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
+
+        int SendSponsorAppliedNotificationToBattleOwner(Customer owner, Customer sponsor, VideoBattle videoBattle, int languageId, int storeId);
+
+        int SendSponsorshipStatusChangeNotification(Customer receiver, SponsorshipStatus sponsorshipStatus, VideoBattle videoBattle, int languageId, int storeId);
+
     }
 
 }

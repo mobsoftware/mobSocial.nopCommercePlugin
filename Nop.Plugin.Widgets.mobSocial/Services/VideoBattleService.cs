@@ -50,7 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         /// <summary>
         /// A multipurpose method for getting the video battles
         /// </summary>
-        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, string SearchTerm, out int TotalPages, int Page = 1, int Count = 15)
+        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, bool? IsSponsorshipSupported, string SearchTerm, out int TotalPages, int Page = 1, int Count = 15)
         {
             var battles = _videoBattleRepository.Table;
             if (OwnerId != null)
@@ -83,6 +83,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             if (BattleType != null)
             {
                 battles = battles.Where(x => x.VideoBattleType == BattleType.Value);
+            }
+
+            if (IsSponsorshipSupported != null)
+            {
+                battles = battles.Where(x => x.IsSponsorshipSupported);
             }
 
             if (!string.IsNullOrEmpty(SearchTerm))
