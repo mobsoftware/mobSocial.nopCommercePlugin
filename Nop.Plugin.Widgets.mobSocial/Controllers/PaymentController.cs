@@ -98,7 +98,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             if (_workContext.CurrentCustomer.Addresses.Count == 0)
             {
-                return AddressFormPopup();
+                return AddressFormPopup(Model);
             }
             var BattleId = Model.BattleId;
             var BattleType = Model.BattleType;
@@ -113,6 +113,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 MinimumPaymentAmount = PurchaseType == PurchaseType.SponsorPass ? battle.MinimumSponsorshipAmount : battle.MinimumVotingCharge,
                 PurchaseType = Model.PurchaseType
             };
+
+            //if purchase type is sponsor and customer is already a sponsor, he should not have a minimum amount criteria
+            if (PurchaseType == PurchaseType.SponsorPass)
+            {
+                var sponsorshipOrders = _sponsorPassService.GetSponsorPassOrders(_workContext.CurrentCustomer.Id, BattleId, BattleType);
+                if (sponsorshipOrders.Any())
+                    model.MinimumPaymentAmount = 1;
+            }
 
             IList<Order> orders;
             if (PurchaseType == PurchaseType.VoterPass)
@@ -157,11 +165,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [Authorize]
-        public ActionResult AddressFormPopup()
+        public ActionResult AddressFormPopup(CustomerPaymentModel CustomerPaymentModel)
         {
+            var model = new CustomerPaymentWithAddressModel {CustomerAddressEditModel = new CustomerAddressEditModel(), CustomerPaymentModel = CustomerPaymentModel};
+
+
             //because a customer might not have any address, order creation will trigger an error, therefore let's allow customer to add an address
-            var model = new CustomerAddressEditModel();
-            model.Address.PrepareModel(
+            model.CustomerAddressEditModel.Address.PrepareModel(
                 address: null,
                 excludeProperties: false,
                 addressSettings: _addressSettings,
@@ -178,6 +188,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [HttpPost]
         public ActionResult PurchasePass(PurchasePassModel Model)
         {
+            if (Model.Amount <= 0)
+                return Json(new {Success = false, Message = "Minimum amount to pay should be greater than zero"});
 
             //check if the payment method provided by customer is new or an existing one
             CustomerPaymentMethod paymentMethod = null;
@@ -265,7 +277,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             if (Model.PurchaseType == PurchaseType.SponsorPass && Model.Amount < battle.MinimumSponsorshipAmount)
             {
-                return Json(new { Success = false, Message = "Payment amount is less than minimum sponsorship amount" });
+                //only if user is not increasing the sponsorship amount should we send error, else accept any amount
+                var sponsorshipOrders = _sponsorPassService.GetSponsorPassOrders(_workContext.CurrentCustomer.Id, Model.BattleId, Model.BattleType);
+                if (!sponsorshipOrders.Any())
+                    return Json(new { Success = false, Message = "Payment amount is less than minimum sponsorship amount" });
             }
 
             //process the payment now

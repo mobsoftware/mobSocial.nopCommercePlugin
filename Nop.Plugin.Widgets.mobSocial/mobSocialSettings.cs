@@ -57,5 +57,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public bool EnableAutomaticMigrations { get; set; }
 
         public bool EnableFacebookInvite { get; set; }
+
+        public decimal Version { get; set; }
     }
 }

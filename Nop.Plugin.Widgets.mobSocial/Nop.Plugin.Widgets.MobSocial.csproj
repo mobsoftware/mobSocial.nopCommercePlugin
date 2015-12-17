@@ -70,6 +70,7 @@
     <Compile Include="Models\CustomerPaymentModel.cs" />
     <Compile Include="Models\CustomerPaymentPublicModel.cs" />
     <Compile Include="Models\CustomerPaymentRequestModel.cs" />
+    <Compile Include="Models\CustomerPaymentWithAddressModel.cs" />
     <Compile Include="Models\SponsorDataModel.cs" />
     <Compile Include="Models\SponsorModel.cs" />
     <Compile Include="Models\SponsorPublicModel.cs" />

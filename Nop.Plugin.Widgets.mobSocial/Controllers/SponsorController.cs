@@ -293,9 +293,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if(battle == null)
                 return InvokeHttp404();
             //only battle owner or sponsor can vew dashboard
-            var sponsors = _sponsorService.GetSponsors(_workContext.CurrentCustomer.Id, BattleId, BattleType,
-                SponsorshipStatus.Accepted);
-            if (!(sponsors.Any() || battle.ChallengerId == _workContext.CurrentCustomer.Id))
+            var sponsors = _sponsorService.GetSponsors(_workContext.CurrentCustomer.Id, BattleId, BattleType, null);
+            if (!sponsors.Any() && battle.ChallengerId != _workContext.CurrentCustomer.Id)
                 return InvokeHttp404();
 
             //TODO: Include picture battles when ready

@@ -22,6 +22,8 @@
         public static string EncryptionSalt = "428B648F262C4E2BC2637DD445D37";
 
         public static string VideoBattleFeaturedImageUrl = PluginContentPathInternal + "/images/poweredby.jpg";
+
+        public static decimal ReleaseVersion = 3.6m;
     }
 }
 

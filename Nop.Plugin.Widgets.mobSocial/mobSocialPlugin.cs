@@ -15,6 +15,7 @@ using System.Web.Configuration;
 using MobAds.Public;
 using Nop.Core;
 using System.Linq;
+using Nop.Plugin.Widgets.MobSocial.Constants;
 using Nop.Plugin.Widgets.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial
@@ -211,6 +212,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             //settings
             var mobSocialSettings = new mobSocialSettings() {
+                Version = MobSocialConstant.ReleaseVersion,
                 ProfilePictureSize = 100,
                 WidgetZone = "after_header_links",
                 PeopleSearchAutoCompleteEnabled = true,

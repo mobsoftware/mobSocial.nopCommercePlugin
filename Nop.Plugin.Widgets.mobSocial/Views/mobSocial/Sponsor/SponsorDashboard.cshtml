@@ -1,0 +1,26 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.SponsorsRequestModel
+@{
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+    
+    var json = Json.Encode(Model);
+}
+<div ng-controller="SponsorController" ng-init="init(@json)">
+    <div ng-repeat="Sponsor in Sponsors">
+        <div class="sponsor-block">
+            <div class="sponsor-name">
+                <a href="/{{Sponsor.SeName}}">{{Sponsor.SponsorName}}</a>
+            </div>
+            <div class="sponsor-amount">
+                {{Sponsor.SponsorshipAmountFormatted}}
+            </div>
+            <div class="sponsor-status">
+                {{Sponsor.SponsorshipStatusName}}
+            </div>
+            <a ng-click="GetSponsorTransactions(Sponsor)">Load</a>
+            <div ng-show="Sponsor.SponsorTransactions" class="sponsor-transactions">
+                
+            </div>
+        </div>
+    </div>
+</div>

@@ -572,13 +572,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             //now the sponsors, is it supported? let's find out who are the sponsors
             model.IsSponsorshipSupported = videoBattle.IsSponsorshipSupported;
-            var sponsors = _sponsorService.GetSponsorsGrouped(null, videoBattle.Id, BattleType.Video,null);
+            var sponsors = _sponsorService.GetSponsorsGrouped(null, videoBattle.Id, BattleType.Video, null);
 
             var sModel = sponsors.Select(s => s.ToPublicModel(_workContext, _customerService, _pictureService, _sponsorService, _priceFormatter, _mediaSettings)).OrderBy(x => x.SponsorData.DisplayOrder).ToList();
-            model.Sponsors = sModel;
+            model.Sponsors = sModel.Where(x => x.SponsorshipStatus == SponsorshipStatus.Accepted).ToList();
+            
            
             //and is the logged in user a sponsor?
-            model.CurrentSponsor = model.Sponsors.FirstOrDefault(x => x.CustomerId == _workContext.CurrentCustomer.Id);
+            model.CurrentSponsor = sModel.FirstOrDefault(x => x.CustomerId == _workContext.CurrentCustomer.Id);
             model.IsSponsor = model.CurrentSponsor != null;
 
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
@@ -684,7 +685,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         VideoBattleUrl = Url.RouteUrl("VideoBattlePage", new { SeName = videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
                         RemainingSeconds = GetRemainingSeconds(videoBattle),
                         VideoBattleFeaturedImageUrl = thumbnailUrl,
-                        ChallengerProfileImageUrl = _pictureService.GetPictureUrl(challenger.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, false)
+                        ChallengerProfileImageUrl = _pictureService.GetPictureUrl(challenger.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, false),
+                        IsSponsorshipSupported = videoBattle.IsSponsorshipSupported,
+                        MinimumSponsorshipAmount = videoBattle.MinimumSponsorshipAmount
                     });
                 }
             }

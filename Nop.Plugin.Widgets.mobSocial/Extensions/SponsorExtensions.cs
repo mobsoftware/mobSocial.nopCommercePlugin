@@ -49,7 +49,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Extensions
         public static SponsorDataModel ToModel(this SponsorData SponsorData, IPictureService _pictureService)
         {
             if (SponsorData == null)
-                return null;
+                return new SponsorDataModel();
             var model = new SponsorDataModel()
             {
                 Id = SponsorData.Id,

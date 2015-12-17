@@ -561,6 +561,7 @@ app.controller("VideoBattlePageController", [
 	            } else {
 	                //some error occured while processing payment, let the user know that
 	                $scope.PaymentProcessMessage = response.Message;
+	                $scope.PurchasePass.PurchasingInProgress = false;
 	            }
 	            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
 	            $scope.PaymentProcessInfo.PaymentProcessSuccess = response.Success;
@@ -609,6 +610,8 @@ app.controller("VideoBattlePageController", [
                     }, function(response) {
                         //success
                         $scope.PurchasePass.ShowPaymentPopup = false;
+                        //refresh the window
+                        window.location.reload();
 
                     }, function(response) {
                         //failure
