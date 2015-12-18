@@ -274,7 +274,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             languageId = EnsureLanguageIsActive(languageId, store.Id);
 
 
-            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.SendSomeoneSentYouASongNotification", store.Id);
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.SomeoneChallengedYouForBattleNotification", store.Id);
             if (messageTemplate == null)
                 return 0;
 
@@ -285,8 +285,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             var tokens = new List<Token>
             {
                 new Token("VideoBattle.Title", videoBattle.Name, true),
-                new Token("VideoBattle.Url", string.Format("{0}/VideoBattles/VideoBattle/{1}", store.Url, videoBattle.Id) , true),
-                new Token("Challenger.Name", challenger.GetFullName() , true)
+                new Token("VideoBattle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)) , true),
+                new Token("Challenger.FirstName", challenger.GetFullName() , true)
 
             };
 

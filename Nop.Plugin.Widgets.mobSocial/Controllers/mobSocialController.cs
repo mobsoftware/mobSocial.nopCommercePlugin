@@ -208,8 +208,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
                 if (filteredCustomers.Count >= _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults) return;
                 
-                var firstName = x.GetAttribute<string>(SystemCustomerAttributeNames.FirstName).ToLowerInvariant();
-                var lastName = x.GetAttribute<string>(SystemCustomerAttributeNames.LastName).ToLowerInvariant();
+                var firstName = x.GetAttribute<string>(SystemCustomerAttributeNames.FirstName);
+                firstName = firstName == null ? "" : firstName.ToLowerInvariant();
+                var lastName = x.GetAttribute<string>(SystemCustomerAttributeNames.LastName);
+                lastName = lastName == null ? "" : lastName.ToLowerInvariant();
                 var email = x.Email;
                 if (!firstName.Contains(term) && !lastName.Contains(term) && email != term) return;
                 

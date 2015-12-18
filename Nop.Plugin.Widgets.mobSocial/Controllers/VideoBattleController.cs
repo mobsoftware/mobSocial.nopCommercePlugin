@@ -1431,9 +1431,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             if (VideoBattle == null)
                 return false;
-            return (_workContext.CurrentCustomer.Id == VideoBattle.ChallengerId && VideoBattle.VideoBattleStatus == VideoBattleStatus.Open) //page owner
-                || VideoBattle.VideoBattleType == VideoBattleType.Open
-                || _workContext.CurrentCustomer.IsAdmin(); //administrator
+            return VideoBattle.VideoBattleStatus != VideoBattleStatus.Complete
+                   && VideoBattle.VideoBattleStatus != VideoBattleStatus.Closed
+                   &&
+                   ((_workContext.CurrentCustomer.Id == VideoBattle.ChallengerId &&
+                     VideoBattle.VideoBattleType == VideoBattleType.InviteOnly) //page owner
+                    || VideoBattle.VideoBattleType == VideoBattleType.Open
+                    || _workContext.CurrentCustomer.IsAdmin()); //administrator
         }
 
         /// <summary>

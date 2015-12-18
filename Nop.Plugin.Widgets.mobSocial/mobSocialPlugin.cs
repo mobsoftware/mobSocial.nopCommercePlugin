@@ -516,7 +516,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             var someoneChallengedForBattleNotification = new MessageTemplate() {
                 Name = "MobSocial.SomeoneChallengedYouForBattleNotification",
                 Subject = "%Challenger.FirstName% challenged you for a video battle!",
-                Body = "<a href=\"%Store.URL%\">Log in</a> to accept the challege.",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit battle page</a> to accept the challege.",
                 EmailAccountId = 1,
                 IsActive = true,
                 LimitedToStores = false
