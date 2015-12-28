@@ -35,7 +35,10 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                 }
 
                 if ($scope.dateFormat === undefined) {
-                    $scope.dateFormat = "dddd, MMMM DD YYYY hh:mm:ss A";
+                    $scope._dateFormat = "dddd, MMMM DD YYYY hh:mm:ss A";
+                }
+                else {
+                    $scope._dateFormat = $scope.dateFormat;
                 }
 
                 if ($scope.currentDate == undefined) {
@@ -326,7 +329,7 @@ dtpAppDirectives.directive("datetimepicker", ["$compile", "$rootScope", function
                 };
 
                 $scope.formatDate = function () {
-                    $scope.currentDateFormatted = moment($scope.currentDate).format($scope.dateFormat);
+                    $scope.currentDateFormatted = moment($scope.currentDate).format($scope._dateFormat);
                 }
                 var datePickerArea = angular.element("<div class='datepicker-area'></div>");
                 $scope._datePickerArea = datePickerArea;
