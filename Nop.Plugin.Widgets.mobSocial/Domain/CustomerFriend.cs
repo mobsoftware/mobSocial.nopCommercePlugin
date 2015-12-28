@@ -22,13 +22,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
     }
 
 
-    public enum FriendStatus
-    {
-        FriendRequestSent,
-        NeedsConfirmed,
-        Friends,
-        None
-    }
 
 
 }

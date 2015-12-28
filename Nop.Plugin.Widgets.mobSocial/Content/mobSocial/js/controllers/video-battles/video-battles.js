@@ -838,7 +838,7 @@ app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
 		$scope.GetVideoBattles = function (ViewType, SearchTerm) {
 			$scope.processing = true;
 			$scope.VideoBattles = [];
-			VideoBattleService.GetVideoBattles(ViewType, SearchTerm, $scope.Page, $scope.Count,
+			VideoBattleService.GetVideoBattles(ViewType, SearchTerm, 0, $scope.Page, $scope.Count,
 				function (data) {
 					if (data.Success) {
 						$scope.VideoBattles = data.VideoBattles;

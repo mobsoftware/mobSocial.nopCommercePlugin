@@ -598,7 +598,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// <summary>
         /// Loads battles using ajax
         /// </summary>
-        public ActionResult GetBattles(string ViewType = "open", string SearchTerm = "", int Page = 1, int Count = 15)
+        public ActionResult GetBattles(string ViewType = "open", string SearchTerm = "", int CustomerId = 0, int Page = 1, int Count = 15)
         {
             //let's get all the battles depending on view type
             ViewType = ViewType.ToLowerInvariant();
@@ -645,6 +645,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     break;
                 case "sponsor":
                     battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, true, string.Empty, out totalPages, Page, Count);
+                    battles = battles.ToList();
+                    break;
+                case "user":
+                    if (CustomerId == 0)
+                        CustomerId = _workContext.CurrentCustomer.Id;
+                    battles = _videoBattleService.GetAll(CustomerId, null, null, null, null, true, string.Empty, out totalPages, Page, Count);
                     battles = battles.ToList();
                     break;
             }

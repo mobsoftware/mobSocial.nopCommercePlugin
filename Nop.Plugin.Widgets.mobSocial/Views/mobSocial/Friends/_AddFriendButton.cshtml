@@ -1,11 +1,6 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.AddFriendButtonModel
 
 
-@{
-    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/add-friend-button.js");
-}
-
-
 @if (Model.ShowAddFriendButton || Model.ShowFriendRequestSent)
 {
     <div class="addFriendContainer">

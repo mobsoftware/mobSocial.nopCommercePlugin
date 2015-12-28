@@ -7,6 +7,7 @@ using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Localization;
 using Nop.Services.Media;

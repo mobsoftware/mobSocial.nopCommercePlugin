@@ -1,6 +1,6 @@
 ﻿
 
-app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$attrs', function ($rootScope, $scope, $http, $attrs) {
+app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$attrs', 'VideoBattleService', function ($rootScope, $scope, $http, $attrs, VideoBattleService) {
     if (!$attrs.model) throw new Error("No model for customerProfileController");
 
     var model = JSON.parse($attrs.model);
@@ -61,6 +61,24 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
         alert('new way to edit profile picture!');
     };
 
+    $scope.GetVideoBattles = function () {
+        $scope.processing = true;
+        $scope.VideoBattles = [];
+        var CustomerId = $scope.customerId;
+        var ViewType = "user";
+        VideoBattleService.GetVideoBattles(ViewType, null, CustomerId, null , null,
+            function (data) {
+                if (data.Success) {
+                    $scope.VideoBattles = data.VideoBattles;
+                    $scope.loaded = true;
+                }
+                $scope.processing = false;
+            },
+            function (data) {
+                $scope.processing = false;
+                alert("error occurred");
+            });
+    };
 
 }]);
 

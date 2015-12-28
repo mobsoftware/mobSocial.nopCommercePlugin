@@ -42,6 +42,7 @@
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
+    <Compile Include="Controllers\FriendsController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Domain\VideoBattlePrize.cs" />
     <Compile Include="Domain\VoterPass.cs" />
     <Compile Include="Enums\BattleType.cs" />
+    <Compile Include="Enums\FriendStatus.cs" />
     <Compile Include="Enums\PaymentMethodType.cs" />
     <Compile Include="Enums\PassStatus.cs" />
     <Compile Include="Enums\PurchaseType.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Services\BusinessPageCouponService.cs" />
     <Compile Include="Services\BusinessPageService.cs" />
     <Compile Include="Services\EchoNestMusicService .cs" />
+    <Compile Include="Services\FriendService.cs" />
     <Compile Include="Services\IApiUri.cs" />
     <Compile Include="Services\IArtistPageAPIService.cs" />
     <Compile Include="Services\IArtistPageManagerService.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="Services\IBusinessPageService.cs" />
     <Compile Include="Services\ICustomerFavoriteSongService.cs" />
     <Compile Include="Services\ICustomerPaymentMethodService.cs" />
+    <Compile Include="Services\IFriendService.cs" />
     <Compile Include="Services\IMobSecurityService.cs" />
     <Compile Include="Services\IMusicService.cs" />
     <Compile Include="Services\IOAuthCredentials.cs" />
@@ -319,6 +323,9 @@
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
     <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
+    <Content Include="Content\Libraries\moment.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -700,7 +707,7 @@
     <Content Include="Views\mobSocial\ProfileInformation.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\FriendRequests.cshtml">
+    <Content Include="Views\mobSocial\Friends\FriendRequests.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\TeamPage.cshtml">
@@ -709,7 +716,7 @@
     <Content Include="Views\mobSocial\TeamPage_old.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\_AddFriendButton.cshtml">
+    <Content Include="Views\mobSocial\Friends\_AddFriendButton.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\_ColumnsThree.cshtml">
@@ -718,7 +725,7 @@
     <Content Include="Views\mobSocial\_CustomerFriendBlock.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\_CustomerFriends.cshtml">
+    <Content Include="Views\mobSocial\Friends\_CustomerFriends.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\_ProfilePicture.cshtml">

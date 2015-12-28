@@ -3,11 +3,20 @@
 @using Nop.Plugin.Widgets.MobSocial
 @using Nop.Plugin.Widgets.MobSocial.Constants
 @{
+    //nopcommerce installation
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+
+    Html.AddScriptParts("~/Scripts/jquery.fancybox-1.3.4.pack.js");
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+
 
     //THIRD PARTY RESOURCES
 
     //font-awesome icons
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/fonts/font-awesome.min.css");
+
+    //moment
+    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/moment.min.js");
 
     //angular core
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular/angular.min.js");
@@ -43,6 +52,8 @@
     //autocomplete
     Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.js");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.css");
+
+
 
 
     //signalr
@@ -85,9 +96,11 @@
     //controllers
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/my-health.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-profile.js");
+    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-albums.js");
 
 
     //common js
+    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/add-friend-button.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/common.js");
     //Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mob-video.js");
 
