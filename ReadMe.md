@@ -1,6 +1,4 @@
-#Free open-source social network (ASP.NET MVC)#
-
-
+#Free open-source social network (ASP.NET MVC) for building social stores and applications#
 
 General Features
 =========
