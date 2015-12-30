@@ -28,6 +28,7 @@ using Nop.Web.Models.Customer;
 using Mob.Core;
 using System.Web;
 using Nop.Plugin.Widgets.MobSocial.Constants;
+using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Plugin.Widgets.MobSocial.Extensions;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Web.Controllers;

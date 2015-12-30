@@ -88,6 +88,7 @@
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
     <Compile Include="Migrations\MobSocialMigration.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\VideoBattlePrizePublicModel.cs" />
     <Compile Include="Models\VideoBattleQueryModel.cs" />
     <Compile Include="Models\PurchasePassModel.cs" />
     <Compile Include="Services\ArtistPageAPIService.cs" />

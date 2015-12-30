@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mob.Core.Data;
 using Mob.Core.Services;
@@ -43,9 +44,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             return Repository.Table.Where(x => !x.Confirmed && x.FromCustomerId == CustomerId).ToList();
         }
 
-        public IList<CustomerFriend> GetCustomerFriends(int CustomerId)
+        public IList<CustomerFriend> GetCustomerFriends(int CustomerId, int Count = 0, bool Random = false)
         {
-            return Repository.Table.Where(x => (x.FromCustomerId == CustomerId || x.ToCustomerId == CustomerId) && x.Confirmed).ToList();
+            var friends =
+                Repository.Table.Where(
+                    x => (x.FromCustomerId == CustomerId || x.ToCustomerId == CustomerId) && x.Confirmed);
+
+            if (Random)
+                friends = friends.OrderBy(x => Guid.NewGuid());
+
+            if (Count > 0)
+                friends = friends.Take(Count);
+            return friends.ToList();
         }
     }
 }

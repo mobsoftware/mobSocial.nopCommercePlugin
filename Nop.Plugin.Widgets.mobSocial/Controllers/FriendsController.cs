@@ -173,7 +173,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [Authorize]
-        public ActionResult CustomerFriends(int customerId = 0)
+        public ActionResult CustomerFriends(int customerId = 0, int howMany = 0, bool random = false)
         {
 
             if (customerId == 0)
