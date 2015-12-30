@@ -336,6 +336,13 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                        );
 
+            routes.MapLocalizedRoute("VideoBattleGetPrizeDetails",
+                       "VideoBattles/GetPrizeDetails",
+                       new { controller = "VideoBattle", action = "GetPrizeDetails" },
+                       new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                       );
+
             //payments
             routes.MapLocalizedRoute("PaymentFormPopup",
                        "Payment/PaymentFormPopup",

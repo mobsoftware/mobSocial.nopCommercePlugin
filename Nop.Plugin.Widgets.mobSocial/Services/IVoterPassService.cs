@@ -18,5 +18,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         void MarkVoterPassUsed(int VoterPassOrderId);
 
         VoterPass GetVoterPassByOrderId(int OrderId);
+
+        IList<Order> GetAllVoterPassOrders(BattleType BattleType, int BattleId, PassStatus? VoterPassStatus);
     }
 }

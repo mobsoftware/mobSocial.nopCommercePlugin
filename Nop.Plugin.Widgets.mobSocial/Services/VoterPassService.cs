@@ -128,6 +128,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
            return Repository.Table.FirstOrDefault(x => x.VoterPassOrderId == OrderId);
         }
 
+        public IList<Order> GetAllVoterPassOrders(BattleType BattleType, int BattleId, PassStatus? VoterPassStatus)
+        {
+            var passes = Repository.Table.Where(x => x.BattleId == BattleId && x.BattleType == BattleType);
+            if (VoterPassStatus.HasValue)
+                passes = passes.Where(x => x.Status == VoterPassStatus.Value);
+
+            var orderIds = passes.Select(x => x.VoterPassOrderId).ToArray();
+            return _orderService.GetOrdersByIds(orderIds);
+        }
+
         private Product GetVoterPassProduct(BattleType BattleType)
         {
             var voterPass = _productService.GetProductBySku(BattleType == Enums.BattleType.Video ? MobSocialConstant.VideoBattleVoterPassSKU : MobSocialConstant.PictureBattleVoterPassSKU);

@@ -76,5 +76,11 @@
           .success(Success)
           .error(Error);
     }
+
+    this.GetPrizeDetails = function (VideoBattleId, Success, Error) {
+        $http.post("/VideoBattles/GetPrizeDetails", { VideoBattleId: VideoBattleId })
+         .success(Success)
+         .error(Error);
+    }
    
 }]);

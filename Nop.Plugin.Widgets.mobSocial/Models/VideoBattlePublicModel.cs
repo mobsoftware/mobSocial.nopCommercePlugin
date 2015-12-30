@@ -74,6 +74,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public IList<VideoBattlePrizeModel> Prizes { get; set; }
 
+        public string ConsolidatedPrizesDisplay { get; set; }
+
         public string VideoBattleFeaturedImageUrl { get; set; }
 
         public string VideoBattleCoverImageUrl { get; set; }

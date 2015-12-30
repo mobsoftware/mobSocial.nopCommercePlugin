@@ -820,7 +820,23 @@ app.controller("VideoBattlePageController", [
 
 	    }
 
+        $scope.ShowPrizeDetails = false;
+        $scope.GetPrizeDetails = function(VideoBattleId) {
+            VideoBattleService.GetPrizeDetails(VideoBattleId, function(data) {
+                if (data.Success) {
+                    $scope.ShowPrizeDetails = true;
+                    $scope.Prizes = data.Prizes;
+                } else {
+                    alert(data.Message);
+                }
+            }, function(data) {
+                alert("An error occured while performing operation");
+            });
+        }
 
+        $scope.HidePrizeDetails = function() {
+            $scope.ShowPrizeDetails = false;
+        }
 	}
 ]);
 
