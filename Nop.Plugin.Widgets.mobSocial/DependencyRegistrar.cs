@@ -16,6 +16,7 @@ using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Media;
 using Nop.Services.Seo;
 using SitemapGenerator = Nop.Plugin.Widgets.MobSocial.Services.SitemapGenerator;
+using Nop.Core.Configuration;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -24,7 +25,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         private const string CONTEXT_NAME = "nop_object_context_social_network";
 
 
-        public override void Register(ContainerBuilder builder, ITypeFinder typeFinder)
+        public override void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
         {
             //Load custom data settings
             var dataSettingsManager = new DataSettingsManager();
@@ -61,7 +62,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 
             //call the core registrar
-            base.Register(builder, typeFinder);
+            base.Register(builder, typeFinder, config);
 
             //db migrations, lets update if needed
             var migrator = new DbMigrator(new Configuration());

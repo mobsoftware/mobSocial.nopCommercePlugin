@@ -7,6 +7,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Seo;
 using Nop.Services.Seo;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {

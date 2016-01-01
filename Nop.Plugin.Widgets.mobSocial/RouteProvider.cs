@@ -399,7 +399,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                    );
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
-            routes.MapHubs();
+            //routes.MapHubs(); Video Conferrencing on hold until Owin IAppBuilder
 
         }
 
