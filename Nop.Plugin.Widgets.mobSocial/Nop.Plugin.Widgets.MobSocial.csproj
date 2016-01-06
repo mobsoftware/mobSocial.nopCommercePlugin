@@ -320,9 +320,18 @@
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
     <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
+    <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />
     <None Include="Scripts\jquery-2.1.4.min.map" />
+    <None Include="Themes\MobSocialDefault\Views\Web.config" />
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
     <None Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml" />
+    <Content Include="Content\Libraries\moment.min.js" />
+    <Content Include="Themes\MobSocialDefault\Views\MobAdsPublic\MobAds.Public.Views.MobAds.AdDisplay.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\MobSocialDefault\Views\MobAdsPublic\MobAds.Public.Views.MobAds.AdLoader.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\mobSocial\Friends\FriendRequests.cshtml" />
     <None Include="Views\mobSocial\Friends\_AddFriendButton.cshtml" />
     <None Include="Views\mobSocial\Friends\_CustomerFriends.cshtml" />
@@ -838,7 +847,6 @@
     <Content Include="Views\mobSocial\_AppLayoutTheater.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt">

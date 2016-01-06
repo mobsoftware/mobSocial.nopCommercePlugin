@@ -1,0 +1,7 @@
+﻿@model MobAds.Public.Models.AdLoaderModel
+@{
+    Layout = "";
+    var randomId = "mobads_" + DateTime.Now.Ticks.ToString();
+}
+
+<div id="@randomId" class="mobads-display-container" data-clientid="@Model.MobAdsClientId" data-widgetzone="@Model.WidgetZone"></div>

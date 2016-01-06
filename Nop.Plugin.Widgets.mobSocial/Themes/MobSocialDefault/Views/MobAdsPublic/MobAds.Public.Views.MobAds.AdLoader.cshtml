@@ -1,0 +1,77 @@
+﻿@model MobAds.Public.Models.AdLoaderModel
+@{
+    Layout = "";
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        window["mobads_video_inline"] = null;
+
+        var query = "";
+        var clientId = jQuery(".mobads-display-container").first().attr("data-clientid");
+
+        query += "clientid=" + clientId;
+        jQuery(".mobads-display-container").each(function() {
+            var widgetzone = jQuery(this).attr("data-widgetzone");
+            query += "&widgetzones=" + widgetzone;
+        });
+        jQuery.ajax({
+            url: "@Model.MobAdsScriptUrl",
+            jsonp: "callback",
+            data: query,
+            dataType: "jsonp",
+            success: function(data) {
+                var videoCount = 0;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].WidgetZone === "video_inline") {
+                        jQuery(".mobads-display-container[data-widgetzone='" + data[i].WidgetZone + "']").hide();
+                        window["mobads_video_inline"] = data[i].AdCode; //TODO: find a better way of passing data to videobattlepagecontroller
+                        videoCount++;
+                    } else {
+                        jQuery(".mobads-display-container[data-widgetzone='" + data[i].WidgetZone + "']").html(data[i].AdCode);
+
+                    }
+                }
+                if (videoCount === 0)
+                    window["mobads_video_inline"] = "{}"; //empty object
+            },
+            error: function (data) {
+                
+                //fallback ads due to error
+                jQuery(".mobads-display-container").html(get_google_ad("ca-pub-XXXX", "XXXX"));
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].WidgetZone === "video_inline") {
+                        jQuery(".mobads-display-container[data-widgetzone='" + data[i].WidgetZone + "']").hide();
+                        window["mobads_video_inline"] = get_video_ad(); //TODO: find a better way of passing data to videobattlepagecontroller
+                        break;
+                    } 
+                }
+            }
+        });
+
+
+    });
+
+</script>
+<script type="text/javascript">
+    function get_google_ad(adclient,adslot) {
+        var ad = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">';
+        ad += "</" + "script>";
+
+        ad += '<ins class="adsbygoogle" style="display:block" data-ad-client="' + adclient + '" data-ad-slot="'+ adslot +'" data-ad-format="auto"></ins>';
+        ad += "<script>(adsbygoogle = window.adsbygoogle || []).push({});</"+"script>";
+
+        return ad;
+    }
+
+    function get_video_ad() {
+        return {
+            companion: "companionAd",
+            companionSize: [728, 90],
+            network: "6062",
+            unitPath: "iab_vast_samples",
+            adTagUrl: "http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2",
+            skipButton: "<div class='skipButton'>skip ad</div>"
+        };
+    }
+</script>
