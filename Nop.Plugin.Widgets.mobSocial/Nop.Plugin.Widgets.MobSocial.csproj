@@ -66,9 +66,13 @@
     <Compile Include="Enums\PaymentMethodType.cs" />
     <Compile Include="Enums\PassStatus.cs" />
     <Compile Include="Enums\PurchaseType.cs" />
+    <Compile Include="Enums\SponsoredCashDistributionType.cs" />
     <Compile Include="Enums\SponsorshipStatus.cs" />
+    <Compile Include="Enums\SponsorshipType.cs" />
+    <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\SponsorExtensions.cs" />
     <Compile Include="Helpers\CardHelper.cs" />
+    <Compile Include="Helpers\PrizeDistributionHelper.cs" />
     <Compile Include="Models\CustomerPaymentModel.cs" />
     <Compile Include="Models\CustomerPaymentPublicModel.cs" />
     <Compile Include="Models\CustomerPaymentRequestModel.cs" />

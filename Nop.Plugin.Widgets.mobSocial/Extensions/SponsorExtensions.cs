@@ -40,6 +40,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Extensions
                 SponsorshipAmountFormatted =
                     _priceFormatter.FormatPrice(Sponsor.SponsorshipAmount, true, _workContext.WorkingCurrency),
                 SponsorData = sponsorData.ToModel(_pictureService),
+                SponsorshipType = Sponsor.SponsorshipType
             };
 
 

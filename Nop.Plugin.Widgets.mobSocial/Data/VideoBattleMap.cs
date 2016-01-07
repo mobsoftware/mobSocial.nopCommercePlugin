@@ -21,6 +21,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.MaximumParticipantCount);
 
             Property(x => x.CoverImageId).IsOptional();
+
+            Property(x => x.IsVotingPayable);
+            Property(x => x.CanVoterIncreaseVotingCharge);
+            Property(x => x.MinimumVotingCharge);
+
+            Property(x => x.IsSponsorshipSupported);
+            Property(x => x.SponsoredCashDistributionType);
+            Property(x => x.MinimumSponsorshipAmount);
         }
     }
 }

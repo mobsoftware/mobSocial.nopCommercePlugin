@@ -36,5 +36,11 @@
                .success(Success)
                .error(Error);
         }
+
+        this.SaveSponsorProductPrizes = function (Prizes, Success, Error) {
+            $http.post("/Sponsor/SaveSponsorProductPrizes", Prizes)
+               .success(Success)
+               .error(Error);
+        }
     }
 ]);

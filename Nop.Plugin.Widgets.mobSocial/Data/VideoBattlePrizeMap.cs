@@ -21,6 +21,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.VideoBattleId);
             Property(x => x.WinnerId);
             Property(x => x.WinnerPosition);
+            Property(x => x.IsSponsored);
+            Property(x => x.SponsorCustomerId);
         }
     }
 }

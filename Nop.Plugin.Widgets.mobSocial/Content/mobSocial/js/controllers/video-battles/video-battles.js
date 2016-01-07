@@ -457,11 +457,7 @@ app.controller("VideoBattlePageController", [
 			}
 
 			if (IsPaidVoting) {
-				//let's watch the credit card number as user types it
-			    $scope.$watch("PurchasePass.CustomerPaymentRequest.CardNumber", function (newVal) {
-					$scope.PurchasePass.CustomerPaymentRequest.CardIssuerType = getCardType(newVal);
-				});
-
+				
                 //save the participant to show on popup
 			    for (var i = 0; i < $scope.VideoBattle.Participants.length; i++) {
 			        var participant = $scope.VideoBattle.Participants[i];
@@ -499,7 +495,13 @@ app.controller("VideoBattlePageController", [
 
 	    }
 
-	    $scope.RequestPaymentPopupForm = function (BattleId, BattleType, PurchaseType) {
+		$scope.RequestPaymentPopupForm = function (BattleId, BattleType, PurchaseType) {
+
+		    //let's watch the credit card number as user types it
+		    $scope.$watch("PurchasePass.CustomerPaymentRequest.CardNumber", function (newVal) {
+		        $scope.PurchasePass.CustomerPaymentRequest.CardIssuerType = getCardType(newVal);
+		    });
+
 	        //payment needs to be done, show the payment popup
 	        $scope.PurchasePass.ShowPaymentPopup = true;
 	        $scope.PurchasePass.PurchaseType = PurchaseType;
@@ -581,12 +583,6 @@ app.controller("VideoBattlePageController", [
 	    }
 
 	    $scope.BecomeSponsor = function (BattleId) {
-
-            //let's watch the credit card number as user types it
-            $scope.$watch("PurchasePass.CustomerPaymentRequest.CardNumber", function (newVal) {
-                $scope.PurchasePass.CustomerPaymentRequest.CardIssuerType = getCardType(newVal);
-            });
-
 
             $scope.PaymentProcessMessage = "Sponsor " + $scope.VideoBattle.Name;
 

@@ -25,5 +25,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public string SponsorshipAmountFormatted { get; set; }
 
         public SponsorDataModel SponsorData { get; set; }
+
+        public SponsorshipType SponsorshipType { get; set; }
+
+        public IList<VideoBattlePrizeModel> SponsoredProductPrizes { get; set; }
+
     }
 }

@@ -77,6 +77,25 @@
                                     <input type="text" name="ParticipantPercentagePerVote" id="pp-per-vote" data-ng-model="VideoBattle.ParticipantPercentagePerVote" />
                                 </div>
                             </div>
+                            <div class="inputs">
+                                <label class="control-label" for="sponsorship-supported">Enable Sponsorships</label>
+                                <input type="checkbox" name="IsSponsorshipSupported" id="sponsorship-supported" data-ng-model="VideoBattle.IsSponsorshipSupported" /> 
+
+                            </div>
+                            <div ng-show="VideoBattle.IsSponsorshipSupported">
+                                <div class="inputs">
+                                    <label class="control-label" for="minimum-sponsorship-amount">Minimum Sponsorship Amount</label>
+                                    <input type="text" name="MinimumSponsorshipAmount" id="minimum-sponsorship-amount" data-ng-model="VideoBattle.MinimumSponsorshipAmount"/>
+
+                                </div>
+                                <div class="inputs">
+                                    <label class="control-label">Sponsorship Cash Distribution Type</label>
+                                    <select data-ng-model="VideoBattle.SponsoredCashDistributionType">
+                                        <option value="@((int)SponsoredCashDistributionType.TopWinnerGetsAll)">Top winner gets all</option>
+                                        <option value="@((int)SponsoredCashDistributionType.AllWinnersGetShare)">All winners get some share</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="buttons text-center">
                             <div ng-show="processing">

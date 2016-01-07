@@ -28,5 +28,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public int WinnerId { get; set; }
 
+        public bool IsSponsored { get; set; }
+
+        public int SponsorCustomerId { get; set; }
+
     }
 }

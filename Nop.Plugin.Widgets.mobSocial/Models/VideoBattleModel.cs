@@ -55,5 +55,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public bool IsSponsorshipSupported { get; set; }
 
         public decimal MinimumSponsorshipAmount { get; set; }
+
+        public SponsoredCashDistributionType SponsoredCashDistributionType { get; set; }
     }
 }

@@ -59,5 +59,19 @@ namespace Nop.Plugin.Widgets.MobSocial
         public bool EnableFacebookInvite { get; set; }
 
         public decimal Version { get; set; }
+
+        //TODO: move these setings to a separate payment processing plugin
+        public decimal MicroPaymentsFixedPaymentProcessingFee { get; set; }
+
+        public decimal MicroPaymentsPaymentProcessingPercentage{ get; set; }
+
+        public decimal MacroPaymentsFixedPaymentProcessingFee { get; set; }
+
+        public decimal MacroPaymentsPaymentProcessingPercentage { get; set; }
+
+        public decimal SiteOwnerSponsorshipPercentage { get; set; }
+
+        public decimal BattleHostSponsorshipPercentage { get; set; }
+
     }
 }

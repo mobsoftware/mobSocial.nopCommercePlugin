@@ -90,5 +90,16 @@ app.controller("SponsorController", [
             Sponsor.SponsorData.PictureId = $scope.ActiveSponsor.SponsorData.TemporaryPictureId;
             Sponsor.SponsorData.TemporaryPictureId = 0;
         }
+
+        $scope.SaveSponsorProductPrizes = function(Prizes) {
+            $scope.SavingSponsorPrizes = true;
+            SponsorService.SaveSponsorProductPrizes(Prizes, function (response) {
+                if (response.Success) {
+                    $scope.SavingSponsorPrizes = false;
+                }
+            }, function () {
+                $scope.SavingSponsorPrizes = false;
+            });
+        }
     }
 ]);

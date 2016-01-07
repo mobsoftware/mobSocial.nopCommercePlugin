@@ -26,6 +26,7 @@ using Nop.Plugin.Widgets.MobSocial.Helpers;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
+using Nop.Services.Configuration;
 using Nop.Services.Customers;
 using Nop.Services.Media;
 using Nop.Services.Orders;
@@ -55,6 +56,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IPriceFormatter _priceFormatter;
         private readonly IOrderService _orderService;
         private readonly IProductService _productService;
+        private readonly ISettingService _settingService;
+        private readonly IPaymentProcessingService _paymentProcessingService;
         private readonly MediaSettings _mediaSettings;
         private readonly mobSocialSettings _mobSocialSettings;
 
@@ -78,7 +81,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          ISponsorService sponsorService,
             IPriceFormatter priceFormatter,
          MediaSettings mediaSettings,
-         mobSocialSettings mobSocialSettings, IOrderService orderService, IProductService productService)
+         mobSocialSettings mobSocialSettings, IOrderService orderService, IProductService productService, ISettingService settingService, IPaymentProcessingService paymentProcessingService)
         {
             _workContext = workContext;
             _storeContext = storeContext;
@@ -96,6 +99,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mobSocialSettings = mobSocialSettings;
             _orderService = orderService;
             _productService = productService;
+            _settingService = settingService;
+            _paymentProcessingService = paymentProcessingService;
             _sponsorService = sponsorService;
             _pictureService = pictureService;
             _priceFormatter = priceFormatter;
@@ -133,13 +138,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 CanVoterIncreaseVotingCharge = videoBattle.CanVoterIncreaseVotingCharge,
                 ParticipantPercentagePerVote = videoBattle.ParticipantPercentagePerVote,
                 IsSponsorshipSupported = videoBattle.IsSponsorshipSupported,
-                MinimumSponsorshipAmount = videoBattle.MinimumSponsorshipAmount
+                MinimumSponsorshipAmount = videoBattle.MinimumSponsorshipAmount,
+                SponsoredCashDistributionType = videoBattle.SponsoredCashDistributionType
             };
 
             //let's get prizes associated with this battle. prizes can only be added to saved battles
             if (model.Id != 0)
             {
-                var prizes = _videoBattlePrizeService.GetBattlePrizes(model.Id);
+                var prizes = _videoBattlePrizeService.GetBattlePrizes(model.Id).Where(x => !x.IsSponsored);
                 foreach (var prize in prizes)
                 {
                     model.Prizes.Add(new VideoBattlePrizeModel() {
@@ -194,6 +200,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             videoBattle.ParticipantPercentagePerVote = Model.ParticipantPercentagePerVote;
             videoBattle.IsSponsorshipSupported = Model.IsSponsorshipSupported;
             videoBattle.MinimumSponsorshipAmount = Model.MinimumSponsorshipAmount;
+            videoBattle.SponsoredCashDistributionType = Model.SponsoredCashDistributionType;
 
             if (Model.Id == 0)
             {
@@ -254,11 +261,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             prize.DateUpdated = DateTime.UtcNow;
             prize.Description = Model.Description;
-            prize.PrizeAmount = Model.PrizeAmount;
-            prize.PrizeOther = Model.PrizeOther;
-            prize.PrizePercentage = Model.PrizePercentage;
-            prize.PrizeProductId = Model.PrizeProductId;
-            prize.PrizeOther = Model.PrizeOther;
+            switch (Model.PrizeType)
+            {
+                case VideoBattlePrizeType.FixedAmount:
+                    prize.PrizeAmount = Model.PrizeAmount;
+                    break;
+                case VideoBattlePrizeType.FixedProduct:
+                    prize.PrizeProductId = Model.PrizeProductId;
+                    break;
+                case VideoBattlePrizeType.PercentageAmount:
+                    prize.PrizePercentage = Model.PrizePercentage;
+                    break;
+                case VideoBattlePrizeType.Other:
+                    prize.PrizeOther = Model.PrizeOther;
+                    break;
+            }
+
             prize.WinnerId = Model.WinnerId;
             prize.WinnerPosition = Model.WinnerPosition;
             prize.PrizeType = Model.PrizeType;
@@ -587,7 +605,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.IsSponsor = model.CurrentSponsor != null;
 
             //prizes
-            model.ConsolidatedPrizesDisplay = GetConsolidatedPrizesString(videoBattle);
+            var allPrizes = _videoBattlePrizeService.GetBattlePrizes(videoBattle.Id);
+            model.ConsolidatedPrizesDisplay = videoBattle.GetConsolidatedPrizesString(allPrizes.ToList(), null,
+                _workContext, _productService, _sponsorService, _voterPassService, _videoBattlePrizeService,
+                _priceFormatter, _settingService, _paymentProcessingService, _mobSocialSettings);
 
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
@@ -679,6 +700,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     //and relative path to url
                     thumbnailUrl = thumbnailUrl.Replace("~", _storeContext.CurrentStore.Url);
 
+                    //prizes
+                    var allPrizes = _videoBattlePrizeService.GetBattlePrizes(videoBattle.Id);
+
 
                     model.Add(new VideoBattlePublicModel() {
                         Name = videoBattle.Name,
@@ -700,7 +724,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         ChallengerProfileImageUrl = _pictureService.GetPictureUrl(challenger.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, false),
                         IsSponsorshipSupported = videoBattle.IsSponsorshipSupported,
                         MinimumSponsorshipAmount = videoBattle.MinimumSponsorshipAmount,
-                        ConsolidatedPrizesDisplay = GetConsolidatedPrizesString(videoBattle)
+                        ConsolidatedPrizesDisplay = videoBattle.GetConsolidatedPrizesString(allPrizes.ToList(), null,
+                        _workContext, _productService, _sponsorService, _voterPassService, _videoBattlePrizeService,
+                        _priceFormatter, _settingService, _paymentProcessingService, _mobSocialSettings)
                     });
                 }
             }
@@ -718,65 +744,39 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (videoBattle == null)
                 return Json(new { Success = false, Message = "Battle not found" });
 
+            var battleOwner = _customerService.GetCustomerById(videoBattle.ChallengerId);
+            var customerName = "";
+            var customerUrl = "";
+            if (battleOwner != null)
+            {
+                customerName = battleOwner.GetFullName();
+                customerUrl = Url.RouteUrl("CustomerProfileUrl",
+                    new { SeName = battleOwner.GetSeName(_workContext.WorkingLanguage.Id, true, false) });
+            }
+
             var prizes = _videoBattlePrizeService.GetBattlePrizes(VideoBattleId);
+
+            var totalWinnerCount = prizes.Count(x => !x.IsSponsored);
 
             var model = new List<VideoBattlePrizePublicModel>();
 
-            var totalPrizesAmountPercentage = 0m;
-            if (prizes.Any(x => x.PrizeType == VideoBattlePrizeType.PercentageAmount))
+            for (var winnerPosition = 1; winnerPosition <= totalWinnerCount; winnerPosition++)
             {
-                var orders = _voterPassService.GetAllVoterPassOrders(BattleType.Video, VideoBattleId, PassStatus.Used);
-                totalPrizesAmountPercentage = (orders.Sum(x => x.OrderTotal) * videoBattle.ParticipantPercentagePerVote) /
-                                              100;
-            }
+                var consolidatedString = videoBattle.GetConsolidatedPrizesString(prizes.ToList(), winnerPosition,
+                    _workContext, _productService, _sponsorService, _voterPassService, _videoBattlePrizeService,
+                    _priceFormatter, _settingService, _paymentProcessingService, _mobSocialSettings);
 
-            var customer = _customerService.GetCustomerById(videoBattle.ChallengerId);
-            var customerName = "";
-            var customerUrl = "";
-            if (customer != null)
-            {
-                customerName = customer.GetFullName();
-                customerUrl = Url.RouteUrl("CustomerProfileUrl",
-                    new { SeName = customer.GetSeName(_workContext.WorkingLanguage.Id, true, false) });
-            }
-            foreach (var prize in prizes)
-            {
                 var prizeModel = new VideoBattlePrizePublicModel() {
-                    WinningPosition = "Winner # " + prize.WinnerPosition.ToString(),
+                    WinningPosition = "Winner # " + winnerPosition.ToString(),
                     SponsorCustomerUrl = customerUrl,
-                    SponsorName = customerName
+                    SponsorName = customerName,
+                    FormattedPrize = consolidatedString
                 };
-                //TODO:USE LOCALIZED STRINGS INSTEAD OF HARDCODED
-                switch (prize.PrizeType)
-                {
-                    case VideoBattlePrizeType.FixedAmount:
-                        prizeModel.FormattedPrize = _priceFormatter.FormatPrice(prize.PrizeAmount, true,
-                            _workContext.WorkingCurrency);
-                        prizeModel.PrizeType = "Fix Price Amount";
-                        break;
-                    case VideoBattlePrizeType.PercentageAmount:
-                        prizeModel.FormattedPrize = _priceFormatter.FormatPrice(totalPrizesAmountPercentage, true,
-                            _workContext.WorkingCurrency);
-                        prizeModel.PrizeType = "Total Price Amount";
-                        break;
-                    case VideoBattlePrizeType.FixedProduct:
-                        var product = _productService.GetProductById(prize.PrizeProductId);
-                        if (product != null)
-                        {
-                            prizeModel.FormattedPrize = string.Format("<a href='{0}' target='_blank'>{1}</a>",
-                                product.GetSeName(_workContext.WorkingLanguage.Id, true, false), product.Name);
-                            prizeModel.PrizeType = "Product(s)";
-                        }
-                        break;
-                    case VideoBattlePrizeType.Other:
-                        prizeModel.FormattedPrize = prize.PrizeOther;
-                        prizeModel.PrizeType = "Other Prize(s)";
-                        break;
-                }
-
+                
                 model.Add(prizeModel);
-            }
 
+            }
+            /*
             //and the sponsorships 
             var sponsorships = _sponsorService.GetSponsorsGrouped(null, VideoBattleId, BattleType.Video,
                 SponsorshipStatus.Accepted);
@@ -798,7 +798,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     SponsorCustomerUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = sponsorCustomer.GetSeName(_workContext.WorkingLanguage.Id, true, false) })
                 });
             }
-
+            */
             return Json(new {
                 Success = true,
                 Prizes = model
@@ -1570,40 +1570,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return maxSeconds;
         }
 
-        string GetConsolidatedPrizesString(VideoBattle VideoBattle)
-        {
-            var prizes = _videoBattlePrizeService.GetBattlePrizes(VideoBattle.Id);
-
-            var totalPrizesAmountFixed =
-                prizes.Where(x => x.PrizeType == VideoBattlePrizeType.FixedAmount).Sum(x => x.PrizeAmount);
-
-            var totalPrizesAmountPercentage = 0m;
-            if (prizes.Any(x => x.PrizeType == VideoBattlePrizeType.PercentageAmount))
-            {
-                var orders = _voterPassService.GetAllVoterPassOrders(BattleType.Video, VideoBattle.Id, PassStatus.Used);
-                totalPrizesAmountPercentage = (orders.Sum(x => x.OrderTotal) * VideoBattle.ParticipantPercentagePerVote) /
-                                              100;
-            }
-
-            var sponsorshipAmount = 0m;
-
-            var sponsorships = _sponsorService.GetSponsorsGrouped(null, VideoBattle.Id, BattleType.Video,
-                SponsorshipStatus.Accepted);
-
-            sponsorshipAmount = sponsorships.Sum(x => x.SponsorshipAmount);
-
-            var totalAmount = totalPrizesAmountFixed + totalPrizesAmountPercentage + sponsorshipAmount;
-
-            var totalPrizeString = _priceFormatter.FormatPrice(totalAmount, true, _workContext.WorkingCurrency);
-
-            if (
-                prizes.Any(
-                    x => x.PrizeType == VideoBattlePrizeType.FixedProduct || x.PrizeType == VideoBattlePrizeType.Other))
-                totalPrizeString += "+";
-
-            return totalPrizeString;
-
-        }
         #endregion
     }
 }

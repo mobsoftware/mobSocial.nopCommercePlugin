@@ -36,6 +36,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly ISponsorPassService _sponsorPassService;
         private readonly IOrderService _orderService;
         private readonly IVideoBattleService _videoBattleService;
+        private readonly IVideoBattlePrizeService _videoBattlePrizeService;
         private readonly ICustomerService _customerService;
         private readonly IPictureService _pictureService;
         private readonly IPriceFormatter _priceFormatter;
@@ -59,7 +60,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IDateTimeHelper dateTimeHelper,
             ILocalizationService localizationService,
             ICurrencyService currencyService,
-            MediaSettings mediaSettings, IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext)
+            MediaSettings mediaSettings, IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext, IVideoBattlePrizeService videoBattlePrizeService)
         {
             _workContext = workContext;
             _sponsorPassService = sponsorPassService;
@@ -75,6 +76,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mediaSettings = mediaSettings;
             _mobSocialMessageService = mobSocialMessageService;
             _storeContext = storeContext;
+            _videoBattlePrizeService = videoBattlePrizeService;
         }
         #endregion
 
@@ -216,7 +218,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             sponsorData.DateUpdated = DateTime.UtcNow;
             
             //display order can only be changed by battle owner depending on the amount or his choice
-            if(videoBattle.ChallengerId == _workContext.CurrentCustomer.Id)
+            if (videoBattle.ChallengerId == _workContext.CurrentCustomer.Id)
                 sponsorData.DisplayOrder = Model.DisplayOrder;
 
             _sponsorService.SaveSponsorData(sponsorData);
@@ -245,13 +247,51 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //to list
             var model = sponsors.Select(s => s.ToPublicModel(_workContext, _customerService, _pictureService, _sponsorService, _priceFormatter, _mediaSettings)).OrderBy(x => x.SponsorData.DisplayOrder).ToList();
 
+            var allPrizes = _videoBattlePrizeService.GetBattlePrizes(Model.BattleId);
+            var totalWinningPositions = allPrizes.Count(x => !x.IsSponsored);
+
+            //and do we have any existing saved prizes which are sponsored
+            foreach (var m in model)
+            {
+                m.SponsoredProductPrizes = new List<VideoBattlePrizeModel>();
+                var sponsoredPrizes = allPrizes.Where(x => x.IsSponsored && m.CustomerId == x.SponsorCustomerId);
+                foreach (var prize in sponsoredPrizes)
+                {
+                    var prizeModel = new VideoBattlePrizeModel() {
+                        PrizeType = prize.PrizeType,
+                        PrizeOther = prize.PrizeOther,
+                        WinnerPosition = prize.WinnerPosition,
+                        Id = prize.Id,
+                        IsSponsored = prize.IsSponsored,
+                        VideoBattleId = battle.Id,
+                        SponsorCustomerId = prize.SponsorCustomerId
+                    };
+                    m.SponsoredProductPrizes.Add(prizeModel);
+                }
+                var totalSponsoredPrizes = sponsoredPrizes.Count();
+                //if not all winning positions have been covered, add the remaining
+                for (var index = totalSponsoredPrizes + 1; index <= totalWinningPositions; index++)
+                {
+                    m.SponsoredProductPrizes.Add(new VideoBattlePrizeModel() {
+                        Id = 0,
+                        PrizeType = VideoBattlePrizeType.Other,
+                        WinnerPosition = index,
+                        IsSponsored = true,
+                        PrizeOther = "",
+                        VideoBattleId = battle.Id,
+                        SponsorCustomerId = m.CustomerId
+                    });
+                }
+            }
+
             return Json(new {
                 Success = true,
                 Sponsors = model,
                 IsChallenger = battle.ChallengerId == _workContext.CurrentCustomer.Id,
                 IsSponsor = model.Any(x => x.CustomerId == _workContext.CurrentCustomer.Id),
                 BattleName = battle.Name,
-                BattleUrl = battle.GetSeName(_workContext.WorkingLanguage.Id)
+                BattleUrl = battle.GetSeName(_workContext.WorkingLanguage.Id),
+                TotalWinningPositions = totalWinningPositions
             });
         }
 
@@ -303,11 +343,63 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 BattleId = BattleId,
                 SponsorshipStatus = SponsorshipStatus.Pending,
                 BattleName = battle.Name,
-                BattleUrl = Url.RouteUrl("VideoBattlePage", new {SeName = battle.GetSeName(_workContext.WorkingLanguage.Id, true, false)})
+                BattleUrl = Url.RouteUrl("VideoBattlePage", new { SeName = battle.GetSeName(_workContext.WorkingLanguage.Id, true, false) })
             };
             return View("mobSocial/Sponsor/SponsorDashboard", model);
         }
 
+        [HttpPost]
+        public ActionResult SaveSponsorProductPrizes(IList<VideoBattlePrizeModel> models)
+        {
+            if (!models.Any())
+                return Json(new { Success = false });
+           
+            //for performance reasons, it's better to first query all the battle prizes
+            var battleId = models.First().VideoBattleId;
+            var sponsorId = models.First().SponsorCustomerId;
+
+            var battle = _videoBattleService.GetById(battleId);
+
+            var sponsors = _sponsorService.GetSponsors(_workContext.CurrentCustomer.Id, battleId, BattleType.Video, null);
+
+            if (!sponsors.Any() && battle.ChallengerId != _workContext.CurrentCustomer.Id)
+                return Json(new { Success = false, Message = "Unauthorized" });
+          
+            var allPrizes = _videoBattlePrizeService.GetBattlePrizes(battleId);
+
+            //filter sponsored prizes
+            var sponsoredPrizes = allPrizes.Where(x => x.IsSponsored);
+
+            //and if it's the sponsor who is logged in
+            if (sponsorId == _workContext.CurrentCustomer.Id)
+                sponsoredPrizes = sponsoredPrizes.Where(x => x.SponsorCustomerId == _workContext.CurrentCustomer.Id);
+
+            //now loop through the model and save each as and when required
+            foreach (var model in models)
+            {
+                //exclude empty models
+                if(string.IsNullOrEmpty(model.PrizeOther))
+                    continue;
+                
+                var prize = sponsoredPrizes.FirstOrDefault(x => x.Id == model.Id) ?? new VideoBattlePrize();
+
+                prize.IsSponsored = true;
+                prize.SponsorCustomerId = model.SponsorCustomerId;
+                prize.PrizeType = VideoBattlePrizeType.Other;
+                prize.PrizeOther = model.PrizeOther;
+                prize.WinnerPosition = model.WinnerPosition;
+                prize.VideoBattleId = battleId;
+                prize.DateUpdated = DateTime.UtcNow;
+                if (prize.Id == 0)
+                {
+                    prize.DateCreated = DateTime.UtcNow;
+                    _videoBattlePrizeService.Insert(prize);
+                }
+                else
+                    _videoBattlePrizeService.Update(prize);
+            }
+            return Json(new {Success = true});
+        }
 
         [HttpPost]
         public ActionResult UploadPicture(int BattleId, BattleType BattleType, IEnumerable<HttpPostedFileBase> file)

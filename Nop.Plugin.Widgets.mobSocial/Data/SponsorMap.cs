@@ -12,6 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Data
             Property(x => x.CustomerId);
             Property(x => x.SponsorshipAmount);
             Property(x => x.SponsorshipStatus);
+            Property(x => x.SponsorshipType);
         }
     }
 }

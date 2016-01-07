@@ -19,5 +19,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
         public decimal SponsorshipAmount { get; set; }
 
         public SponsorshipStatus SponsorshipStatus { get; set; }
+
+        public SponsorshipType SponsorshipType { get; set; }
     }
 }
