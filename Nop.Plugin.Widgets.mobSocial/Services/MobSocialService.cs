@@ -309,7 +309,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             // Last five years of delivered orders
             var orders = _orderService.SearchOrders(0, 0, 0, 0, 0, 0, 0, null, 
                 DateTime.Now.AddYears(-5), null, OrderStatus.Complete, null, ShippingStatus.Delivered, 
-                null, null, null, 0);
+                null, string.Empty, null, null, 0);
 
             var fiveDaysAgo = DateTime.Now.AddDays(-5);
 

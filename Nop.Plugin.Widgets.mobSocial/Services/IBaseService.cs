@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Media;
+using Mob.Core.Domain;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
