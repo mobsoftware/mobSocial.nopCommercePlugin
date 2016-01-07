@@ -689,6 +689,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     //get the owner of battle 
                     var challenger = _customerService.GetCustomerById(videoBattle.ChallengerId);
+                    if(challenger == null)
+                        continue;
+
                     var battleVideos = _videoBattleVideoService.GetBattleVideos(videoBattle.Id);
 
                     var thumbnailVideo = battleVideos.FirstOrDefault(x => !string.IsNullOrEmpty(x.ThumbnailPath));
