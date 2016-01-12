@@ -25,7 +25,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         private const string CONTEXT_NAME = "nop_object_context_social_network";
 
 
-        public override void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
+        public override void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig NopConfig)
         {
             //Load custom data settings
             var dataSettingsManager = new DataSettingsManager();
@@ -62,7 +62,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             builder.RegisterType<SitemapGenerator>().As<Nop.Services.Seo.ISitemapGenerator>().InstancePerLifetimeScope();
 
             //call the core registrar
-            base.Register(builder, typeFinder, config);
+            base.Register(builder, typeFinder, NopConfig);
 
             //db migrations, lets update if needed
             var migrator = new DbMigrator(new Configuration());

@@ -243,8 +243,18 @@ namespace Nop.Plugin.Widgets.MobSocial
                 ShowVideoThumbnailsForBattles = true,
                 DefaultVotingChargeForPaidVoting = 0.99m,
                 EnableFacebookInvite = true,
+                MacroPaymentsFixedPaymentProcessingFee = 5,
+                MicroPaymentsFixedPaymentProcessingFee = 0.05m,
+                MacroPaymentsPaymentProcessingPercentage = 3.5m,
+                MicroPaymentsPaymentProcessingPercentage = 5,
             };
 
+            //save distribution percentages as strings
+            _settingService.SetSetting("winner_distribution_1", "100");
+            _settingService.SetSetting("winner_distribution_2", "60+40");
+            _settingService.SetSetting("winner_distribution_3", "45+35+20");
+            _settingService.SetSetting("winner_distribution_4", "45+25+20+10");
+            _settingService.SetSetting("winner_distribution_5", "40+25+20+10+5");
 
             var mediaSettings = new MediaSettings() {
                 AvatarPictureSize = 200
