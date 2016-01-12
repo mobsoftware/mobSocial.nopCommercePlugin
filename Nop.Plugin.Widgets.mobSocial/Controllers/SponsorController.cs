@@ -9,6 +9,7 @@ using Nop.Admin.Models.Orders;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
+using Nop.Core.Domain.Orders;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Plugin.Widgets.MobSocial.Extensions;
@@ -95,20 +96,29 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if(battle == null)
                 return Json(new { Success = false, Message = "Invalid Battle" });
 
-            //because somebody wants to be a sponsor, let's first query the sponsorship pass
-            var sponsorPass = _sponsorPassService.GetSponsorPassByOrderId(Model.SponsorPassId);
+            var isProductOnlySponsorship = Model.SponsorshipType == SponsorshipType.OnlyProducts;
 
-            //the sponsor pass must belong to the person in question && it shouldn't have been used
-            if (sponsorPass == null || sponsorPass.CustomerId != _workContext.CurrentCustomer.Id || sponsorPass.Status == PassStatus.Used)
-                return Json(new { Success = false, Message = "Unauthorized" });
+            var customerId = _workContext.CurrentCustomer.Id;
+
+            SponsorPass sponsorPass = null;
+            Order order = null;
+            if (!isProductOnlySponsorship)
+            {
+                //because somebody wants to be a sponsor, let's first query the sponsorship pass
+                sponsorPass = _sponsorPassService.GetSponsorPassByOrderId(Model.SponsorPassId);
+
+                //the sponsor pass must belong to the person in question && it shouldn't have been used
+                if (sponsorPass == null || sponsorPass.CustomerId != customerId || sponsorPass.Status == PassStatus.Used)
+                    return Json(new { Success = false, Message = "Unauthorized" });
+            }
 
             //lets find the associated order
-            var order = _orderService.GetOrderById(sponsorPass.SponsorPassOrderId);
+            order = isProductOnlySponsorship ? null : _orderService.GetOrderById(sponsorPass.SponsorPassOrderId);
 
             //there is a possibility that a sponsor is increasing the sponsorship amount. In that case, the new order status will automatically
             //be of same status as that of previous one for the same battle
             //lets find if the sponsor already exist for this battle?
-            var existingSponsors = _sponsorService.GetSponsors(order.CustomerId, Model.BattleId, Model.BattleType, null);
+            var existingSponsors = _sponsorService.GetSponsors(customerId, Model.BattleId, Model.BattleType, null);
 
             var newSponsorStatus = SponsorshipStatus.Pending;
 
@@ -121,20 +131,28 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var sponsor = new Sponsor() {
                 BattleId = Model.BattleId,
                 BattleType = Model.BattleType,
-                SponsorshipAmount = order.OrderTotal,
-                CustomerId = sponsorPass.CustomerId,
+                SponsorshipAmount = isProductOnlySponsorship ? 0 : order.OrderTotal,
+                CustomerId = customerId,
                 SponsorshipStatus = newSponsorStatus
             };
             //save the sponsor
             _sponsorService.Insert(sponsor);
 
-            //and mark the sponsor pass used by this battle
-            _sponsorPassService.MarkSponsorPassUsed(sponsorPass.SponsorPassOrderId, Model.BattleId, Model.BattleType);
+            if (!isProductOnlySponsorship)
+            {
+                //and mark the sponsor pass used by this battle
+                _sponsorPassService.MarkSponsorPassUsed(sponsorPass.SponsorPassOrderId, Model.BattleId, Model.BattleType);
+            }
+            else
+            {
+                //save the prizes only sponsorship prizes
+                SaveSponsorProductPrizes(Model.Prizes);
+            }
 
 
             var battleOwner = _customerService.GetCustomerById(battle.ChallengerId);
 
-            var sponsorCustomer = _customerService.GetCustomerById(sponsorPass.CustomerId);
+            var sponsorCustomer = _customerService.GetCustomerById(customerId);
 
             //send notification to battle owner
             _mobSocialMessageService.SendSponsorAppliedNotificationToBattleOwner(battleOwner, sponsorCustomer, battle,
@@ -327,6 +345,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         }
+        
         public ActionResult SponsorDashboard(BattleType BattleType, int BattleId)
         {
             var battle = _videoBattleService.GetById(BattleId);
@@ -346,6 +365,35 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 BattleUrl = Url.RouteUrl("VideoBattlePage", new { SeName = battle.GetSeName(_workContext.WorkingLanguage.Id, true, false) })
             };
             return View("mobSocial/Sponsor/SponsorDashboard", model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult ProductPrizesFormPopup(int BattleId, BattleType BattleType)
+        {
+            //check if current user is already a sponsor, he should then be doing everything from sponsor dashboard only
+            if (_sponsorService.GetSponsors(_workContext.CurrentCustomer.Id, BattleId, BattleType, null).Any())
+            {
+                return null;
+            }
+
+            var allPrizes = _videoBattlePrizeService.GetBattlePrizes(BattleId);
+            var totalWinningPositions = allPrizes.Count(x => !x.IsSponsored);
+
+            var model = new List<VideoBattlePrizeModel>();
+            for (var index = 1; index <= totalWinningPositions; index++)
+            {
+                model.Add(new VideoBattlePrizeModel()
+                {
+                    WinnerPosition = index,
+                    PrizeType = VideoBattlePrizeType.Other,
+                    IsSponsored = true,
+                    PrizeOther = "",
+                    SponsorCustomerId = _workContext.CurrentCustomer.Id,
+                    VideoBattleId = BattleId
+                });
+            }
+            return View("mobSocial/Sponsor/ProductPrizesFormPopup", model);
         }
 
         [HttpPost]

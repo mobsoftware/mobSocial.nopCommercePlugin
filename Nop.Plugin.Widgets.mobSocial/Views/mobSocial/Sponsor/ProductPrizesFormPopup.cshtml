@@ -1,0 +1,25 @@
+﻿@model List<Nop.Plugin.Widgets.MobSocial.Models.VideoBattlePrizeModel>
+@{
+    var json = Json.Encode(Model);
+}
+<div id="prizes-form-popup-container" ng-init="PurchasePass.SponsoredProductPrizes = @json">
+    <div class="overlay"></div>
+    <div class="form-wrapper fieldset">
+        <div class="floating-placeholder-wrapper">
+            <div ng-repeat="prize in PurchasePass.SponsoredProductPrizes">
+                <div class="floating-label-input-container">
+                    <input tabindex="0" type="text" ng-model="prize.PrizeOther" />
+                    <label class="force-float">Winner # {{prize.WinnerPosition}}</label>
+                </div>
+            </div>
+        </div>
+        <div ng-show="SavingSponsorPrizes">
+            Saving...
+        </div>
+        <div class="submit-buttons text-center" ng-hide="SavingSponsorPrizes">
+            <input type="button" ajax-disable class="c2a-maroon" ng-click="SaveSponsorProductPrizes(Sponsor.SponsoredProductPrizes)" value="Apply" />
+            <input type="button" ajax-disable class="c2a-maroon" ng-click="SaveSponsorProductPrizes(Sponsor.SponsoredProductPrizes)" value="Cancel" />
+        </div>
+    </div>
+
+</div>

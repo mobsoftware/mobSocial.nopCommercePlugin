@@ -582,14 +582,53 @@ app.controller("VideoBattlePageController", [
 	        jQuery("body").removeClass("payment-process-on");
 	    }
 
-	    $scope.BecomeSponsor = function (BattleId) {
+	    //prizes only sponsorship popup
+	    $scope.RequestPrizesPopupForm = function (BattleId, BattleType) {
+	        
+
+	        //payment needs to be done, show the payment popup
+	        $scope.PurchasePass.ShowPrizesPopup = true;
+
+	        var popuparea = "#prizes-form-popup-area";
+	        jQuery(popuparea).html("");
+	        SponsorService.ProductPrizesFormPopup(BattleId, BattleType, function (response) {
+
+	            jQuery(popuparea).html(response);
+	            jQuery("body").addClass("payment-process-on");
+	            $compile(jQuery(popuparea))($scope);
+
+	        });
+	    };
+
+        $scope.StartPrizesSaveProcess = function() {
+            //fake the payment so that the become sponsor function can proceed further
+            $scope.PaymentProcessInfo.PaymentProcessComplete = true;
+            $scope.PaymentProcessInfo.Response = {
+                PassId: 0
+            };
+            $scope.PaymentProcessInfo.PaymentProcessSuccess = true;
+        }
+
+        $scope.StopPrizesSaveProcess = function () {
+            $scope.PaymentProcessInfo.PaymentProcessCancelled = true;
+            $scope.PurchasePass.ShowPrizesPopup = false;
+            jQuery("body").removeClass("payment-process-on");
+        }
+
+	    $scope.BecomeSponsor = function (BattleId, ExcludePayment) {
 
             $scope.PaymentProcessMessage = "Sponsor " + $scope.VideoBattle.Name;
 
-            //show popup form for payment
-            $scope.RequestPaymentPopupForm(BattleId, 1 /*video battle type = 1*/, 2 /*Sponsor Pass = 2*/);
+            if (ExcludePayment) {
+                $scope.RequestPrizesPopupForm(BattleId, 1 /*video battle type = 1*/);
+            } else {
+                //show popup form for payment
+                $scope.RequestPaymentPopupForm(BattleId, 1 /*video battle type = 1*/, 2 /*Sponsor Pass = 2*/);
+            }
+            
             $scope.PaymentProcessInfo.PaymentProcessComplete = false;
-	        $scope.PaymentProcessInfo.PaymentProcessCancelled = false;
+            $scope.PaymentProcessInfo.PaymentProcessCancelled = false;
+
             //now wait till payment is done
             $scope.PaymentProcessInfo.PaymentProgressChecker = $interval(function () {
                 if (!$scope.PaymentProcessInfo.PaymentProcessComplete || $scope.PaymentProcessInfo.PaymentProcessCancelled) {
@@ -602,10 +641,13 @@ app.controller("VideoBattlePageController", [
                     SponsorService.SaveSponsor({
                         BattleId: BattleId,
                         BattleType: 1 /*video battle*/,
-                        SponsorPassId: $scope.PaymentProcessInfo.Response.PassId
+                        SponsorPassId: $scope.PaymentProcessInfo.Response.PassId,
+                        Prizes: $scope.PurchasePass.SponsoredProductPrizes,
+                        SponsorshipType : ExcludePayment ? 2 : 1 //sponsorship type
                     }, function(response) {
                         //success
                         $scope.PurchasePass.ShowPaymentPopup = false;
+                        $scope.PurchasePass.ShowPrizesPopup = false;
                         //refresh the window
                         window.location.reload();
 
@@ -613,6 +655,7 @@ app.controller("VideoBattlePageController", [
                         //failure
                         alert("Failed to complete operation");
                         $scope.PurchasePass.ShowPaymentPopup = false;
+                        $scope.PurchasePass.ShowPrizesPopup = false;
                     });
                 }
 

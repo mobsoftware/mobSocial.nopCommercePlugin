@@ -42,5 +42,11 @@
                .success(Success)
                .error(Error);
         }
+
+        this.ProductPrizesFormPopup = function (BattleId, BattleType, Success, Error) {
+            $http.post("/Sponsor/ProductPrizesFormPopup", {BattleId: BattleId, BattleType: BattleType})
+              .success(Success)
+              .error(Error);
+        }
     }
 ]);
