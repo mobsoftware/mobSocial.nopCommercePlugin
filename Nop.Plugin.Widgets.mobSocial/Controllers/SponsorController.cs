@@ -133,7 +133,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 BattleType = Model.BattleType,
                 SponsorshipAmount = isProductOnlySponsorship ? 0 : order.OrderTotal,
                 CustomerId = customerId,
-                SponsorshipStatus = newSponsorStatus
+                SponsorshipStatus = newSponsorStatus,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
             };
             //save the sponsor
             _sponsorService.Insert(sponsor);

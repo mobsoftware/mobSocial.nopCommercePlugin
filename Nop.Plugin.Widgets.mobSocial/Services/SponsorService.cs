@@ -123,5 +123,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         {
             return _sponsorDataRepository.Table.Where(x => x.BattleType == BattleType && x.BattleId == BattleId).ToList();
         }
+
+        public bool IsSponsor(int SponsorCustomerId, int BattleId, BattleType BattleType)
+        {
+            return
+                Repository.Table.Any(
+                    x => x.BattleId == BattleId && x.BattleType == BattleType && x.CustomerId == SponsorCustomerId);
+        }
     }
 }

@@ -39,7 +39,7 @@ app.controller("SponsorController", [
 
         $scope.UpdateSponsor = function (Sponsor, SponsorshipStatus, ShowWarning) {
             if (ShowWarning) {
-               if (!confirm("Are you sure you don't want this sponsorhip?")) {
+               if (!confirm("Are you sure you don't want this sponsorship?")) {
                    return;
                }
             }
@@ -50,9 +50,14 @@ app.controller("SponsorController", [
                 BattleType: $scope.SponsorRequest.BattleType
             };
             SponsorService.UpdateSponsor(updateObj, function() {
-                Sponsor.SponsorshipStatus = SponsorshipStatus;
-            }, function() {
+               
+                //reload
+                $scope.GetSponsors(Sponsor.SponsorshipStatus);
 
+                Sponsor.SponsorshipStatus = SponsorshipStatus;
+            }, function () {
+                //reload
+                $scope.GetSponsors(Sponsor.SponsorshipStatus);
             });
         }
         $scope.SaveSponsorData = function (SponsorData) {

@@ -965,8 +965,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
             if (videoBattle == null)
-                return InvokeHttp404();
-
+                return Json(new { Success = false, Message = "Battle not found" });
+            
+            //in any case a sponsor can't join a battle
+            if (_sponsorService.IsSponsor(_workContext.CurrentCustomer.Id, VideoBattleId, BattleType.Video))
+            {
+                return Json(new {Success = false, Message = "Unauthorized"});
+            }
             //only open or signup battle types can be joined directly. it should not be open in status either way
             if (videoBattle.VideoBattleType != VideoBattleType.InviteOnly && videoBattle.VideoBattleStatus == VideoBattleStatus.Pending)
             {
@@ -1320,6 +1325,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (customer.Id == ParticipantId)
             {
                 return Json(new { Success = false, Message = "You can't vote yourself" });
+            }
+
+            //in any case a sponsor can't vote a battle
+            if (_sponsorService.IsSponsor(_workContext.CurrentCustomer.Id, VideoBattleId, BattleType.Video))
+            {
+                return Json(new { Success = false, Message = "Unauthorized" });
             }
 
             //has the person watched all the videos before voting can be done

@@ -18,5 +18,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         SponsorData GetSponsorData(int BattleId, BattleType BattleType, int SponsorCustomerId);
         IList<SponsorData> GetSponsorData(int BattleId, BattleType BattleType);
+
+        bool IsSponsor(int SponsorCustomerId, int BattleId, BattleType BattleType);
     }
 }
