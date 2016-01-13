@@ -130,7 +130,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 Name = videoBattle.Name,
                 Id = videoBattle.Id,
                 VideoBattleStatus = videoBattle.VideoBattleStatus,
-                VideoBattleType = VideoBattleId == 0 ? VideoBattleType.InviteOnly : videoBattle.VideoBattleType,
+                VideoBattleType = VideoBattleId == 0 ? VideoBattleType.Open : videoBattle.VideoBattleType,
                 VideoBattleVoteType = videoBattle.VideoBattleVoteType,
                 MaximumParticipantCount = VideoBattleId == 0 ? 10 : videoBattle.MaximumParticipantCount,
                 MinimumVotingCharge = VideoBattleId == 0 ? _mobSocialSettings.DefaultVotingChargeForPaidVoting : videoBattle.MinimumVotingCharge,
