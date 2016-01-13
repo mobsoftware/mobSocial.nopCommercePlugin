@@ -79,7 +79,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Extensions
 
             var totalAmount = Math.Round(totalPrizesAmountFixed + totalPrizesAmountPercentage + winnerPrizePool);
 
-            var totalPrizeString = _priceFormatter.FormatPrice(totalAmount, true, _workContext.WorkingCurrency);
+            var totalPrizeString = totalAmount > 0 ? _priceFormatter.FormatPrice(totalAmount, true, _workContext.WorkingCurrency) : "";
 
 
             if (allPrizes.Any(
@@ -97,22 +97,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Extensions
                             var product = _productService.GetProductById(prize.PrizeProductId);
                             if (product != null)
                             {
-                                totalPrizeString += " + " + product.Name;
+                                totalPrizeString += (totalPrizeString != "" ? " + " : "") + product.Name;
                             }
                             else
                             {
-                                totalPrizeString += " + " + prize.PrizeProductId;
+                                totalPrizeString += (totalPrizeString != "" ? " + " : "") + prize.PrizeProductId;
                             }
                         }
                         else
                         {
-                            totalPrizeString += " + " + prize.PrizeOther;
+                            totalPrizeString += (totalPrizeString != "" ? " + " : "") + prize.PrizeOther;
                         }
                     }
                     //and sponsored products
                     foreach (var prize in sponsoredPrizes.Where(x => x.PrizeType == VideoBattlePrizeType.Other))
                     {
-                        totalPrizeString += " + " + prize.PrizeOther + "*";
+                        totalPrizeString += (totalPrizeString != "" ? " + " : "") + prize.PrizeOther + "*";
                     }
                 }
             }
