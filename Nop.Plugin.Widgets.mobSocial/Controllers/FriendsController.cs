@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Mob.Core;
 using Nop.Core;
@@ -25,22 +26,23 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IWorkContext _workContext;
         private readonly IPictureService _pictureService;
         private readonly ICustomerService _customerService;
+        private readonly IMobSocialService _mobSocialService;
 
-        public FriendsController(IFriendService friendService, IPermissionService permissionService, IWorkContext workContext, IPictureService pictureService, ICustomerService customerService)
+        public FriendsController(IFriendService friendService, IPermissionService permissionService, IWorkContext workContext, IPictureService pictureService, ICustomerService customerService, IMobSocialService mobSocialService)
         {
             _friendService = friendService;
             _permissionService = permissionService;
             _workContext = workContext;
             _pictureService = pictureService;
             _customerService = customerService;
+            _mobSocialService = mobSocialService;
         }
 
         [ChildActionOnly]
         public ActionResult AddFriendButton(int toCustomerId)
         {
 
-            var model = new AddFriendButtonModel
-            {
+            var model = new AddFriendButtonModel {
                 CustomerProfileId = toCustomerId,
                 CurrentCustomerId = _workContext.CurrentCustomer.Id
             };
@@ -49,7 +51,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var customerFriend = _friendService.GetCustomerFriendship(_workContext.CurrentCustomer.Id, toCustomerId);
             FriendStatus friendStatus = FriendStatus.None;
 
-            if(customerFriend == null)
+            if (customerFriend == null)
                 friendStatus = FriendStatus.None;
             else if (customerFriend.Confirmed)
                 friendStatus = FriendStatus.Friends;
@@ -67,9 +69,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             return View("mobSocial/Friends/_AddFriendButton", model);
 
-        } 
+        }
 
         [Authorize]
+        public ActionResult FriendButton()
+        {
+            return View("mobSocial/Friends/FriendButton");
+        }
+
+        [Authorize]
+        [HttpPost]
         public ActionResult AddFriend(int ToCustomerId)
         {
 
@@ -96,11 +105,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 _friendService.Insert(customerFriend);
 
 
-            return Json(new { Success = true });
+            return Json(new { Success = true, NewStatus = FriendStatus.FriendRequestSent });
 
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult ConfirmFriend(int FriendCustomerId)
         {
 
@@ -119,10 +129,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             customerFriend.DateConfirmed = DateTime.UtcNow;
             _friendService.Update(customerFriend);
 
-            return Json(new { Success = true });
+            return Json(new { Success = true, NewStatus = FriendStatus.Friends });
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult DeclineFriend(int Customer1Id)
         {
 
@@ -137,39 +148,43 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (customerFriend == null)
                 return Json(new { Success = false, Message = "No friendship request sent" });
 
-           _friendService.Delete(customerFriend);
+            _friendService.Delete(customerFriend);
 
-            return Json(new { Success = true });
+            return Json(new { Success = true, NewStatus = FriendStatus.None });
         }
 
         [Authorize]
         public ActionResult FriendRequests()
         {
+            return View("mobSocial/Friends/FriendRequests");
+        }
 
+        [HttpPost]
+        public ActionResult GetFriendRequests()
+        {
             var friendRequests = _friendService.GetCustomerFriendRequests(_workContext.CurrentCustomer.Id);
 
-            var model = new FriendRequestsModel {NavigationModel = SessionState.Instance.CustomerNavigationModel};
+            var friendRequestCustomers =
+                _customerService.GetCustomersByIds(friendRequests.Select(x => x.FromCustomerId).ToArray());
 
-
-            foreach (var request in friendRequests)
+            var model = new List<FriendPublicModel>();
+            foreach (var c in friendRequestCustomers)
             {
-
-                var friendId = request.FromCustomerId;
-                var friendCustomer = _customerService.GetCustomerById(friendId);
-                var friendThumbnailUrl = _pictureService.GetPictureUrl(
-                        friendCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                        75);
-
-                model.FriendRequests.Add(new FriendRequestModel() {
-                    FriendId = friendId,
-                    CustomerDisplayName = friendCustomer.GetFullName(),
-                    ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = friendCustomer.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
-                    ProfileThumbnailUrl = friendThumbnailUrl
-                });
+                var friendModel = new FriendPublicModel() {
+                    Id = c.Id,
+                    DisplayName = c.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                        c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId)),
+                    ProfileUrl =
+                        Url.RouteUrl("CustomerProfileUrl",
+                            new { SeName = c.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
+                    FriendStatus = FriendStatus.NeedsConfirmed
+                };
+                model.Add(friendModel);
 
             }
 
-            return View("mobSocial/Friends/FriendRequests", model);
+            return Json(new { Success = true, People = model });
         }
 
         [Authorize]
@@ -210,6 +225,61 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             return View("mobSocial/Friends/_CustomerFriends", model);
 
+        }
+
+        public ActionResult SearchPeople(string searchTerm = "", bool excludeLoggedInUser = true, int page = 1, int count = 15)
+        {
+            var model = new FriendSearchModel() {
+                SearchTerm = searchTerm,
+                ExcludeLoggedInUser = excludeLoggedInUser,
+                Count = count,
+                Page = page
+            };
+            return View("mobSocial/Friends/SearchPeople", model);
+        }
+
+        [HttpPost]
+        public ActionResult SearchPeople(FriendSearchModel model)
+        {
+
+            var customers = _mobSocialService.SearchPeople(model.SearchTerm, model.ExcludeLoggedInUser, model.Page, model.Count);
+            var models = new List<object>();
+
+            //get all the friends of logged in customer
+            IList<CustomerFriend> friends = null;
+            if (_workContext.CurrentCustomer.IsRegistered())
+            {
+                friends = _friendService.GetAllCustomerFriends(_workContext.CurrentCustomer.Id);
+            }
+
+            if (friends == null)
+                friends = new List<CustomerFriend>();
+
+            foreach (var c in customers)
+            {
+                var friendModel = new FriendPublicModel() {
+                    Id = c.Id,
+                    DisplayName = c.GetFullName(),
+                    PictureUrl = _pictureService.GetPictureUrl(
+                        c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId)),
+                    ProfileUrl =
+                        Url.RouteUrl("CustomerProfileUrl",
+                            new { SeName = c.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
+                };
+
+                var friend = friends.FirstOrDefault(x => x.FromCustomerId == c.Id || x.ToCustomerId == c.Id);
+
+                if (friend == null)
+                    friendModel.FriendStatus = FriendStatus.None;
+                else if (friend.Confirmed)
+                    friendModel.FriendStatus = FriendStatus.Friends;
+                else if (!friend.Confirmed && friend.FromCustomerId == _workContext.CurrentCustomer.Id)
+                    friendModel.FriendStatus = FriendStatus.FriendRequestSent;
+                else
+                    friendModel.FriendStatus = FriendStatus.NeedsConfirmed;
+                models.Add(friendModel);
+            }
+            return Json(new { Success = true, People = models });
         }
 
     }

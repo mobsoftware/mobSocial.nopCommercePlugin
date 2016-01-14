@@ -65,25 +65,36 @@ namespace Nop.Plugin.Widgets.MobSocial
                 );
 
             routes.MapLocalizedRoute("AddFriend",
-                "Friends/AddFriend/{toCustomerId}",
+                "Friends/AddFriend",
                 new {controller = "Friends", action = "AddFriend"},
                 new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
                 );
 
+            routes.MapLocalizedRoute("FriendButton",
+               "Friends/FriendButton",
+               new { controller = "Friends", action = "FriendButton" },
+               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+               );
             routes.MapLocalizedRoute("FriendRequests",
                 "Friends/FriendRequests",
                 new {controller = "Friends", action = "FriendRequests"},
                 new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
                 );
 
+            routes.MapLocalizedRoute("GetFriendRequests",
+                "Friends/GetFriendRequests",
+                new { controller = "Friends", action = "GetFriendRequests" },
+                new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+                );
+
             routes.MapLocalizedRoute("ConfirmFriend",
-                "Friends/ConfirmFriend/{friendCustomerId}",
+                "Friends/ConfirmFriend",
                 new {controller = "Friends", action = "ConfirmFriend"},
                 new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
                 );
 
             routes.MapLocalizedRoute("DeclineFriend",
-              "Friends/DeclineFriend/{friendCustomerId}",
+              "Friends/DeclineFriend",
               new { controller = "Friends", action = "DeclineFriend" },
               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
               );
@@ -93,6 +104,12 @@ namespace Nop.Plugin.Widgets.MobSocial
             new { controller = "Friends", action = "CustomerFriends", CustomerId = UrlParameter.Optional },
             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
             );
+
+            routes.MapLocalizedRoute("SearchPeople",
+              "SearchPeople",
+              new { controller = "Friends", action = "SearchPeople" },
+              new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+              );
 
             routes.MapLocalizedRoute("PeopleSearchAutoComplete",
                 "MobSocial/SearchTermAutoComplete",

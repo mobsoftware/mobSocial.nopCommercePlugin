@@ -1,0 +1,24 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+@model Nop.Plugin.Widgets.MobSocial.Models.FriendSearchModel
+@{
+
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
+
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Friends/Includes.cshtml")
+
+    var json = Json.Encode(Model);
+}
+@section left{
+    <form action="">
+        <div>
+            <input type="text" name="searchTerm" value="@Model.SearchTerm"/>
+            <input type="submit" value="Search"/>
+        </div>
+    </form>
+
+}
+<div ng-controller="FriendSearchController" ng-init="init(@json)">
+    <div ng-repeat="P in People">
+        @Html.Partial("mobSocial/Friends/FriendBlock")
+    </div>
+</div>

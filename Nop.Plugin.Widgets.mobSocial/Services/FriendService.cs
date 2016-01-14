@@ -41,7 +41,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public IList<CustomerFriend> GetCustomerFriendRequests(int CustomerId)
         {
-            return Repository.Table.Where(x => !x.Confirmed && x.FromCustomerId == CustomerId).ToList();
+            return Repository.Table.Where(x => !x.Confirmed && x.ToCustomerId == CustomerId).ToList();
         }
 
         public IList<CustomerFriend> GetCustomerFriends(int CustomerId, int Count = 0, bool Random = false)
@@ -56,6 +56,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             if (Count > 0)
                 friends = friends.Take(Count);
             return friends.ToList();
+        }
+
+        public IList<CustomerFriend> GetAllCustomerFriends(int CustomerId)
+        {
+            return Repository.Table.Where(x => x.FromCustomerId == CustomerId || x.ToCustomerId == CustomerId).ToList();
         }
     }
 }

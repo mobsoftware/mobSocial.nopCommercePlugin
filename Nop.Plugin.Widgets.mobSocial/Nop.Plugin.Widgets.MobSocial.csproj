@@ -78,6 +78,8 @@
     <Compile Include="Models\CustomerPaymentPublicModel.cs" />
     <Compile Include="Models\CustomerPaymentRequestModel.cs" />
     <Compile Include="Models\CustomerPaymentWithAddressModel.cs" />
+    <Compile Include="Models\FriendPublicModel.cs" />
+    <Compile Include="Models\FriendSearchModel.cs" />
     <Compile Include="Models\PurchasePassModel.cs" />
     <Compile Include="Models\SponsorDataModel.cs" />
     <Compile Include="Models\SponsorModel.cs" />
@@ -339,10 +341,19 @@
     <Content Include="Content\Libraries\moment.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\js\controllers\friends\friend.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\friends\friend-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\directives\friend-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\jquery-2.2.0.intellisense.js" />
@@ -354,9 +365,27 @@
     <Content Include="Themes\MobSocialDefault\Views\MobAdsPublic\MobAds.Public.Views.MobAds.AdLoader.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Views\mobSocial\Friends\FriendRequests.cshtml" />
-    <None Include="Views\mobSocial\Friends\_AddFriendButton.cshtml" />
-    <None Include="Views\mobSocial\Friends\_CustomerFriends.cshtml" />
+    <Content Include="Views\mobSocial\Friends\FriendBlock.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Friends\FriendRequests.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Friends\SearchPeople.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Friends\_AddFriendButton.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Friends\_CustomerFriends.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Friends\Includes.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Friends\FriendButton.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\mobSocial\Head\PublicInfo.cshtml" />
     <None Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml" />
   </ItemGroup>

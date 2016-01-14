@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 
@@ -27,6 +28,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         List<CustomerFriend> GetFriends(int customerId, int index, int count);
         List<CustomerFriend> GetFriendRequests(int id);
 
+        List<Customer> SearchPeople(string searchTerm, bool? excludeLoggedInUser = false, int page = 1, int count = int.MaxValue); 
 
         int GetFriendRequestCount(int currentCustomerId);
 

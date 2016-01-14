@@ -13,5 +13,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         IList<CustomerFriend> GetCustomerFriendRequests(int CustomerId);
 
         IList<CustomerFriend> GetCustomerFriends(int CustomerId, int Count = 0, bool Random = false);
+
+        IList<CustomerFriend> GetAllCustomerFriends(int CustomerId);
     }
 }

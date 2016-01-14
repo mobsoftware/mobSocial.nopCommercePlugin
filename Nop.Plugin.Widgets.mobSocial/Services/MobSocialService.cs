@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Mob.Core.Data;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.Orders;
@@ -18,6 +20,7 @@ using Nop.Services.Customers;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
+using Nop.Services.Common;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
 {
@@ -38,8 +41,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         private readonly IMobRepository<TeamPage> _teamPageRepository;
         private readonly IMobRepository<CustomerAlbum> _customerAlbumRepository;
         private readonly IStoreContext _storeContext;
-
-
+        private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<GenericAttribute> _gaRepository; 
 
         private ICacheManager _cacheManager;
         private readonly IWorkContext _workContext;
@@ -88,7 +91,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             IWorkflowMessageService workflowMessageService, ICustomerService customerService,
             IOrderService orderService, ILocalizationService localizationService, MessageTemplatesSettings messageTemplateSettings,
             INotificationService notificationService, CatalogSettings catalogSettings, IProductAttributeParser productAttributeParser,
-            IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext)
+            IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext, IRepository<Customer> customerRepository, IRepository<GenericAttribute> gaRepository)
         {
 
             this._groupPageRepository = groupPageRepository;
@@ -105,6 +108,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             _mobSocialMessageService = mobSocialMessageService;
             _productService = productService;
             _storeContext = storeContext;
+            _customerRepository = customerRepository;
+            _gaRepository = gaRepository;
             _orderService = orderService;
             _localizationService = localizationService;
             _messageTemplateSettings = messageTemplateSettings;
@@ -233,6 +238,36 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                                     .ToList();
 
             return friends;
+        }
+
+        public List<Customer> SearchPeople(string searchTerm, bool? excludeLoggedInUser = false, int page = 1, int count = int.MaxValue)
+        {
+           
+            var customerRole = _customerService.GetCustomerRoleBySystemName("Registered");
+            var customerRoleIds = new int[1];
+            if (customerRole != null)
+                customerRoleIds[0] = customerRole.Id;
+
+            //only registered customers
+            var query = _customerRepository.Table.Where(c => c.CustomerRoles.Select(cr => cr.Id).Intersect(customerRoleIds).Any());
+
+            if (excludeLoggedInUser.HasValue && excludeLoggedInUser.Value)
+            {
+                query = query.Where(x => x.Id != _workContext.CurrentCustomer.Id);
+            }
+
+            query = query
+                .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new {Customer = x, Attribute = y})
+                .Where(z => z.Customer.Email == searchTerm || (z.Attribute.KeyGroup == "Customer" &&
+                                                               (z.Attribute.Key ==
+                                                                SystemCustomerAttributeNames.FirstName ||
+                                                                z.Attribute.Key == SystemCustomerAttributeNames.LastName) &&
+                                                               z.Attribute.Value.Contains(searchTerm)))
+                .Select(z => z.Customer).Distinct().OrderBy(x => x.Id);
+
+            return query.Skip((page - 1)*count).Take(count).ToList();
+
+
         }
 
         public int GetFriendRequestCount(int currentCustomerId)
