@@ -916,6 +916,11 @@
       <Name>Nop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Plugins\Nop.Plugin.Payments.PayPalDirect\Nop.Plugin.Payments.PayPalDirect.csproj">
+      <Project>{83235353-0d04-4028-82b2-81116e7361da}</Project>
+      <Name>Nop.Plugin.Payments.PayPalDirect</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
       <Name>Nop.Admin</Name>

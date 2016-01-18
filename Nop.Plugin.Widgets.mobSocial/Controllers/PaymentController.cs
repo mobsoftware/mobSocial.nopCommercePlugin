@@ -284,7 +284,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             //process the payment now
-            var paymentResponse = _paymentProcessingService.ProcessPayment(_workContext.CurrentCustomer, paymentMethod);
+            var paymentResponse = _paymentProcessingService.ProcessPayment(_workContext.CurrentCustomer, paymentMethod, Model.Amount);
             if (paymentResponse.Success)
             {
                 //let's verify the payment method first if it's not

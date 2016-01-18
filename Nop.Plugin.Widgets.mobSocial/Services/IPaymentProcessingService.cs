@@ -7,7 +7,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 {
     public interface IPaymentProcessingService
     {
-        ProcessPaymentResult ProcessPayment(Customer Customer, CustomerPaymentMethod PaymentMethod);
+        ProcessPaymentResult ProcessPayment(Customer Customer, CustomerPaymentMethod PaymentMethod, decimal PaymentAmount);
 
         decimal GetNetAmountAfterPaymentProcessing(decimal Amount);
     }
