@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 using Nop.Admin.Controllers;
 using System.Linq;
+using System.Web;
+using Mob.Core;
 using Nop.Core;
 using Nop.Core.Domain.Common;
+using Nop.Core.Domain.Customers;
+using Nop.Core.Domain.Media;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
+using Nop.Plugin.Widgets.MobSocial.Extensions;
 using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Services.Common;
 using Nop.Services.Localization;
 using Nop.Services.Media;
 using Nop.Services.Security;
@@ -29,6 +36,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IMobSocialService _mobSocialService;
         private readonly IWorkContext _workContext;
         private readonly IMusicService _musicService;
+        private readonly IFriendService _friendService;
+        private readonly IPictureService _pictureService;
+        private readonly IGenericAttributeService _genericAttributeService;
+        private readonly MediaSettings _mediaSettings;
+        private readonly mobSocialSettings _mobSocialSettings;
 
         public CustomerProfileController(CustomerProfileService customerProfileService,
             CustomerProfileViewService customerProfileViewService,
@@ -36,7 +48,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IMobSocialService mobSocialService,
             ICustomerFavoriteSongService customerFavoriteSongService,
             IMusicService musicService,
-            IWorkContext workContext)
+            IWorkContext workContext, IFriendService friendService, IPictureService pictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, IGenericAttributeService genericAttributeService)
         {
             _customerProfileService = customerProfileService;
             _customerProfileViewService = customerProfileViewService;
@@ -45,37 +57,122 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mobSocialService = mobSocialService;
             _musicService = musicService;
             _workContext = workContext;
+            _friendService = friendService;
+            _pictureService = pictureService;
+            _mobSocialSettings = mobSocialSettings;
+            _mediaSettings = mediaSettings;
+            _genericAttributeService = genericAttributeService;
         }
 
-        public JsonResult GetCustomerProfile(int customerId)
+        [ChildActionOnly]
+        public ActionResult CustomerProfile(int customerId)
         {
-
+            //increment view count
             _customerProfileViewService.IncrementViewCount(customerId);
 
-            var profile = _customerProfileService.GetByCustomerId(customerId);
-            
-            var customerProfile = new CustomerProfileModel()
+            //get customer object
+            var customer = _customerService.GetCustomerById(customerId);
+            if (customer == null)
             {
+                return null;
+            }
+            var profile = _customerProfileService.GetByCustomerId(customerId);
+
+            var customerSeName = customer.GetSeName(_workContext.WorkingLanguage.Id, true, false);
+            var profilemodel = new CustomerProfilePublicModel() {
                 CustomerId = customerId,
-                Views = _customerProfileViewService.GetViewCount(customerId),
+                ViewCount = _customerProfileViewService.GetViewCount(customerId),
                 FriendCount = _customerProfileService.GetFriendCount(customerId),
-                IsSelf = _workContext.CurrentCustomer.Id == customerId,
-                IsFriend = _mobSocialService.GetFriendRequestStatus(_workContext.CurrentCustomer.Id, customerId) == FriendStatus.Friends,
-                FavoriteSongs = _customerFavoriteSongService.GetTop10(customerId)
+                CustomerName = customer.GetFullName(),
+                SeName = customerSeName,
+                ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customerSeName }),
+                ProfileImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, true),
+                CoverImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(AdditionalCustomerAttributeNames.CoverImageId), 0, false)
             };
 
-            if (profile != null)
+            if (_workContext.CurrentCustomer.Id == customerId)
             {
-                customerProfile.AboutMe = profile.AboutMe;
-                customerProfile.Website = profile.Website;
-                customerProfile.CreatedDate = profile.DateCreated;
-                customerProfile.UpdatedDate = profile.DateUpdated;
+                profilemodel.FriendStatus = FriendStatus.Self;
+                profilemodel.IsEditable = true;
             }
+            else
+            {
+                //depending on who is viewing the profile, let's set the friend status and other relevent values
+                var customerFriend = _friendService.GetCustomerFriendship(_workContext.CurrentCustomer.Id, customer.Id);
+                if (customerFriend == null)
+                    profilemodel.FriendStatus = FriendStatus.None;
+                else if (customerFriend.Confirmed)
+                    profilemodel.FriendStatus = FriendStatus.Friends;
+                else if (!customerFriend.Confirmed && customerFriend.FromCustomerId == _workContext.CurrentCustomer.Id)
+                    profilemodel.FriendStatus = FriendStatus.FriendRequestSent;
+                else
+                    profilemodel.FriendStatus = FriendStatus.NeedsConfirmed;
+            }
+          
 
-            return Json(customerProfile);
-
+            return View("mobSocial/CustomerProfile/Profile", profilemodel);
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult UploadPicture(IEnumerable<HttpPostedFileBase> file)
+        {
+            var files = file.ToList();
+            var newImages = new List<object>();
+            foreach (var fi in files)
+            {
+                Stream stream = null;
+                var fileName = "";
+                var contentType = "";
+
+                if (file == null)
+                    throw new ArgumentException("No file uploaded");
+
+                stream = fi.InputStream;
+                fileName = Path.GetFileName(fi.FileName);
+                contentType = fi.ContentType;
+
+                var fileBinary = new byte[stream.Length];
+                stream.Read(fileBinary, 0, fileBinary.Length);
+
+                var fileExtension = Path.GetExtension(fileName);
+                if (!string.IsNullOrEmpty(fileExtension))
+                    fileExtension = fileExtension.ToLowerInvariant();
+
+
+                if (string.IsNullOrEmpty(contentType))
+                {
+                    contentType = PictureUtility.GetContentType(fileExtension);
+                }
+
+                var picture = _pictureService.InsertPicture(fileBinary, contentType, null);
+               
+                newImages.Add(new {
+                    ImageUrl = _pictureService.GetPictureUrl(picture.Id),
+                    ImageId = picture.Id
+                });
+            }
+
+            return Json(new { Success = true, Images = newImages });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SetPictureAs(string uploadType, int pictureId)
+        {
+
+            switch (uploadType)
+            {
+                case "cover":
+                    _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer, AdditionalCustomerAttributeNames.CoverImageId, pictureId);
+                    break;
+                case "avatar":
+                    _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
+                        SystemCustomerAttributeNames.AvatarPictureId, pictureId);
+                    break;
+            }
+            return Json(new { Success = true });
+        }
 
         [HttpPost]
         public void SaveCustomerProfile(CustomerProfileModel customerProfile)

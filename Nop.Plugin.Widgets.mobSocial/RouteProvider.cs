@@ -33,6 +33,17 @@ namespace Nop.Plugin.Widgets.MobSocial
                 new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
                 );
 
+            routes.MapLocalizedRoute("CustomerProfileUploadPicture",
+                          "CustomerProfile/UploadPicture",
+                          new { controller = "CustomerProfile", action = "UploadPicture" },
+                          new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                          );
+            routes.MapLocalizedRoute("CustomerProfileSetPictureAsCover",
+                "CustomerProfile/SetPictureAs",
+                new { controller = "CustomerProfile", action = "SetPictureAs" },
+                new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"});
+
             routes.MapLocalizedRoute("PopulateUrlSlugs",
                 "MobSocial/PopulateUrlSlugs",
                 new {controller = "mobSocial", action = "PopulateUrlSlugs"},

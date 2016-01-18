@@ -60,6 +60,7 @@
     <Compile Include="Domain\Sponsor.cs" />
     <Compile Include="Domain\SponsorData.cs" />
     <Compile Include="Domain\SponsorPass.cs" />
+    <Compile Include="Domain\AdditionalCustomerAttributeNames.cs" />
     <Compile Include="Domain\VideoBattlePrize.cs" />
     <Compile Include="Domain\VoterPass.cs" />
     <Compile Include="Enums\BattleType.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Models\CustomerPaymentPublicModel.cs" />
     <Compile Include="Models\CustomerPaymentRequestModel.cs" />
     <Compile Include="Models\CustomerPaymentWithAddressModel.cs" />
+    <Compile Include="Models\CustomerProfilePublicModel.cs" />
     <Compile Include="Models\FriendPublicModel.cs" />
     <Compile Include="Models\FriendSearchModel.cs" />
     <Compile Include="Models\PurchasePassModel.cs" />
@@ -347,6 +349,9 @@
     <Content Include="Content\mobSocial\js\controllers\friends\friend-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-profile-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -384,6 +389,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\Friends\FriendButton.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\CustomerProfile\Profile.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\mobSocial\Head\PublicInfo.cshtml" />

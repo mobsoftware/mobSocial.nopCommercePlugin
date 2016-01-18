@@ -57,6 +57,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 friendStatus = FriendStatus.Friends;
             else if (!customerFriend.Confirmed && customerFriend.FromCustomerId == _workContext.CurrentCustomer.Id)
                 friendStatus = FriendStatus.FriendRequestSent;
+            else if(_workContext.CurrentCustomer.Id == toCustomerId)
+                friendStatus = FriendStatus.Self;
             else
                 friendStatus = FriendStatus.NeedsConfirmed;
 
@@ -275,6 +277,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     friendModel.FriendStatus = FriendStatus.Friends;
                 else if (!friend.Confirmed && friend.FromCustomerId == _workContext.CurrentCustomer.Id)
                     friendModel.FriendStatus = FriendStatus.FriendRequestSent;
+                else if (_workContext.CurrentCustomer.Id == c.Id)
+                    friendModel.FriendStatus = FriendStatus.Self;
                 else
                     friendModel.FriendStatus = FriendStatus.NeedsConfirmed;
                 models.Add(friendModel);

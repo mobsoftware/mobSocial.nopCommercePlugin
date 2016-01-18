@@ -1,25 +1,68 @@
 ﻿
 
-app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$attrs', 'VideoBattleService', function ($rootScope, $scope, $http, $attrs, VideoBattleService) {
-    if (!$attrs.model) throw new Error("No model for customerProfileController");
-
-    var model = JSON.parse($attrs.model);
-
-    $scope.customerId = model.id;
-    $scope.customerProfile = null;
-    $scope.statusText = '';
+app.controller('customerProfileController', ['$rootScope', '$scope', 'CustomerProfileService', 'VideoBattleService', function ($rootScope, $scope, CustomerProfileService, VideoBattleService) {
 
 
-    $http({
-        url: '/CustomerProfile/GetCustomerProfile',
-        method: 'POST',
-        data: { customerId: $scope.customerId, rnd: new Date().getTime() },
-    }).success(function (data, status, headers, config) {
-        if (data != "") $scope.customerProfile = data;
-    }).error(function (data, status, headers, config) {
-        alert('error occured.');
-    });
+    $scope.Profile = null;
 
+    $scope.init = function (model) {
+        $scope.Profile = model;
+        $scope.GetVideoBattles();
+    }
+
+    $scope.UploadCoverSuccess = function (fileItem, data, status, headers) {
+
+        if (data.Success && data.Images.length > 0) {
+            $scope.Profile.TemporaryCoverImageUrl = data.Images[0].ImageUrl;
+            $scope.Profile.TemporaryCoverId = data.Images[0].ImageId;
+            $scope.Profile.TemporaryCover = true;
+        }
+    };
+
+    $scope.UploadProfileImageSuccess = function (fileItem, data, status, headers) {
+
+        if (data.Success && data.Images.length > 0) {
+            $scope.Profile.TemporaryProfileImageUrl = data.Images[0].ImageUrl;
+            $scope.Profile.TemporaryProfileImageId = data.Images[0].ImageId;
+            $scope.Profile.TemporaryProfileImage = true;
+        }
+    };
+
+    $scope.SetPictureAs = function (uploadType, pictureId, setOrReset) {
+        if (setOrReset) {
+            CustomerProfileService.SetPictureAs(uploadType, pictureId, function (data) {
+                if (data.Success) {
+                    if (uploadType == "cover") {
+                        $scope.Profile.CoverImageUrl = $scope.Profile.TemporaryCoverImageUrl;
+                        $scope.Profile.TemporaryCoverId = 0;
+                        $scope.Profile.TemporaryCover = false;
+                        $scope.Profile.TemporaryCoverImageUrl = false;
+                    } else {
+                        $scope.Profile.ProfileImageUrl = $scope.Profile.TemporaryProfileImageUrl;
+                        $scope.Profile.TemporaryProfileImageId = 0;
+                        $scope.Profile.TemporaryProfileImage = false;
+                        $scope.Profile.TemporaryProfileImageUrl = false;
+                    }
+
+
+                }
+            }, function (data) {
+
+            });
+        } else {
+            if (uploadType == "cover") {
+                $scope.Profile.TemporaryCoverId = 0;
+                $scope.Profile.TemporaryCover = false;
+                $scope.Profile.TemporaryCoverImageUrl = false;
+            } else {
+                $scope.Profile.TemporaryProfileImageId = 0;
+                $scope.Profile.TemporaryProfileImage = false;
+                $scope.Profile.TemporaryProfileImageUrl = false;
+            }
+
+        }
+
+    }
 
 
     $scope.postStatusToTimeline = function () {
@@ -63,10 +106,10 @@ app.controller('customerProfileController', ['$rootScope', '$scope', '$http', '$
 
     $scope.GetVideoBattles = function () {
         $scope.processing = true;
-        $scope.VideoBattles = [];
+        $scope.VideoBattles = null;
         var CustomerId = $scope.customerId;
         var ViewType = "user";
-        VideoBattleService.GetVideoBattles(ViewType, null, CustomerId, null , null,
+        VideoBattleService.GetVideoBattles(ViewType, null, CustomerId, null, null,
             function (data) {
                 if (data.Success) {
                     $scope.VideoBattles = data.VideoBattles;
