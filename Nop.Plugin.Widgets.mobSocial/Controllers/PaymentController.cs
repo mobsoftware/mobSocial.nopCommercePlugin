@@ -137,7 +137,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 var passes = _sponsorPassService.GetPurchasedSponsorPasses(_workContext.CurrentCustomer.Id, PassStatus.NotUsed);
                 orders = passes.Count > 0 ? _orderService.GetOrdersByIds(passes.Select(x => x.SponsorPassOrderId).ToArray()) : null;
             }
-            
 
             if (orders != null)
             {
@@ -167,7 +166,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [Authorize]
         public ActionResult AddressFormPopup(CustomerPaymentModel CustomerPaymentModel)
         {
-            var model = new CustomerPaymentWithAddressModel {CustomerAddressEditModel = new CustomerAddressEditModel(), CustomerPaymentModel = CustomerPaymentModel};
+            var model = new CustomerPaymentWithAddressModel { CustomerAddressEditModel = new CustomerAddressEditModel(), CustomerPaymentModel = CustomerPaymentModel };
 
 
             //because a customer might not have any address, order creation will trigger an error, therefore let's allow customer to add an address
@@ -189,10 +188,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public ActionResult PurchasePass(PurchasePassModel Model)
         {
             if (Model.Amount <= 0)
-                return Json(new {Success = false, Message = "Minimum amount to pay should be greater than zero"});
+                return Json(new { Success = false, Message = "Minimum amount to pay should be greater than zero" });
 
             //check if the payment method provided by customer is new or an existing one
             CustomerPaymentMethod paymentMethod = null;
+
+            //should we authorize only or should capture as well? for sponsorship pass, it's authorized only & captured later
+            var authorizeOnly = Model.PurchaseType == PurchaseType.SponsorPass ? true : false;
+
             if (Model.CustomerPaymentMethodId == 0)
             {
                 paymentMethod = new CustomerPaymentMethod() {
@@ -283,9 +286,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     return Json(new { Success = false, Message = "Payment amount is less than minimum sponsorship amount" });
             }
 
-            //process the payment now
-            var paymentResponse = _paymentProcessingService.ProcessPayment(_workContext.CurrentCustomer, paymentMethod, Model.Amount);
-            if (paymentResponse != null && paymentResponse.Success)
+            //process the payment now, for sponsor pass, we authorize only till sponsorship is approved
+            var paymentResponse = _paymentProcessingService.ProcessPayment(_workContext.CurrentCustomer, paymentMethod, Model.Amount, authorizeOnly);
+            if (paymentResponse != null && paymentResponse.ProcessPaymentResult.Success)
             {
                 //let's verify the payment method first if it's not
                 if (!paymentMethod.IsVerified)
@@ -300,14 +303,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         //let's create voter pass
                         var voterPassId = _voterPassService.CreateVoterPass(Model.BattleType, Model.BattleId,
                             paymentResponse, paymentMethod, Model.Amount);
-                        return Json(new {Success = true, PassId = voterPassId});
+                        return Json(new { Success = true, PassId = voterPassId });
                     case PurchaseType.SponsorPass:
                         //let's create sponsorship pass
                         var sponsorPassId = _sponsorPassService.CreateSponsorPass(Model.BattleType, Model.BattleId, paymentResponse, paymentMethod, Model.Amount);
                         return Json(new { Success = true, PassId = sponsorPassId });
                 }
             }
-            return Json(new { Success = false, Message = "Payment failed", Errors = paymentResponse.Errors });
+            return Json(new { Success = false, Message = "Payment failed", Errors = paymentResponse != null ? paymentResponse.ProcessPaymentResult.Errors : new List<string>() });
             
         }
       

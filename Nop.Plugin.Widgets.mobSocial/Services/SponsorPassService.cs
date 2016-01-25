@@ -10,6 +10,7 @@ using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Widgets.MobSocial.Constants;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
+using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Services.Catalog;
 using Nop.Services.Orders;
 using Nop.Services.Seo;
@@ -76,7 +77,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             return passes.ToList();
         }
 
-        public int CreateSponsorPass(BattleType BattleType, int BattleId,Nop.Services.Payments.ProcessPaymentResult PaymentResponse, CustomerPaymentMethod PaymentMethod, decimal Amount)
+        public int CreateSponsorPass(BattleType BattleType, int BattleId, MobSocialProcessPaymentResultModel PaymentResponse, CustomerPaymentMethod PaymentMethod, decimal Amount)
         {
             //first we'll create an order, let's first get the associated product for voter pass
             var voterPassProduct = GetSponsorPassProduct();
@@ -88,14 +89,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 StoreId = _storeContext.CurrentStore.Id,
                 BillingAddress = _workContext.CurrentCustomer.Addresses.First(),
                 ShippingAddress = _workContext.CurrentCustomer.Addresses.First(),
-                AuthorizationTransactionCode = PaymentResponse.AuthorizationTransactionCode,
-                AuthorizationTransactionId = PaymentResponse.AuthorizationTransactionId,
-                AuthorizationTransactionResult = PaymentResponse.AuthorizationTransactionResult,
+                AuthorizationTransactionCode = PaymentResponse.ProcessPaymentResult.AuthorizationTransactionCode,
+                AuthorizationTransactionId = PaymentResponse.ProcessPaymentResult.AuthorizationTransactionId,
+                AuthorizationTransactionResult = PaymentResponse.ProcessPaymentResult.AuthorizationTransactionResult,
                 CustomerIp = _webHelper.GetCurrentIpAddress(),
                 OrderStatus = OrderStatus.Complete,
-                PaymentStatus = PaymentResponse.NewPaymentStatus,
+                PaymentStatus = PaymentResponse.ProcessPaymentResult.NewPaymentStatus,
                 ShippingStatus = ShippingStatus.ShippingNotRequired,
-                PaymentMethodSystemName = "MobSocial.Payments." + PaymentMethod.PaymentMethod.ToString(),
+                PaymentMethodSystemName = PaymentResponse.PaymentMethodSystemName,
                 OrderTotal = Amount,
                 OrderSubtotalExclTax = Amount,
                 OrderSubTotalDiscountInclTax = Amount,

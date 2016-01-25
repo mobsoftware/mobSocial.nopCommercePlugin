@@ -10,6 +10,7 @@ using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Orders;
+using Nop.Core.Domain.Payments;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Plugin.Widgets.MobSocial.Extensions;
@@ -35,6 +36,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IStoreContext _storeContext;
         private readonly ISponsorService _sponsorService;
         private readonly ISponsorPassService _sponsorPassService;
+        private readonly IPaymentProcessingService _paymentProcessingService;
         private readonly IOrderService _orderService;
         private readonly IVideoBattleService _videoBattleService;
         private readonly IVideoBattlePrizeService _videoBattlePrizeService;
@@ -61,7 +63,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IDateTimeHelper dateTimeHelper,
             ILocalizationService localizationService,
             ICurrencyService currencyService,
-            MediaSettings mediaSettings, IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext, IVideoBattlePrizeService videoBattlePrizeService)
+            MediaSettings mediaSettings, IMobSocialMessageService mobSocialMessageService, IStoreContext storeContext, IVideoBattlePrizeService videoBattlePrizeService, IPaymentProcessingService paymentProcessingService)
         {
             _workContext = workContext;
             _sponsorPassService = sponsorPassService;
@@ -78,6 +80,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mobSocialMessageService = mobSocialMessageService;
             _storeContext = storeContext;
             _videoBattlePrizeService = videoBattlePrizeService;
+            _paymentProcessingService = paymentProcessingService;
         }
         #endregion
 
@@ -142,6 +145,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             if (!isProductOnlySponsorship)
             {
+                //if it's already approved sponsor, it's better to immediately capture the order
+                if (newSponsorStatus == SponsorshipStatus.Accepted)
+                {
+                    var captureResult = _paymentProcessingService.CapturePayment(order);
+                    if (!captureResult.Success)
+                    {
+                        return Json(new {Success = false, Message = "Failed to capture order"});
+                    }
+                    order.PaymentStatus = captureResult.NewPaymentStatus;
+                    order.CaptureTransactionId = captureResult.CaptureTransactionId;
+                    order.CaptureTransactionResult = captureResult.CaptureTransactionResult;
+                    _orderService.UpdateOrder(order);
+                }
                 //and mark the sponsor pass used by this battle
                 _sponsorPassService.MarkSponsorPassUsed(sponsorPass.SponsorPassOrderId, Model.BattleId, Model.BattleType);
             }
@@ -185,26 +201,64 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (Model.SponsorCustomerId != _workContext.CurrentCustomer.Id && Model.SponsorshipStatus == SponsorshipStatus.Cancelled)
                 return Json(new { Success = false, Message = "Unauthorized" });
 
-            //so lets update all the sponsors for this battle and this user
-            _sponsorService.UpdateSponsorStatus(Model.SponsorCustomerId, Model.BattleId, Model.BattleType, Model.SponsorshipStatus);
+            var captureVoidSuccess = true;
+            //now depending on whether it's being approved or rejected, the transaction will be either captured or voided
+            //get all the orders and capture/void the transactions
+            var orders = _sponsorPassService.GetSponsorPassOrders(Model.SponsorCustomerId, Model.BattleId, Model.BattleType).Where(x => x.PaymentStatus == PaymentStatus.Authorized);
 
-            Customer customer;
-            //send sponsorship update status to battle owner and admin
-            if (Model.SponsorshipStatus == SponsorshipStatus.Cancelled)
+            if (Model.SponsorshipStatus == SponsorshipStatus.Accepted)
             {
-                customer = _customerService.GetCustomerById(battle.ChallengerId);
-                //send this messge to battle owner
+                foreach (var order in orders)
+                {
+                    var captureResult = _paymentProcessingService.CapturePayment(order);
+                    if (captureResult.Success)
+                    {
+                        order.PaymentStatus = captureResult.NewPaymentStatus;
+                        order.CaptureTransactionId = captureResult.CaptureTransactionId;
+                        order.CaptureTransactionResult = captureResult.CaptureTransactionResult;
+                        _orderService.UpdateOrder(order);
+                    }
+                    else
+                    {
+                        captureVoidSuccess = false;
+                    }
+                }
+            }
+            else if (Model.SponsorshipStatus == SponsorshipStatus.Cancelled || Model.SponsorshipStatus == SponsorshipStatus.Rejected)
+            {
+                foreach (var order in orders)
+                {
+                    var voidResult = _paymentProcessingService.VoidPayment(order);
+                    if (voidResult.Success)
+                    {
+                        order.PaymentStatus = voidResult.NewPaymentStatus;
+                        _orderService.UpdateOrder(order);
+                    }
+                    else
+                    {
+                        captureVoidSuccess = false;
+                    }
+                }
+            }
+            //only if all transactions are captured/void
+            if (captureVoidSuccess)
+            {
+                //so lets update all the sponsors for this battle and this user
+                _sponsorService.UpdateSponsorStatus(Model.SponsorCustomerId, Model.BattleId, Model.BattleType,
+                    Model.SponsorshipStatus);
+
+                //send sponsorship update status to battle owner and admin
+                var customer = _customerService.GetCustomerById(Model.SponsorshipStatus == SponsorshipStatus.Cancelled ? battle.ChallengerId : Model.SponsorCustomerId);
+
+                //send notification
+                _mobSocialMessageService.SendSponsorshipStatusChangeNotification(customer, Model.SponsorshipStatus,
+                    battle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+                return Json(new {Success = true});
             }
             else
             {
-                //send this message to sponsor
-                customer = _customerService.GetCustomerById(Model.SponsorCustomerId);
+                return Json(new { Success = false, Message = "Failed to capture or void the payment" });
             }
-
-            //send notification
-            _mobSocialMessageService.SendSponsorshipStatusChangeNotification(customer, Model.SponsorshipStatus,
-                    battle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
-            return Json(new { Success = true });
 
         }
 

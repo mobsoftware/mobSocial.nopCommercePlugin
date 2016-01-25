@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using Nop.Core;
 using Nop.Core.Domain.Customers;
+using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Plugins;
 using Nop.Plugin.Payments.PayPalDirect;
@@ -16,35 +18,52 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         private readonly mobSocialSettings _mobSocialSettings;
         private readonly IPluginFinder _pluginFinder;
         private readonly IMobSecurityService _mobSecurityService;
+        private readonly IStoreContext _storeContext;
 
-        public PaymentProcessingService(mobSocialSettings mobSocialSettings, IPluginFinder pluginFinder, IMobSecurityService mobSecurityService)
+        public PaymentProcessingService(mobSocialSettings mobSocialSettings, IPluginFinder pluginFinder, IMobSecurityService mobSecurityService, IStoreContext storeContext)
         {
             _mobSocialSettings = mobSocialSettings;
             _pluginFinder = pluginFinder;
             _mobSecurityService = mobSecurityService;
+            _storeContext = storeContext;
         }
 
-        public ProcessPaymentResult ProcessPayment(Customer Customer, CustomerPaymentMethod PaymentMethod, decimal PaymentAmount)
+        private IPaymentMethod GetPluginInstance(string pluginSystemName)
         {
-            //check if the plugin is installed and activated
-            //depending on the payment amount, we may wish to switch between macro and micro payments
-            //check if plugin is installed or not
             var isInstalled = false;
-            //TODO: Change the other payment method to appropriate one for macro payments
-            var paymentPluginSystemName = PaymentAmount < MicroMacroPaymentSwitchingAmount ? "Payments.PayPalDirect" : "Payments.PayPalDirect";
-            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(paymentPluginSystemName);
+            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(pluginSystemName);
 
             if (pluginDescriptor != null && pluginDescriptor.Installed)
             {
                 isInstalled = true;
             }
-            
+
             //is installed
             if (!isInstalled)
                 return null;
 
-            var plugin = pluginDescriptor.Instance() as PayPalDirectPaymentProcessor;
-            if (plugin == null)
+            var plugin = pluginDescriptor.Instance();
+
+            if (pluginSystemName == "Payments.PayPalDirect")
+                return plugin as PayPalDirectPaymentProcessor;
+
+            //can't find the plugin
+            return null;
+
+        }
+        public MobSocialProcessPaymentResultModel ProcessPayment(Customer Customer, CustomerPaymentMethod PaymentMethod, decimal PaymentAmount, bool AuthorizeOnly = false)
+        {
+            //check if the plugin is installed and activated
+            //depending on the payment amount, we may wish to switch between macro and micro payments
+            //check if plugin is installed or not
+            //TODO: Change the other payment method to appropriate one for macro payments
+            var paymentPluginSystemName = PaymentAmount < MicroMacroPaymentSwitchingAmount ? "Payments.PayPalDirect" : "Payments.PayPalDirect";
+
+            //if we get an instance, then the plugin is installed
+            var plugin = GetPluginInstance(paymentPluginSystemName);
+
+            //plugin should be available and if it's an authorization transaction, the plugin should actually support authorize and capture
+            if (plugin == null || (!plugin.SupportCapture && AuthorizeOnly))
                 return null;
 
             //default to first billing address
@@ -68,10 +87,40 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 CreditCardType = PaymentMethod.CardIssuerType,
                 CreditCardNumber = cardNumber,
                 IsRecurringPayment = false,
-                StoreId = 0
+                StoreId = _storeContext.CurrentStore.Id
             };
 
-            return plugin.ProcessPayment(paymentProcessingRequest);
+            var resultModel = new MobSocialProcessPaymentResultModel()
+            {
+                ProcessPaymentResult = plugin.ProcessPayment(paymentProcessingRequest),
+                PaymentMethodSystemName = paymentPluginSystemName
+            };
+            return resultModel;
+        }
+
+        public CapturePaymentResult CapturePayment(Order order)
+        {
+            var plugin = GetPluginInstance(order.PaymentMethodSystemName);
+            //plugin should be available and if it's an authorization transaction, the plugin should actually support authorize and capture/void
+            if (plugin == null || !plugin.SupportCapture)
+                return null;
+
+            return plugin.Capture(new CapturePaymentRequest()
+            {
+                Order = order
+            });
+        }
+
+        public VoidPaymentResult VoidPayment(Order order)
+        {
+            var plugin = GetPluginInstance(order.PaymentMethodSystemName);
+            //plugin should be available and if it's an authorization transaction, the plugin should actually support authorize and capture/void
+            if (plugin == null || !plugin.SupportVoid)
+                return null;
+
+            return plugin.Void(new VoidPaymentRequest() {
+                Order = order
+            });
         }
 
         public decimal GetNetAmountAfterPaymentProcessing(decimal Amount)

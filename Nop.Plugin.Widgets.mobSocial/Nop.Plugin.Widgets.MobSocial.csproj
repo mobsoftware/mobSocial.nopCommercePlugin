@@ -84,6 +84,7 @@
     <Compile Include="Models\CustomerProfilePublicModel.cs" />
     <Compile Include="Models\FriendPublicModel.cs" />
     <Compile Include="Models\FriendSearchModel.cs" />
+    <Compile Include="Models\MobSocialProcessPaymentResultModel.cs" />
     <Compile Include="Models\PurchasePassModel.cs" />
     <Compile Include="Models\SponsorDataModel.cs" />
     <Compile Include="Models\SponsorModel.cs" />
@@ -887,6 +888,7 @@
     <Content Include="Views\mobSocial\VideoBattle\TheaterView.VideoPlayer.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Views\mobSocial\Sponsor\ProductPrizesFormPopup.cshtml" />
     <None Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml" />
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

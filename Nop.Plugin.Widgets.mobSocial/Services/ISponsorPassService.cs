@@ -3,6 +3,7 @@ using Mob.Core.Services;
 using Nop.Core.Domain.Orders;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
+using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Services.Payments;
 
 namespace Nop.Plugin.Widgets.MobSocial.Services
@@ -15,7 +16,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         IList<SponsorPass> GetPurchasedSponsorPasses(int CustomerId, PassStatus? SponsorPassStatus);
 
-        int CreateSponsorPass(BattleType BattleType, int BattleId, ProcessPaymentResult PaymentResponse, CustomerPaymentMethod PaymentMethod, decimal Amount);
+        int CreateSponsorPass(BattleType BattleType, int BattleId, MobSocialProcessPaymentResultModel PaymentResponse, CustomerPaymentMethod PaymentMethod, decimal Amount);
 
         void MarkSponsorPassUsed(int SponsorPassOrderId, int BattleId, BattleType BattleType);
 

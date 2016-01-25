@@ -49,15 +49,26 @@ app.controller("SponsorController", [
                 BattleId: $scope.SponsorRequest.BattleId,
                 BattleType: $scope.SponsorRequest.BattleType
             };
-            SponsorService.UpdateSponsor(updateObj, function() {
-               
+            $scope.UpdatingSponsorship = true;
+            SponsorService.UpdateSponsor(updateObj, function(response) {
+               if (response.Success) {
+                   //reload
+                   $scope.GetSponsors(Sponsor.SponsorshipStatus);
+
+                   Sponsor.SponsorshipStatus = SponsorshipStatus;
+                  
+               } else {
+                   alert(response.Message);
+               }
+               $scope.UpdatingSponsorship = false;
+                
+            }, function () {
+                alert("An error occured while performing the operation");
+                $scope.UpdatingSponsorship = false;
+
                 //reload
                 $scope.GetSponsors(Sponsor.SponsorshipStatus);
 
-                Sponsor.SponsorshipStatus = SponsorshipStatus;
-            }, function () {
-                //reload
-                $scope.GetSponsors(Sponsor.SponsorshipStatus);
             });
         }
         $scope.SaveSponsorData = function (SponsorData) {
