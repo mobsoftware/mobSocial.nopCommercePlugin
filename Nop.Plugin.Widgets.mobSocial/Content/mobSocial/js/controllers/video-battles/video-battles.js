@@ -882,18 +882,21 @@ app.controller("VideoBattlePageController", [
 app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
 	function ($scope, VideoBattleService) {
 
-        $scope.init = function(Query) {
-            $scope.GetVideoBattles(Query.ViewType, Query.SearchTerm); //load default view
-        }
+	    $scope.init = function (Query) {
+	        $scope.Query = Query;
+	        $scope.Query.Page = 1;
+	        $scope.Query.Count = 15;
+	        $scope.ActiveSortField = "CreationDate";
+	        $scope.GetVideoBattles(); //load default view
+	    }
 
-		$scope.Page = 1;
-		$scope.Count = 15;
+		
 		$scope.processing = false;
 
-		$scope.GetVideoBattles = function (ViewType, SearchTerm) {
+		$scope.GetVideoBattles = function () {
 			$scope.processing = true;
 			$scope.VideoBattles = [];
-			VideoBattleService.GetVideoBattles(ViewType, SearchTerm, 0, $scope.Page, $scope.Count,
+			VideoBattleService.GetVideoBattles($scope.Query,
 				function (data) {
 					if (data.Success) {
 						$scope.VideoBattles = data.VideoBattles;
@@ -907,7 +910,19 @@ app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
 				});
 		};
 	  
+        $scope.SortBy = function(Field) {
+            if ($scope.ActiveSortField == Field) {
+                //change the sort order
+                $scope.Query.SortOrder = 3 - $scope.Query.SortOrder; //sort order will be either 1 - Ascending or 2 - Descending
+            } else {
+                $scope.Query.SortOrder = 1;
+                $scope.Query.Field = Field;
+                $scope.ActiveSortField = Field;
+            }
+            $scope.GetVideoBattles();
+        }
 		
+        
 
 		$scope.EditVideoBattle = function (VideoBattleId) {
 			window.location.href = "/VideoBattles/Editor/" + VideoBattleId;

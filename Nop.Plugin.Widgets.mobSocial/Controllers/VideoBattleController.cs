@@ -613,11 +613,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
-        public ActionResult VideoBattles(string ViewType = "open", string SearchTerm = "")
+        public ActionResult VideoBattles(string viewType = "open", string searchTerm = "", BattlesSortBy sortBy = BattlesSortBy.Id, SortOrder sortOrder = SortOrder.Ascending)
         {
             var model = new VideoBattleQueryModel() {
-                SearchTerm = SearchTerm,
-                ViewType = ViewType
+                SearchTerm = searchTerm,
+                ViewType = viewType,
+                SortOrder = sortOrder,
+                BattlesSortBy = sortBy,
+                Count = 15,
+                Page = 1
             };
             return View("mobSocial/VideoBattle/VideoBattles", model);
         }
@@ -625,29 +629,41 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// <summary>
         /// Loads battles using ajax
         /// </summary>
-        public ActionResult GetBattles(string ViewType = "open", string SearchTerm = "", int CustomerId = 0, int Page = 1, int Count = 15)
+        [HttpPost]
+        public ActionResult GetBattles(VideoBattleQueryModel requestModel)
         {
+            if (requestModel.Count == 0)
+                requestModel.Count = 15;
+
+            if (requestModel.Page <= 0)
+                requestModel.Page = 1;
+
+           if(!requestModel.BattlesSortBy.HasValue)
+               requestModel.BattlesSortBy = BattlesSortBy.Id;
+
+            if(!requestModel.SortOrder.HasValue)
+                requestModel.SortOrder = SortOrder.Ascending;
+
             //let's get all the battles depending on view type
-            ViewType = ViewType.ToLowerInvariant();
             IList<VideoBattle> battles = null;
             int totalPages = 0;
-            switch (ViewType)
+            switch (requestModel.ViewType)
             {
                 case "open":
-                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, null, null, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Open, null, null, string.Empty, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, requestModel.Page, requestModel.Count);
                     battles = battles.ToList();
                     break;
                 case "open-to-join":
-                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Pending, VideoBattleType.Open, null, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, VideoBattleStatus.Pending, VideoBattleType.Open, null, string.Empty, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, requestModel.Page, requestModel.Count);
                     battles = battles.ToList();
                     break;
                 case "challenged":
-                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, null, null, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, _workContext.CurrentCustomer.Id, null, VideoBattleStatus.Pending, null, null, string.Empty, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, requestModel.Page, requestModel.Count);
                     battles = battles.ToList();
                     break;
                 case "closed":
                     //either closed or complete..whichever it is so first get all of them
-                    battles = _videoBattleService.GetAll(null, null, null, null, null, null, string.Empty, out totalPages, 1, int.MaxValue);
+                    battles = _videoBattleService.GetAll(null, null, null, null, null, null, string.Empty, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, 1, int.MaxValue);
 
                     battles =
                         battles.Where(
@@ -655,29 +671,28 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                                 x.VideoBattleStatus == VideoBattleStatus.Closed ||
                                 x.VideoBattleStatus == VideoBattleStatus.Complete)
                             .ToList();
-                    totalPages = int.Parse(Math.Ceiling((decimal)battles.Count() / Count).ToString());
+                    totalPages = int.Parse(Math.Ceiling((decimal)battles.Count() / requestModel.Count).ToString());
 
-                    battles = battles.Skip((Page - 1) * Count)
-                        .Take(Count).ToList();
+                    battles = battles.Skip((requestModel.Page - 1) * requestModel.Count)
+                        .Take(requestModel.Count).ToList();
 
                     break;
                 case "my":
-                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, null, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, null, string.Empty, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, requestModel.Page, requestModel.Count);
                     battles = battles.ToList();
                     break;
                 case "search":
-                    battles = _videoBattleService.GetAll(null, null, null, null, VideoBattleType.Open, null, SearchTerm,
-                        out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(null, null, null, null, VideoBattleType.Open, null, requestModel.SearchTerm, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, requestModel.Page, requestModel.Count);
                     battles = battles.ToList();
                     break;
                 case "sponsor":
-                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, true, string.Empty, out totalPages, Page, Count);
+                    battles = _videoBattleService.GetAll(_workContext.CurrentCustomer.Id, null, null, null, null, true, string.Empty, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, requestModel.Page, requestModel.Count);
                     battles = battles.ToList();
                     break;
                 case "user":
-                    if (CustomerId == 0)
-                        CustomerId = _workContext.CurrentCustomer.Id;
-                    battles = _videoBattleService.GetAll(CustomerId, null, null, null, null, true, string.Empty, out totalPages, Page, Count);
+                    if (requestModel.CustomerId == 0)
+                        requestModel.CustomerId = _workContext.CurrentCustomer.Id;
+                    battles = _videoBattleService.GetAll(requestModel.CustomerId, null, null, null, null, true, string.Empty, requestModel.BattlesSortBy, requestModel.SortOrder, out totalPages, requestModel.Page, requestModel.Count);
                     battles = battles.ToList();
                     break;
             }
@@ -689,7 +704,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 {
                     //get the owner of battle 
                     var challenger = _customerService.GetCustomerById(videoBattle.ChallengerId);
-                    if(challenger == null)
+                    if (challenger == null)
                         continue;
 
                     var battleVideos = _videoBattleVideoService.GetBattleVideos(videoBattle.Id);
@@ -775,7 +790,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     SponsorName = customerName,
                     FormattedPrize = consolidatedString
                 };
-                
+
                 model.Add(prizeModel);
 
             }
@@ -966,11 +981,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             if (videoBattle == null)
                 return Json(new { Success = false, Message = "Battle not found" });
-            
+
             //in any case a sponsor can't join a battle
             if (_sponsorService.IsSponsor(_workContext.CurrentCustomer.Id, VideoBattleId, BattleType.Video))
             {
-                return Json(new {Success = false, Message = "Unauthorized"});
+                return Json(new { Success = false, Message = "Unauthorized" });
             }
             //only open or signup battle types can be joined directly. it should not be open in status either way
             if (videoBattle.VideoBattleType != VideoBattleType.InviteOnly && videoBattle.VideoBattleStatus == VideoBattleStatus.Pending)

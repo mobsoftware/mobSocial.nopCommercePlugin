@@ -36,8 +36,8 @@
            .error(Error);
     }
 
-    this.GetVideoBattles = function (ViewType, SearchTerm, CustomerId, Page, Count, Success, Error) {
-        $http.post("/VideoBattles/GetBattles", { ViewType: ViewType, SearchTerm: SearchTerm, CustomerId: CustomerId, Page: Page, Count: Count })
+    this.GetVideoBattles = function (Query, Success, Error) {
+        $http.post("/VideoBattles/GetBattles", Query)
            .success(Success)
            .error(Error);
     }

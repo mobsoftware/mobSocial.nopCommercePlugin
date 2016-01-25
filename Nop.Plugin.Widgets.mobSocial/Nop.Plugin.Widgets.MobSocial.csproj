@@ -63,11 +63,13 @@
     <Compile Include="Domain\AdditionalCustomerAttributeNames.cs" />
     <Compile Include="Domain\VideoBattlePrize.cs" />
     <Compile Include="Domain\VoterPass.cs" />
+    <Compile Include="Enums\BattlesSortBy.cs" />
     <Compile Include="Enums\BattleType.cs" />
     <Compile Include="Enums\FriendStatus.cs" />
     <Compile Include="Enums\PassStatus.cs" />
     <Compile Include="Enums\PaymentMethodType.cs" />
     <Compile Include="Enums\PurchaseType.cs" />
+    <Compile Include="Enums\SortOrder.cs" />
     <Compile Include="Enums\SponsoredCashDistributionType.cs" />
     <Compile Include="Enums\SponsorshipStatus.cs" />
     <Compile Include="Enums\SponsorshipType.cs" />

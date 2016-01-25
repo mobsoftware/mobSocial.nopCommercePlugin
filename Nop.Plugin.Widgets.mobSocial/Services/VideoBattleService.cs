@@ -50,7 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         /// <summary>
         /// A multipurpose method for getting the video battles
         /// </summary>
-        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, bool? IsSponsorshipSupported, string SearchTerm, out int TotalPages, int Page = 1, int Count = 15)
+        public System.Collections.Generic.IList<VideoBattle> GetAll(int? OwnerId, int? ParticipantId, int? VideoGenreId, Enums.VideoBattleStatus? BattleStatus, VideoBattleType? BattleType, bool? IsSponsorshipSupported, string SearchTerm, BattlesSortBy? BattlesSortBy, SortOrder? SortOrder, out int TotalPages, int Page = 1, int Count = 15)
         {
             var battles = _videoBattleRepository.Table;
             if (OwnerId != null)
@@ -95,8 +95,59 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                 battles = battles.Where(x => x.Name.ToLower().Contains(SearchTerm.ToLower()));
             }
             TotalPages = int.Parse(Math.Ceiling((decimal)battles.Count() / Count).ToString());
+
+            IOrderedQueryable<VideoBattle> orderedBattles;
+            if (BattlesSortBy.HasValue)
+            {
+                switch (BattlesSortBy)
+                {
+                    case Enums.BattlesSortBy.PrizeAmount:
+                        orderedBattles = SortOrder == Enums.SortOrder.Ascending
+                            ? battles.OrderBy(x => x.Prizes.Sum(z => z.PrizeAmount))
+                            : battles.OrderByDescending(x => x.Prizes.Sum(z => z.PrizeAmount));
+                        break;
+                    case Enums.BattlesSortBy.VotingStartDate:
+                        orderedBattles = SortOrder == Enums.SortOrder.Ascending
+                            ? battles.OrderBy(x => x.VotingStartDate)
+                            : battles.OrderByDescending(x => x.VotingStartDate);
+                        break;
+                    case Enums.BattlesSortBy.VotingEndDate:
+                        orderedBattles = SortOrder == Enums.SortOrder.Ascending
+                            ? battles.OrderBy(x => x.VotingEndDate)
+                            : battles.OrderByDescending(x => x.VotingEndDate);
+                        break;
+                    case Enums.BattlesSortBy.SponsorshipAmount:
+                        orderedBattles = SortOrder == Enums.SortOrder.Ascending
+                            ? battles.OrderBy(x => x.MinimumSponsorshipAmount)
+                            : battles.OrderByDescending(x => x.MinimumSponsorshipAmount);
+                        break;
+                    case Enums.BattlesSortBy.NumberOfParticipants:
+                        var tempBattles = battles.Join(_videoBattleParticipantRepository.Table, b => b.Id, p => p.VideoBattleId,
+                            (b, p) => new {Battle = b, ParticipantCount = _videoBattleParticipantRepository.Table.Count(x => x.VideoBattleId == b.Id)});
+                        orderedBattles = (SortOrder == Enums.SortOrder.Ascending)
+                            ? tempBattles.OrderBy(x => x.ParticipantCount).Select(x => x.Battle).OrderBy(x => x.Id)
+                            : tempBattles.OrderByDescending(x => x.ParticipantCount)
+                                .Select(x => x.Battle)
+                                .OrderBy(x => x.Id);
+
+
+                        break;
+                    default:
+                        orderedBattles = SortOrder == Enums.SortOrder.Ascending
+                            ? battles.OrderBy(x => x.Id)
+                            : battles.OrderByDescending(x => x.Id);
+                        break;
+                }
+            }
+            else
+            {
+                orderedBattles = SortOrder == Enums.SortOrder.Ascending
+                          ? battles.OrderBy(x => x.Id)
+                          : battles.OrderByDescending(x => x.Id);
+            }
+
             //return paginated result
-            return battles.OrderByDescending(x => x.DateUpdated).Skip((Page - 1) * Count).Take(Count).ToList();
+            return orderedBattles.Skip((Page - 1) * Count).Take(Count).ToList();
         }
 
         /// <summary>
@@ -161,9 +212,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                         battle.VideoBattleStatus = VideoBattleStatus.Closed;
                     }
                 }
-                
+
                 _videoBattleRepository.Update(battle);
-              
+
 
             }
 

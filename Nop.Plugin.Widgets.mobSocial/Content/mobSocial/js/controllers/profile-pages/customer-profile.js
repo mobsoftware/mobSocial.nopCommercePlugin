@@ -109,15 +109,15 @@ app.controller('customerProfileController', ['$rootScope', '$scope', 'CustomerPr
         $scope.VideoBattles = null;
         var CustomerId = $scope.customerId;
         var ViewType = "user";
-        VideoBattleService.GetVideoBattles(ViewType, null, CustomerId, null, null,
-            function (data) {
+        VideoBattleService.GetVideoBattles({ ViewType: ViewType, CustomerId: CustomerId },
+            function(data) {
                 if (data.Success) {
                     $scope.VideoBattles = data.VideoBattles;
                     $scope.loaded = true;
                 }
                 $scope.processing = false;
             },
-            function (data) {
+            function(data) {
                 $scope.processing = false;
                 alert("error occurred");
             });
