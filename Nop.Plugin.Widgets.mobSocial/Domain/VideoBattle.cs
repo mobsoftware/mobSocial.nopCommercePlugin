@@ -12,7 +12,7 @@ using Nop.Plugin.Widgets.MobSocial.Enums;
 
 namespace Nop.Plugin.Widgets.MobSocial.Domain
 {
-    public class VideoBattle : BaseMobEntity, ISlugSupported, INameSupported
+    public class VideoBattle : BaseMobEntity, ISlugSupported, INameSupported, IFollowSupported
     {
         public string Name { get; set; }
 

@@ -437,6 +437,22 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                    );
             
+            //follow unfollow
+            routes.MapLocalizedRoute("CustomerFollowEntity",
+                   "Follow/{entityName}",
+                   new { controller = "CustomerFollow", action = "Follow" },
+                   new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+                   );
+            routes.MapLocalizedRoute("CustomerUnfollowEntity",
+                  "Unfollow/{entityName}",
+                  new { controller = "CustomerFollow", action = "Unfollow" },
+                  new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+                  );
+            routes.MapLocalizedRoute("CustomerFollowButton",
+                 "CustomerFollowButton",
+                 new { controller = "CustomerFollow", action = "CustomerFollowButton" },
+                 new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+                 );
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             //routes.MapHubs(); Video Conferrencing on hold until Owin IAppBuilder
 

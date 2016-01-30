@@ -41,6 +41,7 @@
     <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
+    <Compile Include="Controllers\CustomerFollowController.cs" />
     <Compile Include="Controllers\CustomerProfileController.cs" />
     <Compile Include="Controllers\FriendsController.cs" />
     <Compile Include="Controllers\HeadController.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Controllers\SponsorController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Core\FeatureToggle.cs" />
+    <Compile Include="Data\CustomerFollowMap.cs" />
     <Compile Include="Data\CustomerPaymentMethodMap.cs" />
     <Compile Include="Data\SponsorDataMap.cs" />
     <Compile Include="Data\SponsorMap.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Data\VideoBattlePrizeMap.cs" />
     <Compile Include="Data\VoterPassMap.cs" />
     <Compile Include="Data\WatchedVideoMap.cs" />
+    <Compile Include="Domain\CustomerFollow.cs" />
     <Compile Include="Domain\CustomerPaymentMethod.cs" />
     <Compile Include="Domain\Sponsor.cs" />
     <Compile Include="Domain\SponsorData.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="Services\ArtistPageService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\CustomerFavoriteSongService.cs" />
+    <Compile Include="Services\CustomerFollowService.cs" />
     <Compile Include="Services\CustomerPaymentMethodService.cs" />
     <Compile Include="Services\CustomerProfileService.cs" />
     <Compile Include="Services\CustomerTimelineService.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="Services\IBusinessPageCouponService.cs" />
     <Compile Include="Services\IBusinessPageService.cs" />
     <Compile Include="Services\ICustomerFavoriteSongService.cs" />
+    <Compile Include="Services\ICustomerFollowService.cs" />
     <Compile Include="Services\ICustomerPaymentMethodService.cs" />
     <Compile Include="Services\IFriendService.cs" />
     <Compile Include="Services\IMobSecurityService.cs" />
@@ -346,6 +351,9 @@
     <Content Include="Content\Libraries\moment.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\js\controllers\follow\follow-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\controllers\friends\friend.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -359,6 +367,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\directives\follow-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\directives\friend-button.directive.js">
@@ -395,6 +406,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\CustomerProfile\Profile.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\CustomerFollow\CustomerFollowButton.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\mobSocial\Head\PublicInfo.cshtml" />

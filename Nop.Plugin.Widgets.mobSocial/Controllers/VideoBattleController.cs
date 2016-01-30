@@ -58,6 +58,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IProductService _productService;
         private readonly ISettingService _settingService;
         private readonly IPaymentProcessingService _paymentProcessingService;
+        private readonly ICustomerFollowService _customerFollowService;
         private readonly MediaSettings _mediaSettings;
         private readonly mobSocialSettings _mobSocialSettings;
 
@@ -81,7 +82,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
          ISponsorService sponsorService,
             IPriceFormatter priceFormatter,
          MediaSettings mediaSettings,
-         mobSocialSettings mobSocialSettings, IOrderService orderService, IProductService productService, ISettingService settingService, IPaymentProcessingService paymentProcessingService)
+         mobSocialSettings mobSocialSettings, IOrderService orderService, IProductService productService, ISettingService settingService, IPaymentProcessingService paymentProcessingService, ICustomerFollowService customerFollowService)
         {
             _workContext = workContext;
             _storeContext = storeContext;
@@ -101,6 +102,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _productService = productService;
             _settingService = settingService;
             _paymentProcessingService = paymentProcessingService;
+            _customerFollowService = customerFollowService;
             _sponsorService = sponsorService;
             _pictureService = pictureService;
             _priceFormatter = priceFormatter;
@@ -610,6 +612,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 _workContext, _productService, _sponsorService, _voterPassService, _videoBattlePrizeService,
                 _priceFormatter, _settingService, _paymentProcessingService, _mobSocialSettings);
 
+            //following or not
+            model.IsFollowing =
+                _customerFollowService.GetCustomerFollow<VideoBattle>(_workContext.CurrentCustomer.Id, VideoBattleId) !=
+                null;
+            //and howmany are following
+            model.TotalFollowerCount = _customerFollowService.GetFollowerCount<VideoBattle>(VideoBattleId);
+
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
@@ -990,7 +999,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //only open or signup battle types can be joined directly. it should not be open in status either way
             if (videoBattle.VideoBattleType != VideoBattleType.InviteOnly && videoBattle.VideoBattleStatus == VideoBattleStatus.Pending)
             {
-                //get the current customer id
+                //get the current customer
                 var customer = _workContext.CurrentCustomer;
 
                 //get the participation status
@@ -1041,6 +1050,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
                     }
+
+                    //and add user to the followers list
+                    _customerFollowService.Insert<VideoBattle>(customer.Id, VideoBattleId);
+
                     return Json(new { Success = true, Status = videoBattleParticipant.ParticipantStatus });
 
                 }
@@ -1448,6 +1461,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
                 }
+                //and add user to the followers list
+                _customerFollowService.Insert<VideoBattle>(customer.Id, VideoBattleId);
+
                 return Json(new { Success = true });
             }
             return Json(new { Success = false, Message = "Closed For Voting" });

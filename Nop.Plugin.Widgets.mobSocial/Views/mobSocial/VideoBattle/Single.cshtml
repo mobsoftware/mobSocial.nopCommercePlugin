@@ -85,7 +85,7 @@
             <span ng-switch-when="@((int) VideoBattleStatus.Closed)"><i class="fa  fa-flag-checkered" title="The battle is closed now."></i></span>
             <span ng-switch-when="@((int) VideoBattleStatus.Complete)"><i class="fa fa-trophy" title="The battle is complete and we have a winner"></i></span>
         </span>
-        @Model.Name
+        @Model.Name <follow-button class="follow-button" entityid="@Model.Id" entityname="videobattle" followstatus="@(Model.IsFollowing ? 1 : 0)"></follow-button>
     </h1>
     @if (Model.IsEditable && Model.VideoBattleStatus == VideoBattleStatus.Pending)
     {

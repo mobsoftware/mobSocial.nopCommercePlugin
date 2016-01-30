@@ -26,9 +26,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IWorkContext _workContext;
         private readonly IPictureService _pictureService;
         private readonly ICustomerService _customerService;
+        private readonly ICustomerFollowService _customerFollowService;
         private readonly IMobSocialService _mobSocialService;
 
-        public FriendsController(IFriendService friendService, IPermissionService permissionService, IWorkContext workContext, IPictureService pictureService, ICustomerService customerService, IMobSocialService mobSocialService)
+        public FriendsController(IFriendService friendService, IPermissionService permissionService, IWorkContext workContext, IPictureService pictureService, ICustomerService customerService, IMobSocialService mobSocialService, ICustomerFollowService customerFollowService)
         {
             _friendService = friendService;
             _permissionService = permissionService;
@@ -36,6 +37,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _pictureService = pictureService;
             _customerService = customerService;
             _mobSocialService = mobSocialService;
+            _customerFollowService = customerFollowService;
         }
 
         [ChildActionOnly]
@@ -104,7 +106,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
             if (customerFriend.Id == 0)
+            {
                 _friendService.Insert(customerFriend);
+
+                //let's add customer follow
+                _customerFollowService.Insert<CustomerProfile>(fromCustomerId, ToCustomerId);
+            }
 
 
             return Json(new { Success = true, NewStatus = FriendStatus.FriendRequestSent });

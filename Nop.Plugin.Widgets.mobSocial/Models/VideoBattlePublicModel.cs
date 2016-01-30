@@ -89,5 +89,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
         public IList<SponsorPublicModel> Sponsors { get; set; }
 
         public SponsorPublicModel CurrentSponsor { get; set; }
+
+        public bool IsFollowing { get; set; }
+
+        public int TotalFollowerCount { get; set; }
     }
 }

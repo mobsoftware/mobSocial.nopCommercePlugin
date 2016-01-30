@@ -34,5 +34,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public bool IsEditable { get; set; }
 
+        public int FollowingStatus { get; set; }
+
+        public int FollowerCount { get; set; }
+
     }
 }

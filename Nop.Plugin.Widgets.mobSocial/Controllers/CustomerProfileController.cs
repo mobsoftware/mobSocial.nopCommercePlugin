@@ -39,6 +39,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IFriendService _friendService;
         private readonly IPictureService _pictureService;
         private readonly IGenericAttributeService _genericAttributeService;
+        private readonly ICustomerFollowService _customerFollowService;
         private readonly MediaSettings _mediaSettings;
         private readonly mobSocialSettings _mobSocialSettings;
 
@@ -48,7 +49,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             IMobSocialService mobSocialService,
             ICustomerFavoriteSongService customerFavoriteSongService,
             IMusicService musicService,
-            IWorkContext workContext, IFriendService friendService, IPictureService pictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, IGenericAttributeService genericAttributeService)
+            IWorkContext workContext, IFriendService friendService, IPictureService pictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, IGenericAttributeService genericAttributeService, ICustomerFollowService customerFollowService)
         {
             _customerProfileService = customerProfileService;
             _customerProfileViewService = customerProfileViewService;
@@ -62,6 +63,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _mobSocialSettings = mobSocialSettings;
             _mediaSettings = mediaSettings;
             _genericAttributeService = genericAttributeService;
+            _customerFollowService = customerFollowService;
         }
 
         [ChildActionOnly]
@@ -108,8 +110,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 else
                     profilemodel.FriendStatus = FriendStatus.NeedsConfirmed;
             }
-          
 
+           //and the follower counts & logged in user following status
+            var followers = _customerFollowService.GetFollowers<CustomerProfile>(customerId);
+            profilemodel.FollowingStatus = followers.Any(x => x.CustomerId == _workContext.CurrentCustomer.Id) ? 1 : 0;
+            profilemodel.FollowerCount = followers.Count;
             return View("mobSocial/CustomerProfile/Profile", profilemodel);
         }
 
