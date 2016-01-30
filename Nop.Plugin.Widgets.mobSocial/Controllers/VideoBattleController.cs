@@ -651,7 +651,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                requestModel.BattlesSortBy = BattlesSortBy.Id;
 
             if(!requestModel.SortOrder.HasValue)
-                requestModel.SortOrder = SortOrder.Ascending;
+                requestModel.SortOrder = SortOrder.Descending;
 
             //let's get all the battles depending on view type
             IList<VideoBattle> battles = null;
