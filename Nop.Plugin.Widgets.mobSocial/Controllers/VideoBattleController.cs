@@ -622,7 +622,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(ViewMode == VideoViewMode.TheaterMode && videoBattle.VideoBattleStatus != VideoBattleStatus.Pending ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
-        public ActionResult VideoBattles(string viewType = "open", string searchTerm = "", BattlesSortBy sortBy = BattlesSortBy.Id, SortOrder sortOrder = SortOrder.Ascending)
+        public ActionResult VideoBattles(string viewType = "open", string searchTerm = "", BattlesSortBy sortBy = BattlesSortBy.Id, SortOrder sortOrder = SortOrder.Descending)
         {
             var model = new VideoBattleQueryModel() {
                 SearchTerm = searchTerm,
@@ -651,7 +651,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                requestModel.BattlesSortBy = BattlesSortBy.Id;
 
             if(!requestModel.SortOrder.HasValue)
-                requestModel.SortOrder = SortOrder.Ascending;
+                requestModel.SortOrder = SortOrder.Descending;
 
             //let's get all the battles depending on view type
             IList<VideoBattle> battles = null;
