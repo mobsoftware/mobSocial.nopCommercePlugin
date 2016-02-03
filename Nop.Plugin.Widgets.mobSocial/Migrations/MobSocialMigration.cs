@@ -7,6 +7,7 @@ using Mob.Core.Data;
 using Mob.Core.Migrations;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Infrastructure;
+using Nop.Core.Plugins;
 using Nop.Plugin.Widgets.MobSocial.Constants;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Services;
@@ -72,6 +73,45 @@ namespace Nop.Plugin.Widgets.MobSocial.Migrations
                 _settingService.SetSetting("winner_distribution_5", "40+25+20+10+5");
 
 
+            }
+            if (settings.Version <= 3.71m)
+            {
+                settings.VideoUploadReminderEmailThresholdDays = 5;
+                settings.BattleVoteReminderEmailThresholdDays = 5;
+           
+                var pluginFinder = EngineContext.Current.Resolve<IPluginFinder>();
+
+                var pluginDescriptor = pluginFinder.GetPluginDescriptorBySystemName("Widgets.mobSocial");
+
+                if (pluginDescriptor != null)
+                {
+                    var plugin = pluginDescriptor.Instance() as mobSocialPlugin;
+                    if(plugin != null)
+                        plugin.AddScheduledTask("Reminder Notifications Task", 8 * 60 * 60, true, false, "Nop.Plugin.Widgets.MobSocial.Tasks.ReminderNotificationsTask, Nop.Plugin.Widgets.MobSocial");
+                }
+            
+                var _messageTemplateService = EngineContext.Current.Resolve<IMessageTemplateService>();
+                var xDaysToBattleStartNotification = new MessageTemplate() {
+                    Name = "MobSocial.xDaysToBattleStartNotification",
+                    Subject = "%Battle.Title% starts %Battle.StartDaysString%",
+                    Body = "Visit <a href=\"%VideoBattle.Url%\">Battle Page</a> to upload your video",
+                    EmailAccountId = 1,
+                    IsActive = true,
+                    LimitedToStores = false
+                };
+
+                _messageTemplateService.InsertMessageTemplate(xDaysToBattleStartNotification);
+
+                var xDaysToBattleEndNotification = new MessageTemplate() {
+                    Name = "MobSocial.xDaysToBattleEndNotification",
+                    Subject = "%Battle.Title% ends %Battle.EndDaysString%",
+                    Body = "Visit <a href=\"%VideoBattle.Url%\">Battle Page</a> to cast your vote",
+                    EmailAccountId = 1,
+                    IsActive = true,
+                    LimitedToStores = false
+                };
+
+                _messageTemplateService.InsertMessageTemplate(xDaysToBattleEndNotification);
             }
             //and update the setting
             settings.Version = MobSocialConstant.ReleaseVersion;

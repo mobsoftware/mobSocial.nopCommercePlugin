@@ -341,6 +341,7 @@
     <Compile Include="Services\WatchedVideoService.cs" />
     <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
     <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
+    <Compile Include="Tasks\ReminderNotificationsTask.cs" />
     <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
     <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />

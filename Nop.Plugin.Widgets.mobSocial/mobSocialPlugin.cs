@@ -247,6 +247,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 MicroPaymentsFixedPaymentProcessingFee = 0.05m,
                 MacroPaymentsPaymentProcessingPercentage = 3.5m,
                 MicroPaymentsPaymentProcessingPercentage = 5,
+                VideoUploadReminderEmailThresholdDays = 5,
+                BattleVoteReminderEmailThresholdDays = 5
             };
 
             //save distribution percentages as strings
@@ -391,11 +393,14 @@ namespace Nop.Plugin.Widgets.MobSocial
             const int every5Min = 5 * 60;
             AddScheduledTask("Video Battle Status Update Task", every5Min, true, false, "Nop.Plugin.Widgets.MobSocial.Tasks.VideoBattlesStatusUpdateTask, Nop.Plugin.Widgets.MobSocial");
 
+            const int every8Hrs = 8 * 60 * 60;
+            AddScheduledTask("Reminder Notifications Task", every8Hrs, true, false, "Nop.Plugin.Widgets.MobSocial.Tasks.ReminderNotificationsTask, Nop.Plugin.Widgets.MobSocial");
+
 
         }
 
 
-        private void AddScheduledTask(string name, int seconds, bool enabled, bool stopOnError, string type)
+        internal void AddScheduledTask(string name, int seconds, bool enabled, bool stopOnError, string type)
         {
             var task = _scheduleTaskService.GetTaskByType(type);
 
@@ -631,6 +636,29 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             _messageTemplateService.InsertMessageTemplate(sponsorshipStatusChangeNotification);
 
+            var xDaysToBattleStartNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.xDaysToBattleStartNotification",
+                Subject = "%Battle.Title% starts %Battle.StartDaysString%",
+                Body = "Visit <a href=\"%VideoBattle.Url%\">Battle Page</a> to upload your video",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(xDaysToBattleStartNotification);
+
+            var xDaysToBattleEndNotification = new MessageTemplate() {
+                Name = "MobSocial.xDaysToBattleEndNotification",
+                Subject = "%Battle.Title% ends %Battle.EndDaysString%",
+                Body = "Visit <a href=\"%VideoBattle.Url%\">Battle Page</a> to cast your vote",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(xDaysToBattleEndNotification);
+
         }
 
         private void DeleteMessageTemplates()
@@ -651,8 +679,9 @@ namespace Nop.Plugin.Widgets.MobSocial
                 "MobSocial.VideoBattleJoinNotification",
                 "MobSocial.VideoBattleSignupAcceptedNotification",
                 "MobSocial.SponsorAppliedNotification",
-                "MobSocial.SponsorshipStatusChangeNotification"
-
+                "MobSocial.SponsorshipStatusChangeNotification",
+                "MobSocial.xDaysToBattleStartNotification",
+                "MobSocial.xDaysToBattleEndNotification"
             };
 
             foreach (var template in messageTemplates)

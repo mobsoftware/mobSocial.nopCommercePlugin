@@ -51,7 +51,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         public override List<VideoBattleParticipant> GetAll(string Term, int Count = 15, int Page = 1)
         {
-            throw new NotImplementedException();
+            return Repository.Table.ToList();
         }
     }
 }

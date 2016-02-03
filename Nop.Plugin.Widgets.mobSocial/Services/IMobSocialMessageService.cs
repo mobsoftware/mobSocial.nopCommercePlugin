@@ -43,6 +43,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         int SendSponsorshipStatusChangeNotification(Customer receiver, SponsorshipStatus sponsorshipStatus, VideoBattle videoBattle, int languageId, int storeId);
 
+        int SendXDaysToBattleStartNotificationToParticipant(Customer receiver, VideoBattle videoBattle, int languageId, int storeId);
+
+        int SendXDaysToBattleEndNotificationToFollower(Customer receiver, VideoBattle videoBattle, int languageId, int storeId);
+
     }
 
 }

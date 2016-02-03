@@ -73,5 +73,9 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public decimal BattleHostSponsorshipPercentage { get; set; }
 
+        public int VideoUploadReminderEmailThresholdDays { get; set; }
+
+        public int BattleVoteReminderEmailThresholdDays { get; set; }
+
     }
 }

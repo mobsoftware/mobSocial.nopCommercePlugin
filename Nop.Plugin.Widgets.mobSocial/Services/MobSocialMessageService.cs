@@ -779,6 +779,85 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
+
+
+        public int SendXDaysToBattleStartNotificationToParticipant(Customer receiver, VideoBattle videoBattle, int languageId, int storeId)
+        {
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.xDaysToBattleStartNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //find the remaining days to start of battle
+            var timeSpan = (int) Math.Ceiling(videoBattle.VotingStartDate.Subtract(DateTime.UtcNow).TotalDays);
+            var formattedString = timeSpan > 1 ? string.Format("in {0} days", timeSpan) : "tomorrow";
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("Battle.Title", videoBattle.Name, true),
+                new Token("Battle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
+                new Token("Battle.StartDaysString", formattedString , true)
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, receiver);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = receiver.Email;
+            var toName = receiver.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        }
+
+        public int SendXDaysToBattleEndNotificationToFollower(Customer receiver, VideoBattle videoBattle, int languageId, int storeId)
+        {
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.xDaysToBattleStartNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //find the remaining days to end of battle
+            var timeSpan = (int)Math.Ceiling(videoBattle.VotingEndDate.Subtract(DateTime.UtcNow).TotalDays);
+            var formattedString = timeSpan > 1 ? string.Format("in {0} days", timeSpan) : "tomorrow";
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("Battle.Title", videoBattle.Name, true),
+                new Token("Battle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
+                new Token("Battle.EndDaysString", formattedString , true)
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, receiver);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = receiver.Email;
+            var toName = receiver.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        }
     }
 }
 
