@@ -39,6 +39,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
         int SendVideoBattleSignupAcceptedNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
 
+        int SendVideoBattleDisqualifiedNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId);
+
+        int SendVideoBattleOpenNotification(Customer receiver, VideoBattle videoBattle, int languageId, int storeId);
+
         int SendSponsorAppliedNotificationToBattleOwner(Customer owner, Customer sponsor, VideoBattle videoBattle, int languageId, int storeId);
 
         int SendSponsorshipStatusChangeNotification(Customer receiver, SponsorshipStatus sponsorshipStatus, VideoBattle videoBattle, int languageId, int storeId);

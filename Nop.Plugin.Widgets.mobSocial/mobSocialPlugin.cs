@@ -659,6 +659,29 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             _messageTemplateService.InsertMessageTemplate(xDaysToBattleEndNotification);
 
+            var videoBattleDisqualifiedNotification = new MessageTemplate()
+            {
+                Name = "MobSocial.VideoBattleDisqualifiedNotification",
+                Subject = "You have been disqualified from participating in %VideoBattle.Title%!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to view the reason.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(videoBattleDisqualifiedNotification);
+
+            var videoBattleOpenNotification = new MessageTemplate() {
+                Name = "MobSocial.VideoBattleOpenNotification",
+                Subject = "The battle '%VideoBattle.Title%' is open now!",
+                Body = "<a href=\"%VideoBattle.Url%\">Visit Battle Page</a> to see the battle.",
+                EmailAccountId = 1,
+                IsActive = true,
+                LimitedToStores = false
+            };
+
+            _messageTemplateService.InsertMessageTemplate(videoBattleOpenNotification);
+
         }
 
         private void DeleteMessageTemplates()

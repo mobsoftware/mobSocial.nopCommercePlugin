@@ -707,6 +707,76 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
 
+        public int SendVideoBattleDisqualifiedNotification(Customer challenger, Customer challengee, VideoBattle videoBattle, int languageId, int storeId)
+        {
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.VideoBattleDisqualifiedNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("VideoBattle.Title", videoBattle.Name, true),
+                new Token("VideoBattle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, challengee);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = challenger.Email;
+            var toName = challenger.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        }
+
+        public int SendVideoBattleOpenNotification(Customer receiver, VideoBattle videoBattle, int languageId, int storeId)
+        {
+            var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
+
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("MobSocial.VideoBattleOpenNotification", store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+
+            //tokens
+            var tokens = new List<Token>
+            {
+                new Token("VideoBattle.Title", videoBattle.Name, true),
+                new Token("VideoBattle.Url", string.Format("{0}/VideoBattle/{1}", store.Url, videoBattle.GetSeName(_workContext.WorkingLanguage.Id, true, false)), true),
+
+            };
+
+            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
+            _messageTokenProvider.AddCustomerTokens(tokens, receiver);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+
+            var toEmail = receiver.Email;
+            var toName = receiver.GetFullName().ToTitleCase();
+
+            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
+        }
+
         public int SendSponsorAppliedNotificationToBattleOwner(Customer owner, Customer sponsor, VideoBattle videoBattle, int languageId, int storeId)
         {
             var store = _storeService.GetStoreById(storeId) ?? _storeContext.CurrentStore;
@@ -858,6 +928,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
             return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }
+
+
+        
     }
 }
 

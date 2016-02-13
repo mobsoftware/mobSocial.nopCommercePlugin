@@ -8,6 +8,7 @@ using Nop.Core.Data;
 using Nop.Plugin.Widgets.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial.Enums;
 using Nop.Services.Configuration;
+using Nop.Services.Customers;
 using Nop.Services.Logging;
 using Nop.Services.Media;
 using Nop.Services.Seo;
@@ -22,9 +23,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
         private readonly IMobRepository<VideoBattleVideo> _videoBattleVideoRepository;
 
         private readonly IWorkContext _workContext;
-
+        private readonly IStoreContext _storeContext;
+        private readonly ICustomerFollowService _customerFollowService;
+        private readonly ICustomerService _customerService;
         private IUrlRecordService _urlRecordService;
         private readonly IPictureService _pictureService;
+        private readonly IMobSocialMessageService _mobSocialMessageService;
 
         public VideoBattleService(ISettingService settingService, IWebHelper webHelper,
             ILogger logger,
@@ -35,12 +39,18 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
             IMobRepository<VideoBattleVideo> videoBattleVideoRepository,
             IUrlRecordService urlRecordService,
             IWorkContext workContext,
-            IPictureService pictureService)
+            IPictureService pictureService,
+            ICustomerFollowService customerFollowService,
+            IMobSocialMessageService mobSocialMessageService, ICustomerService customerService, IStoreContext stoerContext)
             : base(videoBattleRepository, videoBattlePictureRepository, pictureService, workContext, urlRecordService)
         {
             _urlRecordService = urlRecordService;
             _workContext = workContext;
             _pictureService = pictureService;
+            _customerFollowService = customerFollowService;
+            _mobSocialMessageService = mobSocialMessageService;
+            _customerService = customerService;
+            _storeContext = stoerContext;
             _videoBattleRepository = videoBattleRepository;
             _videoBattleParticipantRepository = videoBattleParticpantRepository;
             _videoBattleGenreRepository = videoBattleGenreRepository;
@@ -123,7 +133,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
                         break;
                     case Enums.BattlesSortBy.NumberOfParticipants:
                         var tempBattles = battles.Join(_videoBattleParticipantRepository.Table, b => b.Id, p => p.VideoBattleId,
-                            (b, p) => new {Battle = b, ParticipantCount = _videoBattleParticipantRepository.Table.Count(x => x.VideoBattleId == b.Id)});
+                            (b, p) => new { Battle = b, ParticipantCount = _videoBattleParticipantRepository.Table.Count(x => x.VideoBattleId == b.Id) });
                         orderedBattles = (SortOrder == Enums.SortOrder.Ascending)
                             ? tempBattles.OrderBy(x => x.ParticipantCount).Select(x => x.Battle).OrderBy(x => x.Id)
                             : tempBattles.OrderByDescending(x => x.ParticipantCount)
@@ -215,7 +225,37 @@ namespace Nop.Plugin.Widgets.MobSocial.Services
 
                 _videoBattleRepository.Update(battle);
 
+                //depending on battle status, let's send notifications
+                if (battle.VideoBattleStatus == VideoBattleStatus.Open || battle.VideoBattleStatus == VideoBattleStatus.Complete)
+                {
+                    //get the followers first
+                    var followers = _customerFollowService.GetFollowers<VideoBattle>(battle.Id);
+                    var followerCustomerIds = followers.Select(x => x.CustomerId).ToArray();
 
+                    //and their customers
+                    var customers = _customerService.GetCustomersByIds(followerCustomerIds);
+                    switch (battle.VideoBattleStatus)
+                    {
+                        case VideoBattleStatus.Open:
+                            //send battle open notifications
+                            foreach (var customer in customers)
+                            {
+                                _mobSocialMessageService.SendVideoBattleOpenNotification(customer, battle,
+                                    _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+                            }
+                            break;
+                        case VideoBattleStatus.Complete:
+                            //send battle complete notifications
+                            foreach (var customer in customers)
+                            {
+                                _mobSocialMessageService.SendVideoBattleCompleteNotification(customer, battle,
+                                    NotificationRecipientType.Voter, _workContext.WorkingLanguage.Id,
+                                    _storeContext.CurrentStore.Id);
+                            }
+                            break;
+                    }
+
+                }
             }
 
         }
