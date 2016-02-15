@@ -79,3 +79,4 @@
 *.db
 *.ie2~
 obj
+/Nop.Plugin.Widgets.mobSocial/MobLib/*.pdb
