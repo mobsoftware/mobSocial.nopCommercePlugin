@@ -1268,3 +1268,37 @@ span.payment-method.fa {
     margin-left: 10px;
     font-size: 32px;
 }
+.sponsor-block {
+    background-color: #ffe;
+}
+.sponsor-block h3 {
+    margin: 10px 0;
+}
+.sponsor-block .sponsor-name-info {
+    padding: 10px 0;
+    text-align: center;
+}
+.sponsor-block .sponsor-name-info .sponsor-amount {
+    color: #888;
+}
+.sponsor-block .sponsor-actions-info {
+    text-align: center;
+}
+.sponsor-block .sponsor-actions-info a {
+    text-decoration: underline;
+}
+.sponsor-block .fieldset .title {
+    margin-top: 10px;
+}
+.sponsor-block .fieldset a, .sponsor-block .fieldset span {
+    font-size: initial;
+}
+.sponsor-block .fieldset span.upload-complete {
+    display: none;    
+}
+.sponsor-display {
+    margin: 5px 0;
+}
+.sponsor-display img {
+    max-width: 100%;
+}

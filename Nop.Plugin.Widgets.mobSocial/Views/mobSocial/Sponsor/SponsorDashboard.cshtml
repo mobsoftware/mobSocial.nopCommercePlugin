@@ -1,4 +1,6 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.SponsorsRequestModel
+﻿@using Nop.Web.Models.Customer
+@using Nop.Plugin.Widgets.MobSocial.Enums
+@model Nop.Plugin.Widgets.MobSocial.Models.SponsorsRequestModel
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
     @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
@@ -6,21 +8,188 @@
     var json = Json.Encode(Model);
 }
 <div ng-controller="SponsorController" ng-init="init(@json)">
-    <div ng-repeat="Sponsor in Sponsors">
-        <div class="sponsor-block">
-            <div class="sponsor-name">
-                <a href="/{{Sponsor.SeName}}">{{Sponsor.SponsorName}}</a>
-            </div>
-            <div class="sponsor-amount">
-                {{Sponsor.SponsorshipAmountFormatted}}
-            </div>
-            <div class="sponsor-status">
-                {{Sponsor.SponsorshipStatusName}}
-            </div>
-            <a ng-click="GetSponsorTransactions(Sponsor)">Load</a>
-            <div ng-show="Sponsor.SponsorTransactions" class="sponsor-transactions">
-                
-            </div>
+    <h2 style="padding: 20px 0 40px 0">
+        Sponsor Dashboard for <a href="@Model.BattleUrl">@Model.BattleName</a>
+    </h2>
+    <div id="sponsor-tabs">
+        <ul class="resp-tabs-list">
+            <li ng-click="GetSponsors(@((int) SponsorshipStatus.Pending))"><i class="fa fa-exclamation-circle"></i>Pending Sponsorships</li>
+            <li ng-click="GetSponsors(@((int) SponsorshipStatus.Accepted))"><i class="fa fa-check-circle"></i> Approved Sponsorships</li>
+            <li ng-click="GetSponsors(@((int) SponsorshipStatus.Cancelled))"><i class="fa fa-times-circle"></i>Cancelled Sponsorships</li>
+            <li ng-click="GetSponsors(@((int) SponsorshipStatus.Rejected))"><i class="fa fa-thumbs-o-down"></i> Rejected Sponsorships</li>
+        </ul>
+        <div class="resp-tabs-container">
+            @{
+                var sponsorshipStatusType = new int[]
+                            {
+                                (int) SponsorshipStatus.Pending,
+                                (int) SponsorshipStatus.Accepted,
+                                (int) SponsorshipStatus.Cancelled,
+                                (int) SponsorshipStatus.Rejected
+                            };
+
+            }
+            @for (var i = 1; i <= 4; i++)
+            {
+                var sponsorShipStatus = sponsorshipStatusType[i - 1];
+
+                <div>
+                    <div class="battle-loader" ng-show="SponsorsLoading"></div>
+                    <div ng-show="Sponsors[@sponsorShipStatus].length == 0" class="text-center">
+                        <h4>No @(((SponsorshipStatus)sponsorShipStatus).ToString().ToLower()) sponsorships found</h4>
+                    </div>
+
+                    <div ng-repeat="Sponsor in Sponsors[@sponsorShipStatus]">
+                        <div class="sponsor-block">
+                            <h2 class="sponsor-name-info">
+                                <a href="/{{Sponsor.SeName}}">{{Sponsor.SponsorName}}</a>
+                                <span class="sponsor-amount">
+                                    ({{Sponsor.SponsorshipAmountFormatted}})
+                                </span>
+                            </h2>
+
+                            <div class="sponsor-actions-info">
+                                <span ng-show="UpdatingSponsorship">Please wait...</span>
+                                <ul class="list-inline" ng-hide="UpdatingSponsorship">
+                                    <li ng-show="IsChallenger && Sponsor.SponsorshipStatus !=  @((int) SponsorshipStatus.Accepted)"><a ng-click="UpdateSponsor(Sponsor, @((int) SponsorshipStatus.Accepted))"><i class="fa fa-check"></i><span>Approve</span></a></li>
+                                    <li ng-show="IsChallenger && Sponsor.SponsorshipStatus !=  @((int) SponsorshipStatus.Accepted) && Sponsor.SponsorshipStatus !=  @((int) SponsorshipStatus.Rejected)"><a ng-click="UpdateSponsor(Sponsor, @((int) SponsorshipStatus.Rejected))"><i class="fa fa-thumbs-down"></i><span>Reject</span></a></li>
+                                    <li ng-show="IsSponsor && Sponsor.SponsorshipStatus !=  @((int) SponsorshipStatus.Accepted) && Sponsor.SponsorshipStatus !=  @((int) SponsorshipStatus.Rejected)"><a ng-click="UpdateSponsor(Sponsor, @((int) SponsorshipStatus.Cancelled), true)"><i class="fa fa-times"></i><span>Cancel</span></a></li>
+                                    <li ng-hide="Sponsor.SponsorTransactions"><a ng-click="GetSponsorTransactions(Sponsor)"><span>View Transaction Details</span></a></li>
+                                </ul>
+                            </div>
+
+
+                            <div ng-show="Sponsor.SponsorTransactions" class="sponsor-transactions">
+                                <h3 class="text-center">Transaction Details</h3>
+                                <table class="data-table">
+                                    <tr>
+                                        <th>Order Id</th>
+                                        <th>Transaction Amount</th>
+                                        <th>Transaction Date</th>
+                                    </tr>
+                                    <tr ng-repeat="st in Sponsor.SponsorTransactions">
+                                        <td>
+                                            {{st.OrderId}}
+                                        </td>
+                                        <td>
+                                            {{st.TransactionAmountFormatted}}
+                                        </td>
+                                        <td>
+                                            {{st.TransactionDate | date:'MM/dd/yyyy'}}
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="sponsorship-data-form" ng-show="Sponsor.SponsorshipStatus ==  @((int) SponsorshipStatus.Accepted)">
+
+                                <div class="fieldset">
+                                    <div class="title">
+                                        <strong class="">Sponsorship Display Editor</strong>
+                                    </div>
+                                    <div class="form-fields">
+                                        <div class="inputs">
+                                            <label>Display Name <span class="required">*</span></label>
+                                            <input tabindex="0" type="text" ng-model="Sponsor.SponsorData.DisplayName" required />
+                                            <span class="field-validation-error" ng-show="Sponsor.SponsorData.DisplayName == ''">Display Name is required</span>
+                                        </div>
+                                        <div class="inputs">
+                                            <label>Target URL (http://)</label>
+                                            <input tabindex="0" type="text" ng-model="Sponsor.SponsorData.TargetUrl" />
+                                        </div>
+                                        <div class="inputs">
+                                            <label>Banner Image</label>
+
+
+                                            <span ng-if="Sponsor.SponsorData.PictureId != 0 || (Sponsor.SponsorData.TemporaryPictureId && Sponsor.SponsorData.TemporaryPictureId != 0)">
+                                                <img ng-src="{{Sponsor.SponsorData.PictureUrl}}" style="max-width: 100%; width: 300px;" />
+                                                <br />
+                                            </span>
+                                            <span ng-if="!Sponsor.SponsorData.PictureId && !Sponsor.SponsorData.TemporaryPictureId">
+                                                No image uploaded
+                                            </span>
+
+                                        </div>
+                                        <div class="inputs">
+                                            <label></label>
+                                            <span ng-if="Sponsor.SponsorData.TemporaryPictureId">
+                                                <a ng-click="RevertImage(Sponsor)"><i class="fa fa-undo"></i> Revert Image</a><br />
+                                            </span>
+                                            @{
+                var uploadUrl = Url.RouteUrl("UploadSponsorPicture");
+                                            }
+                                            <a file-upload-button
+                                               class="upload-button"
+                                               id="uploadimage_{{Sponsor.SponsorData.Id}}"
+                                               fieldname="PictureFile"
+                                               extradata='{"BattleId": {{Sponsor.SponsorData.BattleId}}, "BattleType": {{Sponsor.SponsorData.BattleType}}, "FieldName": "PictureFile"}'
+                                               uploadtype="image"
+                                               ng-click="BeforePictureUpload(Sponsor)"
+                                               onsuccessitem="UploadPictureSuccess"
+                                               url="@uploadUrl">
+
+                                                <i class="fa fa-upload"></i> <span>Upload New Image</span>
+
+                                            </a>
+                                        </div>
+                                        <div class="inputs" ng-if="IsChallenger">
+                                            <label>Display Order</label>
+                                            <input tabindex="0" type="number" ng-model="Sponsor.SponsorData.DisplayOrder" />
+                                        </div>
+                                        <div ng-show="SavingSponsorData">
+                                            Saving...
+                                        </div>
+                                        <div class="submit-buttons text-center" ng-hide="SavingSponsorData">
+                                            <input type="button" ajax-disable class="c2a-maroon" ng-click="SaveSponsorData(Sponsor.SponsorData)" value="Save" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="sponsorship-data-form">
+                                <div class="fieldset">
+                                    <div class="title">
+                                        <strong>Products as Prizes</strong>
+                                    </div>
+                                    <div class="form-fields">
+                                        <div ng-repeat="prize in Sponsor.SponsoredProductPrizes">
+                                            <div class="inputs">
+                                                <label class="force-float">Winner # {{prize.WinnerPosition}}</label>
+                                                <input tabindex="0" type="text" ng-model="prize.PrizeOther" />
+                                            </div>
+                                        </div>
+                                        <div ng-show="SavingSponsorPrizes">
+                                            Saving...
+                                        </div>
+                                        <div class="submit-buttons text-center" ng-hide="SavingSponsorPrizes">
+                                            <input type="button" ajax-disable class="c2a-maroon" ng-click="SaveSponsorProductPrizes(Sponsor.SponsoredProductPrizes)" value="Save" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+
         </div>
     </div>
+
+
+
+
+
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sponsor-tabs").easyResponsiveTabs(1);
+    });
+</script>
