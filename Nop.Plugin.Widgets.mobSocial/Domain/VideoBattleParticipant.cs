@@ -19,10 +19,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Domain
 
         public DateTime LastUpdated { get; set; }
 
+        public string Remarks { get; set; }
+        
         public virtual VideoBattle VideoBattle { get; set; }
-
-
-
 
     }
 }

@@ -44,6 +44,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public VideoBattleParticipantStatus VideoBattleParticipantStatus { get; set; }
 
+        public string Remarks { get; set; }
         /// <summary>
         /// Has the logged in user voted for this participant
         /// </summary>

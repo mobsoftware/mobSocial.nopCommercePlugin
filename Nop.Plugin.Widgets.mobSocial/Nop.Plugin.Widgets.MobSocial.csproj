@@ -95,6 +95,7 @@
     <Compile Include="Models\SponsorsRequestModel.cs" />
     <Compile Include="Models\SponsorTransactionModel.cs" />
     <Compile Include="Models\SponsorTransactionRequestModel.cs" />
+    <Compile Include="Models\UpdateParticipantStatusModel.cs" />
     <Compile Include="Models\UpdateSponsorModel.cs" />
     <Compile Include="Models\VideoBattlePrizeModel.cs" />
     <Compile Include="Domain\WatchedVideo.cs" />
@@ -904,7 +905,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\mobSocial\Sponsor\ProductPrizesFormPopup.cshtml" />
-    <None Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml" />
+    <Content Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

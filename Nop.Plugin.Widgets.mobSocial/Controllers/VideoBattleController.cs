@@ -472,7 +472,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     ParticipantProfileImageUrl = _pictureService.GetPictureUrl(challengee.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, false),
                     Id = challengee.Id,
                     CanEdit = _workContext.CurrentCustomer.Id == participant.ParticipantId,
-                    VideoBattleParticipantStatus = participant.ParticipantStatus
+                    VideoBattleParticipantStatus = participant.ParticipantStatus,
+                    Remarks = participant.Remarks
                 };
 
                 //find if the participant has uploaded video? only those who have accepted challege would be shown 'with videos'
@@ -1064,8 +1065,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult UpdateParticipantStatus(int VideoBattleId, VideoBattleParticipantStatus VideoBattleParticipantStatus, int ParticipantId)
+        public ActionResult UpdateParticipantStatus(UpdateParticipantStatusModel model)
         {
+            var VideoBattleId = model.BattleId;
+            var ParticipantId = model.ParticipantId;
+            var VideoBattleParticipantStatus = model.VideoBattleParticipantStatus;
+            var Remarks = model.Remarks;
+
             var videoBattle = _videoBattleService.GetById(VideoBattleId);
 
             if (videoBattle == null)
@@ -1094,9 +1100,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
 
 
-            //so it's there. it must be the person who has signedup for the battle or who has been challenged
+            //so it's there. it must be the person who has signedup for the battle or who has been challenged or who has accepted the challenge and is being disqualified
             if (videoBattleParticipant.ParticipantStatus == VideoBattleParticipantStatus.Challenged
-                || videoBattleParticipant.ParticipantStatus == VideoBattleParticipantStatus.SignedUp)
+                || videoBattleParticipant.ParticipantStatus == VideoBattleParticipantStatus.SignedUp
+                || videoBattleParticipant.ParticipantStatus == VideoBattleParticipantStatus.ChallengeAccepted)
             {
                 switch (VideoBattleParticipantStatus)
                 {
@@ -1111,6 +1118,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         }
                         break;
                     case VideoBattleParticipantStatus.ChallengeCancelled:
+                    case VideoBattleParticipantStatus.Disqualified:
+                        //only battle host should be able to mark a participant as disqualified
                         //only the one who challenges or admin can cancel the challenge
                         if (_workContext.CurrentCustomer.IsAdmin() || _workContext.CurrentCustomer.Id == videoBattle.ChallengerId)
                         {
@@ -1119,6 +1128,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         break;
                 }
                 videoBattleParticipant.LastUpdated = DateTime.UtcNow;
+                videoBattleParticipant.Remarks = Remarks;
                 _videoBattleParticipantService.Update(videoBattleParticipant);
 
                 //send some notifications
@@ -1131,15 +1141,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     _mobsocialMessageService.SendVideoBattleSignupAcceptedNotification(challenger, challengee,
                         videoBattle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
                 }
-
+                //disqualified
+                if (_workContext.CurrentCustomer.Id == videoBattle.ChallengerId &&
+                   VideoBattleParticipantStatus == VideoBattleParticipantStatus.Disqualified)
+                {
+                    //this is the request approved by battle owner or admin so notification will be sent to the participant
+                    var challengee = _customerService.GetCustomerById(videoBattleParticipant.ParticipantId);
+                    var challenger = _workContext.CurrentCustomer;
+                    _mobsocialMessageService.SendVideoBattleDisqualifiedNotification(challenger, challengee,
+                        videoBattle, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
+                }
                 return Json(new { Success = true, ParticipantStatus = (int)videoBattleParticipant.ParticipantStatus, ParticipantId = ParticipantId });
             }
             else
             {
                 return Json(new { Success = false });
             }
-
-
         }
         #endregion
 
@@ -1175,9 +1192,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 videoBattleParticipant = _videoBattleParticipantService.GetVideoBattleParticipant(VideoBattleId,
              ParticipantId);
-                if (videoBattleParticipant != null)
+                if (videoBattleParticipant != null && videoBattleParticipant.ParticipantStatus != VideoBattleParticipantStatus.Disqualified)
                 {
-                    //so the participant is actually there. good then
+                    //so the participant is actually there & not disqualified either. good then
                     eligibleToUpload = true;
 
                 }
@@ -1359,6 +1376,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             if (_sponsorService.IsSponsor(_workContext.CurrentCustomer.Id, VideoBattleId, BattleType.Video))
             {
                 return Json(new { Success = false, Message = "Unauthorized" });
+            }
+
+            //participant shouldn't be disqualified either
+            var participant = _videoBattleParticipantService.GetVideoBattleParticipant(VideoBattleId, ParticipantId);
+            if (participant == null || participant.ParticipantStatus == VideoBattleParticipantStatus.Disqualified)
+            {
+                return Json(new { Success = false, Message = "Can't vote this participant" });
             }
 
             //has the person watched all the videos before voting can be done
