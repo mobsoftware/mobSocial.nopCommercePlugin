@@ -43,5 +43,15 @@ app.controller("FriendsController", [
 
             });
         }
+
+        $scope.GetCustomerFriends = function() {
+            FriendService.GetCustomerFriends(function(response) {
+                if (response.Success) {
+                    $scope.GetCustomerFriends = response.Friends;
+                }
+            }, function() {
+                alert(response.Message);
+            });
+        }
     }
 ]);

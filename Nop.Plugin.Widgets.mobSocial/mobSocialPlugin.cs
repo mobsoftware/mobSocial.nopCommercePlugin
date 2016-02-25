@@ -4,7 +4,7 @@ using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.Tasks;
 using Nop.Core.Plugins;
-using Nop.Plugin.Widgets.MobSocial.Data;
+using Nop.Plugin.WebApi.MobSocial.Data;
 using Nop.Services.Cms;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
@@ -15,8 +15,8 @@ using System.Web.Configuration;
 using MobAds.Public;
 using Nop.Core;
 using System.Linq;
-using Nop.Plugin.Widgets.MobSocial.Constants;
-using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial.Constants;
+using Nop.Plugin.WebApi.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -177,7 +177,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                         routeValues = new RouteValueDictionary()
                         {
                             {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
-                            {"area", null},
+                            {"area", ""},
                             {"widgetZone", widgetZone}
                         };
 

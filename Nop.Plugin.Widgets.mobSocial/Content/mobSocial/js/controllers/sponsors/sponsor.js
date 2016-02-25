@@ -16,6 +16,8 @@ app.controller("SponsorController", [
                     $scope.Sponsors[SponsorshipStatus] = response.Sponsors;
                     $scope.IsChallenger = response.IsChallenger;
                     $scope.IsSponsor = response.IsSponsor;
+                    $scope.BattleName = response.BattleName;
+                    $scope.BattleUrl = response.BattleUrl;
                     $scope.SponsorsLoading = false;
                 }
                 //success

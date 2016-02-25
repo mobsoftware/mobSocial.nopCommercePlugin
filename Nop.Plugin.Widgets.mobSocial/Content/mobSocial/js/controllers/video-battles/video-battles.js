@@ -32,15 +32,12 @@ app.controller("VideoBattleEditorController", [
 	"$scope", "VideoBattleService", function ($scope, VideoBattleService) {
 
 		//ctor ;)
-		$scope.init = function (model) {
-			$scope.VideoBattle = model;
-
-			//date time handling for json date
-			$scope.VideoBattle.DateCreated = parseJsonDate(model.DateCreated);
-			$scope.VideoBattle.DateUpdated = parseJsonDate(model.DateUpdated);
-			$scope.VideoBattle.VotingStartDate = parseJsonDate(model.VotingStartDate);
-			$scope.VideoBattle.VotingEndDate = parseJsonDate(model.VotingEndDate);
-
+	    $scope.init = function (model) {
+	        VideoBattleService.GetBattleEditor(model, function(response) {
+	            $scope.VideoBattle = response;
+	        }, function(response) {
+	           
+	        });
 		};
 
 
@@ -69,8 +66,8 @@ app.controller("VideoBattleEditorController", [
 						$scope.processing = false;
 						if (data.Success) {
 							$scope.recordSaved = true;
-							if (data.RedirectTo) {
-								window.location.href = data.RedirectTo;
+							if (data.Url) {
+								window.location.href = data.Url;
 							} else {
 
 							}
@@ -175,12 +172,6 @@ app.controller("VideoBattlePageController", [
 		//global api for theater mode because we have single player there.
 		this.PlayerReady = function (API) {
 			controller.API = API;
-
-			//play first participant in case view mode is theater
-			if ($scope.VideoBattle.ViewMode == 1) {
-				$scope.PlayParticipant($scope.VideoBattle.Participants[0]);
-			}
-
 		}
 
 
@@ -214,6 +205,16 @@ app.controller("VideoBattlePageController", [
 
 	    //constructor...huh...yes
 	    $scope.init = function (model) {
+            //get the battle from web api
+	        VideoBattleService.GetBattle(model, function (response) {
+                //execute initialization code
+                $scope._setupBattlePage(response);
+            }, function(response) {
+                alert("An error occured while retrieving the battle");
+            });
+        }
+
+	    $scope._setupBattlePage = function (model) {
 
 	        //initialize the battle
 	        $scope.VideoBattle = model;
@@ -289,7 +290,13 @@ app.controller("VideoBattlePageController", [
 	            }
 	        }, 500);
 
+	        //setup timer
+	        $scope.SetupTimer();
 
+            //setup invite parameters
+	        $scope.SetupInviteParams();
+
+            //check if user is eligible to vote
 	        $scope.CheckVotingEligibility();
 
 	        //load the data initially
@@ -304,6 +311,11 @@ app.controller("VideoBattlePageController", [
 	                $scope.$apply();
 	            }
 	        });
+
+	        //play first participant in case view mode is theater
+	        if ($scope.VideoBattle.ViewMode == 1) {
+	            $scope.PlayParticipant($scope.VideoBattle.Participants[0]);
+	        }
 	    };
 
 		$scope.LoadNextPage = function () {
@@ -328,11 +340,65 @@ app.controller("VideoBattlePageController", [
 
 		}
 
+	    //sets up the timer shown on the battle page
+        //currently works as per angular timer directive
+        $scope.SetupTimer = function() {
+            
+            //get the current date
+            var now = new Date();
+            var battleStatusString = "";
+            var endDate = new Date();
+            if ($scope.VideoBattle.VideoBattleStatus == 0) {
+                //pending battle
+                endDate = new Date($scope.VideoBattle.VotingStartDate);
+                battleStatusString = "Starts in";
+            } else if ($scope.VideoBattle.VideoBattleStatus == 1) {
+                //open battle
+                endDate = new Date($scope.VideoBattle.VotingEndDate);
+                battleStatusString = "Ends in";
+            }
+            var totalSeconds = $scope.VideoBattle.RemainingSeconds;
+            $scope.VideoBattle.timerSettings = {
+                totalSeconds: totalSeconds,
+                battleStatusString: battleStatusString
+            };
+            
+
+        }
+
+        //checks and decides various invitation options
+        $scope.SetupInviteParams = function() {
+            var showInvitationBox = true;
+            //battle host or participant
+            showInvitationBox = ($scope.VideoBattle.IsEditable || $scope.VideoBattle.IsParticipant);
+
+            //battle is not closed?
+            showInvitationBox = showInvitationBox && ($scope.VideoBattle.VideoBattleStatus == 0 || $scope.VideoBattle.VideoBattleStatus == 1); //pending or open
+
+            if ($scope.VideoBattle.VideoBattleType == 2/*invite only*/) {
+                //only host can invite
+                showInvitationBox = showInvitationBox && $scope.VideoBattle.IsEditable;
+            }
+            else if ($scope.VideoBattle.VideoBattleType == 1 /*open*/) {
+                //anybody can invite so battle should only be pending for invitations to work
+                showInvitationBox = showInvitationBox && ($scope.VideoBattle.VideoBattleStatus == 0 || $scope.VideoBattle.VideoBattleStatus == 1);
+            }
+
+            $scope.ShowInvitationBox = showInvitationBox;
+
+            //is voter invite
+            $scope.IsVoterInvite = ($scope.VideoBattle.VideoBattleStatus == 0 /*pending*/ && $scope.VideoBattle.IsParticipant && $scope.VideoBattle.VideoBattleType != 1 /*open*/)
+                            || ($scope.VideoBattle.VideoBattleStatus == 1 /*open*/) && ($scope.VideoBattle.IsEditable || $scope.VideoBattle.IsParticipant);
+
+            //sponsorships
+            $scope.SponsorshipAllowed = $scope.VideoBattle.IsSponsor || ($scope.VideoBattle.VideoBattleStatus != 3 /*complete*/ && $scope.VideoBattle.VideoBattleStatus != 2 /*closed*/);
+        }
+
 		//initialize api for interations
 		$scope.PlayerReady = function (participant, API) {
 			participant.API = API;
 		};
-
+        //tracks the change of status of video player play/pause/stop etc.
 		$scope.UpdateState = function (participant, state) {
 
 			//show the ad when the video is played
@@ -365,7 +431,7 @@ app.controller("VideoBattlePageController", [
 			}
 
 		};
-
+        //marks that the current user has watched a particular participant video
 		$scope.WatchedVideo = function (participantId) {
 
 			var nextParticipant = null; //to 
@@ -508,13 +574,33 @@ app.controller("VideoBattlePageController", [
 
 	        var popuparea = "#payment-form-popup-area";
 	        jQuery(popuparea).html("");
-	        PaymentService.PaymentFormPopup(BattleId, BattleType, PurchaseType, function (response) {
+		    //first query the payment data from webapi
+		    PaymentService.getAvailablePaymentMethods(BattleId, BattleType, PurchaseType, function(response) {
+                if (response.Success) {
+                    $scope.AvailablePaymentMethods = response.AvailablePaymentMethods;
+                    PaymentService.getPaymentForm(BattleId, BattleType, PurchaseType, function (response) {
 
-	            jQuery(popuparea).html(response);
-	            jQuery("body").addClass("payment-process-on");
-	            $compile(jQuery(popuparea))($scope);
+                        jQuery(popuparea).html(response);
+                        jQuery("body").addClass("payment-process-on");
+                        $compile(jQuery(popuparea))($scope);
 
-	        });
+                    });
+                } else {
+                    if (response.AddressRequired) {
+                        //the customer has no addresses saved. it's required that we request that data
+                        //and then address form popup
+                        PaymentService.getAddressForm(BattleId, BattleType, PurchaseType, function (response) {
+                            jQuery(popuparea).html(response);
+                            jQuery("body").addClass("payment-process-on");
+                            $compile(jQuery(popuparea))($scope);
+                        });
+                    }
+                }
+		    }, function (response) {
+		        alert("An error occured while processing the request");
+		        $scope.PurchasePass.ShowPaymentPopup = false;
+		    });
+	        
 	    };
         //this method is called from payment/paymentform view
 	    $scope.StartPaymentProcess = function (PassId) {
@@ -893,8 +979,9 @@ app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
 		
 		$scope.processing = false;
 
-		$scope.GetVideoBattles = function () {
-			$scope.processing = true;
+		$scope.GetVideoBattles = function (viewType) {
+		    $scope.processing = true;
+		    $scope.Query.ViewType = viewType;
 			$scope.VideoBattles = [];
 			VideoBattleService.GetVideoBattles($scope.Query,
 				function (data) {
@@ -919,7 +1006,7 @@ app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
                 $scope.Query.Field = Field;
                 $scope.ActiveSortField = Field;
             }
-            $scope.GetVideoBattles();
+            $scope.GetVideoBattles($scope.Query.ViewType);
         }
 		
         

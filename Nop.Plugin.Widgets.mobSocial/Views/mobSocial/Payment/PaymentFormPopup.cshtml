@@ -1,9 +1,4 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Enums
-@model Nop.Plugin.Widgets.MobSocial.Models.CustomerPaymentPublicModel
-@{
-    Layout = "";
-    var purchaseType = Model.PurchaseType;
-}
+﻿@using Nop.Plugin.WebApi.MobSocial.Enums
 <div id="payment-form-popup-container">
     <div class="overlay"></div>
     <div id="payment-form-popup">
@@ -14,59 +9,45 @@
                     <div class="text-center">
                         <h3>{{PaymentProcessMessage}}</h3>
                     </div>
-                    
-                    @if (Model.CustomerPendingOrders.Count > 0)
-                    {
+                    <div ng-if="AvailablePaymentMethods.CustomerPendingOrders.Count > 0">
                         <div class="inputs">
-                            <label for="select-voter-pass">Available @(purchaseType == PurchaseType.VoterPass ? "Voter" : "Sponsorship") Passes</label>
-                            <select id="select-voter-pass" ng-init="PurchasePass.PassId='@Model.CustomerPendingOrders[0].Value'" ng-model="PurchasePass.PassId">
-                                @{
-                                    foreach (var pm in Model.CustomerPendingOrders)
-                                    {
-                                        <option value="@pm.Value">@pm.Text</option>
-                                    }
-                                }
+                            <label for="select-voter-pass">Available {{CustomerPaymentMethods.PurchaseType == @((int)PurchaseType.VoterPass) ? "Voter" : "Sponsorship"}} Passes</label>
+
+                            <select id="select-voter-pass" ng-model="PurchasePass.PassId">
+                                <option ng-repeat="order in AvailablePaymentMethods.CustomerPendingOrders" ng-selected="order.Value == PurchasePass.PassId" value="{{order.Value}}">
+                                    {{order.Text}}
+                                </option>
                             </select>
                         </div>
                         <div class="buttons text-center">
-                            <input type="button" value="@(purchaseType == PurchaseType.VoterPass ? "VOTE NOW" : "Buy Sponsorship")" ng-click="StartPaymentProcess(PurchasePass.PassId)" />
+                            <input type="button" value="{{AvailablePaymentMethods.PurchaseType == @((int)PurchaseType.VoterPass) ? 'VOTE NOW' : 'Buy Sponsorship' }}" ng-click="StartPaymentProcess(PurchasePass.PassId)" />
                         </div>
 
                         <h3 class="text-center">OR</h3>
-                    }
+                    </div>
                     <div class="inputs">
-                        <label for="voting-amount">@(purchaseType == PurchaseType.VoterPass ? "Voting" : "Sponsorship") Amount</label>
-                        @if (Model.IsAmountVariable)
-                        {
-                            <input type="number" step="0.01" min="@Model.MinimumPaymentAmount" ng-init="PurchasePass.Amount=@Model.MinimumPaymentAmount" ng-model="PurchasePass.Amount" />
-                        }
-                        else
-                        {
-                            <input type="hidden" ng-init="PurchasePass.Amount='@Model.MinimumPaymentAmount'" ng-model="PurchasePass.Amount" /><text>{{PurchasePass.Amount}}</text>
-                        }
+                        <label for="voting-amount">{{AvailablePaymentMethods.PurchaseType == @((int)PurchaseType.VoterPass) ? "Voting" : "Sponsorship"}} Amount</label>
+                        <input ng-if="AvailablePaymentMethods.IsAmountVariable" type="number" step="0.01" min="{{AvailablePaymentMethods.MinimumPaymentAmount}}" ng-init="PurchasePass.Amount=AvailablePaymentMethods.MinimumPaymentAmount" ng-model="PurchasePass.Amount" />
+                        <input ng-if="!AvailablePaymentMethods.IsAmountVariable" type="hidden" ng-init="PurchasePass.Amount=AvailablePaymentMethods.MinimumPaymentAmount" ng-model="PurchasePass.Amount" />{{PurchasePass.Amount}}
+
 
                     </div>
-                    @if (Model.CustomerPaymentMethods.Count > 0)
-                    {
+                    <div ng-if="AvailablePaymentMethods.CustomerPaymentMethods.length > 0">
                         <div class="inputs">
                             <label for="select-payment-method">Select a card</label>
-                            <select id="select-payment-method" ng-init="PurchasePass.CustomerPaymentMethodId='@Model.CustomerPaymentMethods[0].Value'" ng-model="PurchasePass.CustomerPaymentMethodId">
-                                @{
-                        foreach (var pm in Model.CustomerPaymentMethods)
-                        {
-                            <option value="@pm.Value">@pm.Text</option>
-                        }
-                                }
+                            <select id="select-payment-method" ng-model="PurchasePass.CustomerPaymentMethodId" ng-init="PurchasePass.CustomerPaymentMethodId=AvailablePaymentMethods.CustomerPaymentMethods[0].Value">
+                                <option value="{{pm.Value}}" ng-repeat="pm in AvailablePaymentMethods.CustomerPaymentMethods" ng-selected="pm.Value == PurchasePass.CustomerPaymentMethodId">
+                                    {{pm.Text}}
+                                </option>
                                 <option value="0">New...</option>
                             </select>
                         </div>
-                    }
-                    else
-                    {
+                    </div>
+                    <div ng-if="!(AvailablePaymentMethods.CustomerPaymentMethods.length > 0)">
                         <input type="hidden" ng-model="PurchasePass.CustomerPaymentMethodId" ng-init="PurchasePass.CustomerPaymentMethodId='0'" />
-                    }
 
-                    <div id="debit-credit-card" ng-show="@(Model.CustomerPaymentMethods.Count > 0 ? "PurchasePass.CustomerPaymentMethodId == 0" : "true")">
+                    </div>
+                    <div id="debit-credit-card" ng-show="AvailablePaymentMethods.CustomerPaymentMethods.length > 0 ? PurchasePass.CustomerPaymentMethodId == 0 : true">
                         <div class="inputs">
                             <label for="card-number">Credit Card Number</label>
                             <input id="card-number" name="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" type="text" ng-model="PurchasePass.CustomerPaymentRequest.CardNumber" required />
@@ -92,12 +73,12 @@
                             <input id="security-code" ng-model="PurchasePass.CustomerPaymentRequest.SecurityCode" maxlength="4" type="password" />
                         </div>
                         <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.CardIssuerType" />
-                        <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.PaymentMethod" ng-init="PurchasePass.CustomerPaymentRequest.PaymentMethod='@Nop.Plugin.Widgets.MobSocial.Enums.PaymentMethodType.CreditCard'" />
+                        <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.PaymentMethod" ng-init="PurchasePass.CustomerPaymentRequest.PaymentMethod='@Nop.Plugin.WebApi.MobSocial.Enums.PaymentMethodType.CreditCard'" />
                     </div>
 
                     <div class="buttons text-center">
                         <div ng-show="!PurchasePass.PurchasingInProgress">
-                            <input type="button" value="@(purchaseType == PurchaseType.VoterPass ? "PAY & VOTE" : "Buy Sponsorship")" ng-click="StartPaymentProcess()" />
+                            <input type="button" value="{{AvailablePaymentMethods.PurchaseType == @((int)PurchaseType.VoterPass) ? 'PAY & VOTE' : 'Buy Sponsorship'}}" ng-click="StartPaymentProcess()" />
                             <input type="button" value="Cancel" ng-click="StopPaymentProcess()" />
                         </div>
                         <div ng-show="PurchasePass.PurchasingInProgress">
@@ -105,6 +86,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </form>
     </div>

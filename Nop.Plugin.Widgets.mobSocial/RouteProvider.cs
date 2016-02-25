@@ -18,7 +18,8 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             Debug.WriteLine("Added view engine");
 
-
+           
+          
             // redirects to your store
             routes.MapRoute("FacebookWebsiteApp",
                 "FacebookWebsiteApp",
@@ -379,6 +380,13 @@ namespace Nop.Plugin.Widgets.MobSocial
             routes.MapLocalizedRoute("PaymentFormPopup",
                        "Payment/PaymentFormPopup",
                        new { controller = "Payment", action = "PaymentFormPopup" },
+                       new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+
+                       );
+
+            routes.MapLocalizedRoute("AddressFormPopup",
+                       "Payment/AddressFormPopup",
+                       new { controller = "Payment", action = "AddressFormPopup" },
                        new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                        );

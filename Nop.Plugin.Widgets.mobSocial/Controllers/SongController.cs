@@ -8,8 +8,7 @@ using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
 using System.Collections.Generic;
-using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.WebApi.MobSocial.Domain;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
@@ -20,12 +19,13 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web;
 using Mob.Core;
-using Nop.Plugin.Widgets.MobSocial.Helpers;
+using Nop.Plugin.WebApi.MobSocial.Helpers;
 using Nop.Core.Infrastructure;
 using Nop.Services.Catalog;
 using Nop.Core.Domain.Catalog;
-using Nop.Plugin.Widgets.MobSocial.Extensions;
-using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial.Extensions;
+using Nop.Plugin.WebApi.MobSocial.Models;
+using Nop.Plugin.WebApi.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {

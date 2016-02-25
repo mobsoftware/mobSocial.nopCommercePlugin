@@ -1,4 +1,4 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Enums
+﻿@using Nop.Plugin.WebApi.MobSocial.Enums
 @{
     var videouploadUrl = "/VideoBattles/UploadVideo/";
 }
@@ -12,7 +12,7 @@
             <i class="fa fa-check"></i>
         </div>
         <div class="video-thumbnail">
-            <img src="{{participant.ThumbnailPath}}" />
+            <img ng-src="{{participant.ThumbnailPath}}" />
         </div>
 
     </div>

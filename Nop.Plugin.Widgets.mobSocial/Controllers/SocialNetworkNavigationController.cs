@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using Nop.Admin.Controllers;
-using System.Linq;
+﻿using System.Web.Mvc;
 using Nop.Core;
-using Nop.Core.Domain.Common;
-using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Plugin.Widgets.MobSocial.Domain;
-using Nop.Plugin.Widgets.MobSocial.Services;
-using Nop.Services.Localization;
-using Nop.Services.Media;
-using Nop.Services.Security;
+using Nop.Plugin.WebApi.MobSocial.Models;
+using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Web.Controllers;
-using Nop.Web.Framework;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {

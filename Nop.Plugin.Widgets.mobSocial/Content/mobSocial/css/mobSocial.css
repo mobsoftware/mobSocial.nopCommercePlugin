@@ -1259,10 +1259,11 @@ span.required
     z-index: 1000;
 }
 #payment-form-popup {
-    position: absolute;
+    position: fixed;
     z-index: 1001;
     width: 100%;
-
+    top: 0;
+    max-width: 980px;
 }
 span.payment-method.fa {
     margin-left: 10px;
@@ -1301,4 +1302,8 @@ span.payment-method.fa {
 }
 .sponsor-display img {
     max-width: 100%;
+}
+
+.payment-process-on .header-menu, .payment-process-on .header,  .payment-process-on .header-upper {
+    position: inherit;
 }

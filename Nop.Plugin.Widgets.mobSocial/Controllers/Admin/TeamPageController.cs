@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Nop.Admin.Controllers;
-using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Services.Security;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Kendoui;

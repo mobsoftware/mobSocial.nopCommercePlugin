@@ -1,35 +1,31 @@
 ﻿"use strict";
 
-app.service("FriendService", ["$http", function ($http) {
-    this.SearchPeople = function(FriendSearchModel, Success, Error) {
-        $http.post("/SearchPeople", FriendSearchModel)
-            .success(Success)
-            .error(Error);
+app.service("FriendService", ["globalApiEndPoint", "WebClientService", function (globalApiEndPoint, WebClientService) {
+    var apiEndPoint = globalApiEndPoint + "/friends";
+    this.SearchPeople = function (FriendSearchModel, success, error) {
+
+        WebClientService.get(apiEndPoint + "/searchpeople", FriendSearchModel, success, error);
     };
 
-    this.AddFriend = function (FriendId, Success, Error) {
-        $http.post("/Friends/AddFriend", {ToCustomerId: FriendId})
-           .success(Success)
-           .error(Error);
+    this.AddFriend = function (FriendId, success, error) {
+        WebClientService.post(apiEndPoint + "/addfriend/" + FriendId, null, success, error);
     };
 
 
-    this.ConfirmFriend = function(FriendId, Success, Error) {
-        $http.post("/Friends/ConfirmFriend", { FriendCustomerId: FriendId })
-          .success(Success)
-          .error(Error);
+    this.ConfirmFriend = function(FriendId, success, error) {
+        WebClientService.post(apiEndPoint + "/confirmfriend/" + FriendId, null, success, error);
     };
 
-    this.DeclineFriend = function(FriendId, Success, Error) {
-        $http.post("/Friends/DeclineFriend", { Customer1Id: FriendId })
-          .success(Success)
-          .error(Error);
+    this.DeclineFriend = function(FriendId, success, error) {
+        WebClientService.post(apiEndPoint + "/declinefriend/" + FriendId, null, success, error);
     };
 
-    this.GetFriendRequests = function(Success, Error) {
-        $http.post("/Friends/GetFriendRequests")
-            .success(Success)
-            .error(Error);
+    this.GetFriendRequests = function(success, error) {
+        WebClientService.get(apiEndPoint + "/getfriendrequests", null, success, error);
+    };
+
+    this.GetCustomerFriends = function (success, error) {
+        WebClientService.get(apiEndPoint + "/getcustomerfriends", null, success, error);
     };
 
 }]);

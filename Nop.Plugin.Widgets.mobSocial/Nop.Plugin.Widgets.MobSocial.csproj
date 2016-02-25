@@ -37,7 +37,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Constants\MobSocialConstant.cs" />
     <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
@@ -49,301 +48,23 @@
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
-    <Compile Include="Core\FeatureToggle.cs" />
-    <Compile Include="Data\CustomerFollowMap.cs" />
-    <Compile Include="Data\CustomerPaymentMethodMap.cs" />
-    <Compile Include="Data\SponsorDataMap.cs" />
-    <Compile Include="Data\SponsorMap.cs" />
-    <Compile Include="Data\SponsorPassMap.cs" />
-    <Compile Include="Data\VideoBattlePrizeMap.cs" />
-    <Compile Include="Data\VoterPassMap.cs" />
-    <Compile Include="Data\WatchedVideoMap.cs" />
-    <Compile Include="Domain\CustomerFollow.cs" />
-    <Compile Include="Domain\CustomerPaymentMethod.cs" />
-    <Compile Include="Domain\Sponsor.cs" />
-    <Compile Include="Domain\SponsorData.cs" />
-    <Compile Include="Domain\SponsorPass.cs" />
-    <Compile Include="Domain\AdditionalCustomerAttributeNames.cs" />
-    <Compile Include="Domain\VideoBattlePrize.cs" />
-    <Compile Include="Domain\VoterPass.cs" />
-    <Compile Include="Enums\BattlesSortBy.cs" />
-    <Compile Include="Enums\BattleType.cs" />
-    <Compile Include="Enums\FriendStatus.cs" />
-    <Compile Include="Enums\PassStatus.cs" />
-    <Compile Include="Enums\PaymentMethodType.cs" />
-    <Compile Include="Enums\PurchaseType.cs" />
-    <Compile Include="Enums\SortOrder.cs" />
-    <Compile Include="Enums\SponsoredCashDistributionType.cs" />
-    <Compile Include="Enums\SponsorshipStatus.cs" />
-    <Compile Include="Enums\SponsorshipType.cs" />
-    <Compile Include="Extensions\BattleExtensions.cs" />
-    <Compile Include="Extensions\SponsorExtensions.cs" />
-    <Compile Include="Helpers\CardHelper.cs" />
-    <Compile Include="Helpers\PrizeDistributionHelper.cs" />
-    <Compile Include="Models\CustomerPaymentModel.cs" />
-    <Compile Include="Models\CustomerPaymentPublicModel.cs" />
-    <Compile Include="Models\CustomerPaymentRequestModel.cs" />
-    <Compile Include="Models\CustomerPaymentWithAddressModel.cs" />
-    <Compile Include="Models\CustomerProfilePublicModel.cs" />
-    <Compile Include="Models\FriendPublicModel.cs" />
-    <Compile Include="Models\FriendSearchModel.cs" />
-    <Compile Include="Models\MobSocialProcessPaymentResultModel.cs" />
-    <Compile Include="Models\PurchasePassModel.cs" />
-    <Compile Include="Models\SponsorDataModel.cs" />
-    <Compile Include="Models\SponsorModel.cs" />
-    <Compile Include="Models\SponsorPublicModel.cs" />
-    <Compile Include="Models\SponsorsRequestModel.cs" />
-    <Compile Include="Models\SponsorTransactionModel.cs" />
-    <Compile Include="Models\SponsorTransactionRequestModel.cs" />
-    <Compile Include="Models\UpdateParticipantStatusModel.cs" />
-    <Compile Include="Models\UpdateSponsorModel.cs" />
-    <Compile Include="Models\VideoBattlePrizeModel.cs" />
-    <Compile Include="Domain\WatchedVideo.cs" />
-    <Compile Include="Enums\VideoBattlePrizeType.cs" />
-    <Compile Include="Enums\VideoType.cs" />
-    <Compile Include="Enums\VideoViewMode.cs" />
-    <Compile Include="Migrations\MigrationsContextFactory.cs" />
-    <Compile Include="Migrations\MobSocialMigration.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\VideoBattlePrizePublicModel.cs" />
-    <Compile Include="Models\VideoBattleQueryModel.cs" />
-    <Compile Include="Services\ArtistPageAPIService.cs" />
-    <Compile Include="Services\ArtistPageManagerService.cs" />
-    <Compile Include="Services\ArtistPagePaymentService.cs" />
-    <Compile Include="Services\ArtistPageService.cs" />
-    <Compile Include="Services\BaseService.cs" />
-    <Compile Include="Services\CustomerFavoriteSongService.cs" />
-    <Compile Include="Services\CustomerFollowService.cs" />
-    <Compile Include="Services\CustomerPaymentMethodService.cs" />
-    <Compile Include="Services\CustomerProfileService.cs" />
-    <Compile Include="Services\CustomerTimelineService.cs" />
-    <Compile Include="Services\BusinessPageCouponService.cs" />
-    <Compile Include="Services\BusinessPageService.cs" />
-    <Compile Include="Services\EchoNestMusicService .cs" />
-    <Compile Include="Services\FriendService.cs" />
-    <Compile Include="Services\IApiUri.cs" />
-    <Compile Include="Services\IArtistPageAPIService.cs" />
-    <Compile Include="Services\IArtistPageManagerService.cs" />
-    <Compile Include="Services\IArtistPagePaymentService.cs" />
-    <Compile Include="Services\IArtistPageService.cs" />
-    <Compile Include="Services\IBaseService.cs" />
-    <Compile Include="Services\IBusinessPageCouponService.cs" />
-    <Compile Include="Services\IBusinessPageService.cs" />
-    <Compile Include="Services\ICustomerFavoriteSongService.cs" />
-    <Compile Include="Services\ICustomerFollowService.cs" />
-    <Compile Include="Services\ICustomerPaymentMethodService.cs" />
-    <Compile Include="Services\IFriendService.cs" />
-    <Compile Include="Services\IMobSecurityService.cs" />
-    <Compile Include="Services\IMusicService.cs" />
-    <Compile Include="Services\IOAuthCredentials.cs" />
-    <Compile Include="Services\IOAuthService.cs" />
-    <Compile Include="Services\IPaymentProcessingService.cs" />
-    <Compile Include="Services\ISharedSongService.cs" />
-    <Compile Include="Services\ISongService.cs" />
-    <Compile Include="Services\ISponsorPassService.cs" />
-    <Compile Include="Services\ISponsorService.cs" />
-    <Compile Include="Services\IVideoBattleGenreService.cs" />
-    <Compile Include="Services\IVideoBattleParticipantService.cs" />
-    <Compile Include="Services\IVideoBattlePrizeService.cs" />
-    <Compile Include="Services\IVideoBattleService.cs" />
-    <Compile Include="Services\IVideoBattleVideoService.cs" />
-    <Compile Include="Services\IVideoBattleVoteService.cs" />
-    <Compile Include="Services\IVideoGenreService.cs" />
-    <Compile Include="Services\IVoterPassService.cs" />
-    <Compile Include="Services\IWatchedVideoService.cs" />
-    <Compile Include="Services\MobSecurityService.cs" />
-    <Compile Include="Services\MusicApiCredentials.cs" />
-    <Compile Include="Services\MusicApiUri.cs" />
-    <Compile Include="Services\NotificationService.cs" />
-    <Compile Include="Services\INotificationService.cs" />
-    <Compile Include="Services\OAuthService.cs" />
-    <Compile Include="Services\PaymentProcessingService.cs" />
-    <Compile Include="Services\SharedSongService.cs" />
-    <Compile Include="Services\SitemapGenerator.cs" />
-    <Compile Include="Services\SongService.cs" />
-    <Compile Include="Services\SponsorPassService.cs" />
-    <Compile Include="Services\SponsorService.cs" />
-    <Compile Include="Services\VideBattlePrizeService.cs" />
-    <Compile Include="Services\VideoGenreService.cs" />
-    <Compile Include="Services\VideoBattleVoteService.cs" />
-    <Compile Include="Services\VideoBattleGenreService.cs" />
-    <Compile Include="Services\VideoBattleParticipantService.cs" />
-    <Compile Include="Services\VideoBattleService.cs" />
-    <Compile Include="Services\VideoBattleVideoService.cs" />
-    <Compile Include="Data\ArtistPageManagerMap.cs" />
-    <Compile Include="Data\ArtistPageMap.cs" />
-    <Compile Include="Data\ArtistPagePaymentMap.cs" />
-    <Compile Include="Data\ArtistPagePictureMap.cs" />
-    <Compile Include="Data\CustomerFavoriteSongMap.cs" />
-    <Compile Include="Data\CustomerProfileMap.cs" />
-    <Compile Include="Data\BusinessPageCouponMap.cs" />
-    <Compile Include="Data\BusinessPageMap.cs" />
-    <Compile Include="Data\BusinessPagePictureMap.cs" />
-    <Compile Include="Data\SharedSongMap.cs" />
-    <Compile Include="Data\NotificationMap.cs" />
-    <Compile Include="Data\PictureTagMap.cs" />
-    <Compile Include="Data\CustomerTimelineMap.cs" />
-    <Compile Include="Data\SongMap.cs" />
-    <Compile Include="Data\SongPictureMap.cs" />
-    <Compile Include="Data\VideoBattleGenreMap.cs" />
-    <Compile Include="Data\VideoBattleMap.cs" />
-    <Compile Include="Data\VideoBattleParticipantMap.cs" />
-    <Compile Include="Data\VideoBattlePictureMap.cs" />
-    <Compile Include="Data\VideoBattleVideoMap.cs" />
-    <Compile Include="Data\VideoBattleVoteMap.cs" />
-    <Compile Include="Data\VideoGenreMap.cs" />
-    <Compile Include="Domain\ArtistPage.cs" />
-    <Compile Include="Domain\ArtistPageManager.cs" />
-    <Compile Include="Domain\ArtistPagePayment.cs" />
-    <Compile Include="Domain\ArtistPagePicture.cs" />
-    <Compile Include="Domain\BusinessPageCoupon.cs" />
-    <Compile Include="Domain\BusinessPagePicture.cs" />
-    <Compile Include="Domain\CustomerFavoriteSong.cs" />
-    <Compile Include="Domain\CustomerProfile.cs" />
-    <Compile Include="Domain\BusinessPage.cs" />
-    <Compile Include="Domain\SharedSong.cs" />
-    <Compile Include="Domain\Notification.cs" />
-    <Compile Include="Domain\PictureTag.cs" />
-    <Compile Include="Domain\CustomerTimeline.cs" />
-    <Compile Include="Domain\Song.cs" />
-    <Compile Include="Domain\SongPicture.cs" />
-    <Compile Include="Domain\VideoBattle.cs" />
-    <Compile Include="Domain\VideoBattleGenre.cs" />
-    <Compile Include="Domain\VideoBattleParticipant.cs" />
-    <Compile Include="Domain\VideoBattlePicture.cs" />
-    <Compile Include="Domain\VideoBattleVideo.cs" />
-    <Compile Include="Domain\VideoBattleView.cs" />
-    <Compile Include="Domain\VideoBattleVote.cs" />
-    <Compile Include="Domain\VideoGenre.cs" />
-    <Compile Include="Enums\NotificationRecipientType.cs" />
-    <Compile Include="Enums\VideoBattleParticipantStatus.cs" />
-    <Compile Include="Enums\VideoBattleStatus.cs" />
-    <Compile Include="Enums\VideoBattleType.cs" />
-    <Compile Include="Enums\VideoBattleVoteStatus.cs" />
-    <Compile Include="Enums\VideoBattleVoteType.cs" />
-    <Compile Include="Enums\VideoStatus.cs" />
-    <Compile Include="Helpers\HttpHelper.cs" />
-    <Compile Include="Hubs\MessagingHub.cs" />
-    <Compile Include="Hubs\AudioVideoHub.cs" />
-    <Compile Include="Models\Admin\EventPageListModel.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\FacebookWebsiteAppController.cs" />
     <Compile Include="Controllers\EventPageController.cs" />
-    <Compile Include="Enums\AttendanceStatus.cs" />
-    <Compile Include="Services\CustomerProfileViewService.cs" />
-    <Compile Include="Services\EventPageAttendanceService.cs" />
-    <Compile Include="Services\IEventPageAttendanceService.cs" />
-    <Compile Include="Data\CustomerProfileViewMap.cs" />
-    <Compile Include="Data\EventPageAttendanceMap.cs" />
-    <Compile Include="Domain\CustomerProfileView.cs" />
-    <Compile Include="Domain\EventPageAttendance.cs" />
-    <Compile Include="Models\AddPictureModel.cs" />
-    <Compile Include="Models\ArtistPagePaymentModel.cs" />
-    <Compile Include="Models\PurchasedSongModel.cs" />
-    <Compile Include="Models\SongModel.cs" />
-    <Compile Include="Models\ArtistPageModel.cs" />
-    <Compile Include="Models\BusinessPageSearchModel.cs" />
-    <Compile Include="Models\ModelUtil.cs" />
-    <Compile Include="Models\BasePageModel.cs" />
-    <Compile Include="Models\BusinessPageCouponModel.cs" />
-    <Compile Include="Models\CustomerProfileModel.cs" />
-    <Compile Include="Models\BusinessPageModel.cs" />
-    <Compile Include="Models\PictureModel.cs" />
-    <Compile Include="Models\EventPageHotelModel.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
     <Compile Include="Controllers\HeaderMenuController.cs" />
-    <Compile Include="Services\EventPageHotelService.cs" />
-    <Compile Include="Services\EventPageService.cs" />
-    <Compile Include="Services\IEventPageHotelService.cs" />
-    <Compile Include="Services\ITeamPageService.cs" />
-    <Compile Include="Services\IEventPageService.cs" />
-    <Compile Include="Services\ICustomerVideoAlbumService.cs" />
-    <Compile Include="Services\CustomerVideoAlbumService.cs" />
-    <Compile Include="Services\HandleJsonErrorAttribute.cs" />
-    <Compile Include="Services\ICustomerAlbumPictureService.cs" />
-    <Compile Include="Services\CustomerAlbumPictureService.cs" />
-    <Compile Include="Services\TeamPageService.cs" />
-    <Compile Include="Data\EventPagePictureMap.cs" />
-    <Compile Include="Data\EventPageHotelMap.cs" />
-    <Compile Include="Data\EventPageMap.cs" />
-    <Compile Include="Data\CustomerVideoLikeMap.cs" />
-    <Compile Include="Data\CustomerVideoAlbumMap.cs" />
-    <Compile Include="Data\CustomerVideoMap.cs" />
-    <Compile Include="Data\CustomerAlbumPictureMap.cs" />
-    <Compile Include="Data\CustomerAlbumMap.cs" />
-    <Compile Include="Domain\CustomerVideoLike.cs" />
-    <Compile Include="Domain\CustomerAlbumPicture.cs" />
-    <Compile Include="Domain\CustomerVideoAlbum.cs" />
-    <Compile Include="Domain\CustomerVideo.cs" />
-    <Compile Include="Domain\CustomerAlbum.cs" />
-    <Compile Include="Domain\EventPagePicture.cs" />
-    <Compile Include="Domain\EventPageHotel.cs" />
-    <Compile Include="Domain\EventPage.cs" />
-    <Compile Include="GenericRouteProvider.cs" />
-    <Compile Include="Services\CustomerUpdatedEventHandler.cs" />
-    <Compile Include="Services\GenericUrlEventHandler.cs" />
-    <Compile Include="Models\EventPageModel.cs" />
-    <Compile Include="Models\FeaturedVideosModel.cs" />
-    <Compile Include="Models\CustomerVideoAlbum.cs" />
-    <Compile Include="Models\CustomerVideoModel.cs" />
-    <Compile Include="Models\CustomerAlbumPictureModel.cs" />
-    <Compile Include="Models\CustomerAlbumModel.cs" />
-    <Compile Include="Models\ProfileInformationModel.cs" />
-    <Compile Include="Extensions\SeoExtensions.cs" />
-    <Compile Include="Services\MobSocialMessageService.cs" />
-    <Compile Include="Services\IMobSocialMessageService.cs" />
-    <Compile Include="Domain\SessionState.cs" />
-    <Compile Include="Models\AddFriendButtonModel.cs" />
     <Compile Include="Controllers\SkateMoveController.cs" />
     <Compile Include="Controllers\mobSocialController.cs" />
-    <Compile Include="Services\ISkateMoveService.cs" />
-    <Compile Include="Services\SkateMoveService.cs" />
-    <Compile Include="Services\ISocialNetworkService.cs" />
-    <Compile Include="Services\MobSocialPictureService.cs" />
-    <Compile Include="Services\MobSocialService.cs" />
-    <Compile Include="Data\TeamPageMap.cs" />
-    <Compile Include="Data\EfStartUpTask.cs" />
-    <Compile Include="Data\SkateMoveMap.cs" />
-    <Compile Include="Data\CustomerSkateMoveMap.cs" />
-    <Compile Include="Data\CustomerFriendMap.cs" />
-    <Compile Include="Domain\TeamPage.cs" />
-    <Compile Include="Domain\CustomerFriend.cs" />
-    <Compile Include="Domain\CustomerSkateMove.cs" />
-    <Compile Include="Domain\SkateMove.cs" />
-    <Compile Include="Domain\GroupPageMember.cs" />
-    <Compile Include="Data\GroupPageMemberMap.cs" />
-    <Compile Include="Data\GroupPageMap.cs" />
-    <Compile Include="Data\mobSocialObjectContext.cs" />
-    <Compile Include="DependencyRegistrar.cs" />
-    <Compile Include="Domain\GroupPage.cs" />
-    <Compile Include="Models\ConfigurationModel.cs" />
-    <Compile Include="Models\FriendRequestModel.cs" />
-    <Compile Include="Models\CustomerFriendsModel.cs" />
-    <Compile Include="Models\CustomerFriendModel.cs" />
-    <Compile Include="Models\SocialNetworkNavigationModel.cs" />
-    <Compile Include="Models\ProfilePictureModel.cs" />
-    <Compile Include="Models\CustomerFriendBlock\CustomerFriendBlockModel.cs" />
-    <Compile Include="Models\PlublicInfoModel.cs" />
-    <Compile Include="Models\TeamPage\TeamPageGroupMemberModel.cs" />
-    <Compile Include="Models\TeamPage\TeamPageGroupModel.cs" />
-    <Compile Include="Models\TeamPage\TeamPageModel.cs" />
+    <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="mobSocialPlugin.cs" />
     <Compile Include="mobSocialSettings.cs" />
-    <Compile Include="Models\VideoBattleModel.cs" />
-    <Compile Include="Models\VideoBattlePublicModel.cs" />
-    <Compile Include="Models\VideoBattleVotePublicModel.cs" />
-    <Compile Include="Models\VideoParticipantBoxModel.cs" />
-    <Compile Include="Models\VideoParticipantPublicModel.cs" />
+    <Compile Include="Models\BattleEditorModel.cs" />
+    <Compile Include="Models\PageDisplayModel.cs" />
+    <Compile Include="Models\VideoBattleIndexModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
-    <Compile Include="Services\VoterPassService.cs" />
-    <Compile Include="Services\WatchedVideoService.cs" />
-    <Compile Include="Tasks\ProductReviewNotificationTask.cs" />
-    <Compile Include="Tasks\FriendRequestNotificationTask.cs" />
-    <Compile Include="Tasks\ReminderNotificationsTask.cs" />
-    <Compile Include="Tasks\VideoBattlesStatusUpdateTask.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
     <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />
     <None Include="Scripts\jquery-2.2.0.min.map" />
@@ -351,6 +72,12 @@
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
     <None Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml" />
     <Content Include="Content\Libraries\moment.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\common\mobsocial-interceptor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\common\webclient-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\follow\follow-service.js">
@@ -414,10 +141,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\mobSocial\Head\PublicInfo.cshtml" />
-    <None Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml" />
+    <Content Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="Fakes\EntityFramework.fakes" />
     <Content Include="Content\Libraries\angucomplete-alt\angucomplete-alt.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -904,6 +632,10 @@
     <Content Include="Views\mobSocial\VideoBattle\TheaterView.VideoPlayer.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\Payment\AddressFormPopup.cshtml">
+      <SubType>Code</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\mobSocial\Sponsor\ProductPrizesFormPopup.cshtml" />
     <Content Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -971,6 +703,12 @@
     <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Nop.Plugin.WebApi.mobSocial\Nop.Plugin.WebApi.MobSocial.csproj">
+      <Project>{d9f85190-5b59-4b68-bfe4-fa1f1aab549f}</Project>
+      <Name>Nop.Plugin.WebApi.MobSocial</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -995,11 +733,11 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -1029,7 +767,7 @@
     <Reference Include="NReco.VideoConverter, Version=1.0.8.0, Culture=neutral, PublicKeyToken=395ccb334978a0cd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>MobLib\NReco.VideoConverter.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Owin">
       <Private>False</Private>

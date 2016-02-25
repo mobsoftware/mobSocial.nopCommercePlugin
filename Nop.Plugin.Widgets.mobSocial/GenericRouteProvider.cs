@@ -1,9 +1,6 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using Nop.Services.Localization;
+﻿using System.Web.Routing;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc.Routes;
-using Nop.Web.Framework.Seo;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -21,6 +18,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 */
 
             // for use in views
+
             routes.MapLocalizedRoute("CustomerProfileUrl",
                            "{SeName}",
                            new { controller = "Profile", action = "Index" },
@@ -43,13 +41,13 @@ namespace Nop.Plugin.Widgets.MobSocial
             routes.MapLocalizedRoute("ArtistPageUrl",
               "{SeName}",
               new { controller = "ArtistPage", action = "Index" },
-              new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+              new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
               );
 
             routes.MapLocalizedRoute("SongUrl",
              "{SeName}",
              new { controller = "Song", action = "Index" },
-             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+             new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
              );
 
         }
