@@ -61,6 +61,7 @@
     <Compile Include="mobSocialPlugin.cs" />
     <Compile Include="mobSocialSettings.cs" />
     <Compile Include="Models\BattleEditorModel.cs" />
+    <Compile Include="Models\CustomerFriendsRequestModel.cs" />
     <Compile Include="Models\PageDisplayModel.cs" />
     <Compile Include="Models\VideoBattleIndexModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -670,11 +671,6 @@
       <Name>Nop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Plugins\Nop.Plugin.Payments.PayPalDirect\Nop.Plugin.Payments.PayPalDirect.csproj">
-      <Project>{83235353-0d04-4028-82b2-81116e7361da}</Project>
-      <Name>Nop.Plugin.Payments.PayPalDirect</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
       <Name>Nop.Admin</Name>
@@ -700,14 +696,14 @@
       <Name>Nop.Web</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\MobSocial.WebApi\Nop.Plugin.WebApi.mobSocial\Nop.Plugin.WebApi.MobSocial.csproj">
+      <Project>{d9f85190-5b59-4b68-bfe4-fa1f1aab549f}</Project>
+      <Name>Nop.Plugin.WebApi.MobSocial</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Nop.Plugin.WebApi.mobSocial\Nop.Plugin.WebApi.MobSocial.csproj">
-      <Project>{d9f85190-5b59-4b68-bfe4-fa1f1aab549f}</Project>
-      <Name>Nop.Plugin.WebApi.MobSocial</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

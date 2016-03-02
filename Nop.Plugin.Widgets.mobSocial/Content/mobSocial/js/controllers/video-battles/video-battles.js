@@ -973,7 +973,7 @@ app.controller("VideoBattlesPageController", ['$scope', 'VideoBattleService',
 	        $scope.Query.Page = 1;
 	        $scope.Query.Count = 15;
 	        $scope.ActiveSortField = "CreationDate";
-	        $scope.GetVideoBattles(); //load default view
+	        $scope.GetVideoBattles(Query.ViewType); //load default view
 	    }
 
 		

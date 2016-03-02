@@ -24,8 +24,8 @@ app.service("FriendService", ["globalApiEndPoint", "WebClientService", function 
         WebClientService.get(apiEndPoint + "/getfriendrequests", null, success, error);
     };
 
-    this.GetCustomerFriends = function (success, error) {
-        WebClientService.get(apiEndPoint + "/getcustomerfriends", null, success, error);
+    this.GetCustomerFriends = function (customerFriendsRequestModel, success, error) {
+        WebClientService.get(apiEndPoint + "/getcustomerfriends", customerFriendsRequestModel, success, error);
     };
 
 }]);

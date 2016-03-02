@@ -20,7 +20,7 @@
     };
 
     this.searchAPI = function (userInputString, timeoutPromise) {
-        return $http.get(globalApiEndPoint + '/mobsocial/searchtermautocomplete', { term: userInputString }, { timeout: timeoutPromise });
+        return $http.get(globalApiEndPoint + '/mobsocial/searchtermautocomplete', { params: { term: userInputString } }, { timeout: timeoutPromise });
     }
 
     this.InviteParticipants = function (VideoBattleId, ParticipantIds, Emails, success, error) {

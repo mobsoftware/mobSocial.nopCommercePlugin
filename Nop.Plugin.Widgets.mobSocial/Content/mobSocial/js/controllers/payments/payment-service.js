@@ -21,6 +21,6 @@ app.service("PaymentService", ["globalApiEndPoint", "WebClientService", function
     };
 
     this.PurchasePurchasePass = function (PurchasePass, success, error) {
-        WebClientService.get("/Payment/PurchasePass", PurchasePass, success, error);
+        WebClientService.post(apiEndPoint + "/purchasepass", PurchasePass, success, error);
     }
 }]);

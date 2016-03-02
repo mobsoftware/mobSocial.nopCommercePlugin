@@ -27,7 +27,6 @@ using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    // TODO: Consider making a single SocialNetworkWidget Controller for displaying widgets.
     public class CustomerProfileController : BasePublicController
     {
         private readonly CustomerProfileService _customerProfileService;

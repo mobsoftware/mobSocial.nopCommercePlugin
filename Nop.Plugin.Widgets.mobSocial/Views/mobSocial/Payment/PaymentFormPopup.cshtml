@@ -13,7 +13,7 @@
                         <div class="inputs">
                             <label for="select-voter-pass">Available {{CustomerPaymentMethods.PurchaseType == @((int)PurchaseType.VoterPass) ? "Voter" : "Sponsorship"}} Passes</label>
 
-                            <select id="select-voter-pass" ng-model="PurchasePass.PassId">
+                            <select id="select-voter-pass" ng-init="PurchasePass.PassId='AvailablePaymentMethods.CustomerPendingOrders[0].Value'" ng-model="PurchasePass.PassId">
                                 <option ng-repeat="order in AvailablePaymentMethods.CustomerPendingOrders" ng-selected="order.Value == PurchasePass.PassId" value="{{order.Value}}">
                                     {{order.Text}}
                                 </option>
@@ -28,7 +28,7 @@
                     <div class="inputs">
                         <label for="voting-amount">{{AvailablePaymentMethods.PurchaseType == @((int)PurchaseType.VoterPass) ? "Voting" : "Sponsorship"}} Amount</label>
                         <input ng-if="AvailablePaymentMethods.IsAmountVariable" type="number" step="0.01" min="{{AvailablePaymentMethods.MinimumPaymentAmount}}" ng-init="PurchasePass.Amount=AvailablePaymentMethods.MinimumPaymentAmount" ng-model="PurchasePass.Amount" />
-                        <input ng-if="!AvailablePaymentMethods.IsAmountVariable" type="hidden" ng-init="PurchasePass.Amount=AvailablePaymentMethods.MinimumPaymentAmount" ng-model="PurchasePass.Amount" />{{PurchasePass.Amount}}
+                        <span ng-if="!AvailablePaymentMethods.IsAmountVariable"><input type="hidden" ng-init="PurchasePass.Amount=AvailablePaymentMethods.MinimumPaymentAmount" ng-model="PurchasePass.Amount" />{{PurchasePass.Amount}}</span>
 
 
                     </div>
@@ -73,7 +73,7 @@
                             <input id="security-code" ng-model="PurchasePass.CustomerPaymentRequest.SecurityCode" maxlength="4" type="password" />
                         </div>
                         <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.CardIssuerType" />
-                        <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.PaymentMethod" ng-init="PurchasePass.CustomerPaymentRequest.PaymentMethod='@Nop.Plugin.WebApi.MobSocial.Enums.PaymentMethodType.CreditCard'" />
+                        <input type="hidden" ng-model="PurchasePass.CustomerPaymentRequest.PaymentMethod" ng-init="PurchasePass.CustomerPaymentRequest.PaymentMethod='@PaymentMethodType.CreditCard'" />
                     </div>
 
                     <div class="buttons text-center">

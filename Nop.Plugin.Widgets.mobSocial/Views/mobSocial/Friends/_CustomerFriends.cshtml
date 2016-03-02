@@ -1,5 +1,10 @@
-﻿    
-<div class="customer-friends-container" ng-controller="FriendsController" ng-init="GetCustomerFriends()">
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerFriendsRequestModel    
+@{
+    var json = Json.Encode(Model);
+}
+
+
+<div class="customer-friends-container" ng-controller="FriendsController" ng-init="GetCustomerFriends(@json)">
     <div class="customer-friends-friend-block" ng-repeat="friend in CustomerFriends">
         <a href="{{friend.ProfileUrl}}">
             <img ng-src="{{friend.ProfileThumbnailUrl}}" alt="" title="{{friend.CustomerDisplayName}}" />

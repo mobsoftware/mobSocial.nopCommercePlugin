@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Nop.Plugin.WebApi.MobSocial.Models;
+using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
 
 
@@ -22,9 +23,15 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [Authorize]
-        public ActionResult CustomerFriends(int customerId = 0, int howMany = 0, bool random = false)
+        public ActionResult CustomerFriends(int customerId, int howMany = 0, bool random = false)
         {
-            return View("mobSocial/Friends/_CustomerFriends");
+            var model = new CustomerFriendsRequestModel()
+            {
+                CustomerId = customerId,
+                HowMany = howMany,
+                Random = random
+            };
+            return View("mobSocial/Friends/_CustomerFriends", model);
 
         }
 
