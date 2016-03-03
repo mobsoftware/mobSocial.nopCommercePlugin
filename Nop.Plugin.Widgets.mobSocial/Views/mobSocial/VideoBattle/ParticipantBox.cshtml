@@ -1,6 +1,6 @@
 ﻿@using Nop.Plugin.WebApi.MobSocial.Enums
 @{
-    var videouploadUrl = "/VideoBattles/UploadVideo/";
+    var videouploadUrl = "/api/videobattles/uploadvideo";
 }
 <div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-class="{'me' : participant.CanEdit}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && participant.VideoPath == null">
 
@@ -64,7 +64,7 @@
             <div ng-if="(VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) || VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Locked)) && !participant.CanEdit">
                 Video uploaded will be visible once the battle goes live
             </div>
-            <div ng-if="participant.VideoPath != null && ((VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) && VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Locked)) || participant.CanEdit)" class="videogular-container">
+            <div ng-show="participant.VideoPath != null && ((VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending) && VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Locked)) || participant.CanEdit)" class="videogular-container">
 
                 <videogular vg-player-ready="PlayerReady(participant, $API)" vg-complete="WatchedVideo(participant.Id)" vg-update-state="UpdateState(participant, $state)" vg-theme="controller.config.theme" vg-responsive="true">
                     <vg-media vg-src="participant.VideoSource" vg-tracks="" preload="metadata">
@@ -104,7 +104,7 @@
                 <button class="{{participant.VideoPath == null ? 'big' : ''}}" file-upload-button
                         id="videofile_{{VideoBattle.Id}}_{{participant.Id}}"
                         fieldname="VideoFile"
-                        extradata='{"VideoBattleId": {{VideoBattle.Id}}, "ParticipantId" : {{participant.Id}}, "FieldName": "VideoFile"}'
+                        extradata='{"BattleId": {{VideoBattle.Id}}, "ParticipantId" : {{participant.Id}}, "FieldName": "VideoFile"}'
                         uploadtype="video"
                         onsuccessitem="UploadSuccess"
                         url="@videouploadUrl">
