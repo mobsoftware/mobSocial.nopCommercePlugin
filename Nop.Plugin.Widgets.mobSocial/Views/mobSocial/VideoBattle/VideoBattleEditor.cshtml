@@ -1,5 +1,5 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Enums
-@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleModel
+﻿@using Nop.Plugin.WebApi.MobSocial.Enums
+@model Nop.Plugin.Widgets.MobSocial.Models.BattleEditorModel
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
@@ -101,15 +101,13 @@
                             <div ng-show="processing">
                                 Please wait...
                             </div>
-                            @if (Model.VideoBattleStatus != VideoBattleStatus.Pending)
-                            {
-                                <text>The battle can't be edited now.</text>
-                            }
-                            else
-                            {
-                                <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle" />
+                            <div ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending)">
+                                The battle can't be edited now.
+                            </div>
+                            <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending)">
+                                <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle"/>
 
-                            }
+                            </div>
                         </div>
                     </div><!--battle details-->
                     <div>

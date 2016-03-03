@@ -16,18 +16,17 @@ using Nop.Web.Framework;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Profile;
-using Nop.Plugin.Widgets.MobSocial.Domain;
+using Nop.Plugin.WebApi.MobSocial.Domain;
 using Nop.Plugin.Widgets.MobSocial;
-using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
-using Nop.Plugin.Widgets.MobSocial.Models;
 using System.Linq;
 using Nop.Core;
-using Nop.Plugin.Widgets.MobSocial.Enums;
-using Nop.Plugin.Widgets.MobSocial.Extensions;
-using Nop.Plugin.Widgets.MobSocial.Services;
-using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;
-
+using Nop.Plugin.WebApi.MobSocial.Enums;
+using Nop.Plugin.WebApi.MobSocial.Extensions;
+using Nop.Plugin.WebApi.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial.Extensions;
+using Nop.Plugin.WebApi.MobSocial.Models;
+using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
 

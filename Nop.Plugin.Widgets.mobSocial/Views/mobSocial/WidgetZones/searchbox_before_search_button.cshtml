@@ -1,6 +1,50 @@
 ﻿<select id="searchTypeDropDown">
     <option>Store</option>
-    <option>@T("SearchDropdown.PeopleSearchText")</option>
+    <option value="people">@T("SearchDropdown.PeopleSearchText")</option>
+    <option value="videobattles">Video Battles</option>
     <option>@T("SearchDropdown.EventPageSearchText")</option>
     <option>@T("SearchDropdown.BusinessPageSearchText")</option>
 </select>
+<script type="text/javascript">
+    //depending on selected type, let's change the autocomplete source
+
+    $("#searchTypeDropDown").change(function() {
+        var value = $(this).val();
+
+        var defaultGlobalAutocompleteRenderer = $('#small-searchterms').data("ui-autocomplete")._renderItem;
+        var autoCompleteSourceUrl = "@(Url.RouteUrl("ProductSearchAutoComplete"))";
+        var parentFormTargetUrl = "@Url.RouteUrl("ProductSearch")"; //default;
+        var renderer = defaultGlobalAutocompleteRenderer;
+        switch(value) {
+            case "videobattles":
+                parentFormTargetUrl = "@Url.RouteUrl("VideoBattles", new {ViewType = "search"})";
+                break;
+            case "people":
+                parentFormTargetUrl = "@Url.RouteUrl("SearchPeople")";
+                autoCompleteSourceUrl = "/api/mobSocial/searchtermautocomplete";
+                renderer = function(ul, item) {
+                    var t = item.DisplayName;
+                    //html encode
+                    t = htmlEncode(t);
+                    return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a href='" + item.ProfileUrl + "'><span><img src='" + item.PictureUrl + "'>" + t + "</span></a>")
+                        .appendTo(ul);
+                };
+                break;
+            default:
+                break;
+        }
+        //autocomplete source
+        $('#small-searchterms').autocomplete("option", "source", autoCompleteSourceUrl);
+
+        //submit action
+        $(this).closest("form").attr("action", parentFormTargetUrl);
+
+
+        //and renderer
+        $('#small-searchterms').data("ui-autocomplete")._renderItem = renderer;
+
+
+    });
+</script>

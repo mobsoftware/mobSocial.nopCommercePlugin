@@ -1,7 +1,7 @@
 ﻿app.controller("FriendSearchController", [
     '$scope', 'FriendService', function($scope, FriendService) {
 
-        $scope.init = function(FriendSearchModel) {
+        $scope.init = function (FriendSearchModel) {
             $scope.FriendSearchModel = FriendSearchModel;
             $scope.FriendSearchModel.Page = 0;
             $scope.LoadNextPage();
@@ -41,6 +41,16 @@ app.controller("FriendsController", [
                 }
             }, function () {
 
+            });
+        }
+
+        $scope.GetCustomerFriends = function(customerFriendsRequestModel) {
+            FriendService.GetCustomerFriends(customerFriendsRequestModel, function (response) {
+                if (response.Success) {
+                    $scope.CustomerFriends = response.Friends;
+                }
+            }, function() {
+                alert(response.Message);
             });
         }
     }

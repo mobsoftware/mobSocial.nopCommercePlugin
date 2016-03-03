@@ -10,11 +10,10 @@ using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
-using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Plugin.Widgets.MobSocial.Domain;
-using Nop.Plugin.Widgets.MobSocial.Enums;
-using Nop.Plugin.Widgets.MobSocial.Extensions;
-using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial.Domain;
+using Nop.Plugin.WebApi.MobSocial.Enums;
+using Nop.Plugin.WebApi.MobSocial.Models;
+using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Services.Common;
 using Nop.Services.Localization;
 using Nop.Services.Media;
@@ -23,10 +22,11 @@ using Nop.Web.Controllers;
 using Nop.Web.Framework;
 using Nop.Web.Models.Profile;
 using Nop.Services.Customers;
+using Nop.Services.Seo;
+using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    // TODO: Consider making a single SocialNetworkWidget Controller for displaying widgets.
     public class CustomerProfileController : BasePublicController
     {
         private readonly CustomerProfileService _customerProfileService;
@@ -80,7 +80,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             var profile = _customerProfileService.GetByCustomerId(customerId);
 
-            var customerSeName = customer.GetSeName(_workContext.WorkingLanguage.Id, true, false);
+            var customerSeName = SeoExtensions.GetSeName(customer, _workContext.WorkingLanguage.Id, true, false);
             var profilemodel = new CustomerProfilePublicModel() {
                 CustomerId = customerId,
                 ViewCount = _customerProfileViewService.GetViewCount(customerId),
@@ -117,125 +117,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             profilemodel.FollowerCount = followers.Count;
             return View("mobSocial/CustomerProfile/Profile", profilemodel);
         }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult UploadPicture(IEnumerable<HttpPostedFileBase> file)
-        {
-            var files = file.ToList();
-            var newImages = new List<object>();
-            foreach (var fi in files)
-            {
-                Stream stream = null;
-                var fileName = "";
-                var contentType = "";
-
-                if (file == null)
-                    throw new ArgumentException("No file uploaded");
-
-                stream = fi.InputStream;
-                fileName = Path.GetFileName(fi.FileName);
-                contentType = fi.ContentType;
-
-                var fileBinary = new byte[stream.Length];
-                stream.Read(fileBinary, 0, fileBinary.Length);
-
-                var fileExtension = Path.GetExtension(fileName);
-                if (!string.IsNullOrEmpty(fileExtension))
-                    fileExtension = fileExtension.ToLowerInvariant();
-
-
-                if (string.IsNullOrEmpty(contentType))
-                {
-                    contentType = PictureUtility.GetContentType(fileExtension);
-                }
-
-                var picture = _pictureService.InsertPicture(fileBinary, contentType, null);
-               
-                newImages.Add(new {
-                    ImageUrl = _pictureService.GetPictureUrl(picture.Id),
-                    ImageId = picture.Id
-                });
-            }
-
-            return Json(new { Success = true, Images = newImages });
-        }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult SetPictureAs(string uploadType, int pictureId)
-        {
-
-            switch (uploadType)
-            {
-                case "cover":
-                    _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer, AdditionalCustomerAttributeNames.CoverImageId, pictureId);
-                    break;
-                case "avatar":
-                    _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
-                        SystemCustomerAttributeNames.AvatarPictureId, pictureId);
-                    break;
-            }
-            return Json(new { Success = true });
-        }
-
-        [HttpPost]
-        public void SaveCustomerProfile(CustomerProfileModel customerProfile)
-        {
-
-            var profile = _customerProfileService.GetByCustomerId(customerProfile.CustomerId);
-            
-            if(profile == null)
-            {
-                profile = new CustomerProfile() {
-                    CustomerId = customerProfile.CustomerId,
-                    AboutMe = customerProfile.AboutMe,
-                    Website = customerProfile.Website,
-                    DateCreated = DateTime.Now,
-                    DateUpdated = DateTime.Now,
-                };
-
-                _customerProfileService.Insert(profile);
-                return;
-            }
-            else
-            {
-                profile.AboutMe = customerProfile.AboutMe;
-                profile.Website = customerProfile.Website;
-                profile.DateUpdated = DateTime.Now;
-                _customerProfileService.Update(profile);
-                return;
-            }
-            
-
-        }
-
-
-        [HttpPost]
-        public void AddFavoriteSong(CustomerFavoriteSong favoriteSong)
-        {
-            var dateTimeNow = DateTime.Now;
-            favoriteSong.DisplayOrder = 0;
-            favoriteSong.DateCreated = dateTimeNow;
-            favoriteSong.DateUpdated = dateTimeNow;
-
-            _customerFavoriteSongService.Insert(favoriteSong);
-        }
-
-        [HttpPost]
-        public void DeleteFavoriteSong(int id)
-        {
-            //_customerFavoriteSongService.LogicalDelete(id);
-        }
-
-
-        [HttpPost]
-        public void UpdateFavoriteSongOrder(int favoriteSongId, int displayOrder)
-        {
-            _customerFavoriteSongService.UpdateFavoriteSongOrder(favoriteSongId, displayOrder);
-        }
-
-
 
 
         [ChildActionOnly]

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
-using Nop.Admin.Controllers;
 using System.Linq;
 using Nop.Core;
 using Nop.Core.Data;
@@ -12,9 +11,7 @@ using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Seo;
-using Nop.Plugin.Widgets.MobSocial.Domain;
-using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Plugin.Widgets.MobSocial.Models.TeamPage;
+using Nop.Plugin.WebApi.MobSocial.Domain;
 using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Localization;
@@ -22,17 +19,15 @@ using Nop.Services.Media;
 using Nop.Services.Orders;
 using Nop.Services.Security;
 using Nop.Services.Seo;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Security;
-using Nop.Web.Models.Customer;
 using Mob.Core;
 using System.Web;
-using Nop.Plugin.Widgets.MobSocial.Constants;
-using Nop.Plugin.Widgets.MobSocial.Enums;
-using Nop.Plugin.Widgets.MobSocial.Extensions;
-using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial.Constants;
+using Nop.Plugin.WebApi.MobSocial.Enums;
+using Nop.Plugin.WebApi.MobSocial.Models;
+using Nop.Plugin.WebApi.MobSocial.Models.TeamPage;
+using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Web.Controllers;
-using SeoExtensions = Nop.Plugin.Widgets.MobSocial.Extensions.SeoExtensions;
+using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -141,109 +136,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(MobSocialConstant.ViewsPath + "/mobSocial/Configure.cshtml", model);
 
         }
-
-
-        //todo: prevent automated calls by limiting action to specific buttons and or other criteria
-        public ActionResult AddFriend(int toCustomerId)
-        {
-
-            if (_workContext.CurrentCustomer.IsGuest())
-                return Json(new {redirect = Url.RouteUrl("Login")}, JsonRequestBehavior.AllowGet);
-            
-            try
-            {
-                int fromCustomerId = _workContext.CurrentCustomer.Id;
-
-                _socialNetworkService.SendFriendRequest(fromCustomerId, toCustomerId);
-                return Json(new { success = true, message = "Friend Request Sent!" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception)
-            {
-                return Json(new { success = true, message = "Could not add friend. Please try again. If the problem persists, please contact us." }, JsonRequestBehavior.AllowGet);
-            }
-
-
-        }
-        
-        public ActionResult ConfirmFriend(int friendCustomerId)
-        {
-            try
-            {
-                _socialNetworkService.ConfirmFriendRequest(friendCustomerId);
-                return Json(new { success = true, message = "Friend Confirmed!" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception)
-            {
-                return Json(new { success = false, message = "Could not add friend. Please try again. If the problem persists, please contact us." });
-            }
-            
-        }
-
-
-        
-        public ActionResult SearchTermAutoComplete(string term, bool excludeLoggedInUser = true)
-        {
-            if (String.IsNullOrWhiteSpace(term) || term.Length < _mobSocialSettings.PeopleSearchTermMinimumLength)
-                return Json(new object());
-
-            _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults = 10;
-
-            //TODO: Find a better way to implement this search
-            
-            //a search term may be first name or last name...nopcommerce puts an 'and' filter rather than an 'or' filter.
-            //we therefore need to first get all the customers and then filter them according to name
-
-            var customerRole = _customerService.GetCustomerRoleBySystemName("Registered");
-            var customerRoleIds = new int[1];
-            if (customerRole != null)
-                customerRoleIds[0] = customerRole.Id;
-
-            var customers = _customerService.GetAllCustomers(null, null, 0, 0, customerRoleIds).ToList();
-
-            customers = excludeLoggedInUser ? customers.Where(x => x.Id != _workContext.CurrentCustomer.Id).ToList() : customers;
-            var count = _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults;
-            term = term.ToLowerInvariant();
-            var filteredCustomers = new List<Customer>();
-            customers.ForEach(x =>
-            {
-
-                if (filteredCustomers.Count >= _mobSocialSettings.PeopleSearchAutoCompleteNumberOfResults) return;
-                
-                var firstName = x.GetAttribute<string>(SystemCustomerAttributeNames.FirstName);
-                firstName = firstName == null ? "" : firstName.ToLowerInvariant();
-                var lastName = x.GetAttribute<string>(SystemCustomerAttributeNames.LastName);
-                lastName = lastName == null ? "" : lastName.ToLowerInvariant();
-                var email = x.Email;
-                if (!firstName.Contains(term) && !lastName.Contains(term) && email != term) return;
-                
-                count--;
-                filteredCustomers.Add(x);
-            });
-           
-           
-            var models = new List<object>();
-
-            foreach (var c in filteredCustomers)
-            {
-
-                models.Add(new
-                    {
-                        DisplayName = c.GetFullName(),
-                        PictureUrl = _pictureService.GetPictureUrl(
-                            c.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 50),
-
-                        ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(c, 0) }),
-                        Id = c.Id
-                    });
-
-
-            }
-
-            return Json(models, JsonRequestBehavior.AllowGet);
-
-        }
-
-
 
         public ActionResult PopulateUrlSlugs()
         {

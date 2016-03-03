@@ -1,8 +1,33 @@
-﻿@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleQueryModel
+﻿@model Nop.Plugin.WebApi.MobSocial.Models.VideoBattleQueryModel
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
-    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml");
+
+    var title = "";
+    switch (Model.ViewType)
+    {
+        case "open":
+            title = "Open Battles";
+            break;
+        case "open-to-join":
+            title = "Join a Battle";
+            break;
+        case "challenged":
+            title = "Accept the challenge";
+            break;
+        case "my":
+            title = "My Battles";
+            break;
+        case "closed":
+            title = "Closed Battles";
+            break;
+        case "search":
+            title = "Showing battles matching '" + Model.SearchTerm + "'";
+            break;
+
+    }
+
     var json = Json.Encode(Model);
 }
 
@@ -14,14 +39,21 @@
     <div class="page-body">
         <div id="tabs">
             <ul class="resp-tabs-list">
-                <li ng-click="GetVideoBattles('open')"><i class="fa fa-video-camera"></i> Open Battles</li>
-                <li ng-click="GetVideoBattles('open-to-join')"><i class="fa fa-flag"></i> Join a battle</li>
-                <li ng-click="GetVideoBattles('challenged')"><i class="fa fa-bullhorn"></i> Open Challenges</li>
-                <li ng-click="GetVideoBattles('my')"><i class="fa fa-user"></i> My Battles</li>
-                <li ng-click="GetVideoBattles('closed')"><i class="fa fa-trophy"></i> Closed Battles</li>
+                @if (Model.ViewType != "search")
+                {
+                    <li ng-click="GetVideoBattles('open')"><i class="fa fa-video-camera"></i> Open Battles</li>
+                    <li ng-click="GetVideoBattles('open-to-join')"><i class="fa fa-flag"></i> Join a battle</li>
+                    <li ng-click="GetVideoBattles('challenged')"><i class="fa fa-bullhorn"></i> Open Challenges</li>
+                    <li ng-click="GetVideoBattles('my')"><i class="fa fa-user"></i> My Battles</li>
+                    <li ng-click="GetVideoBattles('closed')"><i class="fa fa-trophy"></i> Closed Battles</li>
+                }
+                else
+                {
+                    <li><i class="fa fa-search"></i> @title</li>
+                }
             </ul>
             <div class="resp-tabs-container">
-                @for (var i = 0; i < 5; i++)
+                @for (var i = 0; i < (Model.ViewType == "search" ? 1 : 5); i++)
                 {
                     <div>
                         @if (i == 0)
@@ -60,7 +92,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#tabs").easyResponsiveTabs();
-        
+
 
     });
 </script>

@@ -80,3 +80,4 @@
 *.ie2~
 obj
 /Nop.Plugin.Widgets.mobSocial/MobLib/*.pdb
+/Nop.Plugin.WebApi.mobSocial/bin/Release

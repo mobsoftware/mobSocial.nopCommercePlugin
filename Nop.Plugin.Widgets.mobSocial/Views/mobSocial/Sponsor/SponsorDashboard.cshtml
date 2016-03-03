@@ -1,6 +1,6 @@
 ﻿@using Nop.Web.Models.Customer
-@using Nop.Plugin.Widgets.MobSocial.Enums
-@model Nop.Plugin.Widgets.MobSocial.Models.SponsorsRequestModel
+@using Nop.Plugin.WebApi.MobSocial.Enums
+@model Nop.Plugin.WebApi.MobSocial.Models.SponsorsRequestModel
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
     @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
@@ -9,7 +9,7 @@
 }
 <div ng-controller="SponsorController" ng-init="init(@json)">
     <h2 style="padding: 20px 0 40px 0">
-        Sponsor Dashboard for <a href="@Model.BattleUrl">@Model.BattleName</a>
+        Sponsor Dashboard for <a href="{{BattleUrl}}">{{BattleName}}</a>
     </h2>
     <div id="sponsor-tabs">
         <ul class="resp-tabs-list">
@@ -117,7 +117,7 @@
                                                 <a ng-click="RevertImage(Sponsor)"><i class="fa fa-undo"></i> Revert Image</a><br />
                                             </span>
                                             @{
-                var uploadUrl = Url.RouteUrl("UploadSponsorPicture");
+                                                var uploadUrl = "/api/sponsors/uploadpicture";
                                             }
                                             <a file-upload-button
                                                class="upload-button"

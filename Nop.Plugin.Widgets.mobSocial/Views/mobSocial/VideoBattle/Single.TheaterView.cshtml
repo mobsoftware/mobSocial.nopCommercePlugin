@@ -1,6 +1,6 @@
-﻿@using Nop.Plugin.Widgets.MobSocial.Enums
-@using Nop.Plugin.Widgets.MobSocial.Models
-@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattlePublicModel
+﻿@using Nop.Plugin.WebApi.MobSocial.Enums
+@using Nop.Plugin.WebApi.MobSocial.Models
+@model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleIndexModel
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppLayoutTheater.cshtml";
 
@@ -13,40 +13,6 @@
 
     var json = Json.Encode(Model);
     var videouploadUrl = "/VideoBattles/UploadVideo/";
-    var timerFormat = "{{ddays}} day{{daysS}} {{hhours}} hour{{hoursS}} {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}";
-    var maxSeconds = 0;
-    var maxUnit = "";
-    var now = DateTime.UtcNow;
-    var endDate = DateTime.UtcNow;
-
-    if (Model.VideoBattleStatus == VideoBattleStatus.Pending && Model.VotingStartDate > now)
-    {
-        endDate = Model.VotingStartDate;
-    }
-    else if (Model.VideoBattleStatus == VideoBattleStatus.Open)
-    {
-        endDate = Model.VotingEndDate;
-    }
-    var diffDate = endDate.Subtract(now);
-
-    maxSeconds = Convert.ToInt32(diffDate.TotalSeconds);
-
-    if (diffDate.TotalDays > 1)
-    {
-        maxUnit = "day";
-    }
-    else if (diffDate.TotalHours > 1)
-    {
-        maxUnit = "hour";
-    }
-    else if (diffDate.TotalMinutes > 1)
-    {
-        maxUnit = "minute";
-    }
-    else
-    {
-        maxUnit = "second";
-    }
 
 }
 
@@ -87,41 +53,32 @@
             </span>
             @Model.Name
         </h1>
-        @if (maxSeconds > 0)
-        {
-            <div class="battle-timer">
-                @if (Model.VideoBattleStatus == VideoBattleStatus.Pending)
-                {
-                    <text>
-                        Starts in
-                    </text>
-                }
-                else
-                {
-                    <text>
-                        Ends in
-                    </text>
-                }
-                <timer countdown="@maxSeconds" max-time-unit="'@maxUnit'" interval=" 1000">@timerFormat</timer>
-            </div>
-        }
+        <div class="battle-timer" ng-show="VideoBattle.timerSettings.totalSeconds > 0">
+            {{VideoBattle.timerSettings.battleStatusString}}
+
+            <timer ng-if="VideoBattle.timerSettings.totalSeconds" countdown="VideoBattle.timerSettings.totalSeconds" interval="1000">
+                {{days > 0 ? days + ' day' + (days > 1 ? "s" : "") : ""}}
+                {{hours > 0 ? hours + ' hour' + (hours > 1 ? "s" : "") : ""}}
+                {{minutes > 0 ? minutes + ' minute' + (minutes > 1 ? "s" : "") : ""}}
+                {{seconds > 0 ? seconds + ' second' + (seconds > 1 ? "s" : "") : ""}}
+            </timer>
+        </div>
 
         <div class="battle-description">
             <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
 
 
-            @if (Model.VideoBattleStatus == VideoBattleStatus.Open)
-            {
+            <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open)">
                 <br />
                 <br />
                 <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
-            }
+            </div>
         </div>
 
     </div>
 
     <div class="actions-theater-view">
-        <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="@Url.RouteUrl("VideoBattlePage", new {SeName = Model.SeName, ViewMode = VideoViewMode.Regular})"><i class="fa fa-reply"></i> Exit Theater Mode</a>
+        <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="/VideoBattle/{{VideoBattle.SeName}}/@((int)VideoViewMode.Regular)"><i class="fa fa-reply"></i> Exit Theater Mode</a>
     </div>
 
     <div class="theater-view-videoplayer">

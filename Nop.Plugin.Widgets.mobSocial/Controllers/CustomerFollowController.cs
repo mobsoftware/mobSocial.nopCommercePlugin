@@ -4,8 +4,8 @@ using Mob.Core;
 using Mob.Core.Domain;
 using Nop.Core;
 using Nop.Core.Infrastructure;
-using Nop.Plugin.Widgets.MobSocial.Domain;
-using Nop.Plugin.Widgets.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial.Domain;
+using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers

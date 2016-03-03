@@ -1,7 +1,7 @@
 ﻿@using Mob.Core.UI
 @using Nop.Core.Infrastructure
 @using Nop.Plugin.Widgets.MobSocial
-@using Nop.Plugin.Widgets.MobSocial.Constants
+@using Nop.Plugin.WebApi.MobSocial.Constants
 @{
     //nopcommerce installation
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
@@ -105,6 +105,8 @@
     //common js
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/add-friend-button.js");
     Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/common.js");
+    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mobsocial-interceptor.js");
+    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/webclient-service.js");
     //Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mob-video.js");
 
 

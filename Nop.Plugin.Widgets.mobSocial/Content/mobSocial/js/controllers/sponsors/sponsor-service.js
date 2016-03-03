@@ -1,52 +1,39 @@
-﻿app.service("SponsorService", [
-    "$http", function ($http) {
-        this.SaveSponsor = function (Sponsor, Success, Error) {
+﻿app.service("SponsorService", ["globalApiEndPoint", "WebClientService", "$http", function (globalApiEndPoint, WebClientService, $http) {
 
-            $http.post("/Sponsor/SaveSponsor", Sponsor)
-                .success(Success)
-                .error(Error);
-        };
+    var apiEndPoint = globalApiEndPoint + "/sponsors";
 
-        this.UpdateSponsor = function (Sponsor, Success, Error) {
+    this.SaveSponsor = function (Sponsor, success, error) {
+        WebClientService.post(apiEndPoint + "/savesponsor", Sponsor, success, error);
+    };
 
-            $http.post("/Sponsor/UpdateSponsor", Sponsor)
-                .success(Success)
-                .error(Error);
-        };
+    this.UpdateSponsor = function (Sponsor, success, error) {
+        WebClientService.post(apiEndPoint + "/updatesponsor", Sponsor, success, error);
+    };
 
-        this.SaveSponsorData = function (SponsorData, Success, Error) {
+    this.SaveSponsorData = function (SponsorData, success, error) {
+        WebClientService.post(apiEndPoint + "/savesponsordata", SponsorData, success, error);
+    };
 
-            $http.post("/Sponsor/SaveSponsorData", SponsorData)
-                .success(Success)
-                .error(Error);
-        };
-
-        this.GetSponsors = function (SponsorRequest, Success, Error) {
-            $http.post("/Sponsor/GetSponsors", SponsorRequest)
-                .success(Success)
-                .error(Error);
-        }
-
-        this.GetSponsorTransactions = function (SponsorCustomerId, BattleId, BattleType, Success, Error) {
-            $http.post("/Sponsor/GetSponsorTransactions", {
-                BattleId: BattleId,
-                BattleType: BattleType,
-                CustomerId: SponsorCustomerId
-            })
-               .success(Success)
-               .error(Error);
-        }
-
-        this.SaveSponsorProductPrizes = function (Prizes, Success, Error) {
-            $http.post("/Sponsor/SaveSponsorProductPrizes", Prizes)
-               .success(Success)
-               .error(Error);
-        }
-
-        this.ProductPrizesFormPopup = function (BattleId, BattleType, Success, Error) {
-            $http.post("/Sponsor/ProductPrizesFormPopup", {BattleId: BattleId, BattleType: BattleType})
-              .success(Success)
-              .error(Error);
-        }
+    this.GetSponsors = function (sponsorRequest, success, error) {
+        WebClientService.get(apiEndPoint + "/getsponsors", sponsorRequest, success, error);
     }
+
+    this.GetSponsorTransactions = function (SponsorCustomerId, BattleId, BattleType, success, error) {
+        WebClientService.get(apiEndPoint + "/getsponsortransactions", {
+            BattleId: BattleId,
+            BattleType: BattleType,
+            CustomerId: SponsorCustomerId
+        }, success, error);
+    }
+
+    this.SaveSponsorProductPrizes = function (Prizes, success, error) {
+        WebClientService.post(apiEndPoint + "/savesponsorproductprizes", Prizes, success, error);
+    }
+
+    this.ProductPrizesFormPopup = function (BattleId, BattleType, success, error) {
+        $http.post("/Sponsor/ProductPrizesFormPopup", { BattleId: BattleId, BattleType: BattleType })
+          .success(success)
+          .error(error);
+    }
+}
 ]);
