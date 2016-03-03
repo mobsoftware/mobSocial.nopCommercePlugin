@@ -1,3 +1,6 @@
 [submodule "Mob.Core"]
 	path = Mob.Core
 	url = https://github.com/mobsoftware/mob.core.git
+[submodule "MobSocial.WebApi"]
+	path = MobSocial.WebApi
+	url = https://github.com/mobsoftware/mobsocial.webapi.git
