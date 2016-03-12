@@ -21,7 +21,7 @@ function isScrolledIntoView(elem) {
 	return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 }
 
-app.requires = app.requires.concat(["ngSanitize",
+appRequires(["ngSanitize",
 			"com.2fdevs.videogular",
 			"com.2fdevs.videogular.plugins.controls",
 			"com.2fdevs.videogular.plugins.overlayplay",
