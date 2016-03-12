@@ -81,3 +81,4 @@
 obj
 /Nop.Plugin.Widgets.mobSocial/MobLib/*.pdb
 /Nop.Plugin.WebApi.mobSocial/bin/Release
+/Nop.Plugin.Widgets.mobSocial/bin/Debug
