@@ -461,6 +461,13 @@ namespace Nop.Plugin.Widgets.MobSocial
                  new { controller = "CustomerFollow", action = "CustomerFollowButton" },
                  new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
                  );
+
+            routes.MapLocalizedRoute("TimelinePage",
+                 "Timeline",
+                 new { controller = "Timeline", action = "Timeline" },
+                 new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+                 );
+
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             //routes.MapHubs(); Video Conferrencing on hold until Owin IAppBuilder
 

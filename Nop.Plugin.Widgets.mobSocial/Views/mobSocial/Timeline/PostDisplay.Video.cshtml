@@ -1,0 +1,59 @@
+﻿<div class="user-info">
+    <a href="{{Post.OwnerProfileUrl}}">
+        <img ng-src="{{Post.OwnerImageUrl}}" />
+        <span class="user-name">
+            {{Post.OwnerName}}
+        </span>
+        <span class="post-time">
+            <time am-time-ago="Post.DateCreated"></time>
+        </span>
+    </a>
+</div>
+<div class="post-content">
+    {{Post.Message}}
+</div>
+<videogular vg-player-ready="PlayerReadyForDisplay($API, Post)" vg-responsive="true" vg-theme="Post.Config.theme">
+    <vg-media vg-src="Post.VideoSource" vg-tracks="" preload="metadata"></vg-media>
+
+    <vg-controls>
+        <vg-play-pause-button></vg-play-pause-button>
+        <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
+        <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
+        <vg-volume>
+            <vg-mute-button></vg-mute-button>
+            <vg-volume-bar></vg-volume-bar>
+        </vg-volume>
+        <vg-fullscreen-button></vg-fullscreen-button>
+    </vg-controls>
+    <vg-overlay-play></vg-overlay-play>
+    <vg-poster vg-url='Post.ThumbnailUrl'></vg-poster>
+
+</videogular>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $scope = attachFunctionToTimelineScope("PlayerReadyForDisplay", function ($API, Post) {
+            //we need $sce for videos
+            var rootUrl = window.location.origin;
+            var $sce = angular.element(document.getElementById("mobSocialTimeline")).injector().get('$sce');
+            var jsonValue = Post.AdditionalAttributeValue;
+            try {
+                jsonValue = JSON.parse(jsonValue);
+            } catch (e) {
+                return;
+            }
+           
+            Post.ThumbnailUrl = rootUrl + jsonValue.ThumbnailUrl;
+            var source = [{
+                src: $sce.trustAsResourceUrl(rootUrl + jsonValue.VideoUrl),
+                type: jsonValue.MimeType
+            }];
+            Post.Config = {
+                theme: rootUrl + "/Plugins/Widgets.mobSocial/Content/Libraries/videogular/theme/videogular.css"
+            }
+            Post.VideoSource = source;
+            $API.changeSource(Post.VideoSource);
+            $API.sources = Post.VideoSource;
+        });
+    });
+</script>

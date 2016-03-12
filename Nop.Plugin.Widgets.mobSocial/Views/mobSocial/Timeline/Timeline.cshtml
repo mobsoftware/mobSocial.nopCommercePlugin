@@ -1,0 +1,46 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.TimelinePublicModel
+@{
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+    
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Timeline/Includes.cshtml")
+    
+    var json = Json.Encode(Model);
+}
+<!--Id mobSocialTimeline is important-->
+<div class="timeline" id="mobSocialTimeline" ng-controller="TimelineController as controller" ng-init="init(@json)">
+    <div class="post-form">
+        @Html.Action("PostForm", "Timeline")
+    </div>
+
+    <div class="timeline-posts">
+        <div class="timeline-post" ng-repeat="Post in TimelinePosts">
+            <div ng-switch on="Post.PostTypeName">
+                @foreach (var widget in Model.TimelinePostViewModels)
+                {
+                    <div ng-switch-when="@widget.PostTypeName" class="post-type-@widget.PostTypeName">
+                        @Html.Action(widget.ActionName, widget.ControllerName, widget.RouteValues)
+                    </div>
+                }
+                <div ng-switch-default>
+                    <div class="post-type-status">
+                        <div class="user-info">
+                            <a href="{{Post.OwnerProfileUrl}}">
+                                <img ng-src="{{Post.OwnerImageUrl}}"/>
+                                <span class="user-name">
+                                    {{Post.OwnerName}}
+                                </span>
+                                <span class="post-time">
+                                    <time am-time-ago="Post.DateCreated"></time>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="post-content">
+                            {{Post.Message}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

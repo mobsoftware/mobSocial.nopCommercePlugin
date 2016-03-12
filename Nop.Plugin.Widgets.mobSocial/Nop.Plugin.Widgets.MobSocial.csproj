@@ -47,6 +47,7 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
+    <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
@@ -57,21 +58,32 @@
     <Compile Include="Controllers\HeaderMenuController.cs" />
     <Compile Include="Controllers\SkateMoveController.cs" />
     <Compile Include="Controllers\mobSocialController.cs" />
+    <Compile Include="DependencyRegistrar.cs" />
+    <Compile Include="Feature\Timeline\ITimelineWidget.cs" />
+    <Compile Include="Feature\Timeline\Widgets\VideoWidget.cs" />
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="mobSocialPlugin.cs" />
     <Compile Include="mobSocialSettings.cs" />
     <Compile Include="Models\BattleEditorModel.cs" />
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
     <Compile Include="Models\PageDisplayModel.cs" />
+    <Compile Include="Models\RouteDataModel.cs" />
+    <Compile Include="Models\TimelinePublicModel.cs" />
+    <Compile Include="Models\TimelineWidgetModel.cs" />
     <Compile Include="Models\VideoBattleIndexModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
+    <Compile Include="Services\ITimelineWidgetLoaderService.cs" />
+    <Compile Include="Services\TimelineWidgetLoaderService.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
     <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />
     <None Include="Scripts\jquery-2.2.0.min.map" />
     <None Include="Themes\MobSocialDefault\Views\Web.config" />
     <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
     <None Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml" />
+    <Content Include="Content\Libraries\angular-moment.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Libraries\moment.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -97,6 +109,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\timeline\timeline-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\timeline\timeline.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\directives\follow-button.directive.js">
@@ -641,6 +659,30 @@
     <Content Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\Timeline\PostForm.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\Timeline.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\Widget.Video.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\PostDisplay.Video.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\PostDisplay.Picture.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\Widget.Picture.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\PostPreview.Video.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\Includes.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -708,6 +750,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -718,7 +765,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MobAds.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>MobLib\MobAds.Public.dll</HintPath>
+      <HintPath>bin\Debug\MobAds.Public.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -739,9 +786,7 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MobLib\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
