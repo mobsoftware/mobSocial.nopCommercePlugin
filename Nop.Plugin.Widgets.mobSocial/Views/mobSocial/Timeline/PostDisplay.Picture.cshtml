@@ -1,1 +1,36 @@
-﻿file
+﻿<div class="user-info">
+    <a href="{{Post.OwnerProfileUrl}}">
+        <img ng-src="{{Post.OwnerImageUrl}}" />
+        <span class="user-name">
+            {{Post.OwnerName}}
+        </span>
+        <span class="post-time">
+            <time am-time-ago="Post.DateCreated"></time>
+        </span>
+    </a>
+</div>
+<div class="post-content">
+    {{Post.Message}}
+</div>
+<img ng-src="{{Post.SmallImageUrl}}" style="max-width: 100%"/>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $scope = attachFunctionToTimelineScope("setPostImage", function (Post) {
+            
+            var jsonValue = Post.AdditionalAttributeValue;
+            try {
+                jsonValue = JSON.parse(jsonValue);
+            } catch (e) {
+                return;
+            }
+            Post.SmallImageUrl = jsonValue.Images[0].SmallImageUrl;
+        });
+        //add to filter function. this will execute when a picture type post is being shown
+        $scope.FilterFunction['picture'] = function(Post) {
+            $scope.setPostImage(Post);
+        }
+        
+    });
+</script>

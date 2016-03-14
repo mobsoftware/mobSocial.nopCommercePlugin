@@ -1,1 +1,29 @@
-﻿file
+﻿@{
+    var pictureuploadUrl = "/api/timeline/uploadpictures";
+}
+<button file-upload-button
+        id="btn-timeline-picture-upload"
+        fieldname="File"
+        uploadtype="picture"
+        onsuccessitem="uploadPictureSuccess"
+        url="@pictureuploadUrl">
+    <i class="fa fa-upload"></i> Upload Picture
+</button>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //on picture success
+        var $scope = attachFunctionToTimelineScope("uploadPictureSuccess", function (fileItem, response, status, headers) {
+            if (response.Success) {
+
+                $scope.PostData.PostTypeName = "picture";
+                $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
+                $scope.PostPreview = {
+                    SmallImageUrl: response.Images[0].SmallImageUrl
+                };
+
+
+            }
+        });
+    });
+</script>

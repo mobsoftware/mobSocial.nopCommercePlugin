@@ -16,10 +16,15 @@
                 }
             </div>
         </div>
+        <button ng-if="PostData.AdditionalAttributeValue" ng-click="ClearPostFormExtraData()">Clear</button>
     </div>
-    <div class="timeline-widgets">
+    <div class="timeline-widgets" ng-if="!PostData.AdditionalAttributeValue">
         @foreach (var widget in Model)
         {
+            if (widget.WidgetRouteData == null)
+            {
+                continue;
+            }
             @Html.Action(widget.WidgetRouteData.ActionName, widget.WidgetRouteData.ControllerName, widget.WidgetRouteData.RouteValues)
         }
     </div>

@@ -468,6 +468,12 @@ namespace Nop.Plugin.Widgets.MobSocial
                  new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
                  );
 
+            routes.MapLocalizedRoute("ProxyWebFetchUrl",
+                 "ProxyWebFetchUrl",
+                 new { controller = "ProxyWeb", action = "FetchUrl" },
+                 new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+                 );
+
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             //routes.MapHubs(); Video Conferrencing on hold until Owin IAppBuilder
 

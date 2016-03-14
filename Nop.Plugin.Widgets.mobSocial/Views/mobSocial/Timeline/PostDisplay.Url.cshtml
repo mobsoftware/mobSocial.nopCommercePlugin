@@ -1,0 +1,14 @@
+﻿<div class="user-info" ng-init="setPostImage(Post)">
+    <a href="{{Post.OwnerProfileUrl}}">
+        <img ng-src="{{Post.OwnerImageUrl}}" />
+        <span class="user-name">
+            {{Post.OwnerName}}
+        </span>
+        <span class="post-time">
+            <time am-time-ago="Post.DateCreated"></time>
+        </span>
+    </a>
+</div>
+<div class="post-content">
+    {{Post.Message}}
+</div>

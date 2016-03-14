@@ -90,6 +90,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             return View("mobSocial/Timeline/PostDisplay.Picture");
         }
+        public ActionResult PicturePostPreview()
+        {
+            return View("mobSocial/Timeline/PostPreview.Picture");
+        }
+        public ActionResult UrlWidget()
+        {
+            return View("mobSocial/Timeline/Widget.Url");
+        }
+        public ActionResult UrlPostDisplay()
+        {
+            return View("mobSocial/Timeline/PostDisplay.Url");
+        }
+        public ActionResult UrlPostPreview()
+        {
+            return View("mobSocial/Timeline/PostPreview.Url");
+        }
         #endregion
     }
 }

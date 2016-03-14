@@ -1,0 +1,32 @@
+﻿<script type="text/javascript">
+    $(document).ready(function() {
+        var $scope = attachFunctionToTimelineScope("fetchUrlContents", function(url) {
+            var proxyUrl = "@Url.RouteUrl("ProxyWebFetchUrl")";
+
+            //we need WebClientService to fetch the data
+            var WebClientService = angular.element(document.getElementById("mobSocialTimeline")).injector().get('WebClientService');
+
+            WebClientService.get(proxyUrl, { url: url }, function(response) {
+                if (response.Success) {
+                    $scope.PostData.PostTypeName = "url";
+                    $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
+                    $scope.PostPreview = {
+                        Title: response.Title
+                    };
+                }
+            }, function(reponse) {
+
+            });
+        });
+
+        $scope.$watch("PostData.Message", function (newValue, oldValue) {
+
+            var urls = newValue.match(/\b((http|https)?(:\/\/)?(\S*)\.(\w{2,4})(\/?\S)*)\b/g);
+            
+            if (!urls || urls.length == 0)
+                return;
+
+            $scope.fetchUrlContents(urls[0]);
+        });
+    });
+</script>

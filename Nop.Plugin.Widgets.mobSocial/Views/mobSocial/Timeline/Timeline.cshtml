@@ -17,7 +17,7 @@
             <div ng-switch on="Post.PostTypeName">
                 @foreach (var widget in Model.TimelinePostViewModels)
                 {
-                    <div ng-switch-when="@widget.PostTypeName" class="post-type-@widget.PostTypeName">
+                    <div ng-switch-when="@widget.PostTypeName" class="post-type-@widget.PostTypeName" ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
                         @Html.Action(widget.ActionName, widget.ControllerName, widget.RouteValues)
                     </div>
                 }

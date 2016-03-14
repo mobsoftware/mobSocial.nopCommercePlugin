@@ -20,7 +20,7 @@ appRequires(["ngSanitize",
 			"com.2fdevs.videogular.plugins.imaads", 'timer']);
 
 app.controller("TimelineController", [
-    '$scope', '$sce', 'TimelineService', function ($scope, $sce, TimelineService) {
+    '$scope', '$sce', 'TimelineService', 'WebClientService', function ($scope, $sce, TimelineService, WebClientService) {
 
         //ctor
         $scope.init = function(timelinePostsRequestModel) {
@@ -28,7 +28,7 @@ app.controller("TimelineController", [
             $scope.PostData = {
                 Message: "",
                 PostTypeName: "status",
-                AdditionalAttributeValue: ""
+                AdditionalAttributeValue: null
 
             };
             $scope.TimelinePostsRequestModel.Page = 0; //so that first page is loaded on startup
@@ -41,7 +41,16 @@ app.controller("TimelineController", [
 
             //request posts so far
             $scope.GetTimelinePosts();
+
+            //functions to execute before selecting a post to render
+            //plugin vendors can write their own functions to be executed before showing the post.
+            //this will help to deserialize the additionalattributevalue to be displayed in the post display view
+            $scope.FilterFunction = [];
         };
+        $scope.ClearPostFormExtraData = function () {
+            $scope.PostData.AdditionalAttributeValue = null;
+            $scope.PostData.PostTypeName = "status";
+        }
 
         $scope.PostToTimeline = function () {
             if ($scope.PostData.Message == "" && $scope.PostData.AdditionalAttributeValue == "") {
@@ -55,7 +64,7 @@ app.controller("TimelineController", [
                 $scope.PostData = {
                     Message: "",
                     PostTypeName: "status",
-                    AdditionalAttributeValue: ""
+                    AdditionalAttributeValue: null
 
                 };
             }, function() {
