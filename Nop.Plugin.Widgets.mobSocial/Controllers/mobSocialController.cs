@@ -56,7 +56,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IRepository<UrlRecord> _urlRecordRepository;
         private readonly ICustomerVideoAlbumService _customerVideoAlbumService;
         private readonly CustomerProfileViewService _customerProfileViewService;
-        private readonly CustomerTimelineService _customerTimelineService;
 
         public mobSocialController(IPermissionService permissionService,
             IWorkContext workContext, AdminAreaSettings adminAreaSettings, ILocalizationService localizationService,
@@ -64,8 +63,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             ICustomerAlbumPictureService customerAlbumPictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, CustomerSettings customerSettings, 
             ForumSettings forumSettings, RewardPointsSettings rewardPointsSettings, OrderSettings orderSettings,
              IStoreContext storeContext, IWebHelper webHelper, IUrlRecordService urlRecordService, IRepository<UrlRecord> urlRecordRepository,
-            ICustomerVideoAlbumService customerVideoAlbumService, CustomerProfileViewService customerProfileViewService,
-            CustomerTimelineService customerTimelineService)
+            ICustomerVideoAlbumService customerVideoAlbumService, CustomerProfileViewService customerProfileViewService)
         {
             _permissionService = permissionService;
             _workContext = workContext;
@@ -87,7 +85,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _urlRecordRepository = urlRecordRepository;
             _customerVideoAlbumService = customerVideoAlbumService;
             _customerProfileViewService = customerProfileViewService;
-            _customerTimelineService = customerTimelineService;
         }
 
 
@@ -824,29 +821,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             
         }*/
-
-
-       
-
-
-        [HttpPost]
-        public ActionResult PostStatusToTimeline(int customerId, string statusText)
-        {
-
-            var customerTimeline = new CustomerTimeline() {
-                CustomerId = customerId,
-                StatusText = statusText,
-                PictureId = null,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            _customerTimelineService.Insert(customerTimeline);
-
-            return Json(null);
-        }
-
-
 
         private void CreateSampleData()
         {
