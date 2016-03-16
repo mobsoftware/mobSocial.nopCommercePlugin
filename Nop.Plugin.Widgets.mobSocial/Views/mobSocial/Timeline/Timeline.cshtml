@@ -1,9 +1,9 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.TimelinePublicModel
 @{
     Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
-    
+
     @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Timeline/Includes.cshtml")
-    
+
     var json = Json.Encode(Model);
 }
 <!--Id mobSocialTimeline is important-->
@@ -17,15 +17,10 @@
             <div ng-switch on="Post.PostTypeName">
                 @foreach (var widget in Model.TimelinePostViewModels)
                 {
-                    <div ng-switch-when="@widget.PostTypeName" class="post-type-@widget.PostTypeName" ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
-                        @Html.Action(widget.ActionName, widget.ControllerName, widget.RouteValues)
-                    </div>
-                }
-                <div ng-switch-default>
-                    <div class="post-type-status">
+                    <div ng-switch-when="@widget.PostTypeName" class="post post-type-@widget.PostTypeName" ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
                         <div class="user-info">
                             <a href="{{Post.OwnerProfileUrl}}">
-                                <img ng-src="{{Post.OwnerImageUrl}}"/>
+                                <img ng-src="{{Post.OwnerImageUrl}}" />
                                 <span class="user-name">
                                     {{Post.OwnerName}}
                                 </span>
@@ -35,9 +30,29 @@
                             </a>
                         </div>
                         <div class="post-content">
-                            {{Post.Message}}
+                            <div ng-bind-html="Post.Message | linky:'_blank'"></div>
                         </div>
-
+                        @Html.Action(widget.ActionName, widget.ControllerName, widget.RouteValues)
+                        <a ng-if="Post.CanDelete" ng-click="DeletePost(Post.Id)" class="post-delete"><i class="fa fa-times"></i></a>
+                    </div>
+                }
+                <div ng-switch-default>
+                    <div class="post post-type-status" ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
+                        <div class="user-info">
+                            <a href="{{Post.OwnerProfileUrl}}">
+                                <img ng-src="{{Post.OwnerImageUrl}}" />
+                                <span class="user-name">
+                                    {{Post.OwnerName}}
+                                </span>
+                                <span class="post-time">
+                                    <time am-time-ago="Post.DateCreated"></time>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="post-content">
+                            <div ng-bind-html="Post.Message | linky:'_blank'"></div>
+                        </div>
+                        <a ng-if="Post.CanDelete" ng-click="DeletePost(Post.Id)" class="post-delete"><i class="fa fa-times"></i></a>
                     </div>
                 </div>
             </div>

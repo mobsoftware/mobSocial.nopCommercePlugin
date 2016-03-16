@@ -1,18 +1,4 @@
-﻿<div class="user-info">
-    <a href="{{Post.OwnerProfileUrl}}">
-        <img ng-src="{{Post.OwnerImageUrl}}" />
-        <span class="user-name">
-            {{Post.OwnerName}}
-        </span>
-        <span class="post-time">
-            <time am-time-ago="Post.DateCreated"></time>
-        </span>
-    </a>
-</div>
-<div class="post-content">
-    {{Post.Message}}
-</div>
-<videogular vg-player-ready="PlayerReadyForDisplay($API, Post)" vg-responsive="true" vg-theme="Post.Config.theme">
+﻿<videogular vg-player-ready="PlayerReadyForDisplay($API, Post)" vg-responsive="true" vg-theme="Post.Config.theme">
     <vg-media vg-src="Post.VideoSource" vg-tracks="" preload="metadata"></vg-media>
 
     <vg-controls>

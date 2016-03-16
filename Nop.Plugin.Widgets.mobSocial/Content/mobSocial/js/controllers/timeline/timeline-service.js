@@ -9,4 +9,8 @@
     this.GetTimelinePosts = function (timelinePostsRequest, success,error) {
         WebClientService.get(apiEndPoint + "/get", timelinePostsRequest, success, error);
     }
+
+    this.DeletePost = function(postId, success, error) {
+        WebClientService.delete(apiEndPoint + "/delete/" + postId, null, success, error);
+    }
 }]);

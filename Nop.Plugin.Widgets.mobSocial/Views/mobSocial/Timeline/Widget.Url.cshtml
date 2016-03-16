@@ -5,17 +5,16 @@
 
             //we need WebClientService to fetch the data
             var WebClientService = angular.element(document.getElementById("mobSocialTimeline")).injector().get('WebClientService');
-
+            $scope.ProcessingPreview = true;
             WebClientService.get(proxyUrl, { url: url }, function(response) {
                 if (response.Success) {
                     $scope.PostData.PostTypeName = "url";
                     $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
-                    $scope.PostPreview = {
-                        Title: response.Title
-                    };
+                    $scope.PostPreview = response;
                 }
+                $scope.ProcessingPreview = false;
             }, function(reponse) {
-
+                $scope.ProcessingPreview = false;
             });
         });
 

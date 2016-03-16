@@ -82,9 +82,29 @@ app.controller("TimelineController", [
                     $scope.TimelinePosts.unshift(response[i]);
                 }
             }, function() {
-
+                alert("An error occured while processing request");
             });
         }
+
+        $scope.DeletePost = function (postId) {
+            if (!confirm("Delete this post?")) {
+                return;
+            }
+            TimelineService.DeletePost(postId, function (response) {
+                if (response.Success) {
+                    for (var i = 0; i < $scope.TimelinePosts.length; i++) {
+                        var post = $scope.TimelinePosts[i];
+                        if (post.Id == postId) {
+                            $scope.TimelinePosts.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+            }, function(response) {
+                alert("An error occured while processing request");
+            });
+        }
+      
         
     }
 ]);

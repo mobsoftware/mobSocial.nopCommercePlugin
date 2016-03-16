@@ -1488,6 +1488,7 @@ span.payment-method.fa {
 .timeline .post-box {
     border: solid 1px #ccc;
 }
+
 .timeline .timeline-post {
     clear: both;
     margin: 15px 0;
@@ -1495,6 +1496,18 @@ span.payment-method.fa {
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
+.timeline .timeline-post .post {
+    position: relative;
+}
+.timeline .timeline-post .post .post-delete {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #cccccc;
+}
+.timeline .timeline-post .post .post-delete:hover {
+    color: #555;
+}
 .timeline .timeline-widgets {
     float: left;
 }
@@ -1529,4 +1542,44 @@ span.payment-method.fa {
     padding-left: 100px;
     padding-top: 15px;
     min-height: 50px;
+}
+
+.url-preview .image {
+    float: left;
+    width: 160px;
+    text-align: center;
+}
+
+    .url-preview .image img {
+        max-width: 100%;
+        margin: 5px 10px;
+    }
+
+.url-preview {
+    min-height: 150px;
+    margin: 10px 0;
+    padding-top: 10px;
+    border-top: solid 1px #ddd;
+}
+
+    .url-preview .url-data {
+        padding-left: 180px;
+    }
+
+        .url-preview .url-data a {
+            font-size: 1.5em;
+        }
+
+        .url-preview .url-data .description {
+            margin: 7px 0;
+        }
+
+        .url-preview .url-data .host-name {
+            color: #aaaaaa;
+        }
+
+.preview-loader {
+    text-align: center;
+    padding: 15px;
+    border-top: dashed 1px #ccc;
 }

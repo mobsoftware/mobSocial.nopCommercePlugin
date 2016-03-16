@@ -1,14 +1,29 @@
-﻿<div class="user-info" ng-init="setPostImage(Post)">
-    <a href="{{Post.OwnerProfileUrl}}">
-        <img ng-src="{{Post.OwnerImageUrl}}" />
-        <span class="user-name">
-            {{Post.OwnerName}}
-        </span>
-        <span class="post-time">
-            <time am-time-ago="Post.DateCreated"></time>
-        </span>
-    </a>
+﻿<div class="url-preview">
+    <div class="image">
+        <img ng-src="{{Post.PostData.Images[0]}}" />
+    </div>
+    <div class="url-data">
+        <a href="{{Post.PostData.AbsoluteUrl}}">{{Post.PostData.Title}}</a>
+        <div class="description">{{Post.PostData.Description}}</div>
+        <div class="host-name">{{Post.PostData.HostName}}</div>
+    </div>
 </div>
-<div class="post-content">
-    {{Post.Message}}
-</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $scope = attachFunctionToTimelineScope("setupUrlPostData", function (Post) {
+          
+            var jsonValue = Post.AdditionalAttributeValue;
+            try {
+                jsonValue = JSON.parse(jsonValue);
+            } catch (e) {
+                return;
+            }
+            Post.PostData = jsonValue;
+
+        });
+        //add to filter function. this will execute when a url or status type type post is being shown
+        $scope.FilterFunction['url'] = function(Post) {
+            $scope.setupUrlPostData(Post);
+        }
+    });
+</script>

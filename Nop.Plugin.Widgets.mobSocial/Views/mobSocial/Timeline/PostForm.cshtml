@@ -7,6 +7,9 @@
     <div class="post-box">
         <textarea ng-model="PostData.Message" placeholder="What's on your mind"></textarea>
         <div class="post-preview-area">
+            <div ng-show="ProcessingPreview" class="preview-loader">
+                Please wait...
+            </div>
             <div ng-switch on="PostData.PostTypeName">
                 @foreach (var widget in Model)
                 {
@@ -18,7 +21,7 @@
         </div>
         <button ng-if="PostData.AdditionalAttributeValue" ng-click="ClearPostFormExtraData()">Clear</button>
     </div>
-    <div class="timeline-widgets" ng-if="!PostData.AdditionalAttributeValue">
+    <div class="timeline-widgets" ng-if="!PostData.AdditionalAttributeValue && !ProcessingPreview">
         @foreach (var widget in Model)
         {
             if (widget.WidgetRouteData == null)
