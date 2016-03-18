@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Nop.Core;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Web.Controllers;
@@ -11,10 +12,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     public class TimelineController : BasePublicController
     {
         private readonly ITimelineWidgetLoaderService _timelineWidgetLoaderService;
-
-        public TimelineController(ITimelineWidgetLoaderService timelineWidgetLoaderService)
+        private readonly IWorkContext _workContext;
+        public TimelineController(ITimelineWidgetLoaderService timelineWidgetLoaderService, 
+            IWorkContext workContext)
         {
             _timelineWidgetLoaderService = timelineWidgetLoaderService;
+            _workContext = workContext;
         }
 
         [ChildActionOnly]
@@ -39,21 +42,31 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/Timeline/PostForm", model);
         }
 
-        public ActionResult Timeline(int customerId = 0, int page = 1, int count = 15)
+        public ActionResult Timeline(int customerId = 0)
+        {
+            return View("mobSocial/Timeline/Timeline", customerId);
+        }
+
+       
+        #region Built-In Widgets
+
+        [ChildActionOnly]
+        public ActionResult TimelineWidget(int customerId = 0, int page = 1, int count = 15)
         {
             var model = new TimelinePublicModel() {
                 CustomerId = customerId,
                 Count = count,
-                Page = page
+                Page = page,
+                CanPost = _workContext.CurrentCustomer.Id == customerId || customerId == 0
             };
             var timelineWidgets = _timelineWidgetLoaderService.GetTimelineWidgetsAcrossApp();
             if (timelineWidgets.Any())
             {
                 foreach (var widget in timelineWidgets)
                 {
-                    if(!widget.IsActive())
+                    if (!widget.IsActive())
                         continue;
-                    
+
                     //display route
                     var route = widget.GetPostDisplayRoute();
                     model.TimelinePostViewModels.Add(new TimelinePublicModel.TimelinePostViewModel() {
@@ -64,12 +77,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     });
                 }
             }
-           
-            return View("mobSocial/Timeline/Timeline", model);
+            return View("mobSocial/Timeline/TimelineWidget", model);
         }
 
-       
-        #region Built-In Widgets
         public ActionResult VideoWidget()
         {
             return View("mobSocial/Timeline/Widget.Video");

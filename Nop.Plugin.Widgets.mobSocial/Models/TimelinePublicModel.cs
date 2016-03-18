@@ -19,6 +19,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public IList<TimelinePostViewModel> TimelinePostViewModels { get; set; }
 
+        public bool CanPost { get; set; }
+
         public class TimelinePostViewModel
         {
             public string PostTypeName { get; set; }

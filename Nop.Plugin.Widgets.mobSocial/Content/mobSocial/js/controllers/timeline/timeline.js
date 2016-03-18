@@ -76,11 +76,13 @@ app.controller("TimelineController", [
             //next page
             $scope.TimelinePostsRequestModel.Page++;
             
-            TimelineService.GetTimelinePosts($scope.TimelinePostsRequestModel, function(response) {
-                //prepend posts last to first
-                for (var i = response.length - 1; i > -1; i--) {
-                    $scope.TimelinePosts.unshift(response[i]);
+            TimelineService.GetTimelinePosts($scope.TimelinePostsRequestModel, function (response) {
+                if (response.length == 0) {
+                    $scope.NoMorePosts = true;
+                    return;
                 }
+                //append to existing list
+                $scope.TimelinePosts = $scope.TimelinePosts.concat(response);
             }, function() {
                 alert("An error occured while processing request");
             });
