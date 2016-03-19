@@ -1,0 +1,32 @@
+﻿<img ng-src="{{Post.CoverImageUrl}}" style="max-width: 100%" />
+<a href="{{Post.Url}}">{{Post.BattleName}}</a>
+<div></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $scope = attachFunctionToTimelineScope("setVideoBattleData", function (Post) {
+
+            var jsonValue = Post.AdditionalAttributeValue;
+            try {
+                jsonValue = JSON.parse(jsonValue);
+            } catch (e) {
+                return;
+            }
+            Post.Url = jsonValue.Url;
+            Post.BattleName = jsonValue.Name;
+            Post.Description = jsonValue.Description;
+
+            Post.CoverImageUrl = jsonValue.CoverImageUrl;
+        });
+        //add to filter function. this will execute when a picture type post is being shown
+        $scope.FilterFunction['videobattle-publish'] = function (Post) {
+            $scope.setVideoBattleData(Post);
+        }
+        $scope.FilterFunction['videobattle-complete'] = function (Post) {
+            $scope.setVideoBattleData(Post);
+        }
+        $scope.FilterFunction['videobattle-start'] = function (Post) {
+            $scope.setVideoBattleData(Post);
+        }
+    });
+</script>

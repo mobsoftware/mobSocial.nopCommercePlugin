@@ -91,10 +91,15 @@
                                 <div class="inputs">
                                     <label class="control-label">Sponsorship Cash Distribution Type</label>
                                     <select data-ng-model="VideoBattle.SponsoredCashDistributionType">
-                                        <option value="@((int)SponsoredCashDistributionType.TopWinnerGetsAll)">Top winner gets all</option>
-                                        <option value="@((int)SponsoredCashDistributionType.AllWinnersGetShare)">All winners get some share</option>
+                                        <option value="@((int) SponsoredCashDistributionType.TopWinnerGetsAll)">Top winner gets all</option>
+                                        <option value="@((int) SponsoredCashDistributionType.AllWinnersGetShare)">All winners get some share</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="inputs">
+                                <label class="control-label" for="autopost-timeline">Automatically post battle events to timeline</label>
+                                <input type="checkbox" name="AutomaticallyPostEventsToTimeline" id="autopost-timeline" data-ng-model="VideoBattle.AutomaticallyPostEventsToTimeline" />
+
                             </div>
                         </div>
                         <div class="buttons text-center">

@@ -116,6 +116,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             return View("mobSocial/Timeline/PostPreview.Url");
         }
+        public ActionResult VideoBattlePostDisplay()
+        {
+            return View("mobSocial/Timeline/PostDisplay.VideoBattle");
+        }
+        
+
         #endregion
     }
 }

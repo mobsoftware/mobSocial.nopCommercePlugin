@@ -13,6 +13,10 @@
             <div ng-switch on="PostData.PostTypeName">
                 @foreach (var widget in Model)
                 {
+                    if (widget.PostPreviewData == null)
+                    {
+                        continue;
+                    }
                     <div ng-switch-when="@widget.PostTypeName">
                         @Html.Action(widget.PostPreviewData.ActionName, widget.PostPreviewData.ControllerName, widget.PostPreviewData.RouteValues)
                     </div>

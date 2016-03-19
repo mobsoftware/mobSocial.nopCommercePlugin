@@ -63,6 +63,9 @@
     <Compile Include="Feature\Timeline\ITimelineWidget.cs" />
     <Compile Include="Feature\Timeline\Widgets\UrlWidget.cs" />
     <Compile Include="Feature\Timeline\Widgets\PictureWidget.cs" />
+    <Compile Include="Feature\Timeline\Widgets\VideoBattleCompleteWidget.cs" />
+    <Compile Include="Feature\Timeline\Widgets\VideoBattleStartWidget.cs" />
+    <Compile Include="Feature\Timeline\Widgets\VideoBattlePublishWidget.cs" />
     <Compile Include="Feature\Timeline\Widgets\VideoWidget.cs" />
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="mobSocialPlugin.cs" />
@@ -699,6 +702,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\Timeline\TimelineWidget.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\Timeline\PostDisplay.VideoBattle.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
