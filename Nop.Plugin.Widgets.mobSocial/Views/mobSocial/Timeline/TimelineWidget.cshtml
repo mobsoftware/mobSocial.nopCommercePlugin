@@ -16,7 +16,6 @@
 
 
     <div class="timeline-posts">
-        <h3>Recent Activity</h3>
         <div class="text-center" ng-if="TimelinePosts.length == 0">
             There are no recent posts to show
         </div>
@@ -25,20 +24,7 @@
                 @foreach (var widget in Model.TimelinePostViewModels)
                 {
                     <div ng-switch-when="@widget.PostTypeName" class="post post-type-@widget.PostTypeName" ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
-                        <div class="user-info">
-                            <a href="{{Post.OwnerProfileUrl}}">
-                                <img ng-src="{{Post.OwnerImageUrl}}"/>
-                                <span class="user-name">
-                                    {{Post.OwnerName}}
-                                </span>
-                                <span class="post-time">
-                                    <time am-time-ago="Post.DateCreated"></time>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="post-content">
-                            <div ng-bind-html="Post.Message | linky:'_blank'"></div>
-                        </div>
+                        
                         @Html.Action(widget.ActionName, widget.ControllerName, widget.RouteValues)
                         <a ng-if="Post.CanDelete" ng-click="DeletePost(Post.Id)" class="post-delete"><i class="fa fa-times"></i></a>
                     </div>
@@ -46,15 +32,15 @@
                 <div ng-switch-default>
                     <div class="post post-type-status" ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
                         <div class="user-info">
-                            <a href="{{Post.OwnerProfileUrl}}">
-                                <img ng-src="{{Post.OwnerImageUrl}}"/>
-                                <span class="user-name">
+                            <a href="{{Post.OwnerProfileUrl}}" class="user-name">
+                                <img ng-src="{{Post.OwnerImageUrl}}" />
+                                <span>
                                     {{Post.OwnerName}}
                                 </span>
-                                <span class="post-time">
-                                    <time am-time-ago="Post.DateCreated"></time>
-                                </span>
                             </a>
+                            <span class="post-time">
+                                <time am-time-ago="Post.DateCreated"></time>
+                            </span>
                         </div>
                         <div class="post-content">
                             <div ng-bind-html="Post.Message | linky:'_blank'"></div>

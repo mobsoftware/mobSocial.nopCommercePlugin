@@ -1,4 +1,18 @@
-﻿<img ng-src="{{Post.SmallImageUrl}}" style="max-width: 100%"/>
+﻿<div class="user-info">
+    <a href="{{Post.OwnerProfileUrl}}" class="user-name">
+        <img ng-src="{{Post.OwnerImageUrl}}" />
+        <span>
+            {{Post.OwnerName}}
+        </span>
+    </a><span class="activity-text"></span>
+    <span class="post-time">
+        <time am-time-ago="Post.DateCreated"></time>
+    </span>
+</div>
+<div class="post-content">
+    <div ng-bind-html="Post.Message | linky:'_blank'"></div>
+</div>
+<img ng-src="{{Post.SmallImageUrl}}" style="max-width: 100%"/>
 
 
 <script type="text/javascript">

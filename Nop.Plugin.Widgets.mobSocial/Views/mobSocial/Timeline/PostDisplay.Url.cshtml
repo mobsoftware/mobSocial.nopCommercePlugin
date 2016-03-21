@@ -1,9 +1,23 @@
-﻿<div class="url-preview">
+﻿<div class="user-info">
+    <a href="{{Post.OwnerProfileUrl}}" class="user-name">
+        <img ng-src="{{Post.OwnerImageUrl}}" />
+        <span>
+            {{Post.OwnerName}}
+        </span>
+    </a><span class="activity-text"></span>
+    <span class="post-time">
+        <time am-time-ago="Post.DateCreated"></time>
+    </span>
+</div>
+<div class="post-content">
+    <div ng-bind-html="Post.Message | linky:'_blank'"></div>
+</div>
+<div class="url-preview">
     <div class="image">
         <img ng-src="{{Post.PostData.Images[0]}}" />
     </div>
     <div class="url-data">
-        <a href="{{Post.PostData.AbsoluteUrl}}">{{Post.PostData.Title}}</a>
+        <a href="{{Post.PostData.AbsoluteUrl}}" target="_blank">{{Post.PostData.Title}}</a>
         <div class="description">{{Post.PostData.Description}}</div>
         <div class="host-name">{{Post.PostData.HostName}}</div>
     </div>

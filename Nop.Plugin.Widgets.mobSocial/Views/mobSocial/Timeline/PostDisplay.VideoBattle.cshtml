@@ -1,6 +1,47 @@
-﻿<img ng-src="{{Post.CoverImageUrl}}" style="max-width: 100%" />
-<a href="{{Post.Url}}">{{Post.BattleName}}</a>
-<div></div>
+﻿<div ng-switch on="Post.PostTypeName">
+    <div ng-switch-when="videobattle-publish">
+        <div class="user-info">
+            <a href="{{Post.OwnerProfileUrl}}" class="user-name">
+                <img ng-src="{{Post.OwnerImageUrl}}"/>
+                <span>
+                    {{Post.OwnerName}}
+                </span>
+            </a>
+            <span class="activity-text"> published a new <a href="{{Post.Url}}">battle</a></span>
+            <span class="post-time">
+                <time am-time-ago="Post.DateCreated"></time>
+            </span>
+        </div>
+        <div class="post-content">
+            <div ng-bind-html="Post.Message | linky:'_blank'"></div>
+        </div>
+    </div>
+    <div ng-switch-when="videobattle-start">
+        <div class="user-info">
+            <span class="activity-text">The <a href="{{Post.Url}}">battle</a> has started</span>
+        </div>
+    </div>
+    <div ng-switch-when="videobattle-complete">
+        <div class="user-info">
+            <span class="activity-text">The <a href="{{Post.Url}}">battle</a> has completed</span>
+        </div>
+    </div>
+</div>
+
+<div class="cover-image">
+    <a href="{{Post.Url}}">
+        <img ng-src="{{Post.CoverImageUrl}}" style="max-width: 100%" />
+    </a>
+</div>
+<div class="linked-entity-details">
+    <a href="{{Post.Url}}" class="title">
+        {{Post.BattleName}}
+    </a>
+    <div class="description">
+        {{Post.Description}}
+    </div>
+</div>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
