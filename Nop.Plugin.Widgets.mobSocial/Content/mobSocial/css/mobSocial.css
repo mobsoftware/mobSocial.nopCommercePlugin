@@ -1492,22 +1492,24 @@ span.payment-method.fa {
 .timeline .timeline-post {
     clear: both;
     margin: 15px 0;
-    padding: 15px;
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
-.timeline .timeline-post .post {
-    position: relative;
-}
-.timeline .timeline-post .post .post-delete {
-    position: absolute;
-    right: 0;
-    top: 0;
-    color: #cccccc;
-}
-.timeline .timeline-post .post .post-delete:hover {
-    color: #555;
-}
+    .timeline .timeline-post .post {
+        position: relative;
+    }
+
+        .timeline .timeline-post .post .post-delete {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: #cccccc;
+        }
+
+            .timeline .timeline-post .post .post-delete:hover {
+                color: #555;
+            }
+
 .timeline .timeline-widgets {
     float: left;
 }
@@ -1516,31 +1518,58 @@ span.payment-method.fa {
     float: right;
 }
 
-.timeline .user-info img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    float: left;
-    border: solid 1px #ccc;
-    padding: 8px;
+.timeline .user-info {
+    padding: 10px;
+    margin-bottom: 0px !important;
 }
 
-.timeline .user-info span.user-name {
-    display: block;
-    font-weight: bold;
-    padding-left: 100px;
-}
+    .timeline .user-info img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        float: left;
+        border: solid 1px #ccc;
+        padding: 8px;
+        margin-right: 15px;
+    }
 
-.timeline .user-info span.post-time {
-    padding-left: 100px;
-    color: #aaa;
-    font-size: 15px;
-    display: block;
+    .timeline .user-info span.user-name {
+        display: block;
+        font-weight: bold;
+        padding-left: 100px;
+    }
+
+    .timeline .user-info span.post-time {
+        color: #aaa;
+        display: block;
+    }
+
+.timeline .timeline-post span.activity-text {
+    color: #777;
 }
 
 .timeline .timeline-post .post-content {
-    padding-left: 100px;
-    min-height: 50px;
+    min-height: 35px;
+}
+
+.timeline .timeline-post .linked-entity-details .title {
+    font-size: 20px;
+    display: block;
+    padding: 10px 0 0 15px;
+    text-align: left;
+}
+
+.timeline .timeline-post .linked-entity-details .description {
+    padding: 0 15px 15px 15px;
+}
+
+.timeline .load-more {
+    color: #aaa;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    border: solid 1px #ccc;
+    margin-bottom: 15px;
 }
 
 .url-preview .image {
@@ -1556,8 +1585,7 @@ span.payment-method.fa {
 
 .url-preview {
     min-height: 150px;
-    margin: 10px 0;
-    padding-top: 10px;
+    padding: 10px;
     border-top: solid 1px #ddd;
 }
 
