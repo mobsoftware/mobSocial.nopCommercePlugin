@@ -84,6 +84,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 listImageUrls.Insert(0, ogImageUrl);
 
             var uriParsed = new Uri(url);
+            //now it's quite possible that image urls are relative, let's convert them to absolute ones
+            for (var index = 0; index < listImageUrls.Count; index++)
+            {
+                var u = listImageUrls[index];
+
+                //if url starts with a /, it's a relative one, we'll append the host name to make it absolute
+                if (u.StartsWith("/"))
+                {
+                    u = uriParsed.Scheme + @"://" + uriParsed.Host + u;
+                    listImageUrls[index] = u;
+                }
+            }
+            
             
             return Json(new {
                 Success = true,
