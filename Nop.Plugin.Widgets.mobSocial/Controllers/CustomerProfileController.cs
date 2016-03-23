@@ -67,8 +67,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult CustomerProfile(int customerId)
+        public ActionResult CustomerProfile(ProfileIndexModel model)
         {
+            var customerId = model.CustomerProfileId;
             //increment view count
             _customerProfileViewService.IncrementViewCount(customerId);
 
@@ -89,7 +90,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 SeName = customerSeName,
                 ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customerSeName }),
                 ProfileImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, true),
-                CoverImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(AdditionalCustomerAttributeNames.CoverImageId), 0, false)
+                CoverImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(AdditionalCustomerAttributeNames.CoverImageId)),
+                ProfileIndexModel = model
             };
 
             if (_workContext.CurrentCustomer.Id == customerId)
