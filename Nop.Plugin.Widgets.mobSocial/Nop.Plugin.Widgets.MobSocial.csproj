@@ -60,6 +60,7 @@
     <Compile Include="Controllers\SkateMoveController.cs" />
     <Compile Include="Controllers\mobSocialController.cs" />
     <Compile Include="DependencyRegistrar.cs" />
+    <Compile Include="Feature\FeatureToggle.cs" />
     <Compile Include="Feature\Timeline\ITimelineWidget.cs" />
     <Compile Include="Feature\Timeline\Widgets\UrlWidget.cs" />
     <Compile Include="Feature\Timeline\Widgets\PictureWidget.cs" />
@@ -83,14 +84,20 @@
     <Compile Include="Services\TimelineWidgetLoaderService.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
     <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />
+    <None Include="Content\mobSocial\css\styles.css.map">
+      <DependentUpon>styles.css</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\mobSocial\css\styles.scss" />
     <None Include="Scripts\jquery-2.2.0.min.map" />
-    <None Include="Themes\MobSocialDefault\Views\Web.config" />
-    <None Include="Themes\mobSocial\Views\Shared\Head.cshtml" />
-    <None Include="Themes\mobSocial\Views\Shared\_Root.Head.cshtml" />
     <Content Include="Content\Libraries\angular-moment.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Libraries\moment.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\css\styles.min.css">
+      <DependentUpon>styles.css</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\common\mobsocial-interceptor.js">
@@ -132,12 +139,6 @@
     <Content Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
-    <Content Include="Themes\MobSocialDefault\Views\MobAdsPublic\MobAds.Public.Views.MobAds.AdDisplay.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Themes\MobSocialDefault\Views\MobAdsPublic\MobAds.Public.Views.MobAds.AdLoader.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\mobSocial\Friends\FriendBlock.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -303,7 +304,9 @@
     <Content Include="Content\mobSocial\js\controllers\video-battles\video-battles.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\css\styles.css" />
+    <Content Include="Content\mobSocial\css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\css\styles.rtl.css" />
     <Content Include="Content\Libraries\videogular\angular-sanitize.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -368,7 +371,6 @@
     <Content Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
-    <Content Include="Themes\mobSocial\Content\images\ajax-loader-small.gif" />
     <Content Include="Uploads\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -453,16 +455,6 @@
     <Content Include="Content\Libraries\jquery-form\jquery.form.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\mobSocial\css\mobSocial-custom.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\mobSocial.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\search-box-custom.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Themes\MobSocialDefault\Installation.txt" />
     <None Include="Content\Libraries\angular-file-upload-1.1.5\.jshintrc" />
     <None Include="Content\Libraries\angular-file-upload-1.1.5\angular-file-upload.min.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -507,12 +499,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Libraries\fonts\FontAwesome.otf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Themes\MobSocialDefault\theme.config" />
-    <Content Include="Themes\MobSocialDefault\Views\Catalog\SearchBox.cshtml">
-      <SubType>
-      </SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\EventPage\Search.js">
@@ -561,12 +547,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\_FeaturedVideosBlock.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Themes\MobSocialDefault\Views\Profile\Index.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Themes\MobSocialDefault\Views\Profile\Info.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="web.config">

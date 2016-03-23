@@ -1,25 +1,25 @@
 ﻿@using Nop.Plugin.WebApi.MobSocial.Enums
 <div ng-switch on="FriendStatus">
     <div ng-switch-when="@((int) FriendStatus.None)">
-        <a class="button-primary" ng-click="UpdateFriendship('add')">
+        <a class="button-primary button" ng-click="UpdateFriendship('add')">
             Add Friend
         </a>
     </div>
     <div ng-switch-when="@((int) FriendStatus.FriendRequestSent)">
-        <a class="button-primary" ng-click="UpdateFriendship('decline')">
+        <a class="button-primary button" ng-click="UpdateFriendship('decline')">
             Cancel
         </a>
     </div>
     <div ng-switch-when="@((int) FriendStatus.Friends)">
-        <a class="button-primary" ng-click="UpdateFriendship('decline')">
-            Decline
+        <a class="button-primary button" ng-click="UpdateFriendship('decline')">
+            Cancel Friendship
         </a>
     </div>
     <div ng-switch-when="@((int) FriendStatus.NeedsConfirmed)">
-        <a class="button-primary" ng-click="UpdateFriendship('confirm')">
+        <a class="button-primary button" ng-click="UpdateFriendship('confirm')">
             Accept
         </a>
-        <a class="button-primary" ng-click="UpdateFriendship('decline')">
+        <a class="button-primary button" ng-click="UpdateFriendship('decline')">
             Decline
         </a>
     </div>

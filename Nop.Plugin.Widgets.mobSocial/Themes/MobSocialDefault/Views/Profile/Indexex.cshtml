@@ -1,0 +1,205 @@
+﻿@model ProfileIndexModel
+@using Nop.Web.Models.Profile;
+@using Nop.Core.Infrastructure
+@using Nop.Web.Framework.UI
+@using Nop.Web.Framework.Themes
+@using Nop.Plugin.Widgets.MobSocial.Feature;
+@using Nop.Plugin.WebApi.MobSocial.Models;
+@using Nop.Services.Configuration;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AddTitleParts(Model.ProfileTitle);
+    Html.AppendMetaKeywordParts(Model.ProfileTitle);
+    Html.AppendMetaDescriptionParts(Model.ProfileTitle);
+
+    //Html.AddScriptParts("http://connect.facebook.net/en_US/all.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/profile-pages/my-health.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/profile-pages/profile.service.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/profile-pages/customer-profile.js");
+    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+
+    if (FeatureToggle.FavoriteSongEnabled)
+    {
+        Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/profile-pages/favorite-song-controller.js");
+        Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-list.directive.js");
+        Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/song-service.js");
+        Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/autocomplete.directive.js");
+    }
+
+    if (FeatureToggle.MobLiveStreamEnabled)
+    {
+        Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/mob-live-video.directive.js");
+        Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/mob-video.js");
+    }
+
+    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+
+    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
+
+    var settingService = EngineContext.Current.Resolve<ISettingService>();
+    var mobSocialSettings = settingService.LoadSetting<mobSocialSettings>();
+    var facebookWebsiteAppId = mobSocialSettings.FacebookWebsiteAppId;
+
+
+}
+<script type="text/javascript">
+    $(function () {
+        if (typeof FB !== 'undefined') {
+            FB.init({
+                appId: '@(facebookWebsiteAppId)',
+                frictionlessRequests: true
+            });
+        }
+    });
+
+</script>
+<div id="fb-root"></div>
+<div class="page profile-page" ng-controller="customerProfileController as custProf" model='{ "id": @Model.CustomerProfileId }' ng-model="customerProfile">
+    <div class="clear"></div>
+    <div class="profile-left">
+
+
+        @Html.Action("ProfilePicture", "MobSocial", new { customerId = Model.CustomerProfileId })
+        <div><span style="text-align: right;">{{(customerProfile.Views > 1) ? customerProfile.Views + ' views' : customerProfile.Views + ' view'}}</span></div>
+        <br />
+        @Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })
+        <br />
+        <br />
+        <div class="send-pm-box"><a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a></div>
+
+        <div class="profile-stat">
+            <div class="send-pm-box">&nbsp;<i class="fa fa-envelope"></i> @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerProfileId }, new { @class = "friend-button" })</div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+
+        @Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
+        @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
+        *@
+        <br />
+        @*        <div><b>Skate Moves</b></div>*@
+        @if (FeatureToggle.FavoriteSongEnabled)
+        {
+            <div>
+                <song-list song-list-name="Favorite Skate Songs" customer="customerProfile"></song-list>
+            </div>
+        }
+        <br />
+
+
+    </div>
+    <div class="profile-center-content">
+        <h2>@Model.ProfileTitle</h2>
+        <div class="page-body">
+            @{
+                var selectPostsTab = String.Empty;
+    /*if (Model.ForumsEnabled && Model.PagingPosts)
+    {
+        selectPostsTab = ".tabs('select', 1)";
+    }*/
+            }
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#tabs").easyResponsiveTabs();
+                });
+            </script>
+            <div id="tabs">
+
+                <ul class="resp-tabs-list">
+                    @if (FeatureToggle.TimeLinePostsEnabled)
+                     {
+                        <li><i class="fa fa-clock-o"></i> Timeline</li>
+                    }
+                    <li><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</li>
+                    <li><i class="fa fa-picture-o"></i> Pictures</li>
+                    <li><i class="fa fa-video-camera"></i> Videos</li>
+                    <li><i class="fa fa-group"></i> Friends</li>
+                    @if (Model.ForumsEnabled)
+                    {
+                        <li><i class="fa fa-list"></i> @T("Profile.LatestPosts")</li>
+                    }
+                </ul>
+                
+                
+                <div class="resp-tabs-container">
+                    @if (FeatureToggle.TimeLinePostsEnabled)
+                     {
+                        <div>
+                            @if (FeatureToggle.MobLiveStreamEnabled)
+                            {
+                                <mob-live-video customer="customerProfile"></mob-live-video>
+                            }
+                            @if (FeatureToggle.TimeLinePostsEnabled)
+                            {
+                                <div style="border: 1px solid #e4e4e4; height: 200px;" width:400px;">
+                                    <input type="text" class="status-box" contenteditable="true" ng-model="statusText" style="border-radius: 3px; width:90%; height:70px;" placeholder="Whats new?" /><br />
+                                    <div style="width:100%; text-align: right">
+                                        <button ng-click="postStatusToTimeline">Post</button>
+                                    </div>
+                                </div>
+                            }
+                         </div>
+                    }
+                    <div>
+                        @Html.Action("info", new { customerProfileId = Model.CustomerProfileId })
+                    </div>
+                    <div>
+                        @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerProfileId })
+                    </div>
+                    <div>
+                    </div>
+                    <div>
+                        @Html.Action("CustomerFriends", "MobSocial", new { customerId = Model.CustomerProfileId })
+                    </div>
+                    @if (Model.ForumsEnabled)
+                    {
+                        <div>
+                            @Html.Action("posts", new { customerProfileId = Model.CustomerProfileId, page = Model.PostsPage })
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="profile-right">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        
+        <div class="profile-right ad">
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:200px;height:200px"
+                 data-ad-client="ca-pub-8103674550339337"
+                 data-ad-slot="7959116206"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+         </div>
+
+        <div class="profile-right ad">
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:200px;height:200px"
+                 data-ad-client="ca-pub-8103674550339337"
+                 data-ad-slot="7959116206"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <div class="profile-right ad">
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:200px;height:200px"
+                 data-ad-client="ca-pub-8103674550339337"
+                 data-ad-slot="7959116206"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+
+        </div>
+
+</div>
