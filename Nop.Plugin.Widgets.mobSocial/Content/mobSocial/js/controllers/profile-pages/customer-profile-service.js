@@ -9,7 +9,7 @@ app.service("CustomerProfileService", ["globalApiEndPoint", "WebClientService", 
     }
 
     this.SetPictureAs = function (uploadType, pictureId, success, error) {
-        WebClientService.post(apiEndPoint + "/setpictureas/" + uploadType + "/" + pictureId, null, success, error);
+        WebClientService.post(apiEndPoint + "/setpictureas", {uploadType: uploadType, pictureId: pictureId}, success, error);
     }
 
 }]);
