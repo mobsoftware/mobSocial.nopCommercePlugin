@@ -1,0 +1,20 @@
+﻿@{
+    Layout = null;
+    var title = "{{VideoBattle.Name}}";
+    var url = "{{VideoBattle.VideoBattleUrl}}";
+    var image = "{{VideoBattle.VideoBattleFeaturedImageUrl}}";
+}
+SHARE: <a class="facebook" data-href="http://www.facebook.com/sharer/sharer.php?u=@(url)&title=@(title)"><i class="fa fa-facebook"></i></a>
+<a class="gplus" data-href="https://plus.google.com/share?url=@(url)"><i class="fa fa-google-plus"></i></a>
+<a class="twitter" data-href="http://twitter.com/intent/tweet?status=@title+@url"><i class="fa fa-twitter"></i></a>
+<a class="pinterest" data-href="http://pinterest.com/pin/create/bookmarklet/?media=@image&url=@url&is_video=false&description=@title"><i class="fa fa-pinterest-p"></i></a>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".social-links a").click(function() {
+            var href = $(this).data("href");
+            window.open(href,null,
+"height=400,width=600,status=yes,toolbar=no,menubar=no,location=no");
+        });
+    })
+</script>

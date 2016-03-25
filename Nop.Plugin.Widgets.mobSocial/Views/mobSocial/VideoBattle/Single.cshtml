@@ -20,160 +20,278 @@
     var mobSocialSettings = EngineContext.Current.Resolve<Nop.Plugin.Widgets.MobSocial.mobSocialSettings>();
     var json = Json.Encode(Model);
     var videouploadUrl = "/api/videobattles/uploadvideo/";
-   
+
     var currentCustomer = EngineContext.Current.Resolve<Nop.Core.IWorkContext>().CurrentCustomer;
 }
 @Html.Widget("video_inline")
 
 <div class="battle-participants" ng-controller="VideoBattlePageController as controller" ng-init="init(@json)">
+    <div ng-show="ShowPrizeDetails" class="fixed-popup default-prizes-popup">
+        <div class="overlay"></div>
+        <div class="prizes content">
+            <div ng-show="Prizes.length == 0">
+                <h3>No prizes have been added so far</h3>
+            </div>
+            <div ng-repeat="prize in Prizes" class="prize-block text-center">
+                <h3 class="winner-position">
+                    {{prize.WinningPosition}}
+                </h3>
+                <h2 class="prize-type">
+                    {{prize.PrizeType}}
+                </h2>
+                <h2 class="prize-value">
+                    {{prize.FormattedPrize}}
+                </h2>
 
-    <h1 class="battle-page-heading">
+            </div>
+            <h4 class="text-center">* - Sponsored Prizes</h4>
+            <div ng-if="!VideoBattle.IsParticipant && !VideoBattle.IsSponsor">
+                @if (!currentCustomer.IsRegistered())
+                {
+                    <div class="text-center" style="margin: 5px 0">
+                        <a class="become-a-sponsor c2a-maroon" ng-click="login(VideoBattle.VideoBattleUrl)">BECOME A SPONSOR</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center" style="margin: 5px 0">
+                        <a class="become-a-sponsor c2a-maroon" ng-click="HidePrizeDetails()">BECOME A SPONSOR</a>
+                    </div>
+                }
+            </div>
 
-        <span ng-switch on="VideoBattle.VideoBattleStatus">
-            <span ng-switch-when="@((int) VideoBattleStatus.Pending)"><i class="fa fa-clock-o" title="The battle is open to join"></i></span>
-            <span ng-switch-when="@((int) VideoBattleStatus.Locked)"><i class="fa fa-lock" title="The battle is locked"></i></span>
-            <span ng-switch-when="@((int) VideoBattleStatus.Open)"><i class="fa fa-thumbs-o-up" title="The battle is open to vote. Watch all videos to vote."></i></span>
-            <span ng-switch-when="@((int) VideoBattleStatus.Closed)"><i class="fa  fa-flag-checkered" title="The battle is closed now."></i></span>
-            <span ng-switch-when="@((int) VideoBattleStatus.Complete)"><i class="fa fa-trophy" title="The battle is complete and we have a winner"></i></span>
-        </span>
-        {{VideoBattle.Name}} <follow-button class="follow-button" entityid="{{VideoBattle.Id}}" entityname="videobattle" followstatus="VideoBattle.IsFollowing"></follow-button>
-    </h1>
-    <div ng-if="VideoBattle.IsEditable && VideoBattle.VideoBattleStatus == @((int)VideoBattleStatus.Pending)">
-        <div ng-controller="VideoBattlesPageController" class="text-center">
-            <button ng-click="EditVideoBattle(VideoBattle.Id)"><i class="fa fa-pencil"></i> Edit</button>
-            <button ng-click="DeleteVideoBattle(VideoBattle.Id)"><i class="fa fa-times"></i> Delete</button>
-        </div>
-    </div>
-    <div ng-if="VideoBattle.IsSponsorshipSupported">
-        <div ng-if="VideoBattle.IsSponsor">
-            Your sponsorship status is <span class="status">{{VideoBattle.CurrentSponsor.SponsorshipStatusName}} </span>
-            <a href="{{VideoBattle.SponsorDashboardUrl}}" class="button"><i class="fa fa-dashboard"></i>Sponsors Dashboard</a>
-            <a ng-show="SponsorshipAllowed" ng-click="BecomeSponsor(VideoBattle.Id)" class="button"><i class="fa fa-plus"></i>Increase Sponsorship Amount</a>
-        </div>
-        <div ng-if="VideoBattle.IsEditable && @currentCustomer.Id == VideoBattle.Participants[0].Id">
-            @*Battle owner*@
-            <a href="{{VideoBattle.SponsorDashboardUrl}}" class="button"><i class="fa fa-dashboard"></i>Sponsors Dashboard</a>
-        </div>
-        <div ng-if="SponsorshipAllowed && !VideoBattle.IsParticipant && !VideoBattle.IsSponsor">
-            @if (!currentCustomer.IsRegistered())
-            {
-                <input type="button" onclick="window.location.href ='/login?ReturnUrl={{VideoBattle.VideoBattleUrl}}'" value="SPONSOR THIS BATTLE" />
-            }
-            else
-            {
-                <h4>SPONSOR THIS BATTLE</h4>
-                <input type="button" value="CASH WITH OPTIONAL PRODUCTS" ng-click="BecomeSponsor(VideoBattle.Id)" />
 
-                <input type="button" value="PRODUCTS ONLY" ng-click="BecomeSponsor(VideoBattle.Id, true)" />
-            }
-        </div>
-    </div>
-    <!--sponsors-->
-    <!--banner display area-->
-    <div class="text-center sponsor-display">
-        <div ng-repeat="Sponsor in VideoBattle.Sponsors">
-            <a href="{{Sponsor.SponsorData.TargetUrl}}" target="_blank" class="single-sponsor" ng-hide="Sponsor.SponsorData.PictureId == 0">
-                <span class="sponsor-title">Sponsor</span>
-                <img ng-src="{{Sponsor.SponsorData.PictureUrl}}" />
+
+            <a class="close-popup" ng-click="HidePrizeDetails()">
+                <i class="fa fa-times"></i>
             </a>
+            <script type="text/javascript">
+                $(".close-popup,.become-a-sponsor").click(function () {
+                    $("body").removeClass("no-scroll");
+                })
+            </script>
+
         </div>
-    </div>
-    <!--end of sponsors-->
-    <div class="battle-timer" ng-show="VideoBattle.timerSettings.totalSeconds > 0">
-        {{VideoBattle.timerSettings.battleStatusString}}
 
-        <timer ng-if="VideoBattle.timerSettings.totalSeconds" countdown="VideoBattle.timerSettings.totalSeconds"  interval="1000">
-            {{days > 0 ? days + ' day' + (days > 1 ? "s" : "") : ""}}
-            {{hours > 0 ? hours + ' hour' + (hours > 1 ? "s" : "") : ""}}
-            {{minutes > 0 ? minutes + ' minute' + (minutes > 1 ? "s" : "") : ""}}
-            {{seconds > 0 ? seconds + ' second' + (seconds > 1 ? "s" : "") : ""}}
-        </timer>
     </div>
 
-    <div class="battle-description">
-        <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
-        <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open)">
-            <br />
-            <br />
-            <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
-        </div>
-    </div>
-    <!--autoplay checkbox-->
-    <div class="autoplay-video-battle-area" ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending)">
-        <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay" /> Autoplay Videos</label> &middot; <a href="/VideoBattle/{{VideoBattle.SeName}}//@((int)VideoViewMode.TheaterMode)"><i class="fa fa-television"></i> Enter Theater Mode</a>
-    </div>
+<div class="cover-area">
+    <div class="cover">
+        <div class="bgcover">
+            <img ng-src="{{VideoBattle.TemporaryCoverImageUrl || VideoBattle.VideoBattleCoverImageUrl }}"/>
+            <div class="quick-info">
+                <div class="battle-info" ng-show="VideoBattle.timerSettings.totalSeconds > 0">
+                    <h2>
+                        {{VideoBattle.Name}}
+                        <span class="battle-status-name" ng-switch on="VideoBattle.VideoBattleStatus">
+                                <span ng-switch-when="@((int) VideoBattleStatus.Pending)">Open to Join</span>
+                                <span ng-switch-when="@((int) VideoBattleStatus.Locked)">Locked</span>
+                                <span ng-switch-when="@((int) VideoBattleStatus.Open)">Open</span>
+                                <span ng-switch-when="@((int) VideoBattleStatus.Closed)">Closed</span>
+                                <span ng-switch-when="@((int) VideoBattleStatus.Complete)">Complete</span>
+                            </span>
+                    </h2>
+                    <h4>
+                        <div>Voting {{VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) ? "Starts in " : "Ends in"}}</div>
+                    </h4>
+                    <div class="timer">
+                        <i class="fa fa-clock-o"></i>
 
-    <div class="text-center join-battle-area" ng-if="VideoBattle.VideoBattleType != @((int)VideoBattleType.InviteOnly) && VideoBattle.VideoBattleStatus == @((int)VideoBattleStatus.Pending) && !VideoBattle.IsParticipant && !VideoBattle.IsEditable">
-        <div ng-if="VideoBattle.IsUserLoggedIn && !VideoBattle.IsSponsor">
-            <div ng-if="VideoBattle.VideoBattleType == @((int) VideoBattleType.Open)">
-                <div ng-show="joinBattleProcessed">
-                    <i class="fa fa-check-circle"></i> You have successfully joined the battle. <a onclick="window.location.reload()">Refresh</a> page to upload video
+                        <timer ng-if="VideoBattle.timerSettings.totalSeconds" countdown="VideoBattle.timerSettings.totalSeconds" interval="1000">
+                            {{days > 0 ? days + ' day' + (days > 1 ? "s" : "") : ""}}
+                            {{hours > 0 ? hours + ' hour' + (hours > 1 ? "s" : "") : ""}}
+                            {{minutes > 0 ? minutes + ' minute' + (minutes > 1 ? "s" : "") : ""}}
+                            {{seconds > 0 ? seconds + ' second' + (seconds > 1 ? "s" : "") : ""}}
+                        </timer>
+                    </div>
                 </div>
-                <a class="button-primary button-1 c2a-maroon" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Join Battle</a>
-            </div>
-            <div ng-if="VideoBattle.VideoBattleType != @((int) VideoBattleType.Open)">
-                <div ng-show="joinBattleProcessed">
-                    <i class="fa fa-check-circle"></i> You have successfully signed up for the battle. <a onclick="window.location.reload()">Refresh</a> page to see your approval status
+                <div class="battle-prize">
+                    <h3>Prizes</h3>
+                    <h2>
+                        <a id="prizes-block-link" ng-click="GetPrizeDetails(VideoBattle.Id)">
+                            {{VideoBattle.ConsolidatedPrizesDisplay}}
+                        </a>
+                    </h2>
+
+                    <script type="text/javascript">
+                        $("#prizes-block-link").click(function() {
+                            $("body").addClass("no-scroll");
+                        })
+                    </script>
+
+
                 </div>
-                <a class="button-primary button-1 c2a-maroon" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Signup For Battle</a>
-            </div>
-        </div>
-        <div ng-if="!VideoBattle.IsUserLoggedIn">
-            <a class="button-primary button c2a-maroon" href="/login?ReturnUrl={{VideoBattle.VideoBattleUrl}}">Join Battle</a>
-        </div>
+                <div class="cover-buttons">
+                    @Html.Partial("mobSocial/VideoBattle/_SocialShareLinks")
+                    <div class="clear clearfix"></div>
+                    <div ng-if="VideoBattle.IsEditable && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending)">
+                        <div ng-controller="VideoBattlesPageController" class="text-left">
 
-    </div>
+                            <a class="button edit-button" ng-click="EditVideoBattle(VideoBattle.Id)"><i class="fa fa-pencil"></i> Edit</a>
+                            <a class="button edit-button" ng-click="DeleteVideoBattle(VideoBattle.Id)"><i class="fa fa-times"></i> Delete</a>
 
-    <div ng-if="ShowInvitationBox">
-        <div class="participant-box pending invitation-box">
-
-            <div class="participant-name">Invite to {{IsVoterInvite ? "Vote" : "Battle"}}</div>
-            <div class="video-placeholder">
-                <i class="fa fa-plus-circle big"></i>
-                <angucomplete-alt id="customer-autocomplete"
-                                  placeholder="Type a name or an email"
-                                  selected-object="CustomerSelected"
-                                  remote-api-handler="searchAPI"
-                                  minlength="3"
-                                  pause="300"
-                                  image-field="PictureUrl"
-                                  title-field="DisplayName"
-                                  input-class="form-control form-control-small"></angucomplete-alt>
-                <div class="challengees-to-invite" ng-show="challengees.length > 0">
-                    <div ng-repeat="c in challengees">
-                        <div class="selected-receiver">
-                            {{c.DisplayName}}
-                            <a ng-click="RemoveChallengee(c.Id)"><i class="fa fa-times"></i></a>
                         </div>
+                    </div>
+                    <follow-button ng-if="!VideoBattle.IsEditable" class="follow-button button" entityid="{{VideoBattle.Id}}" entityname="videobattle" followstatus="VideoBattle.IsFollowing"></follow-button>
+
+                </div>
+
+            </div>
+        </div>
+        <div ng-if="VideoBattle.IsEditable">
+            <div class="cover-upload-area">
+                @{
+                    var coveruploadUrl = "/api/videobattles/uploadpicture";
+                }
+                <div ng-show="!VideoBattle.TemporaryCover">
+                    <a file-upload-button
+                       class="upload-button"
+                       id="coverimage_{{VideoBattle.Id}}"
+                       fieldname="CoverFile"
+                       extradata='{"BattleId": {{VideoBattle.Id}}, "FieldName": "CoverFile"}'
+                       uploadtype="image"
+                       onsuccessitem="UploadCoverSuccess"
+                       url="@coveruploadUrl">
+                        <i class="fa fa-camera"></i>
+                    </a>
+                </div>
+                <div ng-show="VideoBattle.TemporaryCover">
+                    <div class="keep-cover">
+                        <div class="title">Do you wish to keep or discard this cover?</div>
+                        <a ng-click="SetPictureAsCover(VideoBattle.Id, VideoBattle.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
+                        <a ng-click="SetPictureAsCover(VideoBattle.Id, VideoBattle.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
                     </div>
                 </div>
 
-                <div ng-if="invited" class="text-center">
-                    Successfully invited selected users to {{IsVoterInvite ? "vote on this battle" : "battle"}} <br /> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
-                </div>
-                <div class="clearfix clear"></div><br />
-                <button ng-if="!processing && challengees.length > 0" ng-click="IsVoterInvite ? InviteVoters() : InviteParticipants()">Invite Now</button>
-                @if (mobSocialSettings.EnableFacebookInvite)
-                {
-                    <div>or send invitation on Facebook</div>
-                    <div class="fb-send" data-href="{{VideoBattle.VideoBattleUrl}}"></div>
-                }
-
             </div>
         </div>
     </div>
+</div>
 
-    <span ng-repeat="participant in VisibleParticipants">
-        @Html.Partial("mobSocial/VideoBattle/ParticipantBox")
-    </span>
-    <div ng-show="VisibleParticipants.length < VideoBattle.Participants.length" class="pagination-load-more">
-        <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
+
+<div ng-if="VideoBattle.IsSponsorshipSupported" class="text-center">
+    <div ng-if="VideoBattle.IsSponsor">
+        Your sponsorship status is <span class="status">{{VideoBattle.CurrentSponsor.SponsorshipStatusName}} </span>
+        <a href="{{VideoBattle.SponsorDashboardUrl}}" class="button"><i class="fa fa-dashboard"></i>Sponsors Dashboard</a>
+        <a ng-show="SponsorshipAllowed" ng-click="BecomeSponsor(VideoBattle.Id)" class="button"><i class="fa fa-plus"></i>Increase Sponsorship Amount</a>
     </div>
+    <div ng-if="VideoBattle.IsEditable && @currentCustomer.Id == VideoBattle.Participants[0].Id">
+        @*Battle owner*@
+        <a href="{{VideoBattle.SponsorDashboardUrl}}" class="button"><i class="fa fa-dashboard"></i>Sponsors Dashboard</a>
+    </div>
+    <div ng-if="SponsorshipAllowed && !VideoBattle.IsParticipant && !VideoBattle.IsSponsor">
+        @if (!currentCustomer.IsRegistered())
+        {
+            <input type="button" ng-click="login(VideoBattle.VideoBattleUrl)" value="SPONSOR THIS BATTLE" />
+        }
+        else
+        {
+            <h4>SPONSOR THIS BATTLE</h4>
+            <input type="button" value="CASH WITH OPTIONAL PRODUCTS" ng-click="BecomeSponsor(VideoBattle.Id)"/>
 
-    <div ng-if="VideoBattle.IsVotingPayable || VideoBattle.IsSponsorshipSupported">
-        <div id="payment-form-popup-area" ng-show="PurchasePass.ShowPaymentPopup">
+            <input type="button" value="PRODUCTS ONLY" ng-click="BecomeSponsor(VideoBattle.Id, true)"/>
+        }
+    </div>
+</div>
+<!--sponsors-->
+<!--banner display area-->
+<div class="text-center sponsor-display-default">
+    <div ng-repeat="Sponsor in VideoBattle.Sponsors" class="sponsor-display-block">
+        <span class="sponsor-title">Sponsor</span>
+        <a href="{{Sponsor.SponsorData.TargetUrl}}" target="_blank" class="single-sponsor" ng-hide="Sponsor.SponsorData.PictureId == 0">            
+            <img ng-src="{{Sponsor.SponsorData.PictureUrl}}"/>
+        </a>
+    </div>
+</div>
+<!--end of sponsors-->
+
+<div class="battle-description">
+    <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
+    <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open)">
+        <br/>
+        <br/>
+        <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
+    </div>
+</div>
+<!--autoplay checkbox-->
+<div class="autoplay-video-battle-area" ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending)">
+    <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="/VideoBattle/{{VideoBattle.SeName}}//@((int) VideoViewMode.TheaterMode)"><i class="fa fa-television"></i> Enter Theater Mode</a>
+</div>
+
+<div class="text-center join-battle-area" ng-if="VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) && !VideoBattle.IsParticipant && !VideoBattle.IsEditable">
+    <div ng-if="VideoBattle.IsUserLoggedIn && !VideoBattle.IsSponsor">
+        <div ng-if="VideoBattle.VideoBattleType == @((int) VideoBattleType.Open)">
+            <div ng-show="joinBattleProcessed">
+                <i class="fa fa-check-circle"></i> You have successfully joined the battle. <a onclick="window.location.reload()">Refresh</a> page to upload video
+            </div>
+            <a class="button-primary button-1 c2a-maroon" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Join Battle</a>
+        </div>
+        <div ng-if="VideoBattle.VideoBattleType != @((int) VideoBattleType.Open)">
+            <div ng-show="joinBattleProcessed">
+                <i class="fa fa-check-circle"></i> You have successfully signed up for the battle. <a onclick="window.location.reload()">Refresh</a> page to see your approval status
+            </div>
+            <a class="button-primary button-1 c2a-maroon" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Signup For Battle</a>
         </div>
     </div>
+    <div ng-if="!VideoBattle.IsUserLoggedIn">
+        <a class="button-primary button c2a-maroon" ng-click="login(VideoBattle.VideoBattleUrl)">Join Battle</a>
+    </div>
+
+</div>
+
+<div ng-if="ShowInvitationBox">
+    <div class="participant-box pending invitation-box">
+
+        <div class="participant-name">Invite to {{IsVoterInvite ? "Vote" : "Battle"}}</div>
+        <div class="video-placeholder">
+            <i class="fa fa-plus-circle big"></i>
+            <angucomplete-alt id="customer-autocomplete"
+                              placeholder="Type a name or an email"
+                              selected-object="CustomerSelected"
+                              remote-api-handler="searchAPI"
+                              minlength="3"
+                              pause="300"
+                              image-field="PictureUrl"
+                              title-field="DisplayName"
+                              input-class="form-control form-control-small"></angucomplete-alt>
+            <div class="challengees-to-invite" ng-show="challengees.length > 0">
+                <div ng-repeat="c in challengees">
+                    <div class="selected-receiver">
+                        {{c.DisplayName}}
+                        <a ng-click="RemoveChallengee(c.Id)"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="invited" class="text-center">
+                Successfully invited selected users to this battle.<br/> <a href="" onclick="window.location.reload()">Refresh</a> page to see status.
+            </div>
+            <div class="clearfix clear"></div><br/>
+            <div ng-if="!processing && challengees.length > 0" class="text-center">
+                <button class="button-primary" ng-click="InviteParticipants()">Invite to Compete</button>
+                <button class="button-primary" ng-click="InviteVoters()">Invite to Vote</button>
+            </div>
+            @if (mobSocialSettings.EnableFacebookInvite)
+            {
+                <div>or send invitation on Facebook</div>
+                <div class="fb-send" data-href="{{VideoBattle.VideoBattleUrl}}"></div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<span ng-repeat="participant in VisibleParticipants">
+        @Html.Partial("mobSocial/VideoBattle/ParticipantBox")
+    </span>
+<div ng-show="VisibleParticipants.length < VideoBattle.Participants.length" class="pagination-load-more">
+    <a ng-click="LoadNextPage();" href="">LOAD MORE</a>
+</div>
+
+<div ng-if="VideoBattle.IsVotingPayable || VideoBattle.IsSponsorshipSupported">
+    <div id="payment-form-popup-area" ng-show="PurchasePass.ShowPaymentPopup">
+    </div>
+</div>
 
 </div>
 

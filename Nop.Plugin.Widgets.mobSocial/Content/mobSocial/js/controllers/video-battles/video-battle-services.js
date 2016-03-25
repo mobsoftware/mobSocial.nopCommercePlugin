@@ -52,7 +52,7 @@
     }
 
     this.SetPictureAsCover = function (VideoBattleId, PictureId, success, error) {
-        WebClientService.post(apiEndPoint + "/setpictureascover", { VideoBattleId: VideoBattleId, PictureId: PictureId }, success, error);
+        WebClientService.post(apiEndPoint + "/setpictureascover", { EntityId: VideoBattleId, PictureId: PictureId }, success, error);
     }
 
     this.SavePrize = function (Prize, success, error) {

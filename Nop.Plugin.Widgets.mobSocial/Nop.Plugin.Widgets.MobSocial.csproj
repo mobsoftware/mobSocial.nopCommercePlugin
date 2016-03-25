@@ -170,6 +170,9 @@
     <Content Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\VideoBattle\_SocialShareLinks.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Libraries\angucomplete-alt\angucomplete-alt.css">

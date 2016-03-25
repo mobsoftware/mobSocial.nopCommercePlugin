@@ -88,6 +88,17 @@ $color_forest_green_approx: #169e00;
     width: 0;
 }
 
+body {
+    &.no-scroll {
+        overflow: hidden;
+        /*styles in default theme causes relative positions for header, and header upper and other elements. This causes popups to fail, so when popup is shown
+          lets reset these positions
+        */
+        .header, .header-upper, .header-menu {
+            position: initial;
+        }
+    }
+}
 
 .clear {
     clear: both;
@@ -2448,13 +2459,14 @@ li a:hover {
     background-color: $color_guardsman_red_approx;
 }
 
-.profile-container {
+.cover-area {
     .cover {
         overflow: hidden;
         width: 100%;
         height: 250px;
         position: relative;
         margin-bottom: 20px;
+        background-color: $color_gallery_approx;
 
         .cover-upload-area {
             position: absolute;
@@ -2482,7 +2494,7 @@ li a:hover {
             padding: 10px 0;
             background-color: $black_70;
 
-            * {
+            h1, h2, h3, h4, h5, h6, td, span, a, button, i {
                 color: $white;
             }
 
@@ -2504,6 +2516,89 @@ li a:hover {
                     margin: 15px 5px;
                 }
             }
+
+            .battle-info {
+                float: left;
+                padding: 0 20px;
+                text-align: left;
+                border-right: solid 1px #333;
+                height: 70px;
+
+                .battle-status-name {
+                    span {
+                        color: $gray;
+                        font-size: 15px;
+                    }
+                }
+            }
+
+            .battle-prize {
+                float: left;
+                padding: 0 20px;
+                text-align: left;
+                height: 70px;
+                border-left: solid 1px #666;
+            }
+        }
+    }
+}
+
+.fixed-popup {
+    width: 100%;
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+    .content {
+        background-color: $white;
+        width: 980px;
+        max-width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1001;
+        padding: 25px;
+        max-height: 100%;
+        overflow: auto;
+    }
+
+    .close-popup {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-size: 19px;
+    }
+}
+
+.default-prizes-popup
+{
+    .prize-block{
+        margin-bottom:15px;
+        padding-bottom:15px;
+        border-bottom:dotted 1px #ccc;
+    }
+}
+.sponsor-display-default{
+    margin:15px 0;
+    .sponsor-display-block{
+        max-height:250px;
+        overflow:hidden;
+        position:relative;
+        .sponsor-title{
+            position:absolute;
+            left:0;
+            top:0;
+            padding:5px 10px;
+            background-color:$black;
+            font-size:10px;
+            z-index:1;
+            color:$white;
         }
     }
 }

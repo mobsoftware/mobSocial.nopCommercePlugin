@@ -38,6 +38,17 @@
   width: 0;
 }
 
+body.no-scroll {
+  overflow: hidden;
+  /*styles in default theme causes relative positions for header, and header upper and other elements. This causes popups to fail, so when popup is shown
+          lets reset these positions
+        */
+}
+
+body.no-scroll .header, body.no-scroll .header-upper, body.no-scroll .header-menu {
+  position: initial;
+}
+
 .clear {
   clear: both;
 }
@@ -2210,15 +2221,16 @@ li a:hover {
   background-color: #bc0000;
 }
 
-.profile-container .cover {
+.cover-area .cover {
   overflow: hidden;
   width: 100%;
   height: 250px;
   position: relative;
   margin-bottom: 20px;
+  background-color: #eee;
 }
 
-.profile-container .cover .cover-upload-area {
+.cover-area .cover .cover-upload-area {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -2226,16 +2238,16 @@ li a:hover {
   z-index: 3;
 }
 
-.profile-container .cover img, .profile-container .cover .quick-info {
+.cover-area .cover img, .cover-area .cover .quick-info {
   position: absolute;
 }
 
-.profile-container .cover img {
+.cover-area .cover img {
   z-index: 1;
   width: 100%;
 }
 
-.profile-container .cover .quick-info {
+.cover-area .cover .quick-info {
   z-index: 2;
   width: 100%;
   bottom: 0;
@@ -2245,27 +2257,108 @@ li a:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-.profile-container .cover .quick-info * {
+.cover-area .cover .quick-info h1, .cover-area .cover .quick-info h2, .cover-area .cover .quick-info h3, .cover-area .cover .quick-info h4, .cover-area .cover .quick-info h5, .cover-area .cover .quick-info h6, .cover-area .cover .quick-info td, .cover-area .cover .quick-info span, .cover-area .cover .quick-info a, .cover-area .cover .quick-info button, .cover-area .cover .quick-info i {
   color: white;
 }
 
-.profile-container .cover .quick-info table {
+.cover-area .cover .quick-info table {
   width: 50%;
   float: left;
 }
 
-.profile-container .cover .quick-info table td {
+.cover-area .cover .quick-info table td {
   width: 33%;
 }
 
-.profile-container .cover .quick-info .cover-buttons {
+.cover-area .cover .quick-info .cover-buttons {
   float: right;
   margin-right: 15px;
 }
 
-.profile-container .cover .quick-info .cover-buttons .friend-button, .profile-container .cover .quick-info .cover-buttons .follow-button, .profile-container .cover .quick-info .cover-buttons .edit-button {
+.cover-area .cover .quick-info .cover-buttons .friend-button, .cover-area .cover .quick-info .cover-buttons .follow-button, .cover-area .cover .quick-info .cover-buttons .edit-button {
   float: left;
   margin: 15px 5px;
+}
+
+.cover-area .cover .quick-info .battle-info {
+  float: left;
+  padding: 0 20px;
+  text-align: left;
+  border-right: solid 1px #333;
+  height: 70px;
+}
+
+.cover-area .cover .quick-info .battle-info .battle-status-name span {
+  color: gray;
+  font-size: 15px;
+}
+
+.cover-area .cover .quick-info .battle-prize {
+  float: left;
+  padding: 0 20px;
+  text-align: left;
+  height: 70px;
+  border-left: solid 1px #666;
+}
+
+.fixed-popup {
+  width: 100%;
+}
+
+.fixed-popup .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.fixed-popup .content {
+  background-color: white;
+  width: 980px;
+  max-width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1001;
+  padding: 25px;
+  max-height: 100%;
+  overflow: auto;
+}
+
+.fixed-popup .close-popup {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 19px;
+}
+
+.default-prizes-popup .prize-block {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: dotted 1px #ccc;
+}
+
+.sponsor-display-default {
+  margin: 15px 0;
+}
+
+.sponsor-display-default .sponsor-display-block {
+  max-height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.sponsor-display-default .sponsor-display-block .sponsor-title {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 5px 10px;
+  background-color: black;
+  font-size: 10px;
+  z-index: 1;
+  color: white;
 }
 
 /*# sourceMappingURL=styles.css.map */
