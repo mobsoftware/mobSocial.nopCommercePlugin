@@ -15,13 +15,16 @@
         var autoCompleteSourceUrl = "@(Url.RouteUrl("ProductSearchAutoComplete"))";
         var parentFormTargetUrl = "@Url.RouteUrl("ProductSearch")"; //default;
         var renderer = defaultGlobalAutocompleteRenderer;
+        var parameterName = "q";
         switch(value) {
             case "videobattles":
                 parentFormTargetUrl = "@Url.RouteUrl("VideoBattles", new {ViewType = "search"})";
+                parameterName = "searchTerm";
                 break;
             case "people":
                 parentFormTargetUrl = "@Url.RouteUrl("SearchPeople")";
                 autoCompleteSourceUrl = "/api/mobSocial/searchtermautocomplete";
+                parameterName = "searchTerm";
                 renderer = function(ul, item) {
                     var t = item.DisplayName;
                     //html encode
@@ -37,7 +40,7 @@
         }
         //autocomplete source
         $('#small-searchterms').autocomplete("option", "source", autoCompleteSourceUrl);
-
+        $('#small-searchterms').attr("name", parameterName);
         //submit action
         $(this).closest("form").attr("action", parentFormTargetUrl);
 
