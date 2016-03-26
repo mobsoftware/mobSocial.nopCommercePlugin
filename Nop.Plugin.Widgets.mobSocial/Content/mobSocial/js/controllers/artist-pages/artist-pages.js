@@ -1,4 +1,4 @@
-﻿app.controller("ArtistPageController", ['$scope', '$http', function ($scope, $http) {
+﻿app.controller("ArtistPageController", ['$scope', '$http',  function ($scope, $http) {
     $scope.artist = {};
     $scope.nameAvailable = false;
     $scope.$watch('createArtistForm.$valid', function (newVal) {
@@ -7,7 +7,7 @@
     $scope.recordSaved = false;
     $scope.IsArtistNameAvailable = function () {
         if ($scope.artistFormValid) {
-            $http.post("/artists/CheckArtistNameAvailable", { name: $scope.artist.Name })
+            $http.post("/api/artists/CheckArtistNameAvailable", { name: $scope.artist.Name })
                    .success(function (data, status, headers, config) {
                        if (data.available && data.remoteArtist) {
                            $scope.artist = JSON.parse(data.artist);
@@ -21,7 +21,7 @@
 
     $scope.SaveArtist = function () {
         if ($scope.artistFormValid && $scope.artist.nameAvailable) {
-            $http.post("/artists/SaveArtist", $scope.artist)
+            $http.post("/api/artists/SaveArtist", $scope.artist)
                    .success(function (data, status, headers, config) {
                        $scope.recordSaved = data.Success;
                        if (data.RedirectTo)
@@ -45,7 +45,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
     $scope.artist = artistModel;
     $scope.relatedArtists = {};
 
-    $http.post("/artists/GetRelatedArtists", { ArtistId: $scope.artist.Id })
+    $http.get("/api/artists/GetRelatedArtists", { ArtistId: $scope.artist.Id })
                   .success(function (data, status, headers, config) {
                       $scope.relatedArtists = data;
                       $scope.relatedArtistsLoaded = true;
@@ -54,7 +54,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
     $scope.UpdateArtist = function (key, data) {
         var obj = "key=" + key + "&value=" + data + "&id=" + $scope.artist.Id;
         var config = {
-            url: "/artists/UpdateArtistData/",
+            url: "/api/artists/UpdateArtistData/",
             method: 'POST',
             data: obj,
             headers: {
@@ -66,18 +66,18 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
 
     $scope.DeleteArtist = function () {
         if (confirm("Are you sure you wish to delete this artist page?")) {
-            $http.post("/artists/DeleteArtistPage", { ArtistId: $scope.artist.Id })
+            $http.post("/api/artists/DeleteArtistPage", { ArtistId: $scope.artist.Id })
                   .success(function (data, status, headers, config) {
                       if (data.Success) {
                           alert("Page deleted successfully.");
-                          window.location.href = "/artists/MyArtistPages";
+                          window.location.href = "/api/artists/MyArtistPages";
                       }
                   });
         }
     }
 
     $scope.GetManagers = function () {
-        $http.post("/artists/GetPageManagers", { ArtistPageId: $scope.artist.Id })
+        $http.get("/api/artists/GetPageManagers", { ArtistPageId: $scope.artist.Id })
                  .success(function (data, status, headers, config) {
                      $scope.managers = data;
                      $scope.managersLoaded = true;
@@ -87,7 +87,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
         $scope.GetManagers();
 
     $scope.GetEligibleManagers = function () {
-        $http.post("/artists/GetEligibleManagers", { ArtistPageId: $scope.artist.Id })
+        $http.get("/api/artists/GetEligibleManagers", { ArtistPageId: $scope.artist.Id })
                  .success(function (data, status, headers, config) {
                      $scope.eligibleManagers = data;
                  });
@@ -97,7 +97,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
     $scope.AddPageManager = function () {
         if ($scope.newPageManager == null)
             return;
-        $http.post("/artists/SavePageManager", { ArtistPageId: $scope.artist.Id, CustomerId: $scope.newPageManager.originalObject.Id })
+        $http.post("/api/artists/SavePageManager", { ArtistPageId: $scope.artist.Id, CustomerId: $scope.newPageManager.originalObject.Id })
                 .success(function (data, status, headers, config) {
                     if (data.Success) {
                         var newMgr = $scope.newPageManager.originalObject;
@@ -123,7 +123,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
     }
     $scope.DeletePageManager = function (CustomerId) {
         if (confirm("Are you sure you wish to remove this page manager?")) {
-            $http.post("/artists/DeletePageManager", { ArtistPageId: $scope.artist.Id, CustomerId: CustomerId })
+            $http.post("/api/artists/DeletePageManager", { ArtistPageId: $scope.artist.Id, CustomerId: CustomerId })
                .success(function (data, status, headers, config) {
                    if (data.Success) {
                        //remove the manager from the array
@@ -142,7 +142,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
     $scope.PurchasedSongsPage = 1;
     $scope.PurchasedSongsCount = 15;
     $scope.GetPurchasedSongs = function () {
-        $http.post("/artists/GetPurchasedSongs", { ArtistPageId: $scope.artist.Id, Page: $scope.PurchasedSongsPage, Count: $scope.PurchasedSongsCount })
+        $http.get("/api/artists/GetPurchasedSongs", { ArtistPageId: $scope.artist.Id, Page: $scope.PurchasedSongsPage, Count: $scope.PurchasedSongsCount })
                 .success(function (data, status, headers, config) {
                     $scope.PurchasedSongs = data.Songs;
                     $scope.PurchasedSongsLoaded = true;
@@ -169,7 +169,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
         { value: '3', text: 'Send Check' },
     ];
     $scope.GetPaymentMethod = function () {
-        $http.post("/artists/GetPaymentMethod", { ArtistPageId: $scope.artist.Id })
+        $http.get("/api/artists/GetPaymentMethod", { ArtistPageId: $scope.artist.Id })
               .success(function (data, status, headers, config) {
                   $scope.PaymentMethod = data.PaymentMethod;
               });
@@ -179,7 +179,7 @@ app.controller("ArtistPageDisplayController", ['$scope', '$http', function ($sco
 
 
     $scope.SavePaymentMethod = function () {
-        $http.post("/artists/SavePaymentMethod", $scope.PaymentMethod)
+        $http.post("/api/artists/SavePaymentMethod", $scope.PaymentMethod)
              .success(function (data, status, headers, config) {
                  $scope.PaymentMethodSaved = data.Success;
                  if (!data.Success) {
@@ -197,19 +197,19 @@ app.controller("ArtistPageSongsController", ['$scope', '$http', 'ngAudio', funct
     var url = "";
 
     if ($scope.artist.RemoteEntityId == null) {
-        url = "/artists/GetArtistSongsByArtistPage";
+        url = "/api/artists/GetArtistSongsByArtistPage";
         params = {
             ArtistPageId: $scope.artist.Id
         };
     }
     else {
-        url = "/artists/GetArtistSongs";
+        url = "/api/artists/GetArtistSongs";
         params = {
             ArtistName: $scope.artist.Name
         };
     }
     $scope.GetArtistSongs = function () {
-        $http.post(url, params)
+        $http.get(url, params)
                   .success(function (data, status, headers, config) {
                       $scope.songs = data;
                       $scope.songsLoaded = true;
@@ -229,7 +229,7 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     $scope.Search = "";
     
     $scope.GetArtistPages = function (Page, Count, Search) {
-        $http.post("/artists/MyArtistPages", { Page: Page, Count: Count, Search: Search })
+        $http.post("/api/artists/MyArtistPages", { Page: Page, Count: Count, Search: Search })
                   .success(function (data, status, headers, config) {
                       $scope.Artists = data.Artists;
                       $scope.TotalPages = data.TotalPages;
@@ -250,7 +250,7 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
 
     $scope.DeleteArtist = function (ArtistPageId) {
         if (confirm("Are you sure you wish to delete this artist page?")) {
-            $http.post("/artists/DeleteArtistPage", { ArtistPageId: ArtistPageId })
+            $http.post("/api/artists/DeleteArtistPage", { ArtistPageId: ArtistPageId })
                   .success(function (data, status, headers, config) {
                       if (data.Success) {
                           alert("Page deleted successfully.");
@@ -262,7 +262,7 @@ app.controller("ArtistPagesMyPagesController", ['$scope', '$http', function ($sc
     }
 
     $scope.GetPagesAsManager = function () {
-        $http.post("/artists/GetPagesAsManager")
+        $http.get("/api/artists/GetPagesAsManager")
                  .success(function (data, status, headers, config) {
                      $scope.AsManagerArtists = data.Artists;                    
         });
