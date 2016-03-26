@@ -2576,29 +2576,47 @@ li a:hover {
     }
 }
 
-.default-prizes-popup
-{
-    .prize-block{
-        margin-bottom:15px;
-        padding-bottom:15px;
-        border-bottom:dotted 1px #ccc;
+.default-prizes-popup {
+    .prize-block {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: dotted 1px #ccc;
     }
 }
-.sponsor-display-default{
-    margin:15px 0;
-    .sponsor-display-block{
-        max-height:250px;
-        overflow:hidden;
-        position:relative;
-        .sponsor-title{
-            position:absolute;
-            left:0;
-            top:0;
-            padding:5px 10px;
-            background-color:$black;
-            font-size:10px;
-            z-index:1;
-            color:$white;
+
+.sponsor-display-default {
+    margin: 15px 0;
+
+    .sponsor-display-block {
+        max-height: 250px;
+        overflow: hidden;
+        position: relative;
+
+        .sponsor-title {
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding: 5px 10px;
+            background-color: $black;
+            font-size: 10px;
+            z-index: 1;
+            color: $white;
         }
+    }
+}
+
+.default-friend-block {
+    float: left;
+    width: 150px;
+    height: 230px;
+    text-align:center;
+    .profile-image {
+        width:150px;
+        img {
+            max-width: 100%;
+        }
+    }
+    .profile-name{
+        margin-bottom:15px;
     }
 }

@@ -2361,4 +2361,23 @@ li a:hover {
   color: white;
 }
 
+.default-friend-block {
+  float: left;
+  width: 150px;
+  height: 230px;
+  text-align: center;
+}
+
+.default-friend-block .profile-image {
+  width: 150px;
+}
+
+.default-friend-block .profile-image img {
+  max-width: 100%;
+}
+
+.default-friend-block .profile-name {
+  margin-bottom: 15px;
+}
+
 /*# sourceMappingURL=styles.css.map */
