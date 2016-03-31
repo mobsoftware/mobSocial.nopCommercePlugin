@@ -327,7 +327,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             var friends = _socialNetworkService.GetFriends(customerId);
             
-            var model = new List<CustomerFriendsModel>();
+            var model = new List<CustomerFriendModel>();
 
             foreach (var friend in friends)
             {
@@ -343,7 +343,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                         100,
                         true);
 
-                model.Add(new CustomerFriendsModel()
+                model.Add(new CustomerFriendModel()
                 {
                     CustomerDisplayName = friendCustomer.GetFullName().ToTitleCase(),
                     ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = SeoExtensions.GetSeName(friendCustomer, 0) }),
