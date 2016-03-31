@@ -27,6 +27,9 @@
                         
                         @Html.Action(widget.ActionName, widget.ControllerName, widget.RouteValues)
                         <a ng-if="Post.CanDelete" ng-click="DeletePost(Post.Id)" class="post-delete"><i class="fa fa-times"></i></a>
+
+                        <like-button entityid="{{Post.Id}}" entityname="TimelinePost" likestatus="Post.LikeStatus"></like-button>
+                        <comments-box entityid="{{Post.Id}}" entityname="TimelinePost" canedit="{{Post.CanEdit}}" totalcomments="{{Post.TotalComments}}"></comments-box>
                     </div>
                 }
                 <div ng-switch-default>
@@ -46,6 +49,9 @@
                             <div ng-bind-html="Post.Message | linky:'_blank'"></div>
                         </div>
                         <a ng-if="Post.CanDelete" ng-click="DeletePost(Post.Id)" class="post-delete"><i class="fa fa-times"></i></a>
+                        <like-button entityid="{{Post.Id}}" entityname="TimelinePost" likestatus="Post.LikeStatus"></like-button>
+                        <comments-box entityid="{{Post.Id}}" entityname="TimelinePost" canedit="{{Post.CanEdit}}" totalcomments="{{Post.TotalComments}}"></comments-box>
+
                     </div>
                 </div>
             </div>

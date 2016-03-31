@@ -1,0 +1,21 @@
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerCommentsModel
+@{
+    var json = Json.Encode(Model);
+}
+
+<span>
+    
+    <a ng-click="Get()">Comments({{TotalComments}})</a>
+    @if (Model.CanPost)
+    {
+        <div>
+            <input ng-model="Comment.CommentText" type="text" />
+            <input type="button" ng-click="Post()" value="Post"/>
+        </div>
+    }
+    <div ng-repeat="comment in CommentList">
+        {{comment.CommentText}}
+    </div>
+    <div ng-show="CommentsLoading">Loading comments...</div>
+    <a ng-show="CommentList.length > 0 && !NoMoreComments" ng-click="Get()">View more comments</a>
+</span>
