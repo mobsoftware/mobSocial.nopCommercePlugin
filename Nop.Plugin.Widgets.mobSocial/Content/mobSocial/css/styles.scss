@@ -1520,6 +1520,100 @@ span {
         span.activity-text {
             color: $color_tapa_approx;
         }
+
+        .timeline-post-actions {
+            background-color: $color_wild_sand_approx;
+            border-top: solid 1px $color_alto_approx;
+
+            & > span {
+                margin: 5px;
+
+                a {
+                    padding: 10px;
+                    display: inline-block;
+                }
+            }
+        }
+
+        .comment-form {
+            margin: 10px 5px 0 5px;
+
+            img {
+                float: left;
+                width: 36px;
+                height: 36px;
+                background-color: $white;
+                border: solid 1px $color_alto_approx;
+            }
+
+            input[type='text'] {
+                width: 465px;
+                margin-left: 2px;
+            }
+
+            input[type='button'] {
+                padding: 8px 20px 9px 20px;
+            }
+        }
+
+        .comment-box {
+            padding: 10px;
+            border-top: solid 3px $white;
+            clear: both;
+            float: left;
+            width: 100%;
+            position: relative;
+
+            .commenter-info {
+                img {
+                    width: 50px;
+                    height: 50px;
+                    float: left;
+                }
+
+                a {
+                    font-weight: bold;
+                    color: $black;
+                    padding-bottom: 3px;
+                }
+
+                .post-time {
+                    color: $color_silver_chalice_approx;
+                    display: block;
+                    padding-left: 60px;
+                    font-size: 12px;
+                }
+            }
+
+            .comment-text {
+                padding-left: 60px;
+                padding-top: 10px;
+            }
+
+            .comment-delete {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                color: $color_celeste_approx;
+
+                &:hover {
+                    color: $color_fuscous_gray_approx;
+                }
+            }
+        }
+
+        .view-more-comments {
+            display: block !important;
+            clear: both;
+            text-align: center;
+            background-color: $color_gallery_approx;
+            border-top: solid 1px $color_alto_approx;
+            border-bottom: solid 1px $color_alto_approx;
+
+            &.ng-hide {
+                display: none !important;
+            }
+        }
     }
 
     .timeline-widgets {
@@ -2609,14 +2703,17 @@ li a:hover {
     float: left;
     width: 150px;
     height: 230px;
-    text-align:center;
+    text-align: center;
+
     .profile-image {
-        width:150px;
+        width: 150px;
+
         img {
             max-width: 100%;
         }
     }
-    .profile-name{
-        margin-bottom:15px;
+
+    .profile-name {
+        margin-bottom: 15px;
     }
 }

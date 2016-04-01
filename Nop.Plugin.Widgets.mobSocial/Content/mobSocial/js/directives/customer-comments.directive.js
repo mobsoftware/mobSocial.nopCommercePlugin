@@ -27,6 +27,7 @@
                     if (response.Success) {
                         $scope.CommentList.push(response.Comment);
                         $scope.TotalComments++;
+                        $scope.Comment.CommentText = "";
                     }
                 }, function() {
                     alert("An error occured while performing operation");
@@ -50,7 +51,26 @@
                 });
             }
 
-            
+            $scope.Delete = function (id) {
+                if (!confirm("Are you sure you wish to delete this comment?")) {
+                    return;
+                }
+                CustomerCommentsService.Delete(id, function(response) {
+                    //if the operation succeeds, we'll need to remove the appropriate comment from the list
+                    if (response.Success) {
+                        for (var i = 0; i < $scope.CommentList.length; i++) {
+                            var comment = $scope.CommentList[i];
+                            if (comment.Id == id) {
+                                $scope.CommentList.splice(i, 1);
+                                $scope.TotalComments--;
+                                break;
+                            }
+                        }
+                    }
+                }, function(response) {
+
+                });
+            }
 
           
         }

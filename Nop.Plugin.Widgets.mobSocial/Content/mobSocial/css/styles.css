@@ -1356,6 +1356,98 @@ span.payment-method.fa {
   color: #777;
 }
 
+.timeline .timeline-post .timeline-post-actions {
+  background-color: #f6f6f4;
+  border-top: solid 1px #ddd;
+}
+
+.timeline .timeline-post .timeline-post-actions > span {
+  margin: 5px;
+}
+
+.timeline .timeline-post .timeline-post-actions > span a {
+  padding: 10px;
+  display: inline-block;
+}
+
+.timeline .timeline-post .comment-form {
+  margin: 10px 5px 0 5px;
+}
+
+.timeline .timeline-post .comment-form img {
+  float: left;
+  width: 36px;
+  height: 36px;
+  background-color: white;
+  border: solid 1px #ddd;
+}
+
+.timeline .timeline-post .comment-form input[type='text'] {
+  width: 465px;
+  margin-left: 2px;
+}
+
+.timeline .timeline-post .comment-form input[type='button'] {
+  padding: 8px 20px 9px 20px;
+}
+
+.timeline .timeline-post .comment-box {
+  padding: 10px;
+  border-top: solid 3px white;
+  clear: both;
+  float: left;
+  width: 100%;
+  position: relative;
+}
+
+.timeline .timeline-post .comment-box .commenter-info img {
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+
+.timeline .timeline-post .comment-box .commenter-info a {
+  font-weight: bold;
+  color: black;
+  padding-bottom: 3px;
+}
+
+.timeline .timeline-post .comment-box .commenter-info .post-time {
+  color: #aaaaaa;
+  display: block;
+  padding-left: 60px;
+  font-size: 12px;
+}
+
+.timeline .timeline-post .comment-box .comment-text {
+  padding-left: 60px;
+  padding-top: 10px;
+}
+
+.timeline .timeline-post .comment-box .comment-delete {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #ccc;
+}
+
+.timeline .timeline-post .comment-box .comment-delete:hover {
+  color: #555;
+}
+
+.timeline .timeline-post .view-more-comments {
+  display: block !important;
+  clear: both;
+  text-align: center;
+  background-color: #eee;
+  border-top: solid 1px #ddd;
+  border-bottom: solid 1px #ddd;
+}
+
+.timeline .timeline-post .view-more-comments.ng-hide {
+  display: none !important;
+}
+
 .timeline .timeline-widgets {
   float: left;
 }

@@ -4,18 +4,36 @@
 }
 
 <span>
-    
-    <a ng-click="Get()">Comments({{TotalComments}})</a>
+
+    <a ng-click="Get()"><i class="fa fa-comments"></i> Comments({{TotalComments}})</a>
+    <div ng-repeat="comment in CommentList" class="comment-box">
+        <div class="commenter-info">
+            <img ng-src="{{comment.CustomerProfileImageUrl}}" />
+            <a href="{{comment.CustomerProfileUrl}}">{{comment.CustomerName}}</a>
+            <span class="post-time">
+                <time am-time-ago="comment.DateCreated"></time>
+            </span>
+        </div>
+        <div class="comment-text">
+            {{comment.CommentText}}
+            <div>
+                <like-button entityid="{{comment.Id}}" entityname="CustomerComment" likestatus="comment.LikeStatus" totallikes="{{comment.LikeCount}}"></like-button>
+
+            </div>
+
+        </div>
+        <a ng-if="comment.CanDelete" class="comment-delete" ng-click="Delete(comment.Id)"><i class="fa fa-times"></i></a>
+    </div>
+
+    <div ng-show="CommentsLoading">Loading comments...</div>
+    <a ng-show="CommentList.length > 0 && !NoMoreComments && !CommentsLoading" ng-click="Get()" class="view-more-comments">View more comments</a>
     @if (Model.CanPost)
     {
-        <div>
-            <input ng-model="Comment.CommentText" type="text" />
-            <input type="button" ng-click="Post()" value="Post"/>
+        <div class="comment-form">
+            <img src="@Model.CustomerProfileImageUrl" />
+            <input ng-model="Comment.CommentText" type="text" placeholder="Type your comment..." />
+            <input type="button" ng-click="Post()" value="Post" />
         </div>
     }
-    <div ng-repeat="comment in CommentList">
-        {{comment.CommentText}}
-    </div>
-    <div ng-show="CommentsLoading">Loading comments...</div>
-    <a ng-show="CommentList.length > 0 && !NoMoreComments" ng-click="Get()">View more comments</a>
+
 </span>

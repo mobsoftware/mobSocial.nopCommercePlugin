@@ -6,12 +6,17 @@
         scope: {
             EntityId: "@entityid",
             EntityName: "@entityname",
-            LikeStatus: "=likestatus"
+            LikeStatus: "=likestatus",
+            TotalLikes: "@totallikes"
         },
         link: function($scope, elem, attr) {
             $scope.Like = function () {
                 CustomerLikeService.Like($scope.EntityName, $scope.EntityId, function (response) {
-                    $scope.LikeStatus = response.NewStatus;
+                    if (response.Success) {
+                        $scope.LikeStatus = response.NewStatus;
+                        $scope.TotalLikes++;
+                    }
+                    
                 }, function() {
 
                 });
@@ -19,7 +24,10 @@
 
             $scope.Unlike = function () {
                 CustomerLikeService.Unlike($scope.EntityName, $scope.EntityId, function (response) {
-                    $scope.LikeStatus = response.NewStatus;
+                    if (response.Success) {
+                        $scope.LikeStatus = response.NewStatus;
+                        $scope.TotalLikes--;
+                    }
                 }, function () {
 
                 });
