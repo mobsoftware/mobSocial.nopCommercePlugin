@@ -2,12 +2,14 @@
 
 General Features
 =========
-Search, Friends, Events, Business Pages, Video Battles™, Picture Battles™, SEO, and more!
+Search, Friends, Timeline, Events, Business Pages, Video Battles™, Picture Battles™, SEO, and more!
 
 Features
 =========
 1. Search
     *   Search People, Events, Businesses, and Products from any screen   
+2. Timeline
+    *   Post URLs, Photos, Videos, Share, Like, Comment!    
 2. Business Pages
     *   Hours of Operation
     *   Map
