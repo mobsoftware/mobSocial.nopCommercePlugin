@@ -68,7 +68,7 @@ Request Product Review Notifications, Birthday Notifications, Ad Network Functio
 
 Contribute
 ===========
-You are more than welcome to join and contribute to the fastest growing open source social network project by creating a fork, adding a new issue or comment on an existing one, donate to help further development, or by spreading the word!
+You are more than welcome to contribute to the fastest growing open source social network project by creating a fork, adding a new issue, comment on an existing issues, donate to help further development, or by spreading the word!
 
 Support
 ===========
