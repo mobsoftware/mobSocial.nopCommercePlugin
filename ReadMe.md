@@ -2,12 +2,14 @@
 
 General Features
 =========
-Search, Friends, Events, Business Pages, Video Battles™, Picture Battles™, SEO, and more!
+Search, Friends, Timeline, Events, Business Pages, Video Battles™, Picture Battles™, SEO, and more!
 
 Features
 =========
 1. Search
     *   Search People, Events, Businesses, and Products from any screen   
+2. Timeline
+    *   Post URLs, Photos, Videos, Share, Like, Comment!    
 2. Business Pages
     *   Hours of Operation
     *   Map
@@ -66,7 +68,7 @@ Request Product Review Notifications, Birthday Notifications, Ad Network Functio
 
 Contribute
 ===========
-If you would like to become a member or contribute to the fastest growing open source social network project, create a fork or contact the team!
+You are more than welcome to contribute to the fastest growing open source social network project by creating a fork, adding a new issue, comment on existing issues, donate to help further development, or by spreading the word!
 
 Support
 ===========
