@@ -7,11 +7,13 @@
 </select>
 <script type="text/javascript">
     //depending on selected type, let's change the autocomplete source
-
+    var defaultGlobalAutocompleteRenderer;
+    $(document).ready(function() {
+        defaultGlobalAutocompleteRenderer = $('#small-searchterms').data("ui-autocomplete")._renderItem;
+    });
     $("#searchTypeDropDown").change(function() {
         var value = $(this).val();
 
-        var defaultGlobalAutocompleteRenderer = $('#small-searchterms').data("ui-autocomplete")._renderItem;
         var autoCompleteSourceUrl = "@(Url.RouteUrl("ProductSearchAutoComplete"))";
         var parentFormTargetUrl = "@Url.RouteUrl("ProductSearch")"; //default;
         var renderer = defaultGlobalAutocompleteRenderer;
