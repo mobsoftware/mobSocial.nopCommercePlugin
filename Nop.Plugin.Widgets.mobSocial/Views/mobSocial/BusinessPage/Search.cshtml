@@ -1,59 +1,53 @@
-﻿@using Nop.Plugin.WebApi.MobSocial.Models;
+﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+@using Nop.Plugin.WebApi.MobSocial.Models;
 
 @model BusinessPageSearchModel
 
 @using Nop.Web.Framework.UI
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
 
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/business-pages/business-pages.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/business-pages/business-pages-search.js");
-    Html.AddScriptParts(ResourceLocation.Foot, ModelUtil.ContentPathMobSocial + "/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-pages.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-pages-search.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js");
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
-    Html.AddCssFileParts(ModelUtil.ContentPathMobSocial + "/easy-responsive-tabs.css");
+    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easy-responsive-tabs.css");
 
 
 }
 
-
-
-
-@section left {
-    <div class="search-criteria" ng-controller="BusinessPageSearchCriteriaController">
-        <span class="search-criteria-header">@T("BusinessPage.SearchCriteriaHeaderText")</span>
-        <br />
-        <br />
-        <table>
-            <tr>
-                <td class="adminTitle">
-                    Name<br />
-                    <input type="text" ng-model="name" />
-                </td>
-            </tr>
-            <tr>
-                <td class="adminTitle">
-                    City<br />
-                    <input type="text" ng-model="city" />
-                </td>
-            </tr>
-            <tr>
-                <td class="adminTitle">
-                    Country<br />
-                    <select class="country-input" ng-model="country" ng-options="item.Name for item in countries"></select>
-                </td>
-            </tr>
-            <tr>
-                <td class="adminTitle">
-                    State / province<br />
-                    <select class="state-input" ng-model="stateProvince" ng-options="item.Name for item in states">></select>
-                </td>
-            </tr>
-        </table>
-    </div>
-}
-
-
+<div class="search-criteria" ng-controller="BusinessPageSearchCriteriaController">
+    <span class="search-criteria-header">@T("BusinessPage.SearchCriteriaHeaderText")</span>
+    <br />
+    <br />
+    <table>
+        <tr>
+            <td class="adminTitle">
+                Name<br />
+                <input type="text" ng-model="name" />
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                City<br />
+                <input type="text" ng-model="city" />
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                Country<br />
+                <select class="country-input" ng-model="country" ng-options="item.Name for item in countries"></select>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                State / province<br />
+                <select class="state-input" ng-model="stateProvince" ng-options="item.Name for item in states">></select>
+            </td>
+        </tr>
+    </table>
+</div>
 
 <div ng-controller="BusinessPageSearchController">
     <div class="event-center-content">
@@ -67,7 +61,7 @@
                 <a href="{{item.Url}}">
 
                     <div class="left">
-                        <img src="{{item.ThumbnailUrl}}" title="{{item.Title}}" class="thumbnail" />
+                        <img ng-src="{{item.ThumbnailUrl}}" title="{{item.Title}}" class="thumbnail" />
                     </div>
 
                     <div class="right">
