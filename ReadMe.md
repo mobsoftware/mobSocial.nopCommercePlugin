@@ -1,4 +1,4 @@
-#Free open-source social network for building social stores and applications#
+#Free open-source social network platform for building social stores and applications#
 
 General Features
 =========
@@ -10,16 +10,6 @@ Features
     *   Search People, Events, Businesses, and Products from any screen   
 2. Timeline
     *   Post URLs, Photos, Videos, Share, Like, Comment!    
-2. Business Pages
-    *   Hours of Operation
-    *   Map
-    *   Address
-    *   Phone, Fax Number
-    *   Friends
-    *   Pictures/Videos
-    *   Up to Date Info provided by the Business Owner 
-    *   SEO Friendly URLs and optimization
-    *   Live Search
 3. Profile Pages
     *    Profile Picture
     *    About Tab
@@ -29,18 +19,28 @@ Features
     *    Featured Video on home page
     *    Add and Invite Friends
     *    SEO Friendly URLs and optimization 
-4. Email Notifications
+ 4. Business Pages
+    *   Hours of Operation
+    *   Map
+    *   Address
+    *   Phone, Fax Number
+    *   Friends
+    *   Pictures/Videos
+    *   Up to Date Info provided by the Business Owner 
+    *   SEO Friendly URLs and optimization
+    *   Live Search
+5. Email Notifications
     *    Friend Request Notification
     *    Pending Friend Request Notifications
     *    Event Invite Notifications
-5. Business Pages
+6. Business Pages
     *    Hours of Operation, Map, Address, Phone, Fax Number
     *    Friends
     *    Pictures/Videos
     *    Up to Date Info provided by the Business Owner 
     *    SEO Friendly URLs and optimization
     *    Live Search
-6. Event Pages 
+7. Event Pages 
     *    Address
     *    Hotel Information
     *    Attendance Information
@@ -48,15 +48,15 @@ Features
     *    SEO Friendly URLs and optimization
     *    Mobile Device Support
     *    Responsive User Interface
-7. Video Battles™
+8. Video Battles™
     *    Anyone can host their own battle
     *    Spectators are invited to vote by all participants
     *    The video with the most votes at the end wins
     *    Search Engine Optimized
     *    Phone App (under development)
-8. Picture Battles™ (coming very soon)
+9. Picture Battles™ (coming very soon)
     *    Same as video battles except using pictures
-9. Search Engine Optimization
+10. Search Engine Optimization
     *    Includes Profile, Business, and Event Pages in the SiteMap.xml
     *    Meta tags
     *    Friendly URLs
