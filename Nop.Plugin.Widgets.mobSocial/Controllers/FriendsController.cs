@@ -9,7 +9,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     public class FriendsController : BasePublicController
     {
         
-        [Authorize]
+        //[Authorize]
         public ActionResult FriendButton()
         {
             return View("mobSocial/Friends/FriendButton");
@@ -22,7 +22,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/Friends/FriendRequests");
         }
 
-        [Authorize]
+        //[Authorize]
         public ActionResult CustomerFriends(int customerId, int howMany = 0, bool random = false)
         {
             var model = new CustomerFriendsRequestModel()
