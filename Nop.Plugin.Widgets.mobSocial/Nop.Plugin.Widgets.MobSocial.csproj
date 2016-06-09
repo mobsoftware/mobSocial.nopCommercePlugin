@@ -15,13 +15,14 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Downloads\nopCommerce_3.40_Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <WebGreaseLibPath>$(SolutionDir)packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
-    <NuGetPackageImportStamp>d812e46a</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,7 +31,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -86,6 +87,10 @@
     <Compile Include="Services\ITimelineWidgetLoaderService.cs" />
     <Compile Include="Services\TimelineWidgetLoaderService.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />
     <None Include="Content\mobSocial\css\styles.css.map">
       <DependentUpon>styles.css</DependentUpon>
@@ -97,6 +102,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Libraries\moment.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Libraries\videogular\youtube.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\css\styles.min.css">
@@ -736,39 +744,34 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Libraries\Nop.Data\Nop.Data.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\Nop.Data\Nop.Data.csproj">
       <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
       <Name>Nop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+    <ProjectReference Include="$(SolutionDir)Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
       <Name>Nop.Admin</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Libraries\Nop.Core\Nop.Core.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\Nop.Core\Nop.Core.csproj">
       <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
       <Name>Nop.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Libraries\Nop.Services\Nop.Services.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\Nop.Services\Nop.Services.csproj">
       <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
       <Name>Nop.Services</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+    <ProjectReference Include="$(SolutionDir)Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>Nop.Web.Framework</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Nop.Web.csproj">
+    <ProjectReference Include="$(SolutionDir)Presentation\Nop.Web\Nop.Web.csproj">
       <Project>{4f1f649c-1020-45be-a487-f416d9297ff3}</Project>
       <Name>Nop.Web</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MobSocial.WebApi\Nop.Plugin.WebApi.mobSocial\Nop.Plugin.WebApi.MobSocial.csproj">
-      <Project>{d9f85190-5b59-4b68-bfe4-fa1f1aab549f}</Project>
-      <Name>Nop.Plugin.WebApi.MobSocial</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
@@ -776,21 +779,25 @@
       <Name>Mob.Core</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\MobSocial.WebApi\Nop.Plugin.WebApi.mobSocial\Nop.Plugin.WebApi.MobSocial.csproj">
+      <Project>{d9f85190-5b59-4b68-bfe4-fa1f1aab549f}</Project>
+      <Name>Nop.Plugin.WebApi.MobSocial</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -800,7 +807,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -813,7 +820,7 @@
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.XML" />
@@ -845,7 +852,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets'))" />
   </Target>
+  <Import Project="..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets" Condition="Exists('..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" />
   <!--<Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

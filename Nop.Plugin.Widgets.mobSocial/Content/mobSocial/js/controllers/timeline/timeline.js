@@ -17,7 +17,8 @@ appRequires(["ngSanitize",
 			"com.2fdevs.videogular.plugins.controls",
 			"com.2fdevs.videogular.plugins.overlayplay",
 			"com.2fdevs.videogular.plugins.poster",
-			"com.2fdevs.videogular.plugins.imaads", 'timer']);
+			"com.2fdevs.videogular.plugins.imaads",
+            "info.vietnamcode.nampnq.videogular.plugins.youtube", 'timer']);
 
 app.controller("TimelineController", [
     '$scope', '$sce', 'TimelineService', 'WebClientService', function ($scope, $sce, TimelineService, WebClientService) {

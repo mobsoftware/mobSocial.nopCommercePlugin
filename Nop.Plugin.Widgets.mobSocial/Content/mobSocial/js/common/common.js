@@ -23,6 +23,19 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+function isValidYouTubeUrl(url) {
+    if (url != undefined || url != '') {
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
 function appRequires(dependencies) {
     app.requires = app.requires.concat(dependencies);
 }

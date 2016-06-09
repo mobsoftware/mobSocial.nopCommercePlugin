@@ -10,17 +10,35 @@
     </span>
 </div>
 <div class="post-content">
-    <div ng-bind-html="Post.Message | linky:'_blank'"></div>
+    <div>
+        <div ng-bind-html="Post.Message | linky:'_blank'"></div>
+    </div>
 </div>
-<div class="url-preview">
+<div class="url-preview"  ng-if="!Post.YoutubeVideo">
     <div class="image">
-        <img ng-src="{{Post.PostData.Images[0]}}" />
+        <img ng-src="{{Post.PostData.Images[0]}}"/>
     </div>
     <div class="url-data">
         <a href="{{Post.PostData.AbsoluteUrl}}" target="_blank">{{Post.PostData.Title}}</a>
         <div class="description">{{Post.PostData.Description}}</div>
         <div class="host-name">{{Post.PostData.HostName}}</div>
     </div>
+</div>
+<div ng-if="Post.YoutubeVideo" class="video-container">
+    <videogular vg-player-ready="PlayerReadyForDisplayYoutube($API, Post)" vg-responsive="true" vg-theme="Post.Config.theme">
+        <vg-media vg-src="Post.VideoSource" vg-tracks="" preload="metadata" vg-youtube="rel=1;showinfo=1"></vg-media>
+
+        <vg-controls>
+            <vg-play-pause-button></vg-play-pause-button>
+            <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
+            <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
+            <vg-volume>
+                <vg-mute-button></vg-mute-button>
+                <vg-volume-bar></vg-volume-bar>
+            </vg-volume>
+            <vg-fullscreen-button></vg-fullscreen-button>
+        </vg-controls>
+    </videogular>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -33,9 +51,29 @@
                 return;
             }
             Post.PostData = jsonValue;
-
+            //if it's a youtube video
+            var isYoutubeUrl = isValidYouTubeUrl(Post.PostData.AbsoluteUrl);
+            Post.YoutubeVideo = isYoutubeUrl;
+            
         });
-        //add to filter function. this will execute when a url or status type type post is being shown
+
+        attachFunctionToTimelineScope("PlayerReadyForDisplayYoutube", function ($API, Post) {
+            //we need $sce for videos
+            var rootUrl = window.location.origin;
+            var source = [{
+                src: Post.PostData.AbsoluteUrl
+            }];
+            Post.VideoSource = source;
+
+
+            Post.Config = {
+                theme: rootUrl + "/Plugins/Widgets.mobSocial/Content/Libraries/videogular/theme/videogular.css"
+            }
+            $API.changeSource(Post.VideoSource);
+            $API.sources = Post.VideoSource;
+        });
+
+        //add to filter function. this will execute when a url type post is being shown
         $scope.FilterFunction['url'] = function(Post) {
             $scope.setupUrlPostData(Post);
         }
