@@ -10,6 +10,7 @@ using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
+using Nop.Plugin.WebApi.MobSocial;
 using Nop.Plugin.WebApi.MobSocial.Domain;
 using Nop.Plugin.WebApi.MobSocial.Enums;
 using Nop.Plugin.WebApi.MobSocial.Models;

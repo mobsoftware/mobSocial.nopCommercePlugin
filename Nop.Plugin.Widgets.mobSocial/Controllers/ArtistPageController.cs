@@ -10,22 +10,18 @@ using Nop.Services.Customers;
 using Nop.Services.Helpers;
 using Nop.Services.Localization;
 using Nop.Services.Media;
-using Nop.Services.Common;
 using Nop.Web.Controllers;
 using Nop.Web.Framework.Security;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web.Mvc;
-using System.Web;
 using Nop.Services.Catalog;
 using Nop.Services.Orders;
-using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Tax;
 using Nop.Plugin.WebApi.MobSocial.Extensions;
 using Nop.Plugin.WebApi.MobSocial.Models;
 using Nop.Plugin.WebApi.MobSocial.Services;
+using Nop.Plugin.WebApi.MobSocial;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {

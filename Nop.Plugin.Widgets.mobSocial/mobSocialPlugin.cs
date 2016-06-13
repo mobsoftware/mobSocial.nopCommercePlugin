@@ -1,11 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Routing;
-using Nop.Core.Domain.Media;
-using Nop.Core.Domain.Messages;
-using Nop.Core.Domain.Tasks;
-using Nop.Core.Plugins;
 using Nop.Plugin.WebApi.MobSocial.Data;
-using Nop.Services.Cms;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
@@ -15,7 +10,7 @@ using System.Web.Configuration;
 using MobAds.Public;
 using Nop.Core;
 using System.Linq;
-using Nop.Plugin.WebApi.MobSocial.Constants;
+using Nop.Plugin.WebApi.MobSocial;
 using Nop.Plugin.WebApi.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial
@@ -327,7 +322,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public void ManageSiteMap(SiteMapNode rootNode)
         {
 
-            var menuItem = new SiteMapNode() {
+           /* var menuItem = new SiteMapNode() {
                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
                 ControllerName = "TeamPage",
                 ActionName = "Index",
@@ -364,7 +359,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             if (pluginNode != null)
                 pluginNode.ChildNodes.Add(menuItem);
             else
-                rootNode.ChildNodes.Add(menuItem);
+                rootNode.ChildNodes.Add(menuItem);*/
 
         }
 

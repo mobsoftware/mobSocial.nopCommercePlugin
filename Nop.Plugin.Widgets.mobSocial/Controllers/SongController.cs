@@ -23,6 +23,7 @@ using Nop.Plugin.WebApi.MobSocial.Helpers;
 using Nop.Core.Infrastructure;
 using Nop.Services.Catalog;
 using Nop.Core.Domain.Catalog;
+using Nop.Plugin.WebApi.MobSocial;
 using Nop.Plugin.WebApi.MobSocial.Extensions;
 using Nop.Plugin.WebApi.MobSocial.Models;
 using Nop.Plugin.WebApi.MobSocial.Services;

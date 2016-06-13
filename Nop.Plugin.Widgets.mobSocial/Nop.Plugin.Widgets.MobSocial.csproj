@@ -73,7 +73,6 @@
     <Compile Include="Feature\Timeline\Widgets\VideoWidget.cs" />
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="mobSocialPlugin.cs" />
-    <Compile Include="mobSocialSettings.cs" />
     <Compile Include="Models\BattleEditorModel.cs" />
     <Compile Include="Models\CustomerCommentsModel.cs" />
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
@@ -87,10 +86,6 @@
     <Compile Include="Services\ITimelineWidgetLoaderService.cs" />
     <Compile Include="Services\TimelineWidgetLoaderService.cs" />
     <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
-    <None Include="compilerconfig.json" />
-    <None Include="compilerconfig.json.defaults">
-      <DependentUpon>compilerconfig.json</DependentUpon>
-    </None>
     <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />
     <None Include="Content\mobSocial\css\styles.css.map">
       <DependentUpon>styles.css</DependentUpon>

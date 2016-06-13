@@ -24,6 +24,7 @@ using System.Linq;
 using System.Web;
 using Mob.Core;
 using Nop.Core;
+using Nop.Plugin.WebApi.MobSocial;
 using Nop.Plugin.WebApi.MobSocial.Enums;
 using Nop.Plugin.WebApi.MobSocial.Extensions;
 using Nop.Plugin.WebApi.MobSocial.Services;

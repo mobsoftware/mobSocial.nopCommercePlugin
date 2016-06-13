@@ -21,6 +21,7 @@ using Nop.Services.Security;
 using Nop.Services.Seo;
 using Mob.Core;
 using System.Web;
+using Nop.Plugin.WebApi.MobSocial;
 using Nop.Plugin.WebApi.MobSocial.Constants;
 using Nop.Plugin.WebApi.MobSocial.Enums;
 using Nop.Plugin.WebApi.MobSocial.Models;
