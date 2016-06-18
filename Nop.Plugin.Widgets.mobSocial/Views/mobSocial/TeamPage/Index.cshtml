@@ -1,0 +1,16 @@
+﻿@using Nop.Plugin.WebApi.MobSocial.Enums
+@model Nop.Plugin.Widgets.MobSocial.Models.TeamPageModel
+@{
+    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+
+    Html.AppendTitleParts(Model.Name);
+
+    Html.AppendMetaDescriptionParts(Model.Description);
+    Html.AppendMetaKeywordParts(Model.Description);
+    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/TeamPage/Includes.cshtml")
+
+    var json = Json.Encode(Model);
+}
+<div data-ng-controller="TeamPageController" ng-init="init(@json)">
+   
+</div>

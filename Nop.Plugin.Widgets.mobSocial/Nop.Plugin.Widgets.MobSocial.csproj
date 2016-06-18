@@ -51,6 +51,7 @@
     <Compile Include="Controllers\ProxyWebController.cs" />
     <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
+    <Compile Include="Controllers\TeamPageController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
@@ -78,6 +79,8 @@
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
     <Compile Include="Models\PageDisplayModel.cs" />
     <Compile Include="Models\RouteDataModel.cs" />
+    <Compile Include="Models\TeamPageEditorModel.cs" />
+    <Compile Include="Models\TeamPageModel.cs" />
     <Compile Include="Models\TimelinePublicModel.cs" />
     <Compile Include="Models\TimelineWidgetModel.cs" />
     <Compile Include="Models\VideoBattleIndexModel.cs" />
@@ -134,6 +137,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\team-pages\team-page-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\team-pages\team-page.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\timeline\timeline-service.js">
@@ -714,6 +723,15 @@
     <Content Include="Views\mobSocial\Timeline\PostDisplay.VideoBattle.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\TeamPage\Includes.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\TeamPage\TeamPageEditor.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\TeamPage\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -817,6 +835,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(SolutionDir)packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\mobSocial Standalone\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.XML" />
   </ItemGroup>

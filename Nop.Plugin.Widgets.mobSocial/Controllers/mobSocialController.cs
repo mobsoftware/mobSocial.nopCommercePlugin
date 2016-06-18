@@ -381,7 +381,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-        // todo add security to pertinent actions
+     /*   // todo add security to pertinent actions
         public ActionResult Team(int teamId)
         {
 
@@ -447,6 +447,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(MobSocialConstant.ViewsPath + "/mobSocial/TeamPage.cshtml", model);
 
         }
+        */
 
         /// <summary>
         /// Gets the main customer album
