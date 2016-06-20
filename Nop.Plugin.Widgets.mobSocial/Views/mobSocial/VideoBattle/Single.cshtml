@@ -17,7 +17,7 @@
     //set open graph tags
     //Html.SetOpenGraphTags(Model.Name, Model.Description, Model.VideoBattleUrl, "video", Model.VideoBattleFeaturedImageUrl);
 
-    var mobSocialSettings = EngineContext.Current.Resolve<Nop.Plugin.Widgets.MobSocial.mobSocialSettings>();
+    var mobSocialSettings = EngineContext.Current.Resolve<Nop.Plugin.WebApi.MobSocial.mobSocialSettings>();
     var json = Json.Encode(Model);
     var videouploadUrl = "/api/videobattles/uploadvideo/";
 

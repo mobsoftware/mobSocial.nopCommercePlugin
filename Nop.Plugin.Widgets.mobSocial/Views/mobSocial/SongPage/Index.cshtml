@@ -13,8 +13,9 @@
 
         
     var json = Json.Encode(Model);
-    var maxUploadSizeSongFile = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Plugin.Widgets.MobSocial.mobSocialSettings>().SongFileMaximumUploadSize;
-    var maxUploadSizeSampleSongFile = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Plugin.Widgets.MobSocial.mobSocialSettings>().SongFileSampleMaximumUploadSize;
+    var mobSocialSettings = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Plugin.WebApi.MobSocial.mobSocialSettings>();
+    var maxUploadSizeSongFile = mobSocialSettings.SongFileMaximumUploadSize;
+    var maxUploadSizeSampleSongFile = mobSocialSettings.SongFileSampleMaximumUploadSize;
     
 
 }
