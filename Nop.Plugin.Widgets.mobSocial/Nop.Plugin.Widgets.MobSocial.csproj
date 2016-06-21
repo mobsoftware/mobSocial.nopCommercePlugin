@@ -154,6 +154,9 @@
     <Content Include="Content\mobSocial\js\directives\customer-comments.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\js\directives\checkbox-list.directive.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\directives\like-button.directive.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

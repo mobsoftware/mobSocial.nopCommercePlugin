@@ -290,7 +290,7 @@ input[type='number'] {
     text-align: left;
     vertical-align: bottom;
     background-color: $black;
-    height: 170px;
+    min-height: 170px;
     color: $color_concrete_approx;
     position: relative;
 
@@ -328,9 +328,23 @@ input[type='number'] {
 .group-container {
     width: 100%;
 
-    h2 {
-        margin-bottom: 15px !important;
+    h2, h3 {
+        margin: 15px 0 !important;
         display: block;
+        text-align: center;
+
+        a {
+            font-size: 0.6em;
+            font-weight: normal;
+            margin: 0 5px;
+        }
+    }
+
+    .remove-member-link {
+        padding: 10px 0;
+        text-align: center;
+        display: block;
+        color: white;
     }
 }
 
@@ -1614,8 +1628,9 @@ span {
                 display: none !important;
             }
         }
-        .video-container{
-            height:320px;
+
+        .video-container {
+            height: 320px;
         }
     }
 
@@ -2718,5 +2733,36 @@ li a:hover {
 
     .profile-name {
         margin-bottom: 15px;
+    }
+}
+
+.team-member-popup {
+    h3 {
+        margin: 10px 0;
+
+        .small {
+            color: gray;
+            font-size: 0.8em;
+            font-weight: normal;
+        }
+    }
+
+    .content {
+        overflow: visible;
+
+        li {
+            padding: 5px 0;
+        }
+    }
+
+    .angucomplete-holder {
+        input {
+            padding: 10px;
+            width: 100%;
+        }
+    }
+
+    .angucomplete-row {
+        display: block;
     }
 }

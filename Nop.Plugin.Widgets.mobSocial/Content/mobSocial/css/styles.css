@@ -172,7 +172,7 @@ input[type='number'] {
   text-align: left;
   vertical-align: bottom;
   background-color: black;
-  height: 170px;
+  min-height: 170px;
   color: #f3f3f3;
   position: relative; }
   .team-member-picture img {
@@ -202,9 +202,19 @@ input[type='number'] {
 
 .group-container {
   width: 100%; }
-  .group-container h2 {
-    margin-bottom: 15px !important;
-    display: block; }
+  .group-container h2, .group-container h3 {
+    margin: 15px 0 !important;
+    display: block;
+    text-align: center; }
+    .group-container h2 a, .group-container h3 a {
+      font-size: 0.6em;
+      font-weight: normal;
+      margin: 0 5px; }
+  .group-container .remove-member-link {
+    padding: 10px 0;
+    text-align: center;
+    display: block;
+    color: white; }
 
 .team-group-description {
   font-size: 1.1em;
@@ -1807,4 +1817,23 @@ li a:hover {
       max-width: 100%; }
   .default-friend-block .profile-name {
     margin-bottom: 15px; }
+
+.team-member-popup h3 {
+  margin: 10px 0; }
+  .team-member-popup h3 .small {
+    color: gray;
+    font-size: 0.8em;
+    font-weight: normal; }
+
+.team-member-popup .content {
+  overflow: visible; }
+  .team-member-popup .content li {
+    padding: 5px 0; }
+
+.team-member-popup .angucomplete-holder input {
+  padding: 10px;
+  width: 100%; }
+
+.team-member-popup .angucomplete-row {
+  display: block; }
 

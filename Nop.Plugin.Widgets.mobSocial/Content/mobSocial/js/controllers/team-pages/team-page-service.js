@@ -26,7 +26,25 @@
         WebClientService.put(apiEndPoint + "/group/put", post, success, error);
     }
 
-    this.DeleteGroup = function (post, success, error) {
-        WebClientService.delete(apiEndPoint + "/group/delete", post, success, error);
+    this.DeleteGroup = function (id, success, error) {
+        WebClientService.delete(apiEndPoint + "/group/delete/" + id, null, success, error);
+    }
+
+    this.GetGroups = function (id, success, error) {
+        WebClientService.get(apiEndPoint + "/group/get/" + id, null, success, error);
+    }
+
+    this.InsertGroupMembers = function(groupIds, memberIds, teamId, success, error) {
+        WebClientService.post(apiEndPoint + "/group/members/post",
+        {
+            GroupId: groupIds,
+            CustomerId: memberIds,
+            TeamId:teamId
+        }, success, error);
+    }
+
+    this.DeleteGroupMember = function(groupId, memberId, success, error)
+    {
+        WebClientService.delete(apiEndPoint + "/group/members/delete/" + groupId + "/" + memberId, null, success, error);
     }
 }]);
