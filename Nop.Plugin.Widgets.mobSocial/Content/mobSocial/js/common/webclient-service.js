@@ -33,6 +33,10 @@
         this._connect("PUT", url, params, success, error);
     };
 
+    this.patch = function (url, params, success, error) {
+        this._connect("PATCH", url, params, success, error);
+    };
+
     this.delete = function (url, params, success, error) {
         this._connect("DELETE", url, params, success, error);
     };
