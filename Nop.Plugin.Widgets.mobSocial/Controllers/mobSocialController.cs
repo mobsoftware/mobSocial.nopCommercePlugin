@@ -834,7 +834,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 UpdatedOn = DateTime.Now,
                 Name = "SkateMob",
                 Description = "SkateMob members are the #1 skaters in the world!",
-                TeamPictureUrl = ""
+                TeamPictureId = 0
 
             };
 

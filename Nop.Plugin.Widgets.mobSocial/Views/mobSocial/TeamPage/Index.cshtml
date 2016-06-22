@@ -14,7 +14,7 @@
     <div class="cover-area">
         <div class="cover">
             <div class="bgcover">
-                <img ng-src="{{TeamPage.TemporaryCoverImageUrl || TeamPage.CoverImageUrl}}" />
+                <img ng-src="{{TeamPage.TemporaryCoverImageUrl || TeamPage.TeamPictureUrl}}" />
                 <div class="quick-info">
                     <h2>
                         {{TeamPage.Name}}
@@ -24,14 +24,14 @@
 
             <div class="cover-upload-area" ng-if="TeamPage.IsEditable">
                 @{
-                    var uploadUrl = "/api/";
+                    var uploadUrl = "/api/teampage/cover/post";
                 }
                 <div ng-show="!TeamPage.TemporaryCover">
                     <a file-upload-button
                        class="upload-button"
                        id="coverimage_@Model.Id"
                        fieldname="CoverFile"
-                       extradata='{"TeamId": "@Model.Id", "UploadType": "Cover"}'
+                       extradata='{"Id": "@Model.Id"}'
                        uploadtype="image"
                        onsuccessitem="UploadCoverSuccess"
                        url="@uploadUrl">
@@ -41,8 +41,8 @@
                 <div ng-show="TeamPage.TemporaryCover">
                     <div class="keep-cover">
                         <div class="title">Do you wish to keep or discard this cover?</div>
-                        <a ng-click="SetPictureAs('cover', TeamPage.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
-                        <a ng-click="SetPictureAs('cover', TeamPage.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
+                        <a ng-click="SetPictureAsCover(TeamPage.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
+                        <a ng-click="SetPictureAsCover(TeamPage.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
                     </div>
                 </div>
 

@@ -30,7 +30,7 @@
                         $scope.TeamPage.Groups = response.TeamGroups;
                     }
                 },
-                function(response) {
+                function (response) {
                     alert("An error occured while retriving groups");
                     $scope.ProgressGroupLoading = false;
                 });
@@ -89,7 +89,7 @@
             $scope.$broadcast('angucomplete-alt:clearInput', 'customer-autocomplete');
         }
 
-       
+
 
         $scope.GroupEditorActive = false;
         $scope.GroupEditor = function (id) {
@@ -102,7 +102,7 @@
                     Edit: true,
                     TeamPageId: $scope.TeamPage.Id,
                     Id: 0,
-                    GroupMembers:[]
+                    GroupMembers: []
                 });
             } else {
                 for (var i = 0; i < $scope.TeamPage.Groups.length; i++) {
@@ -122,14 +122,14 @@
                 $scope.TeamPage.Groups.pop();
         }
         $scope.AddMembersToGroups = function () {
-           
+
             var _memberIds = [];
             for (var i = 0; i < $scope.membersToAdd.length; i++)
                 _memberIds.push($scope.membersToAdd[i].Id);
             TeamPageService.InsertGroupMembers($scope.groupsToAdd,
                 _memberIds,
                 $scope.TeamPage.Id,
-                function(response) {
+                function (response) {
                     if (response.Success) {
                         $scope.groupsToAdd = [];
                         $scope.membersToAdd = [];
@@ -138,7 +138,7 @@
                         $scope.LoadGroups();
                     }
                 },
-                function(response) {
+                function (response) {
                     alert("An error occured while adding member(s)");
                 });
         }
@@ -191,13 +191,13 @@
                 return;
             }
             var msg = "Are you sure you wish to delete this group?";
-            
+
             if (!confirm(msg)) {
                 return;
             }
 
             TeamPageService.DeleteGroup(group.Id,
-                function(response) {
+                function (response) {
                     if (response.Success) {
                         for (var i = 0; i < $scope.TeamPage.Groups.length; i++) {
                             var g = $scope.TeamPage.Groups[i];
@@ -210,8 +210,42 @@
                         alert(response.Message);
                     }
                 },
-                function() {
+                function () {
                     alert("An error occured while deleting group");
+                });
+        }
+
+        $scope.UploadCoverSuccess = function (fileItem, data, status, headers) {
+
+            if (data.Success) {
+                $scope.TeamPage.TemporaryCoverImageUrl = data.Image.ImageUrl;
+                $scope.TeamPage.TemporaryCoverId = data.Image.ImageId;
+                $scope.TeamPage.TemporaryCover = true;
+            }
+        };
+
+        $scope.SetPictureAsCover = function (pictureId, set) {
+            if (!set) {
+                $scope.TeamPage.TemporaryCoverId = 0;
+                $scope.TeamPage.TemporaryCover = false;
+                $scope.TeamPage.TemporaryCoverImageUrl = false;
+                return;
+            }
+
+            var teamId = $scope.TeamPage.Id;
+            TeamPageService.UpdateCover(teamId,pictureId,
+                function (response) {
+                    if (response.Success) {
+                        $scope.TeamPage.TeamPictureUrl = $scope.TeamPage.TemporaryCoverImageUrl;
+                        $scope.TeamPage.TemporaryCoverId = 0;
+                        $scope.TeamPage.TemporaryCover = false;
+                        $scope.TeamPage.TemporaryCoverImageUrl = false;
+                    } else {
+                        alert(response.Message);
+                    }
+                },
+                function (response) {
+                    alert("An error occured while performing the operation");
                 });
         }
 

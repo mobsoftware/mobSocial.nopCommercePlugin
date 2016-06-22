@@ -10,6 +10,10 @@
         WebClientService.put(apiEndPoint + "/put", post, success, error);
     }
 
+    this.UpdateCover = function (id, pictureId, success, error) {
+        WebClientService.put(apiEndPoint + "/cover/put/" + id + "/" + pictureId, null, success, error);
+    }
+
     this.Get = function (id, success, error) {
         WebClientService.get(apiEndPoint + "/get/"+ id, null, success, error);
     }
