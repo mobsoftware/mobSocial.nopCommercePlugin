@@ -2766,3 +2766,17 @@ li a:hover {
         display: block;
     }
 }
+
+.my-team-pages{
+    .team-page{
+        padding:15px 0;
+        border-bottom:solid 1px #ccc;
+        &:last-child{
+            border-bottom:none;
+        }
+
+        .page-name{
+            font-size:1.5em;
+        }
+    }
+}

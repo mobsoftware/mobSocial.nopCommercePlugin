@@ -34,7 +34,8 @@
                     <div ng-show="processing">
                         Please wait...
                     </div>
-                    <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveTeamPage()" value="@(Model.Id == 0 ? "Create" : "Update") Team Page" />
+                    <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveTeamPage()" value="@(Model.Id == 0 ? "Create" : "Update") Team Page"/>
+                    <a href="@Url.RouteUrl("MyTeamPages")">Cancel</a>
                 </div>
             </div>
         </div>

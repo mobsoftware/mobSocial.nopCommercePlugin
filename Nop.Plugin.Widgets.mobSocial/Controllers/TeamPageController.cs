@@ -15,7 +15,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             };
             return View("mobSocial/TeamPage/Index", model);
         }
-
+        [Authorize]
         public ActionResult TeamPageEditor(int id = 0)
         {
             var model = new TeamPageEditorModel()
@@ -24,6 +24,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             };
 
             return View("mobSocial/TeamPage/TeamPageEditor", model);
+        }
+        [Authorize]
+        public ActionResult MyPages()
+        {
+            return View("mobSocial/TeamPage/MyPages");
         }
     }
 }

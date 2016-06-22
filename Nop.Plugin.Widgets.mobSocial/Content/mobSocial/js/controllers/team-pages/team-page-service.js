@@ -18,6 +18,9 @@
         WebClientService.get(apiEndPoint + "/get/"+ id, null, success, error);
     }
 
+    this.GetMyPages = function(success, error) {
+        WebClientService.get(apiEndPoint + "/get/my", null, success, error);
+    }
     this.Delete = function (id, success, error) {
         WebClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
     }

@@ -20,6 +20,41 @@
             }
         }
 
+        $scope.GetMyPages = function() {
+            TeamPageService.GetMyPages(function(response) {
+                    if (response.Success) {
+                        $scope.TeamPages = response.TeamPages;
+                    } else {
+                        alert($scope.Message);
+                    }
+                },
+                function(response) {
+                    alert("An error occured while retriving team pages");
+                });
+        }
+
+        $scope.DeletePage = function (id) {
+            if (!confirm("Are you sure you wish to delete this page? The action can't be undone")) {
+                return;
+            }
+
+            TeamPageService.Delete(id,
+                function (response) {
+                    if (response.Success) {
+                       for (var i = 0; i < $scope.TeamPages.length; i++) {
+                           var teamPage = $scope.TeamPages[i];
+                           if (teamPage.Id == id) {
+                               $scope.TeamPages.splice(i, 1);
+                           }
+                       }
+                    } else {
+                        alert(response.Message);
+                    }
+                }, function () {
+                    alert("An error occured while deleting page");
+                });
+        }
+
         $scope.LoadGroups = function () {
             $scope.TeamPage.Groups = [];
             $scope.ProgressGroupLoading = true;
@@ -233,7 +268,7 @@
             }
 
             var teamId = $scope.TeamPage.Id;
-            TeamPageService.UpdateCover(teamId,pictureId,
+            TeamPageService.UpdateCover(teamId, pictureId,
                 function (response) {
                     if (response.Success) {
                         $scope.TeamPage.TeamPictureUrl = $scope.TeamPage.TemporaryCoverImageUrl;
@@ -261,7 +296,7 @@ app.controller("TeamPageEditorController",
                 TeamPageService.Get(model.Id,
                     function (response) {
                         if (response.Success)
-                            $scope.TeamPage = response;
+                            $scope.TeamPage = response.TeamPage;
                         else
                             alert(response.Message);
 

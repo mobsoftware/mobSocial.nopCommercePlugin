@@ -77,11 +77,15 @@ namespace Nop.Plugin.Widgets.MobSocial
                 );
 
             routes.MapLocalizedRoute("TeamPageEditor",
-              "TeamPageEditor",
-              new { controller = "TeamPage", action = "TeamPageEditor" },
+              "TeamPageEditor/{id}",
+              new { controller = "TeamPage", action = "TeamPageEditor", id = 0 },
               new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
               );
-
+            routes.MapLocalizedRoute("MyTeamPages",
+            "TeamPages",
+            new { controller = "TeamPage", action = "MyPages" },
+            new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
+            );
             routes.MapLocalizedRoute("AddFriend",
                 "Friends/AddFriend",
                 new {controller = "Friends", action = "AddFriend"},
