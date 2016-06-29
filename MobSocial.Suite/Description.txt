@@ -1,0 +1,8 @@
+﻿Group: mobSocial
+FriendlyName: mobSocial Suite
+SystemName: mobSocial.Suite
+Version: 1.10
+SupportedVersions: 3.70
+Author: Mob Software Team
+DisplayOrder: -1
+FileName: mobSocial.Suite.dll
