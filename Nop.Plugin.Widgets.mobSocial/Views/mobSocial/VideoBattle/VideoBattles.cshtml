@@ -1,8 +1,9 @@
-﻿@model Nop.Plugin.WebApi.MobSocial.Models.VideoBattleQueryModel
+﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+@model Nop.Plugin.WebApi.MobSocial.Models.VideoBattleQueryModel
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
 
-    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml");
+    @Html.Partial("mobSocial/VideoBattle/Includes");
 
     var title = "";
     switch (Model.ViewType)
@@ -77,7 +78,7 @@
                                 No video battles found
                             </div>
                             <div ng-repeat="VideoBattle in VideoBattles">
-                                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/VideoBattleBox.cshtml")
+                                @Html.Partial("mobSocial/VideoBattle/VideoBattleBox")
                             </div>
                         </div>
                     </div>

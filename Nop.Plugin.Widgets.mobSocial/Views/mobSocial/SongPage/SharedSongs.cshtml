@@ -1,7 +1,7 @@
 ﻿@using Nop.Plugin.WebApi.MobSocial.Constants
 @using Nop.Plugin.WebApi.MobSocial.Models;
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
+    Layout = Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsTwo.cshtml";
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/song-pages/song-pages.js");
 
 
@@ -43,7 +43,7 @@
                         <table>
                             <tr data-ng-repeat="song in ReceivedSongs">
                                 <td>
-                                    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")                                   
+                                    @Html.Partial("mobSocial/SongPage/SongBlock")                                   
                                 </td>
                                 <td style="vertical-align:top">
                                     <div class="message-text">
@@ -76,7 +76,7 @@
                         <table>
                             <tr data-ng-repeat="song in SharedSongs">
                                 <td valign="top">
-                                    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
+                                    @Html.Partial("mobSocial/SongPage/SongBlock")
                                 </td>
                                 <td style="vertical-align:top;">
                                     Shared with {{song.SharedWith.length}} {{song.SharedWith.length == 1 ? 'person' : 'people'}}

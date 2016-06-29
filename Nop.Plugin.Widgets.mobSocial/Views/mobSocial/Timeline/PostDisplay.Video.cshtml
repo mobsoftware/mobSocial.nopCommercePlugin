@@ -1,4 +1,5 @@
-﻿<div class="user-info">
+﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+<div class="user-info">
     <a href="{{Post.OwnerProfileUrl}}" class="user-name">
         <img ng-src="{{Post.OwnerImageUrl}}" />
         <span>
@@ -52,7 +53,7 @@
                 type: jsonValue.MimeType
             }];
             Post.Config = {
-                theme: rootUrl + "/Plugins/Widgets.mobSocial/Content/Libraries/videogular/theme/videogular.css"
+                theme: rootUrl + "@(MobSocialConstant.PluginPath.Replace("~", ""))/Content/Libraries/videogular/theme/videogular.css"
             }
             Post.VideoSource = source;
             $API.changeSource(Post.VideoSource);

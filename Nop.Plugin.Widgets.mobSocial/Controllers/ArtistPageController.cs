@@ -102,7 +102,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #region Actions
         public ActionResult Index(int Id)
         {
-            return View(ControllerUtil.MobSocialViewsFolder + "/ArtistPage/Index.cshtml");
+            return View("mobSocial/ArtistPage/Index");
         }
         /// <summary>
         /// Imports a new artist from remote api if it doesn't exist in our database
@@ -134,7 +134,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         public ActionResult Search()
         {
-            return View(ControllerUtil.MobSocialViewsFolder + "/ArtistPage/Search.cshtml"); 
+            return View("mobSocial/ArtistPage/Search"); 
         }
 
      
@@ -144,7 +144,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [Authorize]
         public ActionResult MyArtistPages()
         {
-            return View(ControllerUtil.MobSocialViewsFolder + "/ArtistPage/MyPages.cshtml");
+            return View("mobSocial/ArtistPage/MyPages");
         }
         
         /// <summary>
@@ -184,7 +184,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 model = new ArtistPageModel();
             }
 
-            return View(ControllerUtil.MobSocialViewsFolder + "/ArtistPage/Editor.cshtml", model);
+            return View("mobSocial/ArtistPage/Editor", model);
 
         }
 

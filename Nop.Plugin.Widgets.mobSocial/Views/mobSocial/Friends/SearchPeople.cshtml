@@ -1,10 +1,11 @@
-﻿@using Nop.Plugin.WebApi.MobSocial.Enums
+﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+@using Nop.Plugin.WebApi.MobSocial.Enums
 @model Nop.Plugin.WebApi.MobSocial.Models.FriendSearchModel
 @{
 
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
+    Layout = MobSocialConstant.ViewsPath + "/Views/mobSocial/_AppColumnsTwo.cshtml";
 
-    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Friends/Includes.cshtml")
+    @Html.Partial("mobSocial/Friends/Includes")
 
     var json = Json.Encode(Model);
 }

@@ -11,6 +11,7 @@ using MobAds.Public;
 using Nop.Core;
 using System.Linq;
 using Nop.Plugin.WebApi.MobSocial;
+using Nop.Plugin.WebApi.MobSocial.Constants;
 using Nop.Plugin.WebApi.MobSocial.Services;
 
 namespace Nop.Plugin.Widgets.MobSocial
@@ -201,7 +202,8 @@ namespace Nop.Plugin.Widgets.MobSocial
         public override void Install()
         {
             AddLocaleResourceStrings();
-            base.Install();
+            if (!MobSocialConstant.SuiteInstallation)
+                base.Install();
 
         }
 
@@ -216,8 +218,8 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.DeletePluginLocaleResource("SearchDropdown.PeopleSearchText");
             // do not remove core locales
 
-
-            base.Uninstall();
+            if (!MobSocialConstant.SuiteInstallation)
+                base.Uninstall();
         }
 
         #endregion

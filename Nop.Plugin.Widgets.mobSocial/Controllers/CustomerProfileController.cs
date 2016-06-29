@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.Mvc;
-using Nop.Admin.Controllers;
+﻿using System.Web.Mvc;
 using System.Linq;
-using System.Web;
-using Mob.Core;
 using Nop.Core;
-using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
 using Nop.Plugin.WebApi.MobSocial;
@@ -16,14 +9,10 @@ using Nop.Plugin.WebApi.MobSocial.Enums;
 using Nop.Plugin.WebApi.MobSocial.Models;
 using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Services.Common;
-using Nop.Services.Localization;
 using Nop.Services.Media;
-using Nop.Services.Security;
 using Nop.Web.Controllers;
-using Nop.Web.Framework;
 using Nop.Web.Models.Profile;
 using Nop.Services.Customers;
-using Nop.Services.Seo;
 using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -125,7 +114,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [ChildActionOnly]
         public ActionResult PublicInfo(string widgetZone)
         {
-           return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/AboutMe/PublicInfo.cshtml");
+           return View("mobSocial/AboutMe/PublicInfo");
         }
 
     }

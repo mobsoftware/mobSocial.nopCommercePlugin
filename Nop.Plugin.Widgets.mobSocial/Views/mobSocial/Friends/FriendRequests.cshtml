@@ -1,8 +1,9 @@
 ﻿@using System.Web.Mvc
+@using Nop.Plugin.WebApi.MobSocial.Constants
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
+    Layout = MobSocialConstant.ViewsPath + "/Views/mobSocial/_AppColumnsTwo.cshtml";
 
-    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Friends/Includes.cshtml")
+    @Html.Partial("mobSocial/Friends/Includes")
 
     //title
     Html.AddTitleParts(T("PageTitle.Account").Text);

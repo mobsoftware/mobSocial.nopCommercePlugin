@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Nop.Admin.Controllers;
+using Nop.Plugin.WebApi.MobSocial.Constants;
 using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Services.Security;
 using Nop.Web.Framework.Controllers;
@@ -76,7 +77,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         [AdminAuthorize]
         public ActionResult Index()
         {
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageTeamPage/List.cshtml");
+            return View(MobSocialConstant.ViewsPath + "/Views/mobSocial/Admin/ManageTeamPage/List.cshtml");
         }
        
         #endregion

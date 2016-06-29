@@ -2,7 +2,7 @@
 @using Nop.Plugin.WebApi.MobSocial.Constants
 @using Nop.Plugin.WebApi.MobSocial.Models;
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+    Layout = Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
     Html.AppendTitleParts(Model.Name);
 
     Html.AppendMetaDescriptionParts(Model.MetaDescription);
@@ -71,7 +71,7 @@
             <div ng-hide="songsLoaded" class="text-center">Loading...</div>
             <div ng-show="SimilarSongs.length == 0" class="text-center">No similar songs found</div>
             <div data-ng-repeat="song in SimilarSongs">
-                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
+                @Html.Partial("mobSocial/SongPage/SongBlock")
             </div>
         </div>
     </div>

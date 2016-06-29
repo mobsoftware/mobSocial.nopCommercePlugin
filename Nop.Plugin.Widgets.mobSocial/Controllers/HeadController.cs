@@ -13,7 +13,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         [ChildActionOnly]
         public ActionResult PublicInfo(string widgetZone)
         {
-            return View(ControllerUtil.MobSocialViewsFolder + "/Head/PublicInfo.cshtml");
+            return View("mobSocial/Head/PublicInfo");
         }
 
     }

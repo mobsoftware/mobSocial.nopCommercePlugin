@@ -151,7 +151,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             model.MetaTitle = model.Name;
             model.MetaKeywords = model.Name;
             model.MetaDescription = string.IsNullOrWhiteSpace(model.Description) ? model.Name : model.Description;
-            return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/Index.cshtml", model);
+            return View("mobSocial/SongPage/Index", model);
         }
 
 
@@ -412,7 +412,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
 
                 //ask user to login if he is logged out
-                return View(ControllerUtil.MobSocialViewsFolder + "_MustLogin.cshtml");
+                return View(ControllerUtil.MobSocialViewsFolder + "_MustLogin");
             }
             //check if song exists
             var song = _songService.GetById(TrackId);
@@ -453,7 +453,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 };
             }
 
-            return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/ShareSong.cshtml", model);
+            return View("mobSocial/SongPage/ShareSong", model);
 
         }
 
@@ -517,7 +517,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// </summary>
         public ActionResult SharedSongs()
         {
-            return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/SharedSongs.cshtml");
+            return View("mobSocial/SongPage/SharedSongs");
         }
 
         [HttpPost]
@@ -824,7 +824,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 DateCreated = DateTime.Now,
                 DateUpdated = DateTime.Now
             };
-            return View(ControllerUtil.MobSocialViewsFolder + "/SongPage/SongEditor.cshtml", model);
+            return View("mobSocial/SongPage/SongEditor", model);
         }
 
         [HttpPost]

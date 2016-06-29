@@ -1,32 +1,33 @@
-﻿@{
+﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+@{
 
 
 
     // MobSocial Resources
-    Html.AppendCssFileParts("~/Plugins/Widgets.mobSocial/Content/jquery-ui.min.css");
-    Html.AppendCssFileParts("~/Plugins/Widgets.mobSocial/Content/jquery-ui.structure.min.css");
-    Html.AppendCssFileParts("~/Plugins/Widgets.mobSocial/Content/jquery-ui.theme.min.css");
+    Html.AppendCssFileParts(MobSocialConstant.PluginPath + "/Content/jquery-ui.min.css");
+    Html.AppendCssFileParts(MobSocialConstant.PluginPath + "/Content/jquery-ui.structure.min.css");
+    Html.AppendCssFileParts(MobSocialConstant.PluginPath + "/Content/jquery-ui.theme.min.css");
 
 
-    Html.AppendScriptParts("~/Plugins/Widgets.mobSocial/Content/scripts/jquery-ui-1.11.min.js");
-    Html.AppendScriptParts("~/Plugins/Widgets.mobSocial/Content/scripts/jquery-1.11.min.js");
-    Html.AppendScriptParts("~/Plugins/Widgets.mobSocial/Content/angular-xeditable/js/xeditable.min.js");
-    Html.AppendScriptParts("~/Plugins/Widgets.mobSocial/Content/angular-audio/js/angular.audio.js");
-    Html.AppendScriptParts("~/Plugins/Widgets.mobSocial/Content/angucomplete-alt/angucomplete-alt.js");
-    Html.AppendScriptParts("~/Plugins/Widgets.mobSocial/Content/scripts/angular.min.js");
+    Html.AppendScriptParts(MobSocialConstant.PluginPath + "/Content/scripts/jquery-ui-1.11.min.js");
+    Html.AppendScriptParts(MobSocialConstant.PluginPath + "/Content/scripts/jquery-1.11.min.js");
+    Html.AppendScriptParts(MobSocialConstant.PluginPath + "/Content/angular-xeditable/js/xeditable.min.js");
+    Html.AppendScriptParts(MobSocialConstant.PluginPath + "/Content/angular-audio/js/angular.audio.js");
+    Html.AppendScriptParts(MobSocialConstant.PluginPath + "/Content/angucomplete-alt/angucomplete-alt.js");
+    Html.AppendScriptParts(MobSocialConstant.PluginPath + "/Content/scripts/angular.min.js");
   
-    Html.AppendCssFileParts("~/Plugins/Widgets.mobSocial/Content/angucomplete-alt/angucomplete-alt.css");
-    Html.AddCssFileParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/font-awesome.min.css");
-    Html.AddCssFileParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/mobSocial.css");
+    Html.AppendCssFileParts(MobSocialConstant.PluginPath + "/Content/angucomplete-alt/angucomplete-alt.css");
+    Html.AddCssFileParts(MobSocialConstant.PluginPath + "/Content/mobSocial/font-awesome.min.css");
+    Html.AddCssFileParts(MobSocialConstant.PluginPath + "/Content/mobSocial/mobSocial.css");
     // Put all your custom styles here to keep them separate from the core mobSocial styles and
     // so they will not get overwritten when you upgrade to a new version of mobSocial.
-    Html.AddCssFileParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/mobSocial-custom.css");
-    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/common.js");
-    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/mobSocial.js");
-    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/mob-preview-song-button.directive.js");
-    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/share-song-button.directive.js");
-    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/mobSocial/buy-song-button.directive.js");
-    Html.AddScriptParts("~/Plugins/Widgets.mobSocial/Content/angular-datetimepicker/datetimepicker.js");
+    Html.AddCssFileParts(MobSocialConstant.PluginPath + "/Content/mobSocial/mobSocial-custom.css");
+    Html.AddScriptParts(MobSocialConstant.PluginPath + "/Content/mobSocial/common.js");
+    Html.AddScriptParts(MobSocialConstant.PluginPath + "/Content/mobSocial/mobSocial.js");
+    Html.AddScriptParts(MobSocialConstant.PluginPath + "/Content/mobSocial/mob-preview-song-button.directive.js");
+    Html.AddScriptParts(MobSocialConstant.PluginPath + "/Content/mobSocial/share-song-button.directive.js");
+    Html.AddScriptParts(MobSocialConstant.PluginPath + "/Content/mobSocial/buy-song-button.directive.js");
+    Html.AddScriptParts(MobSocialConstant.PluginPath + "/Content/angular-datetimepicker/datetimepicker.js");
 
 
 }   

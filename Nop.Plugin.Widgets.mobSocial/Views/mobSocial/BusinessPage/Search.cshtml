@@ -5,8 +5,8 @@
 
 @using Nop.Web.Framework.UI
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
-
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
+    
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-pages.js");
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-pages-search.js");
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js");

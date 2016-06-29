@@ -1,18 +1,19 @@
 ﻿@using Mob.Core.UI
 @using Nop.Core.Domain.Customers
 @using Nop.Core.Infrastructure
+@using Nop.Plugin.WebApi.MobSocial.Constants
 @using Nop.Plugin.WebApi.MobSocial.Enums
 @using Nop.Plugin.WebApi.MobSocial.Models
 @model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleIndexModel
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
 
     Html.AppendTitleParts(Model.Name);
 
     Html.AppendMetaDescriptionParts(Model.Description);
     Html.AppendMetaKeywordParts(Model.Description);
 
-    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+    @Html.Partial("mobSocial/VideoBattle/Includes")
 
     //set open graph tags
     //Html.SetOpenGraphTags(Model.Name, Model.Description, Model.VideoBattleUrl, "video", Model.VideoBattleFeaturedImageUrl);

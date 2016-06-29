@@ -1,5 +1,6 @@
-﻿@model int
+﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+@model int
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsTwo.cshtml";
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsTwo.cshtml";
 }
 @Html.Action("TimelineWidget", "Timeline", new {customerId = Model})

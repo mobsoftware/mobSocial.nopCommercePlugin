@@ -1,7 +1,7 @@
 ﻿@using Nop.Plugin.WebApi.MobSocial.Constants
 @using Nop.Plugin.WebApi.MobSocial.Models;
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
+    Layout = MobSocialConstant.ViewsPath + "/Views/mobSocial/_AppColumnsOne.cshtml";
 
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/artist-pages/artist-page-search.js");
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/song-pages/song-pages.js");

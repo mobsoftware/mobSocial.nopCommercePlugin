@@ -165,7 +165,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             //TODO: Trust community to update.
             model.CanEdit = _workContext.IsAdmin;
 
-            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/Index.cshtml", model);
+            return View("mobSocial/BusinessPage/Index", model);
 
         }
 
@@ -569,7 +569,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 DisplayOrder = 1
             };
 
-            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/AddPicture.cshtml", addPictureModel);
+            return View("mobSocial/BusinessPage/AddPicture", addPictureModel);
         }
 
 
@@ -686,7 +686,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
 
-            return View(ControllerUtil.MobSocialViewsFolder + "/BusinessPage/Search.cshtml", model); 
+            return View("mobSocial/BusinessPage/Search", model); 
 
             
         }

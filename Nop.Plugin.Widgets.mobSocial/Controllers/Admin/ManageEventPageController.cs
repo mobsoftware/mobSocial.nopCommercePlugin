@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Nop.Admin.Controllers;
 using Nop.Core;
+using Nop.Plugin.WebApi.MobSocial.Constants;
 using Nop.Plugin.WebApi.MobSocial.Domain;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
@@ -117,7 +118,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         [AdminAuthorize]
         public ActionResult List()
         {
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/List.cshtml");
+            return View(MobSocialConstant.ViewsPath + "/Views/mobSocial/Admin/ManageEventPage/List.cshtml");
         }
 
         [AdminAuthorize]
@@ -128,7 +129,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
             //    return AccessDeniedView();
 
             var model = new EventPageModel();
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
         }
 
 
@@ -170,7 +171,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
                 
             };
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
 
         }
 
@@ -223,7 +224,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
                 return continueEditing ? RedirectToAction("Edit", new { id = entity.Id }) : RedirectToAction("List");
             }
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
+            return View(MobSocialConstant.ViewsPath + "/Views/mobSocial/Admin/ManageEventPage/Create.cshtml", model);
 
         }
 
@@ -291,7 +292,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
                 }
             }
 
-            return View("~/Plugins/Widgets.mobSocial/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
+            return View(MobSocialConstant.ViewsPath +  "/Views/mobSocial/Admin/ManageEventPage/Edit.cshtml", model);
         }
 
         [HttpPost]
