@@ -56,14 +56,14 @@
         <div ng-if="searchType == 'Artists'">
             <h1 ng-if="results.length > 0">Showing artists for '{{term}}'</h1>
             <div data-ng-repeat="artist in results">
-                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/ArtistPage/ArtistBlock.cshtml")
+                @Html.Partial("mobSocial/ArtistPage/ArtistBlock")
             </div>
         </div>
         <div ng-if="searchType == 'Songs'">
 
             <h1 ng-if="results.length > 0">Showing songs for '{{term}}'</h1>
             <div data-ng-repeat="song in results">
-                @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/SongPage/SongBlock.cshtml")
+                @Html.Partial("mobSocial/SongPage/SongBlock")
             </div>
         </div>
 
