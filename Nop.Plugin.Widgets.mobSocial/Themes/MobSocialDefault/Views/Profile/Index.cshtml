@@ -1,10 +1,11 @@
 ﻿@using Nop.Core.Infrastructure
 @using Nop.Services.Configuration
+@using Nop.Plugin.WebApi.MobSocial.Constants
 @model Nop.Web.Models.Profile.ProfileIndexModel
 @{
-    Layout = "~/Plugins/Widgets.mobSocial/Views/mobSocial/_AppColumnsOne.cshtml";
-    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/Friends/Includes.cshtml")
-    @Html.Partial("~/Plugins/Widgets.mobSocial/Views/mobSocial/VideoBattle/Includes.cshtml")
+    Layout = MobSocialConstant.ViewsPath +"/mobSocial/_AppColumnsOne.cshtml";
+    @Html.Partial("mobSocial/Friends/Includes")
+    @Html.Partial("mobSocial/VideoBattle/Includes")
     
     
     Html.AddTitleParts(Model.ProfileTitle);
