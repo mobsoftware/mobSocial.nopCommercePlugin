@@ -822,10 +822,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MobAds.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MobAds.Public.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MobAds.Public">
+      <HintPath>MobLib\MobAds.Public.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(SolutionDir)packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>

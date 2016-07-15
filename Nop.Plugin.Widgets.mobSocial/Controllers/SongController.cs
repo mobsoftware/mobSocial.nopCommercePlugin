@@ -209,7 +209,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return Json(new { Success = false, Message = "Invalid Track Id" });
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult Search(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
         {
             //we search for artists both in our database as well as the remote api
