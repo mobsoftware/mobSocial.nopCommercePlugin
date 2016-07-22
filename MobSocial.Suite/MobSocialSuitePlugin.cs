@@ -80,7 +80,10 @@ namespace MobSocial.Suite
         public void GetConfigurationRoute(out string actionName, out string controllerName,
             out RouteValueDictionary routeValues)
         {
-            throw new System.NotImplementedException();
+            actionName = "Configure";
+            controllerName = "Suite";
+            routeValues = new RouteValueDictionary() { { "Namespaces", " MobSocial.Suite.Controllers" }, { "area", null } };
+
         }
 
         public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName,
