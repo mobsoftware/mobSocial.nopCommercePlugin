@@ -46,7 +46,7 @@ app.controller("ArtistPageSearchController", ['$rootScope','$scope', '$http', fu
             $rootScope.audio.pause();
         }
         $http({
-            url: data.searchType == 'Artists' ? '/api/artists/search?' + jQuery.param(data) : 'SongSearch?' + +jQuery.param(data),
+            url: data.searchType == 'Artists' ? '/api/artists/search?' + jQuery.param(data) : 'SongSearch?' + jQuery.param(data),
             method: "GET",
             data: data,
         }).success(function (data, status, headers, config) {

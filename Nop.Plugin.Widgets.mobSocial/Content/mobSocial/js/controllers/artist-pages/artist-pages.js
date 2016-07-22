@@ -7,7 +7,7 @@
     $scope.recordSaved = false;
     $scope.IsArtistNameAvailable = function () {
         if ($scope.artistFormValid) {
-            $http.post("/api/artists/CheckArtistNameAvailable", { name: $scope.artist.Name })
+            $http.get("/api/artists/getartistnameavailability/" + $scope.artist.Name, null)
                    .success(function (data, status, headers, config) {
                        if (data.available && data.remoteArtist) {
                            $scope.artist = JSON.parse(data.artist);

@@ -295,7 +295,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 }
 
             }
-            return Json(model);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
