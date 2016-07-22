@@ -12,8 +12,10 @@
 @section left{
     <form action="">
         <div>
-            <input type="text" name="searchTerm" value="@Model.SearchTerm"/>
-            <input type="submit" value="Search"/>
+            <h3>People Finder</h3>
+            <p style="margin:5px 0">Type first name or last name and click on <b>Search</b></p>
+            <input type="text" name="searchTerm" placeholder="Type a few search terms" value="@Model.SearchTerm" /><br />
+            <input type="submit" style="margin:5px 0;display:block;" value="Search" />
         </div>
     </form>
 
