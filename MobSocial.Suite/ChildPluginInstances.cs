@@ -1,14 +1,5 @@
-﻿using Nop.Core;
-using Nop.Core.Infrastructure;
+﻿using Nop.Core.Infrastructure;
 using Nop.Core.Plugins;
-using Nop.Plugin.WebApi.MobSocial;
-using Nop.Plugin.WebApi.MobSocial.Data;
-using Nop.Plugin.WebApi.MobSocial.Services;
-using Nop.Plugin.Widgets.MobSocial;
-using Nop.Services.Configuration;
-using Nop.Services.Localization;
-using Nop.Services.Messages;
-using Nop.Services.Tasks;
 
 namespace MobSocial.Suite
 {
