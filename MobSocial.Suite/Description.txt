@@ -1,7 +1,7 @@
 ﻿Group: mobSocial
 FriendlyName: mobSocial Suite
 SystemName: mobSocial.Suite
-Version: 1.10
+Version: 1.0
 SupportedVersions: 3.70
 Author: Mob Software Team
 DisplayOrder: -1
