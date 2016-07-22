@@ -1,4 +1,12 @@
-﻿@model Nop.Plugin.WebApi.MobSocial.Models.SocialNetworkNavigationModel           
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Plugin.WebApi.MobSocial.Extensions
+@model Nop.Plugin.WebApi.MobSocial.Models.SocialNetworkNavigationModel
+@{
+    var workContext = EngineContext.Current.Resolve<IWorkContext>();
+    var currentCustomer = workContext.CurrentCustomer;
+    var currentCustomerSeName = currentCustomer.GetSeName(workContext.WorkingLanguage.Id, true, false);
+}
 <div class="block block-account-navigation">
     <div class="title">
         <strong>Social Network</strong>
@@ -6,19 +14,34 @@
     <div class="clear">
     </div>
     <div class="listbox">
+        <h3>Activity</h3>
         <ul class="list">
-            
-            <li><a href="@Url.RouteUrl("CustomerAvatar")">@T("Account.Avatar")</a></li> 
-            <li><a href="@Url.RouteUrl("ArtistsPage", new { action = "MyArtistPages" })">My Artists</a></li> 
-            <li><a href="@Url.RouteUrl("SongsPage", new { action = "SharedSongs" })">Received Songs</a></li> 
-            <li><a href="@Url.RouteUrl("SongsPage", new { action = "PurchasedSongs" })">Purchased Songs</a></li> 
-            <li><a href="@Url.RouteUrl("VideoBattles")">Video Battles</a></li>
-            <li><a href="@Url.RouteUrl("MyTeamPages")">My Team Pages</a></li>
-           <li><a href="@Url.Action("FriendRequests", "Friends")">@Model.FriendRequestsLinkText</a></li>
-            <li>Create Event (coming soon)</li>
-
-            <li><a href="@Url.Action("MyHealth", "MobSocial")">My Health</a></li>
+            <li><a href="/@(currentCustomerSeName)">My Profile</a></li>
             <li><a href="@Url.RouteUrl("TimelinePage")">Activity Timeline</a></li>
+
+            <li><a href="@Url.RouteUrl("MyTeamPages")">My Team Pages</a></li>
+        </ul>
+        <h3>Connections</h3>
+        <ul class="list">
+            <li><a href="@Url.RouteUrl("SearchPeople")">Search People</a></li>
+            <li><a href="@Url.Action("FriendRequests", "Friends")">@Model.FriendRequestsLinkText</a></li>
+        </ul>
+        <h3>Music</h3>
+        <ul class="list">
+            <li><a href="@Url.RouteUrl("MusicSearch")">Search</a></li>
+            <li><a href="@Url.RouteUrl("ArtistsPage", new {action = "MyArtistPages"})">My Artists</a></li>
+            <li><a href="@Url.RouteUrl("SongsPage", new {action = "SharedSongs"})">Received Songs</a></li>
+            <li><a href="@Url.RouteUrl("SongsPage", new {action = "PurchasedSongs"})">Purchased Songs</a></li>
+        </ul>
+        <h3>Videos</h3>
+        <ul class="list">
+            <li><a href="@Url.RouteUrl("VideoBattles")">Video Battles</a></li>
+        </ul>
+        <h3>Coming soon</h3>
+        <ul class="list">
+            <li><a>Event Pages</a></li>
+            <li><a>My Health</a></li>
+            <li><a>Business Pages</a></li>
         </ul>
     </div>
 </div>
