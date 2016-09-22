@@ -612,8 +612,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 string albumFolder = string.Format("~/Content/Images/Albums/{0}/{1}", 
                     album.CustomerId, albumId);
 
-                var albumPicturePath = Path.Combine(_webHelper.MapPath(albumFolder), fileName);
-                albumPicturePath = FileUtility.FilePathAddNumberIfExists(albumPicturePath, _webHelper.MapPath(albumFolder));
+                var albumPicturePath = Path.Combine(CommonHelper.MapPath(albumFolder), fileName);
+                albumPicturePath = FileUtility.FilePathAddNumberIfExists(albumPicturePath, CommonHelper.MapPath(albumFolder));
 
                 var directoryPath = Path.GetDirectoryName(albumPicturePath);
                 if (!Directory.Exists(directoryPath))
@@ -622,7 +622,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 pictureFile.SaveAs(albumPicturePath);
 
                 var thumbnailFileName = Path.GetFileNameWithoutExtension(albumPicturePath) + "-thumbnail" + Path.GetExtension(albumPicturePath);
-                var thumbnailPath = Path.Combine(_webHelper.MapPath(albumFolder), thumbnailFileName);
+                var thumbnailPath = Path.Combine(CommonHelper.MapPath(albumFolder), thumbnailFileName);
                 var thumbnailWidth = _mobSocialSettings.CustomerAlbumPictureThumbnailWidth;
                 var resizedPicture = _customerAlbumPictureService.CreateThumbnailPicture(pictureFile.GetPictureBits(), thumbnailWidth, pictureFile.ContentType);
 
@@ -755,16 +755,16 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             var picture = _customerAlbumPictureService.GetCustomerAlbumPictureById(customerAlbumPictureId);
 
-            var picturePath = _webHelper.MapPath("~/" + picture.Url);
+            var picturePath = CommonHelper.MapPath("~/" + picture.Url);
             var pictureFileName = Path.GetFileName(picturePath);
 
-            var thumbPath = _webHelper.MapPath("~/" + picture.ThumbnailUrl);
+            var thumbPath = CommonHelper.MapPath("~/" + picture.ThumbnailUrl);
             var thumbFileName = Path.GetFileName(thumbPath);
 
             string deletedAlbumFolder = string.Format("~/Content/Images/Albums/{0}/{1}/Deleted",
                                                       picture.Album.CustomerId, picture.CustomerAlbumId);
 
-            deletedAlbumFolder = _webHelper.MapPath(deletedAlbumFolder);
+            deletedAlbumFolder = CommonHelper.MapPath(deletedAlbumFolder);
 
             var deletedDirectory = new DirectoryInfo(deletedAlbumFolder);
             deletedDirectory.Create(); // If the directory already exists, nothing will happen here.

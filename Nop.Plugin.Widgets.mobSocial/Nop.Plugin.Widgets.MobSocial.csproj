@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>$(SolutionDir)Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,11 +31,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
+    <OutputPath>$(SolutionDir)Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArtistPageController.cs" />
@@ -872,9 +873,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets'))" />
   </Target>
-  <Import Project="..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets" Condition="Exists('..\..\..\..\..\Websites\Testing\nopCommerce_3.70_Source\packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" />
+  <Import Project="$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets" Condition="Exists('$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" />
   <!--<Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
