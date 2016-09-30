@@ -13,7 +13,7 @@ namespace MobSocial.Suite
 {
     public class MobSocialSuitePlugin : BasePlugin, IAdminMenuPlugin, IWidgetPlugin
     {
-        
+
         private readonly MobSocialSuiteSettings _mobSocialSuiteSettings;
         private readonly ISettingService _settingService;
 
@@ -28,9 +28,11 @@ namespace MobSocial.Suite
             //set owin startup
             SetOwinStartup(true);
 
+            //set suite install
+            SetSuiteInstall(true);
+
             //save the settings
-            var suiteSettings = new MobSocialSuiteSettings()
-            {
+            var suiteSettings = new MobSocialSuiteSettings() {
                 WebInterfaceEnabled = true
             };
             _settingService.SaveSetting(suiteSettings);
@@ -47,6 +49,7 @@ namespace MobSocial.Suite
         {
             //reset owin in web.config
             SetOwinStartup(false);
+
             //delete settings
             _settingService.DeleteSetting<MobSocialSuiteSettings>();
 
@@ -55,6 +58,9 @@ namespace MobSocial.Suite
 
             var mobSocialPlugin = ChildPluginInstances.GetPluginInsance<mobSocialPlugin>();
             mobSocialPlugin.Uninstall();
+
+            //reset suite install
+            SetSuiteInstall(false);
             base.Uninstall();
         }
 
@@ -95,8 +101,23 @@ namespace MobSocial.Suite
 
         private void SetOwinStartup(bool set)
         {
+            var settingName = "owin:AutomaticAppStartup";
+            SetConfigurationValue(settingName, set ? "true" : "false");
+        }
+
+        private void SetSuiteInstall(bool set)
+        {
+            var settingName = "suiteInstall";
+            SetConfigurationValue(settingName, set ? "true" : "false");
+        }
+
+        private void SetConfigurationValue(string name, string value)
+        {
             var configuration = WebConfigurationManager.OpenWebConfiguration("~");
-            configuration.AppSettings.Settings["owin:AutomaticAppStartup"].Value = set ? "true" : "false";
+            if (configuration.AppSettings.Settings[name] != null)
+                configuration.AppSettings.Settings[name].Value = value;
+            else
+                configuration.AppSettings.Settings.Add(name, value);
             configuration.Save();
         }
     }
