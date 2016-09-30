@@ -134,6 +134,8 @@
     <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-profile-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\js\controllers\skills\skill-controller.js" />
+    <Content Include="Content\mobSocial\js\controllers\skills\skill-service.js" />
     <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
