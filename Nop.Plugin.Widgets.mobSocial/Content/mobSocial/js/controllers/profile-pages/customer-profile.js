@@ -1,6 +1,6 @@
 ﻿
 
-app.controller('customerProfileController', ['$rootScope', '$scope', 'CustomerProfileService', 'VideoBattleService', function ($rootScope, $scope, CustomerProfileService, VideoBattleService) {
+app.controller('customerProfileController', ['$rootScope', '$scope', 'CustomerProfileService', 'VideoBattleService', '$http', function ($rootScope, $scope, CustomerProfileService, VideoBattleService, $http) {
 
 
     $scope.Profile = null;
