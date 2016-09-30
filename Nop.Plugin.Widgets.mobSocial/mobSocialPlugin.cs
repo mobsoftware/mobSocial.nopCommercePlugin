@@ -78,8 +78,8 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="routeValues">Route values</param>
         public override void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
-            actionName = "Configure";
-            controllerName = "MobSocial";
+            actionName = "";
+            controllerName = "";
             routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" }, { "area", null } };
         }
 
