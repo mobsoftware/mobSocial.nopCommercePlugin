@@ -45,12 +45,12 @@
                         }
                         else
                         {
-                            @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerId }, new { @class = "friend-button" })
+                            @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerId }, new { @class = "button " })
                             <friend-button class="friend-button" friendstatus="Profile.FriendStatus" customerid="Profile.CustomerId"></friend-button>
                             <follow-button class="follow-button" followstatus="Profile.FollowingStatus" entityname="customer" entityid="{{Profile.CustomerId}}"></follow-button>
                         }
                     </div>
-                    
+
                 </div>
             </div>
             @if (Model.IsEditable)
@@ -59,7 +59,7 @@
 
                 <div class="cover-upload-area">
                     @{
-                var uploadUrl = "/api/customerprofile/uploadpicture";
+                        var uploadUrl = "/api/customerprofile/uploadpicture";
                     }
                     <div ng-show="!Profile.TemporaryCover">
                         <a file-upload-button
@@ -82,7 +82,7 @@
                     </div>
 
                 </div>
-            }
+                        }
         </div>
     </div>
     <div class="profile-left">
@@ -122,41 +122,52 @@
                     Skills
                 </div>
                 <div class="box-content">
-                    
+
                     <div class="skills-list" ng-show="!skill">
                         <div class="skill-item" ng-repeat="s in skills track by s.Id">
                             <div class="skill-name">
                                 {{s.SkillName}}
-                                <small><a ng-click="edit(s)" class="edit-button"><i class="fa fa-pencil"></i> edit</a></small>
+                                @if (Model.IsEditable)
+                                {
+                                    <small><a ng-click="edit(s)" class="edit-button"><i class="fa fa-pencil"></i> edit</a></small>
+                                }
                             </div>
                             <div class="skill-description">
                                 {{s.Description}}
                             </div>
                         </div>
-                        <div class="text-center">
-                            <a ng-click="edit()" class="button"><i class="fa fa-plus"></i> Add New Skill</a>
+                        @if (Model.IsEditable)
+                        {
+                            <div class="text-center">
+                                <a ng-click="edit()" class="button"><i class="fa fa-plus"></i> Add New Skill</a>
+                            </div>
+                        }
+
+                    </div>
+                    @if (Model.IsEditable)
+                    {
+                        <div ng-show="skill" class="skill-editor">
+                            <a ng-if="skill.Id > 0" ng-click="delete(skill.Id)" class="delete-button"><i class="fa fa-times"></i> Delete</a>
+                            <label for="skillName">Name</label>
+                            <input type="text" id="skillName" ng-model="skill.SkillName" />
+
+                            <label for="skillDescription">Description</label>
+                            <textarea id="skillDescription" ng-model="skill.Description"></textarea>
+
+                            <label for="skillDisplayOrder">Display Order</label>
+                            <input type="number" id="skillDisplayOrder" ng-model="skill.DisplayOrder" />
+
+                            <button ng-click="postSkill(skill)">Save</button>
+                            <button ng-click="cancelEdit(skill)">Cancel</button>
                         </div>
-                    </div>
-                    <div ng-show="skill" class="skill-editor">
-                        <a ng-if="skill.Id > 0" ng-click="delete(skill.Id)" class="delete-button"><i class="fa fa-times"></i> Delete</a>
-                        <label for="skillName">Name</label>
-                        <input type="text" id="skillName" ng-model="skill.SkillName"/>
+                    }
 
-                        <label for="skillDescription">Description</label>
-                        <textarea id="skillDescription" ng-model="skill.Description"></textarea>
-
-                        <label for="skillDisplayOrder">Display Order</label>
-                        <input type="number" id="skillDisplayOrder" ng-model="skill.DisplayOrder"/>
-
-                        <button ng-click="postSkill(skill)">Save</button>
-                        <button ng-click="cancelEdit(skill)">Cancel</button>
-                    </div>
                 </div>
             </div>
-            
+
         </div>
         <div class="send-pm-box hidden"><a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a></div>
-       
+
         @Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerId, howMany = 10 })
         @if (FeatureToggle.FavoriteSongEnabled)
         {
@@ -166,7 +177,7 @@
         }
     </div>
     <div class="profile-center-content">
-        
+
         <div class="page-body">
             <script type="text/javascript">
                 $(document).ready(function () {
@@ -224,7 +235,7 @@
                     @if (Model.ProfileIndexModel.ForumsEnabled)
                     {
                         <div>
-                            @Html.Action("Posts", "Profile", new { CustomerId = Model.CustomerId, page= Model.ProfileIndexModel.PostsPage })
+                            @Html.Action("Posts", "Profile", new { CustomerId = Model.CustomerId, page = Model.ProfileIndexModel.PostsPage })
                         </div>
                     }
                 </div>

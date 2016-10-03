@@ -2675,10 +2675,10 @@ li a:hover {
             .cover-buttons {
                 float: right;
                 margin-right: 15px;
-
-                .friend-button, .follow-button, .edit-button {
+                margin-top: 15px;
+                .friend-button, .follow-button, .edit-button, .button {
                     float: left;
-                    margin: 15px 5px;
+                    margin: 0 0 0 5px;
                 }
             }
 

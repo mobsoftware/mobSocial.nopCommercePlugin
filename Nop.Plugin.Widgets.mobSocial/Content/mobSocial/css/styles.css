@@ -1771,10 +1771,11 @@ li a:hover {
         width: 33%; }
     .cover-area .cover .quick-info .cover-buttons {
       float: right;
-      margin-right: 15px; }
-      .cover-area .cover .quick-info .cover-buttons .friend-button, .cover-area .cover .quick-info .cover-buttons .follow-button, .cover-area .cover .quick-info .cover-buttons .edit-button {
+      margin-right: 15px;
+      margin-top: 15px; }
+      .cover-area .cover .quick-info .cover-buttons .friend-button, .cover-area .cover .quick-info .cover-buttons .follow-button, .cover-area .cover .quick-info .cover-buttons .edit-button, .cover-area .cover .quick-info .cover-buttons .button {
         float: left;
-        margin: 15px 5px; }
+        margin: 0 0 0 5px; }
     .cover-area .cover .quick-info .battle-info {
       float: left;
       padding: 0 20px;
