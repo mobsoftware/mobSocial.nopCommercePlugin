@@ -1,10 +1,14 @@
-﻿app.service("MobSocialInterceptor", [
-    function() {
+﻿app.service("MobSocialInterceptor", ["$rootScope",
+    function($rootScope) {
         this.request = function(config) {
             return config;
         };
         this.responseError = function (response) {
-            
+
+            if (response.status === 401) { //unauthorized
+                $rootScope.login(window.location.pathname + window.location.search);
+                return;
+            }
             if (response.status === 404) {
                 window.location.href = "/404";
                 return;
