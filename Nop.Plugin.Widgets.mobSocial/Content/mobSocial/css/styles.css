@@ -50,12 +50,14 @@ body.no-scroll {
 .profile-left {
   display: inline-block;
   max-width: 210px;
-  vertical-align: top;
-  text-align: center; }
+  vertical-align: top; }
   .profile-left .profile-picture {
     border: solid 1px #ddd;
     margin-bottom: 10px;
-    position: relative; }
+    position: relative;
+    text-align: center; }
+  .profile-left .profile-customer-name {
+    text-align: center; }
   .profile-left .profile-upload-button {
     position: absolute;
     bottom: 0;
@@ -67,6 +69,37 @@ body.no-scroll {
     color: white;
     font-size: 14px;
     text-transform: uppercase; }
+  .profile-left .profile-meta-box {
+    background-color: #eee;
+    padding: 5px 10px 20px 5px;
+    margin: 15px 0; }
+    .profile-left .profile-meta-box .box-header {
+      padding: 2px 5px;
+      font-size: 1.3em;
+      color: #555; }
+    .profile-left .profile-meta-box .skills-list .skill-item {
+      padding: 5px 0px 20px 3px;
+      position: relative; }
+      .profile-left .profile-meta-box .skills-list .skill-item .skill-name {
+        font-weight: bold;
+        color: #555; }
+      .profile-left .profile-meta-box .skills-list .skill-item .skill-description {
+        color: #555; }
+      .profile-left .profile-meta-box .skills-list .skill-item .edit-button {
+        color: #999;
+        float: right; }
+    .profile-left .profile-meta-box .skill-editor {
+      position: relative;
+      margin-left: 5px; }
+      .profile-left .profile-meta-box .skill-editor .delete-button {
+        position: absolute;
+        top: -20px;
+        right: 0px;
+        font-size: 0.8em; }
+      .profile-left .profile-meta-box .skill-editor label, .profile-left .profile-meta-box .skill-editor input, .profile-left .profile-meta-box .skill-editor textarea {
+        display: block;
+        margin-right: 0px;
+        margin-bottom: 3px; }
 
 a.logo {
   background: url(../images/logo.png) repeat scroll 0 0 transparent;
@@ -109,7 +142,6 @@ input[type='number'] {
 .profile-right {
   display: inline-block;
   width: 210px;
-  min-height: 500px;
   vertical-align: top;
   text-align: center; }
   .profile-right .ad {

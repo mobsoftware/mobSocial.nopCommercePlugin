@@ -1,6 +1,7 @@
 ﻿@model Nop.Plugin.WebApi.MobSocial.Models.CustomerProfilePublicModel
 @using Nop.Plugin.Widgets.MobSocial.Feature
 @{
+    @Html.Partial("mobSocial/CustomerProfile/Includes")
     var json = Json.Encode(Model);
 }
 <div ng-controller="customerProfileController" ng-init="init(@json)">
@@ -44,6 +45,7 @@
                         }
                         else
                         {
+                            @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerId }, new { @class = "friend-button" })
                             <friend-button class="friend-button" friendstatus="Profile.FriendStatus" customerid="Profile.CustomerId"></friend-button>
                             <follow-button class="follow-button" followstatus="Profile.FollowingStatus" entityname="customer" entityid="{{Profile.CustomerId}}"></follow-button>
                         }
@@ -83,7 +85,6 @@
             }
         </div>
     </div>
-    <div class="clear"></div>
     <div class="profile-left">
 
         <div class="profile-picture">
@@ -112,34 +113,57 @@
                 <a ng-click="SetPictureAs('avatar', Profile.TemporaryProfileImageId, false)"><i class="fa fa-times"></i> Discard</a>
             </div>
         </div>
-        <span ng-show="!Profile.TemporaryProfileImage">
-           <h2>{{Profile.CustomerName}}</h2> 
-        </span>
-       
-        
-     
-        <br />
-        <div class="send-pm-box"><a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a></div>
-        <div class="profile-stat">
-            <div class="send-pm-box">&nbsp;<i class="fa fa-envelope"></i> @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerId }, new { @class = "friend-button" })</div>
+        <div class="profile-customer-name" ng-show="!Profile.TemporaryProfileImage">
+            <h2>{{Profile.CustomerName}}</h2>
         </div>
-        <br />
-        <br />
-        <br />
-        <br />
+        <div ng-controller="SkillController" ng-init="getUserSkills(@Model.CustomerId)">
+            <div class="profile-meta-box" ng-show="(skills && skills.length > 0) || @(Model.IsEditable ? "true" : "false")">
+                <div class="box-header">
+                    Skills
+                </div>
+                <div class="box-content">
+                    
+                    <div class="skills-list" ng-show="!skill">
+                        <div class="skill-item" ng-repeat="s in skills track by s.Id">
+                            <div class="skill-name">
+                                {{s.SkillName}}
+                                <small><a ng-click="edit(s)" class="edit-button"><i class="fa fa-pencil"></i> edit</a></small>
+                            </div>
+                            <div class="skill-description">
+                                {{s.Description}}
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a ng-click="edit()" class="button"><i class="fa fa-plus"></i> Add New Skill</a>
+                        </div>
+                    </div>
+                    <div ng-show="skill" class="skill-editor">
+                        <a ng-if="skill.Id > 0" ng-click="delete(skill.Id)" class="delete-button"><i class="fa fa-times"></i> Delete</a>
+                        <label for="skillName">Name</label>
+                        <input type="text" id="skillName" ng-model="skill.SkillName"/>
+
+                        <label for="skillDescription">Description</label>
+                        <textarea id="skillDescription" ng-model="skill.Description"></textarea>
+
+                        <label for="skillDisplayOrder">Display Order</label>
+                        <input type="number" id="skillDisplayOrder" ng-model="skill.DisplayOrder"/>
+
+                        <button ng-click="postSkill(skill)">Save</button>
+                        <button ng-click="cancelEdit(skill)">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="send-pm-box hidden"><a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a></div>
+       
         @Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerId, howMany = 10 })
-        @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerId, howMany = 10 })
-        *@
-        <br />
-        @*        <div><b>Skate Moves</b></div>*@
         @if (FeatureToggle.FavoriteSongEnabled)
         {
             <div>
                 <song-list song-list-name="Favorite Skate Songs" customer="customerProfile"></song-list>
             </div>
         }
-        <br />
-
     </div>
     <div class="profile-center-content">
         
@@ -207,37 +231,4 @@
             </div>
         </div>
     </div>
-    <div class="profile-right">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-        <div class="profile-right ad">
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:200px;height:200px"
-                 data-ad-client="ca-pub-8103674550339337"
-                 data-ad-slot="7959116206"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        <div class="profile-right ad">
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:200px;height:200px"
-                 data-ad-client="ca-pub-8103674550339337"
-                 data-ad-slot="7959116206"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        <div class="profile-right ad">
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:200px;height:200px"
-                 data-ad-client="ca-pub-8103674550339337"
-                 data-ad-slot="7959116206"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-
-    </div>
-   
 </div>

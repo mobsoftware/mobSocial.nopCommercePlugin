@@ -112,12 +112,16 @@ body {
     display: inline-block;
     max-width: 210px;
     vertical-align: top;
-    text-align: center;
 
     .profile-picture {
         border: solid 1px $color_alto_approx;
         margin-bottom: 10px;
         position: relative;
+        text-align: center;
+    }
+
+    .profile-customer-name {
+        text-align: center;
     }
 
     .profile-upload-button {
@@ -131,6 +135,56 @@ body {
         color: $white;
         font-size: 14px;
         text-transform: uppercase;
+    }
+
+    .profile-meta-box {
+        background-color: #eee;
+        padding: 5px 10px 20px 5px;
+        margin: 15px 0;
+
+        .box-header {
+            padding: 2px 5px;
+            font-size: 1.3em;
+            color: #555;
+        }
+
+        .skills-list {
+            .skill-item {
+                padding: 5px 0px 20px 3px;
+                position: relative;
+
+                .skill-name {
+                    font-weight: bold;
+                    color: #555;
+                }
+
+                .skill-description {
+                    color: #555;
+                }
+
+                .edit-button {
+                    color: #999;
+                    float: right;
+                }
+            }
+        }
+
+        .skill-editor {
+            position: relative;
+            margin-left:5px;
+            .delete-button {
+                position: absolute;
+                top: -20px;
+                right: 0px;
+                font-size: 0.8em;
+            }
+
+            label, input, textarea {
+                display: block;
+                margin-right: 0px;
+                margin-bottom: 3px;
+            }
+        }
     }
 }
 
@@ -204,7 +258,6 @@ input[type='number'] {
 .profile-right {
     display: inline-block;
     width: 210px;
-    min-height: 500px;
     vertical-align: top;
     text-align: center;
 
@@ -2767,16 +2820,17 @@ li a:hover {
     }
 }
 
-.my-team-pages{
-    .team-page{
-        padding:15px 0;
-        border-bottom:solid 1px #ccc;
-        &:last-child{
-            border-bottom:none;
+.my-team-pages {
+    .team-page {
+        padding: 15px 0;
+        border-bottom: solid 1px #ccc;
+
+        &:last-child {
+            border-bottom: none;
         }
 
-        .page-name{
-            font-size:1.5em;
+        .page-name {
+            font-size: 1.5em;
         }
     }
 }
