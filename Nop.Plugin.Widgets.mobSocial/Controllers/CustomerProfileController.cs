@@ -80,7 +80,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 SeName = customerSeName,
                 ProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = customerSeName }),
                 ProfileImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, true),
-                CoverImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(AdditionalCustomerAttributeNames.CoverImageId)),
+                CoverImageUrl = _pictureService.GetPictureUrl(customer.GetAttribute<int>(AdditionalCustomerAttributeNames.CoverImageId), showDefaultPicture: false),
                 ProfileIndexModel = model
             };
 
