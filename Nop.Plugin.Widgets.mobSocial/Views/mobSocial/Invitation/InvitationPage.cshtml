@@ -1,0 +1,43 @@
+﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+@{
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsTwo.cshtml";
+
+    @Html.Partial("mobSocial/Invitation/Includes")
+
+}
+<script>
+   
+
+    function loginToFacebookForPermissions() {
+        FB.login(function (res) {
+            
+            if (res.status == "connected") {
+                getFacebookFriends(res.authResponse);
+            }
+        },
+        { scope: 'email,user_friends' });
+    }
+
+    function getFacebookFriends(authResponse) {
+        FB.ui({
+            method: 'send',
+            link: 'http://www.nytimes.com/interactive/2015/04/15/travel/europe-favorite-streets.html',
+        });
+    }
+</script>
+
+<div ng-controller="InvitationController">
+    <div class="text-center" ng-if="invited">
+        Successfully invited selected emails.
+    </div>
+    <div class="email-list">
+        <div ng-repeat="email in emails">
+            {{email}} <a ng-click="removeFromInvites(email)"><i class="fa fa-times"></i></a>
+        </div>
+        <input type="email" ng-model="email"/><button ng-click="addToInvites()">Add</button>
+        <button ng-if="emails.length > 0" ng-click="invite()">Invite</button>
+    </div>
+    <a onclick="loginToFacebookForPermissions()">Invite on Facebook</a>
+
+
+</div>
