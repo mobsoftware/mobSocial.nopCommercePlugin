@@ -1,4 +1,5 @@
 ﻿@using Mob.Core.UI
+@using Nop.Core
 @using Nop.Core.Infrastructure
 @using Nop.Plugin.WebApi.MobSocial
 @using Nop.Plugin.Widgets.MobSocial
@@ -121,6 +122,9 @@
 
 
     var mobSettings = EngineContext.Current.Resolve<mobSocialSettings>();
+    var store = EngineContext.Current.Resolve<IStoreContext>().CurrentStore;
+    
+    Html.SetOpenGraphTags(store.Name, "", store.Url, "website", "");
 
 }
 
