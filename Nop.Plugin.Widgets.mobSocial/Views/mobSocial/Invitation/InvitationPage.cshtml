@@ -1,4 +1,5 @@
-﻿@using Nop.Plugin.WebApi.MobSocial.Constants
+﻿@model Nop.Plugin.Widgets.MobSocial.Models.InvitationPageModel
+@using Nop.Plugin.WebApi.MobSocial.Constants
 @{
     Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsTwo.cshtml";
 
@@ -6,38 +7,60 @@
 
 }
 <script>
-   
 
+    var fbLoggedIn = false;
     function loginToFacebookForPermissions() {
+        if (fbLoggedIn) {
+            getFacebookFriends();
+            return;
+        }
         FB.login(function (res) {
-            
+
             if (res.status == "connected") {
-                getFacebookFriends(res.authResponse);
+                fbLoggedIn = true;
+                getFacebookFriends();
             }
         },
         { scope: 'email,user_friends' });
     }
 
-    function getFacebookFriends(authResponse) {
+    function getFacebookFriends() {
         FB.ui({
             method: 'send',
-            link: 'http://www.nytimes.com/interactive/2015/04/15/travel/europe-favorite-streets.html',
+            link: '@Model.ActionUrl'
         });
     }
 </script>
 
 <div ng-controller="InvitationController">
-    <div class="text-center" ng-if="invited">
-        Successfully invited selected emails.
-    </div>
-    <div class="email-list">
-        <div ng-repeat="email in emails">
-            {{email}} <a ng-click="removeFromInvites(email)"><i class="fa fa-times"></i></a>
+    <div class="page">
+        <h1 class="text-center">Invitation Center</h1>
+        <div class="invite-section email">
+            <h3>Invite by email</h3>
+            <div class="text-center" ng-if="invited">
+                Successfully invited selected emails.
+            </div>
+            <div class="email-list">
+                <div ng-repeat="email in emails" class="email-chip">
+                    {{email}} <a ng-click="removeFromInvites(email)" class="pull-right"><i class="fa fa-times"></i></a>
+                </div>
+                <form>
+                    <input type="email" ng-model="email" placeholder="Type an email address"/>
+                    <button type="submit" ng-click="addToInvites()"><i class="fa fa-plus"></i></button>
+                </form>
+                <div class="text-center">
+                    <button ng-if="emails.length > 0" ng-click="invite()" class="invite-button">Invite</button>
+                </div>
+            </div>
         </div>
-        <input type="email" ng-model="email"/><button ng-click="addToInvites()">Add</button>
-        <button ng-if="emails.length > 0" ng-click="invite()">Invite</button>
+        <div class="or-separator">
+            <span>OR</span>
+        </div>
+        <div class="invite-section facebook">
+            <a onclick="loginToFacebookForPermissions()" class="facebook-button"><i class="fa fa-facebook"></i> Invite on Facebook</a>
+        </div>
     </div>
-    <a onclick="loginToFacebookForPermissions()">Invite on Facebook</a>
+
 
 
 </div>

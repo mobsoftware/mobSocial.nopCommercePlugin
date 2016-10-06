@@ -171,7 +171,8 @@ body {
 
         .skill-editor {
             position: relative;
-            margin-left:5px;
+            margin-left: 5px;
+
             .delete-button {
                 position: absolute;
                 top: -20px;
@@ -2676,6 +2677,7 @@ li a:hover {
                 float: right;
                 margin-right: 15px;
                 margin-top: 15px;
+
                 .friend-button, .follow-button, .edit-button, .button {
                     float: left;
                     margin: 0 0 0 5px;
@@ -2832,5 +2834,95 @@ li a:hover {
         .page-name {
             font-size: 1.5em;
         }
+    }
+}
+
+.invite-section {
+    background-color: $white;
+    padding: 10px 5px;
+
+    &:hover {
+        background-color: $color_gallery_approx;
+    }
+
+    h3 {
+        text-align: center;
+        font-weight: lighter;
+        font-size: 1.5em;
+        padding: 15px;
+    }
+
+    &.email {
+        input, .email-chip {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: solid 1px $color_celeste_approx;
+        }
+
+        .email-chip {
+            border-bottom: none;
+            font-size: 1.1em;
+            background-color:$white;
+        }
+
+        form {
+            position: relative;
+
+            button {
+                position: absolute;
+                right: 6px;
+                top: 10px;
+                background-color: $white;
+                border: none;
+                color: $color_fuscous_gray_approx;
+            }
+        }
+
+        .invite-button {
+            padding: 5px 15px;
+            background-color: $color_guardsman_red_approx;
+            color: $white;
+            font-size: 1.1em;
+            border: none;
+            margin: 15px 0;
+            text-transform: uppercase;
+        }
+    }
+
+    &.facebook {
+        text-align: center;
+
+        .facebook-button {
+            .fa {
+                padding-right: 10px;
+            }
+
+            background-color: $color_chathams_blue_approx;
+            color: $white;
+            padding: 8px 15px;
+            font-size: 1.3em;
+            border-radius: 3px;
+            margin: 5px 0;
+            display: inline-block;
+        }
+    }
+}
+
+.or-separator {
+    background-color: $color_celeste_approx;
+    height: 2px;
+    position: relative;
+    display: block;
+    margin:15px 0;
+    span {
+        position: absolute;
+        background-color: $white;
+        color: $color_celeste_approx;
+        left: 45%;
+        top: -13px;
+        padding: 5px 10px;
+        font-weight: bold;
+        font-size:1.2em;
     }
 }

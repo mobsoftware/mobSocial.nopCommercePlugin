@@ -1878,3 +1878,68 @@ li a:hover {
   .my-team-pages .team-page .page-name {
     font-size: 1.5em; }
 
+.invite-section {
+  background-color: white;
+  padding: 10px 5px; }
+  .invite-section:hover {
+    background-color: #eee; }
+  .invite-section h3 {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 1.5em;
+    padding: 15px; }
+  .invite-section.email input, .invite-section.email .email-chip {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border: solid 1px #ccc; }
+  .invite-section.email .email-chip {
+    border-bottom: none;
+    font-size: 1.1em;
+    background-color: white; }
+  .invite-section.email form {
+    position: relative; }
+    .invite-section.email form button {
+      position: absolute;
+      right: 6px;
+      top: 10px;
+      background-color: white;
+      border: none;
+      color: #555; }
+  .invite-section.email .invite-button {
+    padding: 5px 15px;
+    background-color: #bc0000;
+    color: white;
+    font-size: 1.1em;
+    border: none;
+    margin: 15px 0;
+    text-transform: uppercase; }
+  .invite-section.facebook {
+    text-align: center; }
+    .invite-section.facebook .facebook-button {
+      background-color: #205081;
+      color: white;
+      padding: 8px 15px;
+      font-size: 1.3em;
+      border-radius: 3px;
+      margin: 5px 0;
+      display: inline-block; }
+      .invite-section.facebook .facebook-button .fa {
+        padding-right: 10px; }
+
+.or-separator {
+  background-color: #ccc;
+  height: 2px;
+  position: relative;
+  display: block;
+  margin: 15px 0; }
+  .or-separator span {
+    position: absolute;
+    background-color: white;
+    color: #ccc;
+    left: 45%;
+    top: -13px;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 1.2em; }
+

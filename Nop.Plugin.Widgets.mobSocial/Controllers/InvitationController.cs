@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using Nop.Plugin.WebApi.MobSocial.Helpers;
+using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -7,7 +9,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     {
         public ActionResult Invite()
         {
-            return View("mobSocial/Invitation/InvitationPage");
+            var model = new InvitationPageModel()
+            {
+                ActionUrl = InvitationHelpers.GetInvitationUrl()
+            };
+            return View("mobSocial/Invitation/InvitationPage", model);
         }
     }
 }

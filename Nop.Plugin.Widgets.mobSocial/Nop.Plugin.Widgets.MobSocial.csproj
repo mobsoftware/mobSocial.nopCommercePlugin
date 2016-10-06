@@ -79,6 +79,7 @@
     <Compile Include="Models\BattleEditorModel.cs" />
     <Compile Include="Models\CustomerCommentsModel.cs" />
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
+    <Compile Include="Models\InvitationPageModel.cs" />
     <Compile Include="Models\PageDisplayModel.cs" />
     <Compile Include="Models\RouteDataModel.cs" />
     <Compile Include="Models\TeamPageEditorModel.cs" />
@@ -868,7 +869,9 @@
     </Reference>
     <Reference Include="System.XML" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
