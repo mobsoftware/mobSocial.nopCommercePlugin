@@ -1,6 +1,6 @@
 ﻿app.controller("SkillController",
 [
-    "$scope", "$sce", "SkillService", function($scope, $sce, SkillService) {
+    "$scope", "$sce", "SkillService", "AutocompleteService", function ($scope, $sce, SkillService, AutocompleteService) {
 
         $scope.getUserSkills = function(userId) {
             SkillService.getUserSkills(userId,
@@ -61,9 +61,24 @@
             $scope.skill = skill;
         }
         $scope.cancelEdit = function (skill) {
-            if (skill.Id == 0)
+            if (skill.Id == 0 || !skill.Id)
                 $scope.skills.pop();
             $scope.skill = null;
+            $scope.$broadcast('angucomplete-alt:clearInput', 'skill-autocomplete');
         }
+
+        $scope.autocompleteSkills = function (userInputString, timeoutPromise) {
+            var response = AutocompleteService.autocomplete("skills", userInputString, timeoutPromise);
+            response.success(function (res) {
+                return res.AutoComplete.Skills;
+            });
+            return response;
+        }
+
+        $scope.selectSkill = function (callbackObject) {
+            if (callbackObject)
+                $scope.skill.SkillName = callbackObject.originalObject.SkillName;
+        }
+
     }
 ]);

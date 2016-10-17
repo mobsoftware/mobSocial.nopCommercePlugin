@@ -148,8 +148,17 @@
                     {
                         <div ng-show="skill" class="skill-editor">
                             <a ng-if="skill.Id > 0" ng-click="delete(skill.Id)" class="delete-button"><i class="fa fa-times"></i> Delete</a>
-                            <label for="skillName">Name</label>
-                            <input type="text" id="skillName" ng-model="skill.SkillName" />
+                            <label for="skill-autocomplete">Name</label>
+                            <angucomplete-alt id="skill-autocomplete"
+                                              placeholder="Start typing a new skill"
+                                              selected-object="selectSkill"
+                                              remote-api-handler="autocompleteSkills"
+                                              remote-url-data-field="AutoComplete.Skills"
+                                              minlength="1"
+                                              pause="300"
+                                              title-field="SkillName"
+                                              type="text"
+                                              input-class="form-control"></angucomplete-alt>
 
                             <label for="skillDescription">Description</label>
                             <textarea id="skillDescription" ng-model="skill.Description"></textarea>
