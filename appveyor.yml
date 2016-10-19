@@ -1,5 +1,5 @@
 version: 1.0.{build}
-clone_script:
+install:
 - cmd: git submodule -q update --init
 build:
   verbosity: minimal
