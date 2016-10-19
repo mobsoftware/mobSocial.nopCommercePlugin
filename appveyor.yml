@@ -2,9 +2,9 @@ version: 1.0.{build}
 install:
 - cmd: git submodule -q update --init
 before_build:
-- cmd: nuget restore './MobSocial.Suite/packages.config'
+- cmd: nuget restore '/MobSocial.Suite/packages.config'
 build:
-  project: /MobSocial.Suite//MobSocial.Suite.csproj
+  project: /MobSocial.Suite/MobSocial.Suite.csproj
   verbosity: minimal
 deploy:
 - provider: GitHub
