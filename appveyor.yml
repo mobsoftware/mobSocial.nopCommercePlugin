@@ -2,6 +2,7 @@ version: 1.0.{build}
 install:
 - cmd: git submodule -q update --init
 build:
+  project: /MobSocial.Suite//MobSocial.Suite.csproj
   verbosity: minimal
 deploy:
 - provider: GitHub
