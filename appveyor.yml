@@ -2,7 +2,7 @@ version: 1.0.{build}
 install:
 - cmd: git submodule -q update --init
 before_build:
-- cmd: nuget restore packages.config -PackagesDirectory c:\projects\mobSocial-nopCommercePlugin\Nop-plugin-Widgets-mobSocial
+- cmd: nuget restore packages.config -PackagesDirectory c:\projects\mobSocial-nopCommercePlugin\Nop.plugin.Widgets.mobSocial
 build:
   project: /MobSocial.Suite/MobSocial.Suite.csproj
   verbosity: minimal
