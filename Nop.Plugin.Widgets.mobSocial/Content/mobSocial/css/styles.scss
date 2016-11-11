@@ -2907,6 +2907,23 @@ li a:hover {
             display: inline-block;
         }
     }
+    &.google {
+        text-align: center;
+
+        .google-button {
+            .fa {
+                padding-right: 10px;
+            }
+
+            background-color: $color_grenadier_approx;
+            color: $white;
+            padding: 8px 15px;
+            font-size: 1.3em;
+            border-radius: 3px;
+            margin: 5px 0;
+            display: inline-block;
+        }
+    }
 }
 
 .or-separator {

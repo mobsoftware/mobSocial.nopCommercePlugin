@@ -1926,6 +1926,18 @@ li a:hover {
       display: inline-block; }
       .invite-section.facebook .facebook-button .fa {
         padding-right: 10px; }
+  .invite-section.google {
+    text-align: center; }
+    .invite-section.google .google-button {
+      background-color: #c30;
+      color: white;
+      padding: 8px 15px;
+      font-size: 1.3em;
+      border-radius: 3px;
+      margin: 5px 0;
+      display: inline-block; }
+      .invite-section.google .google-button .fa {
+        padding-right: 10px; }
 
 .or-separator {
   background-color: #ccc;
