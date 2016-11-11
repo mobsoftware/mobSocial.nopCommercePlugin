@@ -1,0 +1,11 @@
+version: 1.0.{build}
+install:
+- cmd: git submodule -q update --init
+build:
+  project: /MobSocial.Suite/MobSocial.Suite.csproj
+  verbosity: minimal
+deploy:
+- provider: GitHub
+  description: Development Build
+  auth_token:
+    secure: AcZWJDwak+AZ87rEc02NzRQbdxqI24APiaUQ+s05BwdA/OTrI05/QCwdxMokIW5M
