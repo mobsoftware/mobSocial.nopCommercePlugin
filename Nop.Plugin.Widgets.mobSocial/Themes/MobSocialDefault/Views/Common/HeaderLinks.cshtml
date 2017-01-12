@@ -1,60 +1,74 @@
 ﻿@model HeaderLinksModel
+@using Nop.Core.Infrastructure
+@using Nop.Core.Plugins
 @using Nop.Web.Models.Common;
+@{
+    //check if mobsocial is installed
+    var pd = EngineContext.Current.Resolve<IPluginFinder>().GetPluginDescriptorBySystemName("Widgets.mobSocial", LoadPluginsMode.InstalledOnly);
+    var mobInstalled = pd != null;
+}
 <div class="header-links">
     <ul>
         @Html.Widget("header_links_before")
         @if (Model.IsAuthenticated)
         {
             <li><a href="@Url.RouteUrl("CustomerInfo")" class="ico-account">@Model.CustomerEmailUsername</a></li>
-            <li style="position:relative;" id="li-social-network">
-				<a href="@Url.RouteUrl("TimelinePage")" class="ico-account social-network-my-social">Mob Social</a>
-				<div id="social-network-dropdown">
-					<ul>					
-						@Html.Widget("account_navigation_after")
-					</ul>	
-				</div>
-				@{
-				//todo: move this to proper css class
-				}
-				<style>
-					#social-network-dropdown > ul > li{
-						display:none!important;
-					}
-					#social-network-dropdown{
-						position: absolute;
-						z-index: 500;
-						background-color: white;
-						border: solid 1px #ccc;
-						width: 210px;
-						display:none;	
-					}
-					#social-network-dropdown .title{
-					display:none;
-					}
-					#social-network-dropdown h3{
-						font-size:17px;
-						margin: 5px 0;
-						padding-left: 15px;
-					}
-					#social-network-dropdown ul li
-					{
-						    padding: 0;
-							display: block;
-							list-style-type: none;
-					}
-					#social-network-dropdown ul li a{
-						display:block;
-						padding:0;
-						font-size: 14px;
-						line-height: 25px;
-					}
-					#li-social-network:hover #social-network-dropdown{
-						display:block;
-					}
-					
-				</style>
-				
-			</li>
+            if (mobInstalled)
+            {
+                <li style="position:relative;" id="li-social-network">
+                    <a href="@Url.RouteUrl("TimelinePage")" class="ico-account social-network-my-social">Mob Social</a>
+                    <div id="social-network-dropdown">
+                        <ul>
+                            @Html.Widget("account_navigation_after")
+                        </ul>
+                    </div>
+                    @{//todo: move this to proper css class
+                    }
+                    <style>
+                        #social-network-dropdown > ul > li {
+                            display: none !important;
+                        }
+
+                        #social-network-dropdown {
+                            position: absolute;
+                            z-index: 500;
+                            background-color: white;
+                            border: solid 1px #ccc;
+                            width: 210px;
+                            display: none;
+                        }
+
+                            #social-network-dropdown .title {
+                                display: none;
+                            }
+
+                            #social-network-dropdown h3 {
+                                font-size: 17px;
+                                margin: 5px 0;
+                                padding-left: 15px;
+                            }
+
+                            #social-network-dropdown ul li {
+                                padding: 0;
+                                display: block;
+                                list-style-type: none;
+                            }
+
+                                #social-network-dropdown ul li a {
+                                    display: block;
+                                    padding: 0;
+                                    font-size: 14px;
+                                    line-height: 25px;
+                                }
+
+                        #li-social-network:hover #social-network-dropdown {
+                            display: block;
+                        }
+                    </style>
+
+                </li>
+                        }
+
             <li><a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a></li>
         }
         else

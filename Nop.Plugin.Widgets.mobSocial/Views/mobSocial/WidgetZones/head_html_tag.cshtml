@@ -1,129 +1,147 @@
-﻿@using Mob.Core.UI
+﻿@using System.Web.UI.WebControls
+@using Mob.Core.UI
 @using Nop.Core
 @using Nop.Core.Infrastructure
 @using Nop.Plugin.WebApi.MobSocial
 @using Nop.Plugin.Widgets.MobSocial
 @using Nop.Plugin.WebApi.MobSocial.Constants
 @{
+    var headerScripts = new List<string>()
+    {
+        //THIRD PARTY RESOURCES
+
+        //font-awesome icons
+         "~/Scripts/jquery.magnific-popup.js",
+
+        //moment
+        MobSocialConstant.ThirdPartyLibraryPath + "/moment.min.js",
+
+        //angular core
+        MobSocialConstant.ThirdPartyLibraryPath + "/angular/angular.min.js",
+
+        //angular moment
+        MobSocialConstant.ThirdPartyLibraryPath + "/angular-moment.min.js",
+
+        //jquery core
+        MobSocialConstant.ThirdPartyLibraryPath + "/jquery/jquery-1.11.min.js",
+
+        //jquery ui
+        MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui-1.11.min.js",
+
+        //cookie
+        MobSocialConstant.ThirdPartyLibraryPath + "/jquery.cookie/jquery.cookie.js",
+
+        //datepicker
+
+        MobSocialConstant.ThirdPartyLibraryPath + "/angular-datetimepicker/datetimepicker.js",
+
+        //easy responsive tabs
+        MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js",
+
+        //x-editable
+        MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/js/xeditable.min.js",
+
+
+        //audio
+        MobSocialConstant.ThirdPartyLibraryPath + "/angular-audio/js/angular.audio.js",
+
+        //autocomplete
+        MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.js",
+
+        //file upload
+        MobSocialConstant.ThirdPartyLibraryPath + "/angular-file-upload-1.1.5/angular-file-upload.js",
+    };
+
+    var footerScripts = new List<string>()
+    {
+       //main app
+        MobSocialConstant.PluginContentPathInternal + "/js/mobSocial.js",
+
+
+        //custom css
+
+
+        //services
+        MobSocialConstant.PluginContentPathInternal + "/js/services/song-service.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/services/dialogservice.js",
+
+        //filters'
+        MobSocialConstant.PluginContentPathInternal + "/js/filters/ms2timestr.js",
+
+
+
+        //custom directives
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/contenteditable.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/whenscrolled.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/ajaxdisable.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-preview-song-button.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/share-song-button.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/buy-song-button.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-live-video.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/fileupload.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/friend-button.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/controllers/follow/follow-service.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/follow-button.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/controllers/customer-like/customer-like-service.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/like-button.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/controllers/customer-comments/customer-comments-service.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/customer-comments.directive.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/directives/checkbox-list.directive.js",
+
+        //common js
+        MobSocialConstant.PluginContentPathInternal + "/js/common/add-friend-button.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/common/common.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/common/mobsocial-interceptor.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/common/webclient-service.js"
+    };
+
     //nopcommerce installation
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
-
-    Html.AddScriptParts("~/Scripts/jquery.fancybox-1.3.4.pack.js");
-    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
-
 
     //THIRD PARTY RESOURCES
 
     //font-awesome icons
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/fonts/font-awesome.min.css");
 
-    //moment
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/moment.min.js");
-
-    //angular core
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular/angular.min.js");
-
-    //angular moment
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-moment.min.js");
-
-    //jquery core
-    //Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery/jquery-1.11.min.js");
-
     //jquery ui
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.min.css");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.structure.min.css");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui//jquery-ui.theme.min.css");
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui-1.11.min.js");
 
-    //cookie
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery.cookie/jquery.cookie.js");
 
     //datepicker
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-datetimepicker/datetimepicker.css");
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-datetimepicker/datetimepicker.js");
+
 
     //easy responsive tabs
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js");
+
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easy-responsive-tabs.css");
 
 
     //x-editable
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/js/xeditable.min.js");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/css/xeditable.css");
 
-    //audio
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-audio/js/angular.audio.js");
-
     //autocomplete
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.js");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.css");
-
-
-
-
-    //signalr
-    //Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/RTCMultiConnection.js");
-    //Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/signalr/jquery.signalR-1.2.2.min.js");
-    // Html.AddScriptParts("~/signalr/hubs");
-
-    //file upload
-    Html.AddScriptParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-file-upload-1.1.5/angular-file-upload.js");
-
-
-    //main app
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/mobSocial.js");
 
 
     //custom css
     Html.AddCssFileParts(MobSocialConstant.PluginContentPathInternal + "/css/styles.css");
 
-    //services
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/services/song-service.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/services/dialogservice.js");
-
-    //filters'
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/filters/ms2timestr.js");
-
-
-
-    //custom directives
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/contenteditable.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/whenscrolled.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/ajaxdisable.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-preview-song-button.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/share-song-button.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/buy-song-button.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-live-video.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/fileupload.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/friend-button.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/follow/follow-service.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/follow-button.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/customer-like/customer-like-service.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/like-button.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/customer-comments/customer-comments-service.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/customer-comments.directive.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/directives/checkbox-list.directive.js");
-
-
-
-    //controllers
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/my-health.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-profile-service.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-profile.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/customer-albums.js");
-
-
-    //common js
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/add-friend-button.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/common.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mobsocial-interceptor.js");
-    Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/webclient-service.js");
-    //Html.AddScriptParts(MobSocialConstant.PluginContentPathInternal + "/js/common/mob-video.js");
+    //append in reverse to render in correct order
+    for (var i = 0; i < headerScripts.Count ; i++)
+    {
+        Html.AddScriptParts(ResourceLocation.Head, headerScripts[i]);
+    }
+    for (var i = footerScripts.Count - 1; i > -1; i--)
+    {
+        Html.AppendScriptParts(ResourceLocation.Foot, footerScripts[i]);
+    }
 
 
     var mobSettings = EngineContext.Current.Resolve<mobSocialSettings>();
     var store = EngineContext.Current.Resolve<IStoreContext>().CurrentStore;
-    
+
     Html.SetOpenGraphTags(store.Name, "", store.Url, "website", "");
 
 }

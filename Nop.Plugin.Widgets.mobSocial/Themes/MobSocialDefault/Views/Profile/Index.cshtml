@@ -4,10 +4,7 @@
 @model Nop.Web.Models.Profile.ProfileIndexModel
 @{
     Layout = MobSocialConstant.ViewsPath +"/mobSocial/_AppColumnsOne.cshtml";
-    @Html.Partial("mobSocial/Friends/Includes")
-    @Html.Partial("mobSocial/VideoBattle/Includes")
-    
-    
+   
     Html.AddTitleParts(Model.ProfileTitle);
     Html.AppendMetaKeywordParts(Model.ProfileTitle);
     Html.AppendMetaDescriptionParts(Model.ProfileTitle);

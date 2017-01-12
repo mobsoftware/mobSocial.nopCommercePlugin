@@ -2,6 +2,8 @@
 @using Nop.Plugin.Widgets.MobSocial.Feature
 @{
     @Html.Partial("mobSocial/CustomerProfile/Includes")
+    @Html.Partial("mobSocial/Friends/Includes")
+    @Html.Partial("mobSocial/VideoBattle/Includes")
     var json = Json.Encode(Model);
 }
 <div ng-controller="customerProfileController" ng-init="init(@json)">
