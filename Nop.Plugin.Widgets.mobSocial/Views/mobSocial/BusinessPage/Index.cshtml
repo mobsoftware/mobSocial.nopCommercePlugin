@@ -5,7 +5,7 @@
 
 @using Nop.Web.Framework.UI
 @{
-    Layout = "~/Views/Shared/_ColumnsThree.cshtml";
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
     Html.AppendTitleParts(Model.Name);
 
@@ -14,10 +14,10 @@
 
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-pages.js");
 
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js");
-    Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
-    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easy-responsive-tabs.css");
+   // Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js");
+   // Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
+   // Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+   // Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easy-responsive-tabs.css");
 
 
 }
@@ -73,28 +73,6 @@
         });
     </script>
 
-
-
-    @*@Html.Action("", "EventPage", new { customerId = Model.CustomerProfileId })
-    <br />
-    <span>@T("BusinessPage.HoursOfOperationText")</span><br />
-    <ul>
-        <li>
-            <span class="hours-of-operation-day-of-week"><b>Friday</b></span> <br />
-            <span class="hours-of-operation-label"> Super Skate 7pm - 11pm </span> <a href="#"><i class="fa fa-ticket"></i></a>
-        </li>
-    </ul>*@
-
-    @*@Html.Action("AddFriendButton", "MobSocial", new { toCustomerId = Model.CustomerProfileId })*@
-
-    @*@Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })*@
-
-    @*@Html.Action("CustomerSkateMovesBlock", "mobSocial", new { customerId = Model.CustomerProfileId, howMany = 10 })
-    *@
-    <br />
-    @*        <div><b>Skate Moves</b></div>*@
-
-
     <div class="hotel-information-block">
         <span class="title">@(Model.Name)</span><br />
         <div class="hotel-information">
@@ -114,26 +92,13 @@
     </div>
 }
 
-
-@section right {
-    
-
-}
-
 <div class="event-center-content">
 
     <h1>@Model.Name</h1>
 
     <div class="page-body">
-        @{
-            var selectPostsTab = String.Empty;
-    /*if (Model.ForumsEnabled && Model.PagingPosts)
-    {
-        selectPostsTab = ".tabs('select', 1)";
-    }*/
-        }
-        <script type="text/javascript">
-            $(document).ready(function () {
+     <script type="text/javascript">
+         $(document).ready(function () {
                 $("#tabs").easyResponsiveTabs();
                 //$("#tabs").tabs("option", "active", 0);
             });
