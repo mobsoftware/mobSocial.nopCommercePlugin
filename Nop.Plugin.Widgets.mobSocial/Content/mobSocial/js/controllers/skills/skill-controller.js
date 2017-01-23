@@ -70,6 +70,11 @@
         $scope.autocompleteSkills = function (userInputString, timeoutPromise) {
             var response = AutocompleteService.autocomplete("skills", userInputString, timeoutPromise);
             response.success(function (res) {
+                if (res.AutoComplete.Skills.length == 0) {
+                    res.AutoComplete.Skills.push({
+                        SkillName: userInputString
+                    });
+                }
                 return res.AutoComplete.Skills;
             });
             return response;
