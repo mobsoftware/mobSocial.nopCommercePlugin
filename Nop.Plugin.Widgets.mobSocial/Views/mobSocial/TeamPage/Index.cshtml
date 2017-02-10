@@ -96,7 +96,7 @@
                             <div ng-repeat="c in membersToAdd">
                                 <div class="selected-receiver">
                                     {{c.DisplayName}}
-                                    <a ng-click="RemoveMember(c.Id)"><i class="fa fa-times"></i></a>
+                                    <a ng-click="RemoveMember(c.Id)" ng-if="TeamPage.IsEditable"><i class="fa fa-times"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +165,8 @@
                         <img ng-src="{{member.ProfileImageUrl}}" alt="{{member.CustomerName}}" title="{{member.CustomerName}}">
                         <div class="team-member-name">{{member.CustomerName}}</div>
                     </a>
-                    <a ng-click="DeleteMember(group, member)" class="remove-member-link">Remove</a>
+                    
+                    <a ng-click="DeleteMember(group, member)" class="remove-member-link" ng-if="TeamPage.IsEditable">Remove</a>
                 </div>
             </div>
         </div>

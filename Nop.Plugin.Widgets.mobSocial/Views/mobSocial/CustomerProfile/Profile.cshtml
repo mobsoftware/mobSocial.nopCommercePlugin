@@ -1,10 +1,15 @@
 ﻿@model Nop.Plugin.WebApi.MobSocial.Models.CustomerProfilePublicModel
+@using Nop.Core
+@using Nop.Core.Domain.Customers
+@using Nop.Core.Infrastructure
 @using Nop.Plugin.Widgets.MobSocial.Feature
 @{
     @Html.Partial("mobSocial/CustomerProfile/Includes")
     @Html.Partial("mobSocial/Friends/Includes")
     @Html.Partial("mobSocial/VideoBattle/Includes")
     var json = Json.Encode(Model);
+    var currentCustomer = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer;
+    var isLoggedIn = !currentCustomer.IsGuest();
 }
 <div ng-controller="customerProfileController" ng-init="init(@json)">
     <div class="cover-area">
@@ -159,6 +164,7 @@
                                               minlength="1"
                                               pause="300"
                                               title-field="SkillName"
+                                              name="skill-autocomplete"
                                               type="text"
                                               input-class="form-control"></angucomplete-alt>
 
@@ -241,7 +247,14 @@
                         </div>
                     </div>
                     <div>
-                        @Html.Action("CustomerFriends", "Friends", new { customerId = Model.CustomerId })
+                        @if (isLoggedIn)
+                        {
+                            @Html.Action("CustomerFriends", "Friends", new {customerId = Model.CustomerId})
+                        }
+                        else
+                        {
+                            <p>Please login to view {{Profile.CustomerName}}'s friends</p>
+                        }
                     </div>
                     @if (Model.ProfileIndexModel.ForumsEnabled)
                     {

@@ -1,6 +1,6 @@
 ﻿app.controller("SkillController",
 [
-    "$scope", "$sce", "SkillService", "AutocompleteService", function ($scope, $sce, SkillService, AutocompleteService) {
+    "$scope", "$sce", "SkillService", "AutocompleteService", '$timeout', function ($scope, $sce, SkillService, AutocompleteService, $timeout) {
 
         $scope.getUserSkills = function(userId) {
             SkillService.getUserSkills(userId,
@@ -59,6 +59,10 @@
                 $scope.skills.push(skill);
             }
             $scope.skill = skill;
+            //little hack to set autocomplete value
+            $timeout(function () {
+                $scope.$broadcast('angucomplete-alt:changeInput', 'skill-autocomplete', skill.SkillName);
+            }, 200);
         }
         $scope.cancelEdit = function (skill) {
             if (skill.Id == 0 || !skill.Id)
