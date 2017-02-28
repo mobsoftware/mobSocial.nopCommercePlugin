@@ -1,6 +1,6 @@
 ﻿app.requires.push('angularFileUpload');
 
-app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function ($http, FileUploader, $compile) {
+app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeout", function ($http, FileUploader, $compile, $timeout) {
     return {
         restrict: 'A',
         scope: false,
@@ -105,6 +105,10 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', function
                     htmlProgress.html("Upload Complete");
                     htmlProgress.removeClass("upload-progress");
                     htmlProgress.addClass("upload-complete");
+                    $timeout(function() {
+                            htmlProgress.fadeOut();
+                        },
+                        5000);
                 }
                 else {
                     alert("Failed to upload file");
