@@ -7,6 +7,7 @@
     @Html.Partial("mobSocial/CustomerProfile/Includes")
     @Html.Partial("mobSocial/Friends/Includes")
     @Html.Partial("mobSocial/VideoBattle/Includes")
+    @Html.Partial("mobSocial/Media/Includes")
     var json = Json.Encode(Model);
     var currentCustomer = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer;
     var isLoggedIn = !currentCustomer.IsGuest();
@@ -125,13 +126,13 @@
         </div>
         <div ng-controller="SkillController" ng-init="getUserSkills(@Model.CustomerId)">
             <div class="profile-meta-box" ng-show="(skills && skills.length > 0) || @(Model.IsEditable ? "true" : "false")">
-                <div class="box-header">
+                <div class="box-header text-center">
                     Skills
                 </div>
                 <div class="box-content">
 
-                    <div class="skills-list" ng-show="!skill">
-                        <div class="skill-item" ng-repeat="s in skills track by s.Id">
+                    <div class="skills-list">
+                        <div class="skill-item" ng-repeat="s in skills track by s.UserSkillId">
                             <div class="skill-name">
                                 {{s.SkillName}}
                                 @if (Model.IsEditable)
@@ -146,37 +147,92 @@
                         @if (Model.IsEditable)
                         {
                             <div class="text-center">
-                                <a ng-click="edit()" class="button"><i class="fa fa-plus"></i> Add New Skill</a>
+                                <a ng-click="add()" class="button"><i class="fa fa-plus"></i> Add New Skill</a>
                             </div>
                         }
 
                     </div>
                     @if (Model.IsEditable)
                     {
-                        <div ng-show="skill" class="skill-editor">
-                            <a ng-if="skill.Id > 0" ng-click="delete(skill.Id)" class="delete-button"><i class="fa fa-times"></i> Delete</a>
-                            <label for="skill-autocomplete">Name</label>
-                            <angucomplete-alt id="skill-autocomplete"
-                                              placeholder="Start typing a new skill"
-                                              selected-object="selectSkill"
-                                              remote-api-handler="autocompleteSkills"
-                                              remote-url-data-field="AutoComplete.Skills"
-                                              minlength="1"
-                                              pause="300"
-                                              title-field="SkillName"
-                                              name="skill-autocomplete"
-                                              type="text"
-                                              input-class="form-control"></angucomplete-alt>
-
-                            <label for="skillDescription">Description</label>
-                            <textarea id="skillDescription" ng-model="skill.Description"></textarea>
-
-                            <label for="skillDisplayOrder">Display Order</label>
-                            <input type="number" id="skillDisplayOrder" ng-model="skill.DisplayOrder" />
-
-                            <button ng-click="postSkill(skill)">Save</button>
-                            <button ng-click="cancelEdit(skill)">Cancel</button>
+                        <div class="fixed-popup" ng-show="skill">
+                            <div class="overlay"></div>
+                            <div class="content">
+                                <div class="fieldset">
+                                    <div class="title">
+                                        Skill Editor
+                                        <div class="text-right">
+                                            <button ng-if="skill.UserSkillId > 0" ng-click="delete(skill.UserSkillId)" class="delete-button"><i class="fa fa-times"></i> Delete</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="form-fields">
+                                        <div class="inputs">
+                                            <label for="skill-autocomplete">Name</label>
+                                            <angucomplete-alt id="skill-autocomplete"
+                                                              placeholder="Start typing a new skill"
+                                                              selected-object="selectSkill"
+                                                              remote-api-handler="autocompleteSkills"
+                                                              remote-url-data-field="AutoComplete.Skills"
+                                                              minlength="1"
+                                                              pause="300"
+                                                              title-field="SkillName"
+                                                              name="skill-autocomplete"
+                                                              type="text"
+                                                              input-class="form-control" style="display:inline-block"></angucomplete-alt>
+                                        </div>
+                                        <div class="inputs">
+                                            <label for="skillDescription">Description</label>
+                                            <textarea id="skillDescription" ng-model="skill.Description"></textarea>
+                                        </div>
+                                        <div class="inputs">
+                                            <label for="skillDisplayOrder">Display Order</label>
+                                            <input type="number" id="skillDisplayOrder" ng-model="skill.DisplayOrder"/>
+                                        </div>
+                                        <div class="inputs">
+                                            <label>Upload Media</label>
+                                            <a file-upload-button
+                                                    id="skill_video"
+                                                    fieldname="SkillVideo"
+                                                    uploadtype="video"
+                                                    onsuccessitem="uploadSkillMediaSuccess"
+                                                    url="/api/media/uploadvideo">
+                                                <i class="fa fa-video-camera"></i> Add Video
+                                            </a>
+                                            <a file-upload-button
+                                                    id="skill_image"
+                                                    fieldname="SkillImage"
+                                                    uploadtype="image"
+                                                    onsuccessitem="uploadSkillMediaSuccess"
+                                                    url="/api/media/uploadpictures">
+                                                <i class="fa fa-file-picture-o"></i> Add Image
+                                            </a>
+                                        </div>
+                                        <div class="inputs">
+                                            <table class="data-table" style="width: 400px;margin: 0px auto;">
+                                                <tr ng-repeat="media in skill.Media">
+                                                    <td>
+                                                        <a media-button target="#video-modal" media="media" class="video-thumbnail">
+                                                            <span class="fa fa-play" ng-if="media.MediaType == 1"></span>
+                                                            <img ng-src="{{media.ThumbnailUrl}}" style="width: 100px; height: 100px;" />
+                                                        </a>
+                                                    </td> 
+                                                    <td>
+                                                        <a ng-click="deleteUserSkillMedia(skill.UserSkillId, media.Id)">
+                                                            <i class="fa fa-times"></i> Remove
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="buttons">
+                                            <button ng-click="postSkill(skill)">Save</button>
+                                            <button ng-click="cancelEdit(skill)">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     }
 
                 </div>
@@ -249,7 +305,7 @@
                     <div>
                         @if (isLoggedIn)
                         {
-                            @Html.Action("CustomerFriends", "Friends", new {customerId = Model.CustomerId})
+                            @Html.Action("CustomerFriends", "Friends", new { customerId = Model.CustomerId })
                         }
                         else
                         {

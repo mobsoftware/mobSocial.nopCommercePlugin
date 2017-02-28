@@ -782,7 +782,9 @@ h1 {
     max-height: 200px;
     text-align: left;
 }
-
+.angucomplete-row{
+    font-size:14px!important;
+}
 .editable-click {
     color: $black;
     border-bottom: none;
@@ -2834,5 +2836,11 @@ li a:hover {
         .page-name {
             font-size: 1.5em;
         }
+    }
+}
+
+.inputs {
+    a, span{
+        font-size:14px!important;
     }
 }

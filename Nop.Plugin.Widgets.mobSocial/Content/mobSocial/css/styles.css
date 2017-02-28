@@ -505,6 +505,9 @@ h1.battle-page-heading {
   max-height: 200px;
   text-align: left; }
 
+.angucomplete-row {
+  font-size: 14px !important; }
+
 .editable-click {
   color: black;
   border-bottom: none; }
@@ -1877,4 +1880,7 @@ li a:hover {
     border-bottom: none; }
   .my-team-pages .team-page .page-name {
     font-size: 1.5em; }
+
+.inputs a, .inputs span {
+  font-size: 14px !important; }
 

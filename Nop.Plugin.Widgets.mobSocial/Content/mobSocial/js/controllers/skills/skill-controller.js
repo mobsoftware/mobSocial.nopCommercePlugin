@@ -21,18 +21,21 @@
         }
 
         $scope.postSkill = function (skill) {
+            if (skill.Id < 0)
+                skill.Id = 0;
+            var isOld = skill.Id > 0;
+            skill.Media = null;
             SkillService.postSkill(skill,
                function (response) {
                    if (response.Success) {
                        skill = response.Skill;
                        $scope.skill = null;
-
-                       //reorder skills
-                       $scope.skills.sort(function(s1, s2) {
-                           return s1.DisplayOrder > s2.DisplayOrder;
-                       });
+                       if (!isOld)
+                           $scope.skills = $scope.skills || [];
+                       $scope.skills.push(skill);
                    }
-               });
+               }
+            );
         }
 
         $scope.delete = function (id) {
@@ -52,21 +55,56 @@
                });
         }
 
-        $scope.edit = function (skill) {
-            $scope.skills = $scope.skills || [];
-            if (!skill) {
-                skill = { Id: 0 };
-                $scope.skills.push(skill);
-            }
-            $scope.skill = skill;
-            //little hack to set autocomplete value
-            $timeout(function () {
-                $scope.$broadcast('angucomplete-alt:changeInput', 'skill-autocomplete', skill.SkillName);
-            }, 200);
+        $scope.deleteUserSkill = function (id) {
+            if (!confirm("Are you sure you wish to delete this skill?"))
+                return;
+            SkillService.deleteUserSkill(id,
+               function (response) {
+                   if (response.Success) {
+                       if ($scope.skills) {
+                           for (var i = 0; i < $scope.skills.length; i++) {
+                               if ($scope.skills[i].UserSkillId == id) {
+                                   $scope.skills.slice(i, 1);
+                               }
+                           }
+                       }
+                   }
+               });
         }
-        $scope.cancelEdit = function (skill) {
-            if (skill.Id == 0 || !skill.Id)
-                $scope.skills.pop();
+
+        $scope.edit = function (skill) {
+            $scope.skill = skill;
+        }
+
+        $scope.add = function () {
+            $scope.skill = {};
+        }
+
+        $scope.cancel = function () {
+            $scope.skill = null;
+        }
+
+        $scope.uploadSkillMediaSuccess = function (fileItem, data, status, headers) {
+
+            if (data.Success) {
+                $scope.skill.MediaId = $scope.skill.MediaId || [];
+                if (data.Media) {
+                    $scope.skill.MediaId.push(data.Media.Id);
+                    $scope.skill.Media.push(data.Media);
+                }
+                if (data.Images) {
+                    for (var i = 0; i < data.Images.length; i++) {
+                        $scope.skill.MediaId.push(data.Images[i].Id);
+                        $scope.skill.Media = $scope.skill.Media || [];
+                        $scope.skill.Media.push(data.Images[i]);
+                    }
+                }
+
+            }
+        };
+
+
+        $scope.cancelEdit = function () {
             $scope.skill = null;
             $scope.$broadcast('angucomplete-alt:clearInput', 'skill-autocomplete');
         }
@@ -85,8 +123,10 @@
         }
 
         $scope.selectSkill = function (callbackObject) {
-            if (callbackObject)
+            if (callbackObject) {
                 $scope.skill.SkillName = callbackObject.originalObject.SkillName;
+                $scope.skill.Id = callbackObject.originalObject.Id;
+            }
         }
 
     }
