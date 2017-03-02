@@ -1742,6 +1742,13 @@ li a:hover {
       text-align: left;
       height: 70px;
       border-left: solid 1px #666; }
+  .cover-area .cover .cover-heading {
+    position: absolute;
+    z-index: 15;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    top: 30%; }
 
 .fixed-popup {
   width: 100%; }

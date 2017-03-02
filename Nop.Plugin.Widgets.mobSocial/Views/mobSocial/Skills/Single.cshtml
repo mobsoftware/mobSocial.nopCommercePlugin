@@ -13,70 +13,66 @@
 <div class="skills-page" ng-controller="SkillController" ng-init="getSkillBySlug('@slug')">
     <div class="cover-area">
         <div class="cover">
-            <div class="cover-area">
-                <div class="cover">
-                    <div class="bgcover">
-                        <img ng-src="{{skill.TemporaryFeaturedImageUrl || skillData.FeaturedMediaImageUrl}}" />
-                    </div>
-                    <div class="quick-info">
-                        <table>
-                            <tr>
-                                <td>
-                                    <h4>
-                                        <i class="fa fa-gamepad margin-r-5"></i>
-                                        <div>Maestros</div>
-                                    </h4>
-                                    {{skillData.TotalUsers}}
-                                </td>
-                                <td>
-                                    <h4>
-                                        <i class="fa fa-users"></i>
-                                        <div>Followers</div>
-                                    </h4>
-                                    {{skillData.FollowerCount}}
-                                </td>
-                                <td>
-                                    <h4>
-                                        <i class="fa fa-thumbs-up"></i>
-                                        <div>Likes</div>
-                                    </h4>
-                                    {{skillData.TotalLikes}}
-                                </td>
-                                <td>
-                                    <h4>
-                                        <i class="fa fa-comments"></i>
-                                        <div>Comments</div>
-                                    </h4>
-                                    {{skillData.TotalComments}}
-                                </td>
-                            </tr>
-                        </table>
-                        <div ng-if="skillData.CanFollow" class="cover-buttons">
-                            <follow-button class="follow-button" followstatus="skillData.FollowStatus" entityname="skill" entityid="{{skill.Id}}" canfollow="{{skillData.CanFollow}}"></follow-button>
-                        </div>
+            <h1 class="cover-heading">{{skill.SkillName}}</h1>
+            <div class="bgcover">
+                <img ng-src="{{skill.TemporaryFeaturedImageUrl || skillData.FeaturedMediaImageUrl}}"/>
+            </div>
+            <div class="quick-info">
+                <table>
+                    <tr>
+                        <td>
+                            <h4>
+                                <i class="fa fa-gamepad margin-r-5"></i>
+                                <div>Maestros</div>
+                            </h4>
+                            {{skillData.TotalUsers}}
+                        </td>
+                        <td>
+                            <h4>
+                                <i class="fa fa-users"></i>
+                                <div>Followers</div>
+                            </h4>
+                            {{skillData.FollowerCount}}
+                        </td>
+                        <td>
+                            <h4>
+                                <i class="fa fa-thumbs-up"></i>
+                                <div>Likes</div>
+                            </h4>
+                            {{skillData.TotalLikes}}
+                        </td>
+                        <td>
+                            <h4>
+                                <i class="fa fa-comments"></i>
+                                <div>Comments</div>
+                            </h4>
+                            {{skillData.TotalComments}}
+                        </td>
+                    </tr>
+                </table>
+                <div ng-if="skillData.CanFollow" class="cover-buttons">
+                    <follow-button class="follow-button" followstatus="skillData.FollowStatus" entityname="skill" entityid="{{skill.Id}}" canfollow="{{skillData.CanFollow}}"></follow-button>
+                </div>
 
+            </div>
+            <div class="cover-upload-area" ng-if="skill.UserId == @currentCustomer.Id">
+                <div ng-show="!skill.TemporaryFeaturedMediaId || skill.TemporaryFeaturedMediaId == 0">
+                    <a file-upload-button
+                       class="upload-button"
+                       id="coverimage_{{skill.Id}}"
+                       fieldname="CoverFile"
+                       uploadtype="image"
+                       onsuccessitem="uploadCoverSuccess"
+                       url="/api/media/uploadpictures">
+                        <i class="fa fa-camera"></i>
+                    </a>
+                </div>
+                <div ng-show="skill.TemporaryFeaturedMediaId > 0">
+                    <div class="keep-cover">
+                        <div class="title">Do you wish to keep or discard this cover?</div>
+                        <a target="_self" ng-click="setTemporaryPictureAsCover(true)"><i class="fa fa-check"></i> Keep</a>
+                        <a target="_self" ng-click="setTemporaryPictureAsCover(false)"><i class="fa fa-times"></i> Discard</a>
                     </div>
-                    <div class="cover-upload-area" ng-if="skill.UserId == @currentCustomer.Id">
-                        <div ng-show="!skill.TemporaryFeaturedMediaId || skill.TemporaryFeaturedMediaId == 0">
-                            <a file-upload-button
-                               class="upload-button"
-                               id="coverimage_{{skill.Id}}"
-                               fieldname="CoverFile"
-                               uploadtype="image"
-                               onsuccessitem="uploadCoverSuccess"
-                               url="/api/media/uploadpictures">
-                                <i class="fa fa-camera"></i>
-                            </a>
-                        </div>
-                        <div ng-show="skill.TemporaryFeaturedMediaId > 0">
-                            <div class="keep-cover">
-                                <div class="title">Do you wish to keep or discard this cover?</div>
-                                <a target="_self" ng-click="setTemporaryPictureAsCover(true)"><i class="fa fa-check"></i> Keep</a>
-                                <a target="_self" ng-click="setTemporaryPictureAsCover(false)"><i class="fa fa-times"></i> Discard</a>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -87,8 +83,7 @@
     <div class="content-wrapper no-margin">
         <div class="container-fluid">
             <!-- Main content -->
-            <section class="content">
-                <h1 class="text-center">{{skill.SkillName}}</h1>
+            <section class="content">              
                 
                 <div id="main-content">
                     <div class="box"  ng-repeat="userSkill in skillData.UserSkills">
