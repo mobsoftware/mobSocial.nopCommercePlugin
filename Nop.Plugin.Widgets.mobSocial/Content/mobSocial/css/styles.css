@@ -1057,58 +1057,6 @@ span.payment-method.fa {
         .timeline .timeline-post .timeline-post-actions > span a {
           padding: 10px;
           display: inline-block; }
-    .timeline .timeline-post .comment-form {
-      margin: 10px 5px 0 5px; }
-      .timeline .timeline-post .comment-form img {
-        float: left;
-        width: 36px;
-        height: 36px;
-        background-color: white;
-        border: solid 1px #ddd; }
-      .timeline .timeline-post .comment-form input[type='text'] {
-        width: 465px;
-        margin-left: 2px; }
-      .timeline .timeline-post .comment-form input[type='button'] {
-        padding: 8px 20px 9px 20px; }
-    .timeline .timeline-post .comment-box {
-      padding: 10px;
-      border-top: solid 3px white;
-      clear: both;
-      float: left;
-      width: 100%;
-      position: relative; }
-      .timeline .timeline-post .comment-box .commenter-info img {
-        width: 50px;
-        height: 50px;
-        float: left; }
-      .timeline .timeline-post .comment-box .commenter-info a {
-        font-weight: bold;
-        color: black;
-        padding-bottom: 3px; }
-      .timeline .timeline-post .comment-box .commenter-info .post-time {
-        color: #aaaaaa;
-        display: block;
-        padding-left: 60px;
-        font-size: 12px; }
-      .timeline .timeline-post .comment-box .comment-text {
-        padding-left: 60px;
-        padding-top: 10px; }
-      .timeline .timeline-post .comment-box .comment-delete {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        color: #ccc; }
-        .timeline .timeline-post .comment-box .comment-delete:hover {
-          color: #555; }
-    .timeline .timeline-post .view-more-comments {
-      display: block !important;
-      clear: both;
-      text-align: center;
-      background-color: #eee;
-      border-top: solid 1px #ddd;
-      border-bottom: solid 1px #ddd; }
-      .timeline .timeline-post .view-more-comments.ng-hide {
-        display: none !important; }
     .timeline .timeline-post .video-container {
       height: 320px; }
   .timeline .timeline-widgets {
@@ -1883,4 +1831,140 @@ li a:hover {
 
 .inputs a, .inputs span {
   font-size: 14px !important; }
+
+.skills-page #main-content .box {
+  width: 250px;
+  border: solid 1px #ddd;
+  border-top: solid 3px #ddd;
+  float: left;
+  margin: 10px; }
+  .skills-page #main-content .box p {
+    padding: 10px 0;
+    background-color: #ddd; }
+  .skills-page #main-content .box.no-border {
+    border: none; }
+  .skills-page #main-content .box .profile-username {
+    width: 150px;
+    margin: auto;
+    display: block; }
+    .skills-page #main-content .box .profile-username span {
+      float: left;
+      margin-top: 16px; }
+
+.skills-page #main-content .discussions {
+  margin: 20px 12px;
+  background-color: #f6f6f4;
+  border-top: solid 1px #ddd;
+  padding: 15px; }
+  .skills-page #main-content .discussions .box-title {
+    margin-bottom: 15px; }
+
+.profile-user-img {
+  width: 50px;
+  display: inline;
+  float: left; }
+
+.comment-form {
+  margin: 10px 5px 0 5px; }
+  .comment-form img {
+    float: left;
+    width: 36px;
+    height: 36px;
+    background-color: white;
+    border: solid 1px #ddd; }
+  .comment-form input[type='text'] {
+    width: 465px;
+    margin-left: 2px; }
+  .comment-form input[type='button'] {
+    padding: 8px 20px 9px 20px; }
+
+.comment-box {
+  padding: 10px;
+  border-top: solid 3px white;
+  clear: both;
+  float: left;
+  width: 100%;
+  position: relative; }
+  .comment-box .commenter-info img {
+    width: 50px;
+    height: 50px;
+    float: left; }
+  .comment-box .commenter-info a {
+    font-weight: bold;
+    color: black;
+    padding-bottom: 3px; }
+  .comment-box .commenter-info .post-time {
+    color: #aaaaaa;
+    display: block;
+    padding-left: 60px;
+    font-size: 12px; }
+  .comment-box .comment-text {
+    padding-left: 60px;
+    padding-top: 10px; }
+  .comment-box .comment-delete {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #ccc; }
+    .comment-box .comment-delete:hover {
+      color: #555; }
+
+.view-more-comments {
+  display: block !important;
+  clear: both;
+  text-align: center;
+  background-color: #eee;
+  border-top: solid 1px #ddd;
+  border-bottom: solid 1px #ddd; }
+  .view-more-comments.ng-hide {
+    display: none !important; }
+
+.keep-cover {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px; }
+
+.modal-media .post-time {
+  color: #999;
+  font-size: 12px; }
+
+.modal-media .media-contents {
+  background-color: black;
+  text-align: center;
+  position: relative;
+  float: left;
+  width: 560px; }
+  .modal-media .media-contents .prev, .modal-media .media-contents .next {
+    position: absolute;
+    font-size: 3em;
+    color: white;
+    top: 35%;
+    z-index: 50; }
+  .modal-media .media-contents .prev {
+    left: 10px; }
+  .modal-media .media-contents .next {
+    right: 10px; }
+
+.modal-media .social-box {
+  width: 350px;
+  float: left;
+  margin-left: 20px; }
+  .modal-media .social-box .comment-form input[type='text'] {
+    width: 200px !important; }
+
+.modal-media .modal-body img {
+  max-width: 100%; }
+
+.media-list .media-item {
+  margin-bottom: 15px;
+  position: relative; }
+  .media-list .media-item .action {
+    position: absolute;
+    left: 45%;
+    top: 35%;
+    color: white;
+    font-size: 2em;
+    opacity: 0.8; }
+
+videogular vg-overlay-play, [videogular] vg-overlay-play {
+  left: 0; }
 

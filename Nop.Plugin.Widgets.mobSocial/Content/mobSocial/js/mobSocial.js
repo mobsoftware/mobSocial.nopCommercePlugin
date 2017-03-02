@@ -3,7 +3,7 @@
     .constant('globalApiEndPoint', '/api');
     
 //attach some global functions to rootScope
-app.run(["$rootScope", "globalApiEndPoint", "$http", function ($rootScope, globalApiEndPoint, $http) {
+app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", function ($rootScope, globalApiEndPoint, $http, $sce) {
     $rootScope.login = function (returnUrl) {
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
         var a = document.createElement("a");
@@ -21,4 +21,29 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", function ($rootScope, globa
         });
         return response;
     }
+
+    $rootScope.bodyScroll = function(on) {
+        if (!on) {
+            angular.element("body").addClass("no-scroll");
+        } else {
+            angular.element("body").removeClass("no-scroll");
+        }
+    }
+
+    $rootScope.videogularConfig = {
+        theme: "/Plugins/Widgets.mobSocial/Content/Libraries/videogular/theme/videogular.css",
+        preload: "metadata"
+    };
+
+    $rootScope.updatedVideoSource = function ($api, url, mimeType) {
+        var source = [
+            {
+                src: $sce.trustAsResourceUrl(url),
+                type: mimeType
+            }
+        ];
+        $api.changeSource(source);
+        $api.sources = source;
+    }
+
 }]);

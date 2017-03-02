@@ -1,18 +1,7 @@
 ﻿@using Nop.Plugin.WebApi.MobSocial.Constants
 @using Nop.Plugin.WebApi.MobSocial.Models
 @{
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/angular-sanitize.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/videogular.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-controls.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-overlay-play.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-poster.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-buffering.min.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/vg-ima-ads.min.js");
-
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/humanize-duration.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/moment.js");
-    
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/videogular/angular-timer.js");
+    Html.Partial("mobSocial/Media/Includes");
 
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/payments/payment-service.js");
     Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/payments/payment.js");

@@ -1,7 +1,7 @@
 ﻿app.directive("mediaModal", ["mediaService", "$rootScope", "$timeout" , function (mediaService, $rootScope, $timeout) {
     return {
         restrict: "E",
-        templateUrl: "/pages/components/mediaModal.html",
+        templateUrl: "/MediaModal",
         replace: true,
         scope: false,
         link: function(scope, elem, attr) {
@@ -18,7 +18,7 @@
                        function (response) {
                            if (response.Success) {
                                $timeout(function() {
-                                   scope.media = response.ResponseData.Media;
+                                   scope.media = response.Media;
                                    if(scope.media.MediaType == 1 && scope.$API)//video
                                        $rootScope.updatedVideoSource(scope.$API, scope.media.Url, scope.media.MimeType);
                                    },

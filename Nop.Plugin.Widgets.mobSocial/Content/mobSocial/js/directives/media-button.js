@@ -11,7 +11,7 @@
                 if (!scope.media.FullyLoaded) {
                     modalScope.reloadMedia(scope.media.Id);
                 } 
-                jQuery(scope.target).modal();
+                jQuery(scope.target).show();
             });
         }
     }

@@ -495,6 +495,11 @@ namespace Nop.Plugin.Widgets.MobSocial
                 new { controller = "CustomerComment", action = "CustomerComments" },
                 new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
                 );
+            routes.MapLocalizedRoute("MediaModal",
+              "MediaModal",
+              new { controller = "Media", action = "MediaModal" },
+              new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
+              );
 
             // Use SignalR 1.x until nopCommerce uses Microsoft Owin IAppBuilder
             //routes.MapHubs(); Video Conferrencing on hold until Owin IAppBuilder
