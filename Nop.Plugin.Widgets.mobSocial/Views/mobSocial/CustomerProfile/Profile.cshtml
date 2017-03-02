@@ -5,6 +5,7 @@
 @using Nop.Plugin.Widgets.MobSocial.Feature
 @{
     @Html.Partial("mobSocial/CustomerProfile/Includes")
+    @Html.Partial("mobSocial/Skills/Includes")
     @Html.Partial("mobSocial/Friends/Includes")
     @Html.Partial("mobSocial/VideoBattle/Includes")
     @Html.Partial("mobSocial/Media/Includes")
@@ -134,7 +135,7 @@
                     <div class="skills-list">
                         <div class="skill-item" ng-repeat="s in skills track by s.UserSkillId">
                             <div class="skill-name">
-                                {{s.SkillName}}
+                                <a ng-href="skill/{{s.SeName}}" target="_blank">{{s.SkillName}}</a>
                                 @if (Model.IsEditable)
                                 {
                                     <small><a ng-click="edit(s)" class="edit-button"><i class="fa fa-pencil"></i> edit</a></small>

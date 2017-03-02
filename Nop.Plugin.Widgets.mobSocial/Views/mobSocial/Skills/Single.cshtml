@@ -1,0 +1,158 @@
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Plugin.WebApi.MobSocial.Constants
+@model string
+    @{
+        Html.Partial("mobSocial/Skills/Includes");
+        Html.Partial("mobSocial/Media/Includes");
+        var slug = Model;
+        Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
+        var currentCustomer = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer;
+    }
+
+<div class="skills-page" ng-controller="SkillController" ng-init="getSkillBySlug('@slug')">
+    <div class="cover-area">
+        <div class="cover">
+            <div class="cover-area">
+                <div class="cover">
+                    <div class="bgcover">
+                        <img ng-src="{{skill.TemporaryFeaturedImageUrl || skillData.FeaturedMediaImageUrl}}" />
+                    </div>
+                    <div class="quick-info">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h4>
+                                        <i class="fa fa-gamepad margin-r-5"></i>
+                                        <div>Maestros</div>
+                                    </h4>
+                                    {{skillData.TotalUsers}}
+                                </td>
+                                <td>
+                                    <h4>
+                                        <i class="fa fa-users"></i>
+                                        <div>Followers</div>
+                                    </h4>
+                                    {{skillData.FollowerCount}}
+                                </td>
+                                <td>
+                                    <h4>
+                                        <i class="fa fa-thumbs-up"></i>
+                                        <div>Likes</div>
+                                    </h4>
+                                    {{skillData.TotalLikes}}
+                                </td>
+                                <td>
+                                    <h4>
+                                        <i class="fa fa-comments"></i>
+                                        <div>Comments</div>
+                                    </h4>
+                                    {{skillData.TotalComments}}
+                                </td>
+                            </tr>
+                        </table>
+                        <div ng-if="skillData.CanFollow" class="cover-buttons">
+                            <follow-button class="follow-button" followstatus="skillData.FollowStatus" entityname="skill" entityid="{{skill.Id}}" canfollow="{{skillData.CanFollow}}"></follow-button>
+                        </div>
+
+                    </div>
+                    <div class="cover-upload-area" ng-if="skill.UserId == @currentCustomer.Id">
+                        <div ng-show="!skill.TemporaryFeaturedMediaId || skill.TemporaryFeaturedMediaId == 0">
+                            <a file-upload-button
+                               class="upload-button"
+                               id="coverimage_{{skill.Id}}"
+                               fieldname="CoverFile"
+                               uploadtype="image"
+                               onsuccessitem="uploadCoverSuccess"
+                               url="/api/media/uploadpictures">
+                                <i class="fa fa-camera"></i>
+                            </a>
+                        </div>
+                        <div ng-show="skill.TemporaryFeaturedMediaId > 0">
+                            <div class="keep-cover">
+                                <div class="title">Do you wish to keep or discard this cover?</div>
+                                <a target="_self" ng-click="setTemporaryPictureAsCover(true)"><i class="fa fa-check"></i> Keep</a>
+                                <a target="_self" ng-click="setTemporaryPictureAsCover(false)"><i class="fa fa-times"></i> Discard</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper no-margin">
+        <div class="container-fluid">
+            <!-- Main content -->
+            <section class="content">
+                <h1 class="text-center">{{skill.SkillName}}</h1>
+                
+                <div id="main-content">
+                    <div class="box"  ng-repeat="userSkill in skillData.UserSkills">
+                        <div class="box-body">
+                            <p class="text-muted text-center">{{userSkill.Description}}</p>
+                            
+                            <ul class="list-group list-group-unbordered" ng-if="userSkill.Media.length > 0">
+                                <li class="list-group-item text-center">
+                                    <div ng-switch on="userSkill.Media[0].MediaType">
+                                        <div ng-switch-when="1">
+                                            <a media-button target="#video-modal" media="userSkill.Media[0]" class="video-thumbnail">
+                                                <span class="fa fa-play"></span>
+                                                <img ng-src="{{userSkill.Media[0].ThumbnailUrl}}" />
+                                            </a>
+                                        </div>
+                                        <div ng-switch-when="0">
+                                            <a ng-if="userSkill.Media[0].MediaType == 0" media-button target="#video-modal" media="userSkill.Media[0]">
+                                                <img ng-src="{{userSkill.Media[0].Url}}" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item text-center">
+                                    <span class="margin-r-5" title="Videos uploaded">
+                                        <i class="fa fa-video-camera"></i> {{userSkill.TotalVideoCount}}
+                                    </span>
+                                    <span class="margin-r-5" title="Pictures uploaded">
+                                        <i class="fa fa-file-picture-o"></i> {{userSkill.TotalPictureCount}}
+                                    </span>
+                                </li>
+                            </ul>
+                            <div>
+                                <span class="profile-username">
+                                    <a ng-href="{{userSkill.User.ProfileUrl}}">
+                                        <img class="profile-user-img img-responsive img-circle margin-r-5" ng-src="{{userSkill.User.ProfileImageUrl}}">
+                                        <span>{{userSkill.User.CustomerName}}</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <media-modal id="video-modal"></media-modal>
+
+                    <div class="load-more" ng-if="skillData.TotalUsers > skillData.UserSkills.length">
+                        <a block-ui ng-click="getUsers()">Load More</a>
+                    </div>
+
+                    <div class="clearfix discussions">
+                        <h3 class="box-title">
+                            <span>Discussions</span>
+                        </h3>
+                        <div class="box-body">
+                            <like-button entityid="{{skillData.Skill.Id}}" entityname="Skill" likestatus="skillData.LikeStatus" totallikes="{{skillData.TotalLikes}}"></like-button>
+                            <comments-box entityid="{{skillData.Skill.Id}}" entityname="Skill" canedit="{{skillData.Skill.UserId == CurrentUser.Id}}" totalcomments="{{skillData.TotalComments}}"></comments-box>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+
+    </div>
+    <!-- /.content-wrapper -->
+</div>
