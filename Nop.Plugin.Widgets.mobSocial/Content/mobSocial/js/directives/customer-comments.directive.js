@@ -22,7 +22,7 @@
             }
             $scope.CommentList = [];
             $scope.Post = function () {
-              
+                $scope.Comment.EntityId = $scope.EntityId;//required if the entity is delay loaded
                 CustomerCommentsService.Post($scope.Comment, function (response) {
                     if (response.Success) {
                         $scope.CommentList.push(response.Comment);
@@ -37,6 +37,7 @@
             $scope.Get = function () {
                 $scope.CommentRequest.Page++;
                 $scope.CommentsLoading = true;
+                $scope.CommentRequest.EntityId = $scope.EntityId;
                 CustomerCommentsService.Get($scope.CommentRequest, function (response) {
                     $scope.CommentsLoading = false;
                     if (response.Success) {
