@@ -69,7 +69,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 return null;
             }
-            var profile = _customerProfileService.GetByCustomerId(customerId);
 
             var customerSeName = SeoExtensions.GetSeName(customer, _workContext.WorkingLanguage.Id, true, false);
             var profilemodel = new CustomerProfilePublicModel() {
