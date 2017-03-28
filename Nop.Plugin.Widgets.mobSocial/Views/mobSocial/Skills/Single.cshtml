@@ -1,13 +1,18 @@
 ﻿@using Nop.Core
 @using Nop.Core.Infrastructure
 @using Nop.Plugin.WebApi.MobSocial.Constants
-@model string
+@model Nop.Plugin.Widgets.MobSocial.Models.SkillPageModel
     @{
         Html.Partial("mobSocial/Skills/Includes");
         Html.Partial("mobSocial/Media/Includes");
-        var slug = Model;
+        var slug = Model.Slug;
         Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
         var currentCustomer = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer;
+
+        Html.AppendTitleParts(Model.Name);
+
+        Html.AppendMetaDescriptionParts(Model.Description);
+        Html.AppendMetaKeywordParts(Model.Description);
     }
 
 <div class="skills-page" ng-controller="SkillController" ng-init="getSkillBySlug('@slug')">
@@ -134,7 +139,7 @@
 
                     <div class="clearfix discussions">
                         <h3 class="box-title">
-                            <span>Discussions</span>
+                            <span>Talk about it</span>
                         </h3>
                         <div class="box-body">
                             <like-button entityid="{{skillData.Skill.Id}}" entityname="Skill" likestatus="skillData.LikeStatus" totallikes="{{skillData.TotalLikes}}"></like-button>

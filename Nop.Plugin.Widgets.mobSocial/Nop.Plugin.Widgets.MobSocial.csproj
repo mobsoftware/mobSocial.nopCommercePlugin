@@ -82,6 +82,7 @@
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
     <Compile Include="Models\PageDisplayModel.cs" />
     <Compile Include="Models\RouteDataModel.cs" />
+    <Compile Include="Models\SkillPageModel.cs" />
     <Compile Include="Models\TeamPageEditorModel.cs" />
     <Compile Include="Models\TeamPageModel.cs" />
     <Compile Include="Models\TimelinePublicModel.cs" />
