@@ -223,5 +223,24 @@ app.controller("SkillController",
                     }
                 });
         }
+
+        var getSkillOptions = {
+            page: 0
+        };
+        $scope.totalSkillRecords = 0;
+        $scope.getAllSkills = function() {
+            getSkillOptions.page++;
+            SkillService.getSkills(getSkillOptions,
+                function(response) {
+                    if (response.Success) {
+                        if (response.Page == 1)
+                            $scope.skills = response.Skills;
+                        else {
+                            $scope.skills = $scope.skills.concat(response.Skills);
+                        }
+                        $scope.totalSkillRecords = response.Total;
+                    }
+                });
+        }
     }
 ]);

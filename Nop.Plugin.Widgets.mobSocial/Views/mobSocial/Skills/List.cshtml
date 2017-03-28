@@ -1,0 +1,42 @@
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Plugin.WebApi.MobSocial.Constants
+    @{
+        Html.Partial("mobSocial/Skills/Includes");
+        Html.Partial("mobSocial/Media/Includes");
+        Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
+    }
+
+<div class="skills-page" ng-controller="SkillController" ng-init="getAllSkills()">
+    
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper no-margin">
+        <div class="container-fluid">
+            <!-- Main content -->
+            <section class="content"> 
+                <div id="main-content">
+                    <h1 class="text-center">
+                        Skills
+                    </h1>
+                    <div class="skill-box" ng-repeat="skill in skills">
+                        <h4>
+                            <a ng-href="skill/{{skill.SeName}}">
+                                {{skill.SkillName}}
+                            </a>
+                        </h4>
+                        <div class="description" title="{{skill.Description}}">
+                            {{skill.Description}}
+                            <i ng-if="!skill.Description || skill.Description == ''">No description</i>
+                        </div>
+                    </div>
+                    <div class="load-more" ng-if="totalSkillRecords > skills.length">
+                        <a block-ui ng-click="getAllSkills()">Load More</a>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+
+    </div>
+    <!-- /.content-wrapper -->
+</div>

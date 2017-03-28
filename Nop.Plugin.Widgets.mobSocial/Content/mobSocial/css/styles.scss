@@ -2980,3 +2980,17 @@ li a:hover {
 videogular vg-overlay-play, [videogular] vg-overlay-play {
     left: 0;
 }
+
+.skill-box{
+    border:solid 1px #ddd;
+    padding:5px 10px;
+    display:inline-block;
+    width:30%;
+    margin:5px;
+    text-align:center;
+    .description{
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow:hidden;
+    }
+}

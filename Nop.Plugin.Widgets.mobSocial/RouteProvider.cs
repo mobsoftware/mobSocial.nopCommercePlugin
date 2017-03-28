@@ -495,6 +495,11 @@ namespace Nop.Plugin.Widgets.MobSocial
                 new { controller = "CustomerComment", action = "CustomerComments" },
                 new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
                 );
+            routes.MapLocalizedRoute("SkillsPage",
+              "Skills",
+              new { controller = "Skill", action = "List" },
+              new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
+              );
 
             routes.MapLocalizedRoute("SkillPage",
                "Skill/{seName}",

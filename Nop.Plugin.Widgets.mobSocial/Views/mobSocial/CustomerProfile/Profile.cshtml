@@ -128,7 +128,7 @@
         <div ng-controller="SkillController" ng-init="getUserSkills(@Model.CustomerId)">
             <div class="profile-meta-box" ng-show="(skills && skills.length > 0) || @(Model.IsEditable ? "true" : "false")">
                 <div class="box-header text-center">
-                    Skills
+                    <a href="@Url.RouteUrl("SkillsPage")">Skills</a>
                 </div>
                 <div class="box-content">
 

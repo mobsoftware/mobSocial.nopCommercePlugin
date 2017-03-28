@@ -28,5 +28,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
             return View("mobSocial/Skills/Single",model);
         }
+
+        public ActionResult List()
+        {
+            return View("mobSocial/Skills/List");
+        }
     }
 }
