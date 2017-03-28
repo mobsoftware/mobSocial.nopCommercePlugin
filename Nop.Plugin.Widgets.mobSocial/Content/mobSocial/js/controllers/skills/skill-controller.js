@@ -131,7 +131,7 @@ app.controller("SkillController",
         $scope.cancelEdit = function () {
             $scope.skill = null;
             $scope.$broadcast('angucomplete-alt:clearInput', 'skill-autocomplete');
-            $rootScope.bodyScroll(false);
+            $rootScope.bodyScroll(true);
         }
 
         $scope.autocompleteSkills = function (userInputString, timeoutPromise) {
