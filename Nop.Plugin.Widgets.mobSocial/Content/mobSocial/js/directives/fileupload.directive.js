@@ -1,6 +1,8 @@
 ﻿app.requires.push('angularFileUpload');
+app.requires.push('angular-img-cropper');
 
-app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeout", function ($http, FileUploader, $compile, $timeout) {
+
+app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeout", '$rootScope', function ($http, FileUploader, $compile, $timeout, $rootScope) {
     return {
         restrict: 'A',
         scope: false,
@@ -15,10 +17,18 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeou
             var imageSrc = attrs.imagesrc;
             var uploadtype = attrs.uploadtype;
             var multiple = attrs.multiple ? "multiple" : "";
+            var crop = attrs.crop;
+            var width = attrs.width;
+            var height = attrs.height;
+            scope.imageData = {
+                base64: null,
+                base64cropped:null
+            };
+            scope.croppedBounds = {};
 
-            var htmlUpload = $("<input name='" + name + "' type='file' style='opacity:0;position:absolute;left:-5000px' nv-file-select='' uploader='uploader' id='file_uploader_" + id + "'" + multiple + "  />");
+            var htmlUpload = $("<input name='" + name + "' type='file' style='opacity:0;position:absolute;left:-5000px' nv-file-select='' uploader='uploader' id='file_uploader_" + id + "'" + multiple + " img-cropper-fileread image='imageData.base64' />");
             var htmlProgress = $("<span id='progress_" + id + "'></span>");
-
+            var htmlCropTool = $("<div class='fixed-popup' style='display:none' id='cropTool_" + id + "'><div class='overlay'></div><div class='content'><div class='fieldset'><h3>Crop your image</h3><canvas width='800' height='400' id='canvas_cropper' image-cropper image='imageData.base64' cropped-image='imageData.base64cropped' crop-width='" + width + "' crop-height='" + height + "' keep-aspect='true' touch-radius='30' crop-area-bounds='croppedBounds'></canvas><div><button ng-click='cropDone()'>Crop</button><button ng-click='cancelCrop()'>Cancel</button></div></div></div></div");
             var uploader = scope.uploader = new FileUploader({ url: url });
           
             //filters
@@ -69,6 +79,20 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeou
             };
             uploader.onAfterAddingFile = function (fileItem) {
                 fileItem.formData.push(extraData);
+                
+                //if it's an image file and crop is enabled, let's find out the width and height of original image
+                if (crop) {
+                    //let's modify reference points relative to actual size of image
+                    var img = new Image();
+                    img.onload = function () {
+                        var actualWidth = img.width;
+                        var actualHeight = img.height;
+                        scope.imageData.actualWidth = actualWidth;
+                        scope.imageData.actualHeight = actualHeight;
+                    };
+                    img.src = scope.imageData.base64;
+                }
+
                 if (typeof scope[attrs.onafteraddingfile] == "function") {
                     scope[attrs.onafteraddingfile](fileItem);
                 }
@@ -79,9 +103,21 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeou
                 }
             };
             uploader.onBeforeUploadItem = function (item) {
+                //add the crop data if available
+                if (crop) {
+                    scope.croppedBounds.crop = true;
+                    //let's modify reference points relative to actual size of image
+                    //we are getting the top value from the lower edge of image. therefore we'll to recalculate it from top
+                    scope.croppedBounds.width = scope.croppedBounds.left + scope.croppedBounds.right;
+                    scope.croppedBounds.height = scope.croppedBounds.top - scope.croppedBounds.bottom;
+                    scope.croppedBounds.top = scope.imageData.actualHeight - scope.croppedBounds.top;
+                    item.formData.push(scope.croppedBounds);
+                }
                 if (typeof scope[attrs.onbeforeuploaditem] == "function") {
                     scope[attrs.onbeforeuploaditem](item);
                 }
+
+                console.log("uploading about to start");
             };
             uploader.onProgressItem = function (fileItem, progress) {
                 $(elem).hide();
@@ -143,17 +179,36 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeou
                 }
             };
 
+            scope.cropDone = function() {
+                uploader.uploadAll();
+                $("#cropTool_" + id).hide();
+                $rootScope.bodyScroll(true);
+            }
+
+            scope.cancelCrop = function () {
+                $("#cropTool_" + id).hide();
+                $rootScope.bodyScroll(true);
+            }
+
 
             $(elem).after(htmlUpload);
             $(elem).after(htmlProgress);
+            if (crop) {
+                $(".content-wrapper").append(htmlCropTool);
+            }
             $compile($("#file_uploader_" + id))(scope);
-
+            $compile($("#cropTool_" + id))(scope);
             $(elem).click(function () {
                 htmlUpload.trigger("click");
             });
 
             htmlUpload.change(function () {
-                uploader.uploadAll();
+                if (crop) {
+                    $("#cropTool_" + id).show();
+                    $rootScope.bodyScroll(false);
+                } else {
+                    uploader.uploadAll();
+                }
             });
         }
     }
