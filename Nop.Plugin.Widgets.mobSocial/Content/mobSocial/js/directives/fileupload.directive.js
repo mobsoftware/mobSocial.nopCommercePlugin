@@ -116,8 +116,6 @@ app.directive("fileUploadButton", ['$http', 'FileUploader', '$compile', "$timeou
                 if (typeof scope[attrs.onbeforeuploaditem] == "function") {
                     scope[attrs.onbeforeuploaditem](item);
                 }
-
-                console.log("uploading about to start");
             };
             uploader.onProgressItem = function (fileItem, progress) {
                 $(elem).hide();
