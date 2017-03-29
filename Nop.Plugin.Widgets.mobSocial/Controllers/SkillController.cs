@@ -33,5 +33,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         {
             return View("mobSocial/Skills/List");
         }
+
+        public ActionResult SkillEditorButton()
+        {
+            return View("mobSocial/Skills/SkillEditorButton");
+        }
     }
 }

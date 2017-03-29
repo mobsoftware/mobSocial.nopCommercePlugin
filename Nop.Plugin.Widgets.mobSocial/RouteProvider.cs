@@ -506,6 +506,13 @@ namespace Nop.Plugin.Widgets.MobSocial
                new { controller = "Skill", action = "Index" },
                new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
                );
+
+            routes.MapLocalizedRoute("SkillEditorButton",
+               "SkillEditorButton",
+               new { controller = "Skill", action = "SkillEditorButton" },
+               new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
+               );
+
             routes.MapLocalizedRoute("MediaModal",
               "MediaModal",
               new { controller = "Media", action = "MediaModal" },

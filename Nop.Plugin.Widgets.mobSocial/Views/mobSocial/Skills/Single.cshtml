@@ -55,8 +55,9 @@
                         </td>
                     </tr>
                 </table>
-                <div ng-if="skillData.CanFollow" class="cover-buttons">
-                    <follow-button class="follow-button" followstatus="skillData.FollowStatus" entityname="skill" entityid="{{skill.Id}}" canfollow="{{skillData.CanFollow}}"></follow-button>
+                <div class="cover-buttons">
+                    <skill-editor-button ng-if="!skillData.HasSkill" buttontext="I can do this" skill="skill" onsave="onIcanDoThis(skill)"></skill-editor-button>
+                    <follow-button ng-if="skillData.CanFollow" class="follow-button" followstatus="skillData.FollowStatus" entityname="skill" entityid="{{skill.Id}}" canfollow="{{skillData.CanFollow}}"></follow-button>
                 </div>
 
             </div>
@@ -92,14 +93,13 @@
         <div class="container-fluid">
             <!-- Main content -->
             <section class="content">              
-                
                 <div id="main-content">
                     <div class="box"  ng-repeat="userSkill in skillData.UserSkills">
                         <div class="box-body">
                             <p class="text-muted text-center">{{userSkill.Description}}</p>
                             
                             <ul class="list-group list-group-unbordered" ng-if="userSkill.Media.length > 0">
-                                <li class="list-group-item text-center">
+                                <li class="list-group-item text-center skill-media">
                                     <div ng-switch on="userSkill.Media[0].MediaType">
                                         <div ng-switch-when="1">
                                             <a media-button target="#video-modal" media="userSkill.Media[0]" class="video-thumbnail">

@@ -242,5 +242,10 @@ app.controller("SkillController",
                     }
                 });
         }
+
+        $scope.onIcanDoThis = function (skill) {
+            $scope.skillData.UserSkills.push(skill);
+            $scope.skillData.HasSkill = true;
+        }
     }
 ]);
