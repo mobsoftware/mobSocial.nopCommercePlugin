@@ -100,6 +100,9 @@
     </None>
     <None Include="Content\mobSocial\css\styles.scss" />
     <None Include="Scripts\jquery-2.2.0.min.map" />
+    <Content Include="Content\Libraries\angular-img-cropper\angular-img-cropper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Libraries\angular-moment.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

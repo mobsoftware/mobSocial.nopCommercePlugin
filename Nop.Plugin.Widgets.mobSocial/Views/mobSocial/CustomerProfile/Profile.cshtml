@@ -135,7 +135,7 @@
                     <div class="skills-list">
                         <div class="skill-item" ng-repeat="s in skills track by s.UserSkillId">
                             <div class="skill-name">
-                                <a ng-href="skill/{{s.SeName}}" target="_blank">{{s.SkillName}}</a>
+                                <a ng-href="skill/{{s.SeName}}">{{s.SkillName}}</a>
                                 @if (Model.IsEditable)
                                 {
                                     <small><a ng-click="edit(s)" class="edit-button"><i class="fa fa-pencil"></i> edit</a></small>
@@ -162,7 +162,7 @@
                                     <div class="title">
                                         Skill Editor
                                         <div class="text-right">
-                                            <button ng-if="skill.UserSkillId > 0" ng-click="delete(skill.UserSkillId)" class="delete-button"><i class="fa fa-times"></i> Delete</button>
+                                            <button ng-if="skill.UserSkillId > 0" ng-click="deleteUserSkill(skill.UserSkillId)" class="delete-button"><i class="fa fa-times"></i> Delete</button>
                                             
                                         </div>
                                     </div>

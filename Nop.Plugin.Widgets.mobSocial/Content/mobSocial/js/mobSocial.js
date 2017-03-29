@@ -25,6 +25,14 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", function ($rootScop
     $rootScope.bodyScroll = function(on) {
         if (!on) {
             angular.element("body").addClass("no-scroll");
+            setTimeout(function() {
+                    //quickfix - center the popup element on screen
+                    var contentWidth = jQuery(".fixed-popup .content").outerWidth();
+                    var winWidth = jQuery(document).outerWidth();
+                    jQuery(".fixed-popup .content").css("left", (winWidth - contentWidth) / 2);
+                },
+                50);
+
         } else {
             angular.element("body").removeClass("no-scroll");
         }

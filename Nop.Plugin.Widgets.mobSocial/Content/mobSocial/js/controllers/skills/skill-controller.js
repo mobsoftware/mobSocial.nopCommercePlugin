@@ -63,7 +63,7 @@ app.controller("SkillController",
                        if ($scope.skills && $scope.skill) {
                            for (var i = 0; i < $scope.skills.length; i++) {
                                if ($scope.skills[i].Id == $scope.skill.Id) {
-                                   $scope.skills.slice(i, 1);
+                                   $scope.skills.splice(i, 1);
                                }
                            }
                        }
@@ -80,7 +80,9 @@ app.controller("SkillController",
                        if ($scope.skills) {
                            for (var i = 0; i < $scope.skills.length; i++) {
                                if ($scope.skills[i].UserSkillId == id) {
-                                   $scope.skills.slice(i, 1);
+                                   $scope.skills.splice(i, 1);
+                                   $scope.cancelEdit();
+                                   break;
                                }
                            }
                        }
