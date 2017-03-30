@@ -249,5 +249,31 @@ app.controller("SkillController",
             $scope.skillData.UserSkills.push(skill);
             $scope.skillData.HasSkill = true;
         }
+
+        $scope.uploadSkillMediaSuccess = function (fileItem, data, status, headers) {
+            if (data.Success) {
+                var userSkillId = fileItem.formData[0].userSkillId;
+                var mediaId = data.Images ? data.Images[0].Id : data.Video.Id;
+                //send the media id and attach it with skill
+                 SkillService.postSkillMedia({
+                     MediaId: mediaId,
+                     UserSkillId: userSkillId
+                 }, function(response) {
+                     if (response.Success) {
+                         for (var i = 0; i < $scope.skillData.UserSkills.length; i++) {
+                             if( $scope.skillData.UserSkills[i].UserSkillId != userSkillId)
+                                 continue;
+
+                             if (response.MediaType == 0) {
+                                 $scope.skillData.UserSkills[i].TotalPictureCount++;
+                             } else {
+                                 $scope.skillData.UserSkills[i].TotalVideoCount++;
+                             }
+                         }
+                        
+                     }
+                 });
+            }
+        }
     }
 ]);

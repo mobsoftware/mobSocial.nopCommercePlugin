@@ -96,7 +96,31 @@
                 <div id="main-content">
                     <div class="box"  ng-repeat="userSkill in skillData.UserSkills">
                         <div class="box-body">
-                            <p class="text-muted text-center">{{userSkill.Description}}</p>
+                            <p class="text-muted text-center">
+                                {{userSkill.Description}}
+                                <span class="upload-buttons pull-right margin-r-5" ng-if="userSkill.User.CustomerId == @currentCustomer.Id">
+                                    <a file-upload-button
+                                       class="upload-button"
+                                       id="skillImage_{{userSkill.UserSkillId}}"
+                                       extradata='{"userSkillId": "{{userSkill.UserSkillId}}"}'
+                                       uploadtype="image"
+                                       onsuccessitem="uploadSkillMediaSuccess"
+                                       title="Upload Picture"
+                                       url="/api/media/uploadpictures">
+                                        <i class="fa fa-camera"></i>
+                                    </a>
+                                    <a file-upload-button
+                                       class="upload-button"
+                                       id="skillVideo_{{userSkill.UserSkillId}}"
+                                       extradata='{"userSkillId": "{{userSkill.UserSkillId}}"}'
+                                       uploadtype="video"
+                                       onsuccessitem="uploadSkillMediaSuccess"
+                                       title="Upload Video"
+                                       url="/api/media/uploadvideo">
+                                        <i class="fa fa-video-camera"></i>
+                                    </a>
+                                </span>
+                            </p>
                             
                             <ul class="list-group list-group-unbordered" ng-if="userSkill.Media.length > 0">
                                 <li class="list-group-item text-center skill-media">

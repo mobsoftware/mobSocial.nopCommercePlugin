@@ -20,6 +20,10 @@ app.service("SkillService", ["globalApiEndPoint", "WebClientService", function (
         WebClientService.post(apiEndPoint + "/post", skill, success, error);
     }
 
+    this.postSkillMedia = function (userSkillMediaObject, success, error) {
+        WebClientService.post(apiEndPoint + "/media/post", userSkillMediaObject, success, error);
+    }
+
     this.delete = function (skillId, success, error) {
         WebClientService.delete(apiEndPoint + "/delete/" + skillId, null, success, error);
     }

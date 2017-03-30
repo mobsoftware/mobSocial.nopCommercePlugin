@@ -1848,12 +1848,24 @@ li a:hover {
   border-top: solid 3px #ddd;
   float: left;
   margin: 10px; }
+  .skills-page #main-content .box .box-body .upload-buttons {
+    position: absolute;
+    right: 5px; }
+    .skills-page #main-content .box .box-body .upload-buttons a {
+      color: #aaa; }
+      .skills-page #main-content .box .box-body .upload-buttons a:hover {
+        color: #777; }
   .skills-page #main-content .box .box-body .skill-media img {
     width: 150px;
     height: 150px; }
   .skills-page #main-content .box p {
-    padding: 10px 0;
-    background-color: #ddd; }
+    padding: 10px;
+    background-color: #ddd;
+    height: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative; }
   .skills-page #main-content .box.no-border {
     border: none; }
   .skills-page #main-content .box .profile-username {
@@ -1992,4 +2004,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
+
+.margin-r-5 {
+  margin-right: 5px; }
 

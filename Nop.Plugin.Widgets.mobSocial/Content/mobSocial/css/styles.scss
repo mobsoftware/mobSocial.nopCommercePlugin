@@ -2796,6 +2796,19 @@ li a:hover {
             margin: 10px;
 
             .box-body {
+                .upload-buttons {
+                    position: absolute;
+                    right: 5px;
+
+                    a {
+                        color: #aaa;
+
+                        &:hover {
+                            color: #777;
+                        }
+                    }
+                }
+
                 .skill-media {
                     img {
                         width: 150px;
@@ -2805,8 +2818,13 @@ li a:hover {
             }
 
             p {
-                padding: 10px 0;
+                padding: 10px;
                 background-color: #ddd;
+                height: 35px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                position: relative;
             }
 
             &.no-border {
@@ -3011,4 +3029,8 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
         white-space: nowrap;
         overflow: hidden;
     }
+}
+
+.margin-r-5 {
+    margin-right: 5px;
 }
