@@ -63,6 +63,10 @@
                     }
                     else
                     {
+                        <a ng-if="skillData.HasSkill" class="button">
+                            <i class="fa fa-check-circle"></i>
+                            I can do this
+                        </a>
                         <skill-editor-button ng-if="!skillData.HasSkill" buttontext="I can do this" skill="skill" onsave="onIcanDoThis(skill)"></skill-editor-button>
                     }
                     <follow-button ng-if="skillData.CanFollow" class="follow-button" followstatus="skillData.FollowStatus" entityname="skill" entityid="{{skill.Id}}" canfollow="{{skillData.CanFollow}}"></follow-button>
