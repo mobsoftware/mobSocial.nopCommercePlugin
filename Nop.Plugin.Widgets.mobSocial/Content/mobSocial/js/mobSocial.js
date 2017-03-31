@@ -5,6 +5,7 @@
 //attach some global functions to rootScope
 app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", function ($rootScope, globalApiEndPoint, $http, $sce) {
     $rootScope.login = function (returnUrl) {
+        returnUrl = returnUrl || window.location.href;
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
         var a = document.createElement("a");
         a.href = returnUrl;

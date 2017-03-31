@@ -6,7 +6,7 @@
         this.responseError = function (response) {
 
             if (response.status === 401) { //unauthorized
-                $rootScope.login(window.location.pathname + window.location.search);
+                $rootScope.login();
                 return;
             }
             if (response.status === 404) {

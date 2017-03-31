@@ -1,4 +1,5 @@
 ﻿@using Nop.Core
+@using Nop.Core.Domain.Customers
 @using Nop.Core.Infrastructure
 @using Nop.Plugin.WebApi.MobSocial.Constants
 @model Nop.Plugin.Widgets.MobSocial.Models.SkillPageModel
@@ -56,7 +57,14 @@
                     </tr>
                 </table>
                 <div class="cover-buttons">
-                    <skill-editor-button ng-if="!skillData.HasSkill" buttontext="I can do this" skill="skill" onsave="onIcanDoThis(skill)"></skill-editor-button>
+                    @if (currentCustomer.IsGuest())
+                    {
+                        <a ng-click="login()" class="button">I can do this</a>
+                    }
+                    else
+                    {
+                        <skill-editor-button ng-if="!skillData.HasSkill" buttontext="I can do this" skill="skill" onsave="onIcanDoThis(skill)"></skill-editor-button>
+                    }
                     <follow-button ng-if="skillData.CanFollow" class="follow-button" followstatus="skillData.FollowStatus" entityname="skill" entityid="{{skill.Id}}" canfollow="{{skillData.CanFollow}}"></follow-button>
                 </div>
 
