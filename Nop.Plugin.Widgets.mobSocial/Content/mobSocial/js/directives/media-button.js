@@ -1,4 +1,4 @@
-﻿app.directive("mediaButton", [function () {
+﻿app.directive("mediaButton", ["$rootScope", function ($rootScope) {
     return {
         restrict: "A",
         scope: {
@@ -12,6 +12,7 @@
                     modalScope.reloadMedia(scope.media.Id);
                 } 
                 jQuery(scope.target).show();
+                $rootScope.bodyScroll(false);
             });
         }
     }

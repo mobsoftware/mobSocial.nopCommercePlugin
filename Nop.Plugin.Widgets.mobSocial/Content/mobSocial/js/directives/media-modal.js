@@ -37,6 +37,10 @@
                 $rootScope.updatedVideoSource(scope.$API, scope.media.Url, scope.media.MimeType);
             }
 
+            scope.close = function() {
+                scope.media = null;
+                $rootScope.bodyScroll(true);
+            }
         }
     }
 }]);
