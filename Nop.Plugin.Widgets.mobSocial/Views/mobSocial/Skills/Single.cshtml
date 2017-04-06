@@ -106,46 +106,49 @@
             <!-- Main content -->
             <section class="content">              
                 <div id="main-content">
-                    <div class="box"  ng-repeat="userSkill in skillData.UserSkills">
+                    @if (Model.UserSkillId != 0)
+                    {
+                        <div class="skill-media-uploads-actions text-center">
+                            <button file-upload-button
+                               class="button upload-button"
+                               id="skillImage_@Model.UserSkillId"
+                               extradata='{"userSkillId": "@Model.UserSkillId"}'
+                               uploadtype="image"
+                               onsuccessitem="uploadSkillMediaSuccess"
+                               title="Upload Picture"
+                               url="/api/media/uploadpictures">
+                                <i class="fa fa-camera"></i> Upload Picture
+                            </button>
+                            <button file-upload-button
+                               class="button upload-button"
+                               id="skillVideo_@Model.UserSkillId"
+                               extradata='{"userSkillId": "@Model.UserSkillId"}'
+                               uploadtype="video"
+                               onsuccessitem="uploadSkillMediaSuccess"
+                               title="Upload Video"
+                               url="/api/media/uploadvideo">
+                                <i class="fa fa-video-camera"></i> Upload Video
+                            </button>
+                        </div>
+                    }
+                    <div class="box" ng-repeat="userSkill in skillData.UserSkills">
                         <div class="box-body">
                             <p class="text-muted text-center">
                                 {{userSkill.Description}}
-                                <span class="upload-buttons pull-right margin-r-5" ng-if="userSkill.User.CustomerId == @currentCustomer.Id">
-                                    <a file-upload-button
-                                       class="upload-button"
-                                       id="skillImage_{{userSkill.UserSkillId}}"
-                                       extradata='{"userSkillId": "{{userSkill.UserSkillId}}"}'
-                                       uploadtype="image"
-                                       onsuccessitem="uploadSkillMediaSuccess"
-                                       title="Upload Picture"
-                                       url="/api/media/uploadpictures">
-                                        <i class="fa fa-camera"></i>
-                                    </a>
-                                    <a file-upload-button
-                                       class="upload-button"
-                                       id="skillVideo_{{userSkill.UserSkillId}}"
-                                       extradata='{"userSkillId": "{{userSkill.UserSkillId}}"}'
-                                       uploadtype="video"
-                                       onsuccessitem="uploadSkillMediaSuccess"
-                                       title="Upload Video"
-                                       url="/api/media/uploadvideo">
-                                        <i class="fa fa-video-camera"></i>
-                                    </a>
-                                </span>
                             </p>
-                            
+
                             <ul class="list-group list-group-unbordered" ng-if="userSkill.Media.length > 0">
                                 <li class="list-group-item text-center skill-media">
                                     <div ng-switch on="userSkill.Media[0].MediaType">
                                         <div ng-switch-when="1">
                                             <a media-button target="#video-modal" media="userSkill.Media[0]" class="video-thumbnail">
                                                 <span class="fa fa-play"></span>
-                                                <img ng-src="{{userSkill.Media[0].ThumbnailUrl}}" />
+                                                <img ng-src="{{userSkill.Media[0].ThumbnailUrl}}"/>
                                             </a>
                                         </div>
                                         <div ng-switch-when="0">
                                             <a ng-if="userSkill.Media[0].MediaType == 0" media-button target="#video-modal" media="userSkill.Media[0]">
-                                                <img ng-src="{{userSkill.Media[0].Url}}" />
+                                                <img ng-src="{{userSkill.Media[0].Url}}"/>
                                             </a>
                                         </div>
                                     </div>
