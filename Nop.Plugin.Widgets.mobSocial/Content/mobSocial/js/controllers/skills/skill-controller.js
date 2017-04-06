@@ -49,6 +49,8 @@ app.controller("SkillController",
                                }
                            }
                        }
+                   } else {
+                       alert(response.Message);
                    }
                }
             );
