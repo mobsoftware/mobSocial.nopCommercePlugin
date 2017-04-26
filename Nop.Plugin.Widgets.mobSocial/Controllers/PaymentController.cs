@@ -1,10 +1,8 @@
 ﻿using System.Web.Mvc;
+using mobSocial.Services.Battles;
+using mobSocial.Services.Payments;
 using Nop.Core;
 using Nop.Core.Domain.Common;
-using Nop.Plugin.WebApi.mobSocial.Services;
-using Nop.Plugin.WebApi.MobSocial;
-using Nop.Plugin.WebApi.MobSocial.Services;
-using Nop.Plugin.WebApi.MobSocial.Models;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Customers;
@@ -12,7 +10,6 @@ using Nop.Services.Directory;
 using Nop.Services.Localization;
 using Nop.Services.Orders;
 using Nop.Web.Controllers;
-using Nop.Web.Extensions;
 using Nop.Web.Models.Customer;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers

@@ -1,65 +1,17 @@
 ﻿using System.Web.Mvc;
-using System.Linq;
-using Nop.Core;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Media;
-using Nop.Plugin.WebApi.MobSocial;
-using Nop.Plugin.WebApi.MobSocial.Domain;
-using Nop.Plugin.WebApi.MobSocial.Enums;
-using Nop.Plugin.WebApi.MobSocial.Models;
-using Nop.Plugin.WebApi.MobSocial.Services;
-using Nop.Services.Common;
-using Nop.Services.Media;
 using Nop.Web.Controllers;
 using Nop.Web.Models.Profile;
-using Nop.Services.Customers;
-using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     public class CustomerProfileController : BasePublicController
     {
-        private readonly CustomerProfileService _customerProfileService;
-        private readonly CustomerProfileViewService _customerProfileViewService;
-        private readonly ICustomerService _customerService;
-        private readonly ICustomerFavoriteSongService _customerFavoriteSongService;
-        private readonly IMobSocialService _mobSocialService;
-        private readonly IWorkContext _workContext;
-        private readonly IMusicService _musicService;
-        private readonly IFriendService _friendService;
-        private readonly IPictureService _pictureService;
-        private readonly IGenericAttributeService _genericAttributeService;
-        private readonly ICustomerFollowService _customerFollowService;
-        private readonly MediaSettings _mediaSettings;
-        private readonly mobSocialSettings _mobSocialSettings;
-
-        public CustomerProfileController(CustomerProfileService customerProfileService,
-            CustomerProfileViewService customerProfileViewService,
-            ICustomerService customerService,
-            IMobSocialService mobSocialService,
-            ICustomerFavoriteSongService customerFavoriteSongService,
-            IMusicService musicService,
-            IWorkContext workContext, IFriendService friendService, IPictureService pictureService, mobSocialSettings mobSocialSettings, MediaSettings mediaSettings, IGenericAttributeService genericAttributeService, ICustomerFollowService customerFollowService)
-        {
-            _customerProfileService = customerProfileService;
-            _customerProfileViewService = customerProfileViewService;
-            _customerService = customerService;
-            _customerFavoriteSongService = customerFavoriteSongService;
-            _mobSocialService = mobSocialService;
-            _musicService = musicService;
-            _workContext = workContext;
-            _friendService = friendService;
-            _pictureService = pictureService;
-            _mobSocialSettings = mobSocialSettings;
-            _mediaSettings = mediaSettings;
-            _genericAttributeService = genericAttributeService;
-            _customerFollowService = customerFollowService;
-        }
+       
 
         [ChildActionOnly]
         public ActionResult CustomerProfile(ProfileIndexModel model)
         {
-            var customerId = model.CustomerProfileId;
+           /* var customerId = model.CustomerProfileId;
             //increment view count
             _customerProfileViewService.IncrementViewCount(customerId);
 
@@ -106,7 +58,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             var followers = _customerFollowService.GetFollowers<CustomerProfile>(customerId);
             profilemodel.FollowingStatus = followers.Any(x => x.CustomerId == _workContext.CurrentCustomer.Id) ? 1 : 0;
             profilemodel.FollowerCount = followers.Count;
-            return View("mobSocial/CustomerProfile/Profile", profilemodel);
+            return View("mobSocial/CustomerProfile/Profile", profilemodel);*/
+            return null;
         }
 
 

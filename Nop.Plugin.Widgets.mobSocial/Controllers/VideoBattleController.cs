@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
+using mobSocial.Data.Enum;
+using mobSocial.WebApi.Models.Battles;
 using Nop.Web.Controllers;
-using Nop.Plugin.WebApi.MobSocial.Enums;
-using Nop.Plugin.WebApi.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers

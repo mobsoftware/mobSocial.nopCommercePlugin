@@ -8,12 +8,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     [NopHttpsRequirement(SslRequirement.No)]
     public partial class FacebookWebsiteAppController : BasePublicController
     {
-
-
-        public FacebookWebsiteAppController()
-        {
-        }
-
         public ActionResult Index()
         {
             return View("mobSocial/FacebookWebsiteApp/Index");

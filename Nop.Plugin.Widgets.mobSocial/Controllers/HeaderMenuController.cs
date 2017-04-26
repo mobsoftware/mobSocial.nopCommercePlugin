@@ -6,10 +6,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     public class HeaderMenuController : BasePublicController
     {
 
-        public HeaderMenuController()
-        {
-        }
-
         [ChildActionOnly]
         public ActionResult PublicInfo(string widgetZone)
         {

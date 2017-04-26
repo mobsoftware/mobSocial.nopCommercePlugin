@@ -22,6 +22,9 @@ using Nop.Plugin.Widgets.MobSocial;
 using Nop.Web.Controllers;
 using System.Linq;
 using System.Web;
+using mobSocial.Data.Entity.EventPages;
+using mobSocial.Data.Enum;
+using mobSocial.Services.BusinessPages;
 using Mob.Core;
 using Nop.Core;
 using Nop.Plugin.WebApi.MobSocial;
@@ -30,6 +33,7 @@ using Nop.Plugin.WebApi.MobSocial.Extensions;
 using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Plugin.WebApi.MobSocial.Extensions;
 using Nop.Plugin.WebApi.MobSocial.Models;
+using Nop.Web.Models.Media;
 using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers

@@ -39,9 +39,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Constants\MobSocialConstant.cs" />
     <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
-    <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\CustomerCommentController.cs" />
     <Compile Include="Controllers\CustomerLikeController.cs" />
     <Compile Include="Controllers\CustomerFollowController.cs" />
@@ -49,23 +49,16 @@
     <Compile Include="Controllers\FriendsController.cs" />
     <Compile Include="Controllers\HeadController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
-    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProxyWebController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
-    <Compile Include="Controllers\SongController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
     <Compile Include="Controllers\TeamPageController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
-    <Compile Include="Controllers\Admin\ManageEventPageController.cs" />
     <Compile Include="Controllers\Admin\TeamPageController.cs" />
-    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\FacebookWebsiteAppController.cs" />
-    <Compile Include="Controllers\EventPageController.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
     <Compile Include="Controllers\HeaderMenuController.cs" />
-    <Compile Include="Controllers\SkateMoveController.cs" />
-    <Compile Include="Controllers\mobSocialController.cs" />
     <Compile Include="DependencyRegistrar.cs" />
     <Compile Include="Feature\FeatureToggle.cs" />
     <Compile Include="Feature\Timeline\ITimelineWidget.cs" />
@@ -853,11 +846,6 @@
       <Name>Mob.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\MobSocial.WebApi\Nop.Plugin.WebApi.mobSocial\Nop.Plugin.WebApi.MobSocial.csproj">
-      <Project>{d9f85190-5b59-4b68-bfe4-fa1f1aab549f}</Project>
-      <Name>Nop.Plugin.WebApi.MobSocial</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -879,6 +867,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MobAds.Public">
       <HintPath>MobLib\MobAds.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="mobSocial.Core">
+      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="mobSocial.Data">
+      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="mobSocial.Services">
+      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="mobSocial.WebApi">
+      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(SolutionDir)packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>

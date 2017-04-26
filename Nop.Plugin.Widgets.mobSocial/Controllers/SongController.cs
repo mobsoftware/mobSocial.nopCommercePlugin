@@ -18,6 +18,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web;
+using mobSocial.Data.Entity.Songs;
+using mobSocial.Services.ArtistPages;
+using mobSocial.Services.Music;
+using mobSocial.Services.Songs;
+using mobSocial.WebApi.Models.Songs;
 using Mob.Core;
 using Nop.Plugin.WebApi.MobSocial.Helpers;
 using Nop.Core.Infrastructure;
@@ -27,6 +32,8 @@ using Nop.Plugin.WebApi.MobSocial;
 using Nop.Plugin.WebApi.MobSocial.Extensions;
 using Nop.Plugin.WebApi.MobSocial.Models;
 using Nop.Plugin.WebApi.MobSocial.Services;
+using Nop.Services.Seo;
+using Nop.Web.Models.Media;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {

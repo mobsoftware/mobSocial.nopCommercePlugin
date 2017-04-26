@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Nop.Plugin.WebApi.MobSocial.Enums;
-using Nop.Web.Framework.Mvc;
+﻿using mobSocial.Data.Enum;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {

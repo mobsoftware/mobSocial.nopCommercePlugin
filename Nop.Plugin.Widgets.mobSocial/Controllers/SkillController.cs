@@ -1,7 +1,8 @@
 ﻿using System.Web.Mvc;
+using mobSocial.Services.Extensions;
+using mobSocial.Services.Skills;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
-using Nop.Plugin.WebApi.MobSocial.Services;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Web.Controllers;
 

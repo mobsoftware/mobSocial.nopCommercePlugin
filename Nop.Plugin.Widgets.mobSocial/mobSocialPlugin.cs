@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web.Routing;
-using Nop.Plugin.WebApi.MobSocial.Data;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
@@ -9,10 +8,7 @@ using Nop.Web.Framework.Menu;
 using System.Web.Configuration;
 using MobAds.Public;
 using Nop.Core;
-using System.Linq;
-using Nop.Plugin.WebApi.MobSocial;
-using Nop.Plugin.WebApi.MobSocial.Constants;
-using Nop.Plugin.WebApi.MobSocial.Services;
+using mobSocial.Services.Battles;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
@@ -20,32 +16,24 @@ namespace Nop.Plugin.Widgets.MobSocial
     {
 
 
-        private readonly MobSocialObjectContext _context;
-        private readonly mobSocialSettings _mobSocialSettings;
         private readonly ISettingService _settingService;
         private readonly IMessageTemplateService _messageTemplateService;
         private readonly IScheduleTaskService _scheduleTaskService;
-        private readonly IMobSocialService _mobSocialService;
         private readonly ILocalizationService _localizationService;
         private readonly HttpRuntimeSection _config;
         private readonly IStoreContext _storeContext;
         private readonly IVideoBattleService _videoBattleService;
 
-        public mobSocialPlugin(MobSocialObjectContext context, mobSocialSettings mobSocialSettings,
-            ISettingService settingService, IMessageTemplateService messageTemplateService,
+        public mobSocialPlugin(ISettingService settingService, IMessageTemplateService messageTemplateService,
             IScheduleTaskService scheduleTaskService,
-            IMobSocialService mobSocialService,
             ILocalizationService localizationService,
             IStoreContext storeContext,
             IVideoBattleService videoBattleService)
             : base(storeContext, settingService)
         {
-            _context = context;
-            _mobSocialSettings = mobSocialSettings;
             _settingService = settingService;
             _messageTemplateService = messageTemplateService;
             _scheduleTaskService = scheduleTaskService;
-            _mobSocialService = mobSocialService;
             _localizationService = localizationService;
             _videoBattleService = videoBattleService;
             _storeContext = storeContext;
@@ -58,16 +46,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public override IList<string> GetWidgetDisplayZones()
         {
-            return !string.IsNullOrWhiteSpace(_mobSocialSettings.WidgetZone)
-                      ? new List<string>() { 
-                          _mobSocialSettings.WidgetZone, 
-                          "head_html_tag",
-                          "header_menu_after", 
-                          "account_navigation_after", 
-                          "profile_page_info_userdetails",
-                          "searchbox_before_search_button"
-        }
-                      : new List<string>() { "after_header_links" };
+            return new List<string>() { "after_header_links" };
         }
 
         /// <summary>
@@ -202,8 +181,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         public override void Install()
         {
             AddLocaleResourceStrings();
-            if (!MobSocialConstant.SuiteInstallation)
-                base.Install();
+            base.Install();
 
         }
 
@@ -218,8 +196,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             this.DeletePluginLocaleResource("SearchDropdown.PeopleSearchText");
             // do not remove core locales
 
-            if (!MobSocialConstant.SuiteInstallation)
-                base.Uninstall();
+            base.Uninstall();
         }
 
         #endregion
@@ -227,12 +204,12 @@ namespace Nop.Plugin.Widgets.MobSocial
         #region Tasks
         public void SendFriendRequestNotifications()
         {
-            _mobSocialService.SendFriendRequestNotifications();
+            //_mobSocialService.SendFriendRequestNotifications();
         }
 
         public void SendProductReviewNotifications()
         {
-            _mobSocialService.SendProductReviewNotifications();
+           // _mobSocialService.SendProductReviewNotifications();
         }
 
 
@@ -289,7 +266,7 @@ namespace Nop.Plugin.Widgets.MobSocial
         }
 
         #region Helper Methods
-      
+
         private void AddLocaleResourceStrings()
         {
             this.AddOrUpdatePluginLocaleResource("MobSocial.MessageButtonText", "Send Message");
@@ -324,44 +301,44 @@ namespace Nop.Plugin.Widgets.MobSocial
         public void ManageSiteMap(SiteMapNode rootNode)
         {
 
-           /* var menuItem = new SiteMapNode() {
-                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
-                ControllerName = "TeamPage",
-                ActionName = "Index",
-                Visible = true,
-                RouteValues = new RouteValueDictionary() { { "area", null } },
-            };
+            /* var menuItem = new SiteMapNode() {
+                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.Text"),
+                 ControllerName = "TeamPage",
+                 ActionName = "Index",
+                 Visible = true,
+                 RouteValues = new RouteValueDictionary() { { "area", null } },
+             };
 
-            var manageTeamSubMenu = new SiteMapNode() {
-                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
-                ControllerName = "TeamPage",
-                ActionName = "Index",
-                Visible = true,
-                RouteValues = new RouteValueDictionary() { { "area", null } },
-            };
-
-
+             var manageTeamSubMenu = new SiteMapNode() {
+                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage"),
+                 ControllerName = "TeamPage",
+                 ActionName = "Index",
+                 Visible = true,
+                 RouteValues = new RouteValueDictionary() { { "area", null } },
+             };
 
 
-            var manageEventsSubMenu = new SiteMapNode() {
-                Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
-                ControllerName = "ManageEventPage",
-                ActionName = "List",
-                Visible = true,
-                RouteValues = new RouteValueDictionary() { { "area", null } },
-
-            };
-
-            menuItem.ChildNodes.Add(manageTeamSubMenu);
-            menuItem.ChildNodes.Add(manageEventsSubMenu);
 
 
-            var pluginNode = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Third party plugins");
+             var manageEventsSubMenu = new SiteMapNode() {
+                 Title = _localizationService.GetResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage"),
+                 ControllerName = "ManageEventPage",
+                 ActionName = "List",
+                 Visible = true,
+                 RouteValues = new RouteValueDictionary() { { "area", null } },
 
-            if (pluginNode != null)
-                pluginNode.ChildNodes.Add(menuItem);
-            else
-                rootNode.ChildNodes.Add(menuItem);*/
+             };
+
+             menuItem.ChildNodes.Add(manageTeamSubMenu);
+             menuItem.ChildNodes.Add(manageEventsSubMenu);
+
+
+             var pluginNode = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Third party plugins");
+
+             if (pluginNode != null)
+                 pluginNode.ChildNodes.Add(menuItem);
+             else
+                 rootNode.ChildNodes.Add(menuItem);*/
 
         }
 

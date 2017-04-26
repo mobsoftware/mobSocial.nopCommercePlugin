@@ -1,4 +1,4 @@
-﻿using Nop.Plugin.WebApi.MobSocial.Constants;
+﻿using Nop.Plugin.Widgets.MobSocial.Constants;
 using Nop.Web.Framework.Themes;
 
 namespace Nop.Plugin.Widgets.MobSocial.ViewEngines
