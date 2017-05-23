@@ -1,6 +1,6 @@
 ﻿app.controller("TeamPageController",
 [
-    "$scope", "TeamPageService", function ($scope, TeamPageService) {
+    "$scope", "TeamPageService", "routeProvider", function ($scope, TeamPageService, routeProvider) {
         var sortByDisplayOrder = function (groups) {
             groups.sort(function (a, b) { return (a.DisplayOrder > b.DisplayOrder) ? 1 : ((b.DisplayOrder > a.DisplayOrder) ? -1 : 0); });
         }
@@ -289,7 +289,7 @@
 
 app.controller("TeamPageEditorController",
 [
-    "$scope", "TeamPageService", function ($scope, TeamPageService) {
+    "$scope", "TeamPageService", "routeProvider", function ($scope, TeamPageService, routeProvider) {
 
         $scope.init = function (model) {
             if (model.Id > 0) {
@@ -302,7 +302,7 @@ app.controller("TeamPageEditorController",
 
                     },
                     function (response) {
-                        alert("An error occured while retriving team page");
+                        alert("An error occured while retrieving team page");
                     });
             } else {
                 $scope.TeamPage = {
@@ -322,16 +322,13 @@ app.controller("TeamPageEditorController",
         $scope.SaveTeamPage = function () {
             if ($scope.FormValid) {
                 $scope.processing = true;
-                TeamPageService.Insert($scope.TeamPage,
+                var method = $scope.TeamPage.Id == 0 ? "Insert" : "Update";
+                TeamPageService[method]($scope.TeamPage,
                     function (response) {
                         $scope.processing = false;
                         if (response.Success) {
                             $scope.recordSaved = true;
-                            if (response.Url) {
-                                window.location.href = response.Url;
-                            } else {
-
-                            }
+                            window.location.href = routeProvider.routeUrl("TeamPage", { teamId: response.ResponseData.TeamPage.Id });
                         } else {
                             alert(response.Message);
                         }

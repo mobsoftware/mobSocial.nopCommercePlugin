@@ -1,4 +1,4 @@
-﻿@using Nop.Plugin.WebApi.MobSocial.Enums
+﻿@using mobSocial.Data.Enum
 <span ng-switch on="FriendStatus">
     <span ng-switch-when="@((int) FriendStatus.None)">
         <a class="button-primary button" ng-click="UpdateFriendship('add')">
@@ -7,7 +7,7 @@
     </span>
     <span ng-switch-when="@((int) FriendStatus.FriendRequestSent)">
         <a class="button-primary button" ng-click="UpdateFriendship('decline')">
-            Cancel Friendship Request
+            Cancel Request
         </a>
     </span>
     <span ng-switch-when="@((int) FriendStatus.Friends)">

@@ -1,4 +1,4 @@
-﻿@using Nop.Plugin.WebApi.MobSocial.Enums
+﻿@using mobSocial.Data.Enum
 @using Nop.Plugin.Widgets.MobSocial.Constants
 @model Nop.Plugin.Widgets.MobSocial.Models.BattleEditorModel
 @{
@@ -48,14 +48,14 @@
                             </div>
                             <div class="inputs">
                                 <label class="control-label">Battle Type</label>
-                                <select data-ng-model="VideoBattle.VideoBattleType">
-                                    <option value="@((int) VideoBattleType.Open)">@(VideoBattleType.Open)</option>
-                                    <option value="@((int) VideoBattleType.InviteOnly)">@(VideoBattleType.InviteOnly)</option>
-                                    <option value="@((int) VideoBattleType.SignUp)">@(VideoBattleType.SignUp)</option>
+                                <select data-ng-model="VideoBattle.BattleParticipationType">
+                                    <option value="@((int) BattleParticipationType.Open)">@(BattleParticipationType.Open)</option>
+                                    <option value="@((int) BattleParticipationType.InviteOnly)">@(BattleParticipationType.InviteOnly)</option>
+                                    <option value="@((int) BattleParticipationType.SignUp)">@(BattleParticipationType.SignUp)</option>
                                 </select>
 
                             </div>
-                            <div class="inputs" ng-show="VideoBattle.VideoBattleType == @((int) VideoBattleType.Open)">
+                            <div class="inputs" ng-show="VideoBattle.BattleParticipationType == @((int) BattleParticipationType.Open)">
                                 <label class="control-label" for="maxcount">Maximum Participants Allowed</label>
                                 <input type="number" min="0" step="1" name="MaximumParticipantCount" id="maxcount" data-ng-model="VideoBattle.MaximumParticipantCount" />
                                 <em>0 for no limit</em>
@@ -107,10 +107,11 @@
                             <div ng-show="processing">
                                 Please wait...
                             </div>
-                            <div ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending)">
+                            
+                            <div ng-if="VideoBattle.VideoBattleStatus != @((int) BattleStatus.Pending)">
                                 The battle can't be edited now.
                             </div>
-                            <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending)">
+                            <div ng-if="VideoBattle.VideoBattleStatus == @((int) BattleStatus.Pending)">
                                 <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveVideoBattle()" value="@(Model.Id == 0 ? "Create" : "Update") Battle"/>
 
                             </div>
@@ -133,25 +134,25 @@
                                         <div class="inputs">
                                             <label>Prize Type</label>
                                             <select ng-model="prize.PrizeType">
-                                                <option value="@((int) VideoBattlePrizeType.FixedAmount)">Fixed Amount</option>
-                                                <option value="@((int) VideoBattlePrizeType.PercentageAmount)">Percentage Amount</option>
-                                                <option value="@((int) VideoBattlePrizeType.FixedProduct)">Fixed Product</option>
-                                                <option value="@((int) VideoBattlePrizeType.Other)">Other</option>
+                                                <option value="@((int) BattlePrizeType.FixedAmount)">Fixed Amount</option>
+                                                <option value="@((int) BattlePrizeType.PercentageAmount)">Percentage Amount</option>
+                                                <option value="@((int) BattlePrizeType.FixedProduct)">Fixed Product</option>
+                                                <option value="@((int) BattlePrizeType.Other)">Other</option>
                                             </select>
                                         </div>
-                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.FixedAmount)">
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) BattlePrizeType.FixedAmount)">
                                             <label>Prize Amount</label>
                                             <input ng-model="prize.PrizeAmount" type="number" step="any" min="0" />
                                         </div>
-                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.PercentageAmount)">
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) BattlePrizeType.PercentageAmount)">
                                             <label>Prize Percentage</label>
                                             <input ng-model="prize.PrizePercentage" type="number" step="any" min="0" />
                                         </div>
-                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.FixedProduct)">
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) BattlePrizeType.FixedProduct)">
                                             <label>Product</label>
                                             <input ng-model="prize.ProductId" type="number" min="0" />
                                         </div>
-                                        <div class="inputs" ng-show="prize.PrizeType == @((int) VideoBattlePrizeType.Other)">
+                                        <div class="inputs" ng-show="prize.PrizeType == @((int) BattlePrizeType.Other)">
                                             <label>Other</label>
                                             <input ng-model="prize.PrizeOther" type="text" />
                                         </div>

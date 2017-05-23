@@ -1,7 +1,8 @@
 ﻿@using Nop.Core
 @using Nop.Core.Infrastructure
-@using Nop.Plugin.WebApi.MobSocial.Extensions
-@model Nop.Plugin.WebApi.MobSocial.Models.SocialNetworkNavigationModel
+@using Nop.MobSocial.WebApi.Extensions
+
+@model Nop.Plugin.Widgets.MobSocial.Models.SocialNetworkNavigationModel
 @{
     var workContext = EngineContext.Current.Resolve<IWorkContext>();
     var currentCustomer = workContext.CurrentCustomer;

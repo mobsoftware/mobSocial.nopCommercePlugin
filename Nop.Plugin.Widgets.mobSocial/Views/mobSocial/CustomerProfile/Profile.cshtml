@@ -1,4 +1,4 @@
-﻿@model Nop.Plugin.WebApi.MobSocial.Models.CustomerProfilePublicModel
+﻿@model int
 @using Nop.Core
 @using Nop.Core.Domain.Customers
 @using Nop.Core.Infrastructure
@@ -9,318 +9,183 @@
     @Html.Partial("mobSocial/Friends/Includes")
     @Html.Partial("mobSocial/VideoBattle/Includes")
     @Html.Partial("mobSocial/Media/Includes")
-    var json = Json.Encode(Model);
     var currentCustomer = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer;
     var isLoggedIn = !currentCustomer.IsGuest();
 }
-<div ng-controller="customerProfileController" ng-init="init(@json)">
+
+<div ng-controller="userProfileController" ng-init="init(@Model)">
     <div class="cover-area">
         <div class="cover">
-            <div class="bgcover">
-                <img ng-src="{{Profile.TemporaryCoverImageUrl || Profile.CoverImageUrl}}" />
-                <div class="quick-info">
-                    <table>
-                        <tr>
-                            <td>
-                                <h4>
-                                    <i class="fa fa-eye"></i>
-                                    <div>Views</div>
-                                </h4>
-                                {{Profile.ViewCount}}
-                            </td>
-                            <td>
-                                <h4>
-                                    <i class="fa fa-users"></i>
-                                    <div>Friends</div>
-                                </h4>
-                                {{Profile.FriendCount}}
-                            </td>
-                            <td>
-                                <h4>
-                                    <i class="fa fa-bell"></i>
-
-                                    <div>Followers</div>
-                                </h4>
-                                {{Profile.FollowerCount}}
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="cover-buttons">
-                        @if (Model.IsEditable)
-                        {
-                            <div class="text-right">
-                                <a class="edit-button button" onclick="window.location.href = '@Url.Action("Info", "Customer")'"><i class="fa fa-pencil"></i> Edit Info</a>
-                            </div>
-                        }
-                        else
-                        {
-                            @Html.RouteLink(T("MobSocial.MessageButtonText").Text, "SendPM", new { toCustomerId = Model.CustomerId }, new { @class = "button " })
-                            <friend-button class="friend-button" friendstatus="Profile.FriendStatus" customerid="Profile.CustomerId"></friend-button>
-                            <follow-button class="follow-button" followstatus="Profile.FollowingStatus" entityname="customer" entityid="{{Profile.CustomerId}}"></follow-button>
-                        }
+            <div class="cover-area">
+                <div class="cover">
+                    <div class="bgcover">
+                        <img ng-src="{{user.TemporaryCoverImageUrl || user.CoverImageUrl}}" />
                     </div>
-
-                </div>
-            </div>
-            @if (Model.IsEditable)
-            {
-                //cover image uploader
-
-                <div class="cover-upload-area">
-                    @{
-                        var uploadUrl = "/api/customerprofile/uploadpicture";
-                    }
-                    <div ng-show="!Profile.TemporaryCover">
-                        <a file-upload-button
-                           class="upload-button"
-                           id="coverimage_@Model.CustomerId"
-                           fieldname="CoverFile"
-                           extradata='{"CustomerId": "@Model.CustomerId", "UploadType": "Cover"}'
-                           uploadtype="image"
-                           onsuccessitem="UploadCoverSuccess"
-                           url="@uploadUrl">
-                            <i class="fa fa-camera"></i>
-                        </a>
-                    </div>
-                    <div ng-show="Profile.TemporaryCover">
-                        <div class="keep-cover">
-                            <div class="title">Do you wish to keep or discard this cover?</div>
-                            <a ng-click="SetPictureAs('cover', Profile.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
-                            <a ng-click="SetPictureAs('cover', Profile.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
+                    <div class="profile-picture">
+                        <img ng-src="{{user.TemporaryProfileImageUrl || user.ProfileImageUrl}}" class="img-circle img-bordered-sm" />
+                        <div ng-show="!user.TemporaryProfileImage" class="profile-upload-button" ng-if="currentUserIs(user.Id)">
+                            <a file-upload-button
+                               id="profileimage_{{user.Id}}"
+                               fieldname="CoverFile"
+                               uploadtype="image"
+                               onsuccessitem="uploadProfileImageSuccess"
+                               url="/api/media/uploadpictures">
+                                <i class="fa fa-camera"></i> Change
+                            </a>
                         </div>
-                    </div>
-
-                </div>
-                        }
-        </div>
-    </div>
-    <div class="profile-left">
-
-        <div class="profile-picture">
-            <img ng-src="{{Profile.TemporaryProfileImageUrl || Profile.ProfileImageUrl}}" />
-            @if (Model.IsEditable)
-            {
-                var profileUploadUrl = "/api/customerprofile/uploadpicture";
-
-                <div ng-show="!Profile.TemporaryProfileImage" class="profile-upload-button">
-                    <a file-upload-button
-                       id="profileimage_@Model.CustomerId"
-                       fieldname="CoverFile"
-                       uploadtype="image"
-                       onsuccessitem="UploadProfileImageSuccess"
-                       url="@profileUploadUrl">
-                        <i class="fa fa-camera"></i> Change
-                    </a>
-                </div>
-            }
-        </div>
-
-        <div ng-show="Profile.TemporaryProfileImage">
-            <div class="keep-cover">
-                <div class="title">Do you wish to keep or discard this image?</div>
-                <a ng-click="SetPictureAs('avatar', Profile.TemporaryProfileImageId, true)"><i class="fa fa-check"></i> Keep</a>
-                <a ng-click="SetPictureAs('avatar', Profile.TemporaryProfileImageId, false)"><i class="fa fa-times"></i> Discard</a>
-            </div>
-        </div>
-        <div class="profile-customer-name" ng-show="!Profile.TemporaryProfileImage">
-            <h2>{{Profile.CustomerName}}</h2>
-        </div>
-        <div ng-controller="SkillController" ng-init="getUserSkills(@Model.CustomerId)">
-            <div class="profile-meta-box" ng-show="(skills && skills.length > 0) || @(Model.IsEditable ? "true" : "false")">
-                <div class="box-header text-center">
-                    <a href="@Url.RouteUrl("SkillsPage")">Skills</a>
-                </div>
-                <div class="box-content">
-
-                    <div class="skills-list">
-                        <div class="skill-item" ng-repeat="s in skills track by s.UserSkillId">
-                            <div class="skill-name">
-                                <a ng-href="skill/{{s.SeName}}">{{s.SkillName}}</a>
-                                @if (Model.IsEditable)
-                                {
-                                    <small><a ng-click="edit(s)" class="edit-button"><i class="fa fa-pencil"></i> edit</a></small>
-                                }
-                            </div>
-                            <div class="skill-description">
-                                {{s.Description}}
+                        <div ng-show="user.TemporaryProfileImage">
+                            <div class="keep-cover">
+                                <div class="title">Do you wish to keep or discard this image?</div>
+                                <a target="_self" ng-click="setPictureAs('DefaultPictureId', user.TemporaryProfileImageId, true)"><i class="fa fa-check"></i> Keep</a>
+                                <a target="_self" ng-click="setPictureAs('DefaultPictureId', user.TemporaryProfileImageId, false)"><i class="fa fa-times"></i> Discard</a>
                             </div>
                         </div>
-                        @if (Model.IsEditable)
-                        {
-                            <div class="text-center">
-                                <a ng-click="add()" class="button"><i class="fa fa-plus"></i> Add New Skill</a>
-                            </div>
-                        }
-
+                        <span ng-show="!user.TemporaryProfileImage">
+                            <h3>{{user.Name}}</h3>
+                        </span>
                     </div>
-                    @if (Model.IsEditable)
-                    {
-                        <div class="fixed-popup" ng-show="skill">
-                            <div class="overlay"></div>
-                            <div class="content">
-                                <div class="fieldset">
-                                    <div class="title">
-                                        Skill Editor
-                                        <div class="text-right">
-                                            <button ng-if="skill.UserSkillId > 0" ng-click="deleteUserSkill(skill.UserSkillId)" class="delete-button"><i class="fa fa-times"></i> Delete</button>
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="form-fields">
-                                        <div class="inputs">
-                                            <label for="skill-autocomplete">Name</label>
-                                            <angucomplete-alt id="skill-autocomplete"
-                                                              placeholder="Start typing a new skill"
-                                                              selected-object="selectSkill"
-                                                              remote-api-handler="autocompleteSkills"
-                                                              remote-url-data-field="AutoComplete.Skills"
-                                                              minlength="1"
-                                                              pause="300"
-                                                              title-field="SkillName"
-                                                              name="skill-autocomplete"
-                                                              type="text"
-                                                              input-class="form-control" style="display:inline-block"></angucomplete-alt>
-                                        </div>
-                                        <div class="inputs">
-                                            <label for="skillDescription">Description</label>
-                                            <textarea id="skillDescription" ng-model="skill.Description"></textarea>
-                                        </div>
-                                        <div class="inputs">
-                                            <label for="skillDisplayOrder">Display Order</label>
-                                            <input type="number" id="skillDisplayOrder" ng-model="skill.DisplayOrder"/>
-                                        </div>
-                                        <div class="inputs">
-                                            <label>Upload Media</label>
-                                            <a file-upload-button
-                                                    id="skill_video"
-                                                    fieldname="SkillVideo"
-                                                    uploadtype="video"
-                                                    onsuccessitem="uploadSkillMediaSuccess"
-                                                    url="/api/media/uploadvideo">
-                                                <i class="fa fa-video-camera"></i> Add Video
-                                            </a>
-                                            <a file-upload-button
-                                                    id="skill_image"
-                                                    fieldname="SkillImage"
-                                                    uploadtype="image"
-                                                    onsuccessitem="uploadSkillMediaSuccess"
-                                                    url="/api/media/uploadpictures">
-                                                <i class="fa fa-file-picture-o"></i> Add Image
-                                            </a>
-                                        </div>
-                                        <div class="inputs">
-                                            <table class="data-table" style="width: 400px;margin: 0px auto;">
-                                                <tr ng-repeat="media in skill.Media">
-                                                    <td>
-                                                        <a media-button target="#video-modal" media="media" class="video-thumbnail">
-                                                            <span class="fa fa-play" ng-if="media.MediaType == 1"></span>
-                                                            <img ng-src="{{media.ThumbnailUrl}}" style="width: 100px; height: 100px;" />
-                                                        </a>
-                                                    </td> 
-                                                    <td>
-                                                        <a ng-click="deleteUserSkillMedia(skill.UserSkillId, media.Id)">
-                                                            <i class="fa fa-times"></i> Remove
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="buttons">
-                                            <button ng-click="postSkill(skill)">Save</button>
-                                            <button ng-click="cancelEdit(skill)">Cancel</button>
-                                        </div>
+                    <div class="quick-info">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-2 info-block">
+                                    <i class="fa fa-users margin-r-5"></i>
+                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'friends', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                        {{user.FriendCount}} Friends
+                                    </a>
+                                </div>
+                                <div class="col-md-2 info-block">
+                                    <i class="fa fa-bell margin-r-5"></i>
+                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'followers', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                        {{user.FollowerCount}} Followers
+                                    </a>
+                                </div>
+                                <div class="col-md-2 info-block">
+                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'following', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                        <i class="fa fa-bell  margin-r-5"></i>
+                                        {{user.FollowingCount}} Following
+                                    </a>
+                                </div>
+                                <div class="col-md-4 button-block">
+                                    <a class="btn btn-default pull-right" ng-if="currentUserIs(user.Id)" ui-sref="layoutMobSocial.twoColumns.editProfile({tab: null})"><i class="fa fa-pencil"></i> Edit Info</a>
+                                    <div ng-if="!currentUserIs(user.Id)">
+                                        <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
+                                        <span class="vertical-separator"></span>
+                                        <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                    }
+                    </div>
+                    <div class="cover-upload-area" ng-if="currentUserIs(user.Id)">
+                        <div ng-show="!user.TemporaryCover">
+                            <a file-upload-button
+                               class="upload-button"
+                               id="coverimage_{{user.Id}}"
+                               fieldname="CoverFile"
+                               uploadtype="image"
+                               onsuccessitem="uploadCoverSuccess"
+                               url="/api/media/uploadpictures">
+                                <i class="fa fa-camera"></i>
+                            </a>
+                        </div>
+                        <div ng-show="user.TemporaryCover">
+                            <div class="keep-cover">
+                                <div class="title">Do you wish to keep or discard this cover?</div>
+                                <a target="_self" ng-click="setPictureAs('DefaultCoverId', user.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
+                                <a target="_self" ng-click="setPictureAs('DefaultCoverId', user.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
 
         </div>
-        <div class="send-pm-box hidden"><a href="#" onclick="sendRequestViaMultiFriendSelector()">&nbsp;<i class="fa fa-paper-plane"></i> Invite Friends&nbsp;</a></div>
-
-        @Html.Action("CustomerFriendBlock", "mobSocial", new { customerId = Model.CustomerId, howMany = 10 })
-        @if (FeatureToggle.FavoriteSongEnabled)
-        {
-            <div>
-                <song-list song-list-name="Favorite Skate Songs" customer="customerProfile"></song-list>
-            </div>
-        }
     </div>
-    <div class="profile-center-content">
 
-        <div class="page-body">
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $("#tabs").easyResponsiveTabs();
-                });
-            </script>
-            <div id="tabs">
-                <ul class="resp-tabs-list">
-                    @if (FeatureToggle.TimeLinePostsEnabled)
-                    {
-                        <li><i class="fa fa-clock-o"></i> Timeline</li>
-                    }
-                    <li><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</li>
-                    <li><i class="fa fa-picture-o"></i> Pictures</li>
-                    <li><i class="fa fa-video-camera"></i> Video Battles</li>
-                    <li><i class="fa fa-group"></i> Friends</li>
-                    @if (Model.ProfileIndexModel.ForumsEnabled)
-                    {
-                        <li><i class="fa fa-list"></i> @T("Profile.LatestPosts")</li>
-                    }
-                </ul>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper no-margin">
+        <div class="container-fluid">
+            <!-- Main content -->
+            <section class="content">
+                <div id="main-content">
+                    <div class="profile-left">
+                        <div ng-controller="FriendsController" ng-init="GetCustomerFriends({customerId : @Model, howMany: 6})">
+                            <ul>
+                                <li ng-repeat="friend in CustomerFriends">
+                                    <a href="/{{friend.SeName}}">
+                                        <img src="{{friend.ProfileThumbnailUrl}}"/>
+                                        <span>{{friend.DisplayName}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="profile-center-content">
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#tabs").easyResponsiveTabs();
+                                $("#tabs").find("[data-ajax]").each(function() {
+                                    $(this).click(function() {
+                                        var url = $(this).data("ajax");
+                                        var target = $(this).data("target");
+                                        $.get(url,
+                                            function(r) {
+                                                $(target).html(r);
+                                                angular.element(target).injector().invoke(function($compile, $timeout) {
+                                                    var scope = angular.element("#tabs").scope(); // get scope
+                                                    // compile!!!
+                                                    $timeout(function() {
+                                                            scope.$apply(function() {
+                                                                $compile(angular.element(target).contents())(scope);
+                                                            });
+                                                        },
+                                                        0);
+                                                });
+                                            });
+                                    });
 
+                                });
 
-                <div class="resp-tabs-container">
-                    @if (FeatureToggle.TimeLinePostsEnabled)
-                    {
-                        <div>
-                            @if (FeatureToggle.MobLiveStreamEnabled)
-                            {
-                                <mob-live-video customer="customerProfile"></mob-live-video>
-                            }
-                            @if (FeatureToggle.TimeLinePostsEnabled)
-                            {
-                                @Html.Action("TimelineWidget", "Timeline", new { customerId = Model.CustomerId })
-                            }
+                            });
+                        </script>
+                        <div id="tabs">
+                            <ul class="resp-tabs-list">
+                                <li><i class="fa fa-clock-o"></i> Timeline</li>
+                                <li data-ajax="@Url.RouteUrl("UserSkills", new {userId = Model})" data-target="#tab-myskills"><i class="fa fa-trophy"></i> My Skills </li>
+                                <li><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</li>
+                                <li><i class="fa fa-video-camera"></i> Video Battles</li>
+                                <li><i class="fa fa-group"></i> Friends</li>
+                            </ul>
+
+                            <div class="resp-tabs-container">
+                                <div>
+                                    @Html.Action("TimelineWidget", "Timeline", new {customerId = @Model})
+                                </div>
+                                <div id="tab-myskills">
+
+                                </div>
+                                <div>
+
+                                </div>
+                                <div>
+                                    <div class="text-center" ng-show="VideoBattles.length == 0">
+                                        The user has not created any battles.
+                                    </div>
+                                    <div class="col-md-12" ng-repeat="VideoBattle in VideoBattles">
+                                        @Html.Partial("mobSocial/VideoBattle/VideoBattleBox")
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                    }
-                    <div>
-                        @Html.Action("Info", "Profile", new { CustomerId = Model.CustomerId })
                     </div>
-                    <div>
-                        @Html.Action("CustomerAlbumMain", "MobSocial", new { customerId = Model.CustomerId })
-                    </div>
-                    <div>
-                        <div class="text-center" ng-show="VideoBattles.length == 0">
-                            The user has not created any battles.
-                        </div>
-                        <div class="col-md-12" ng-repeat="VideoBattle in VideoBattles">
-                            @Html.Partial("mobSocial/VideoBattle/VideoBattleBox")
-                        </div>
-                    </div>
-                    <div>
-                        @if (isLoggedIn)
-                        {
-                            @Html.Action("CustomerFriends", "Friends", new { customerId = Model.CustomerId })
-                        }
-                        else
-                        {
-                            <p>Please login to view {{Profile.CustomerName}}'s friends</p>
-                        }
-                    </div>
-                    @if (Model.ProfileIndexModel.ForumsEnabled)
-                    {
-                        <div>
-                            @Html.Action("Posts", "Profile", new { CustomerId = Model.CustomerId, page = Model.ProfileIndexModel.PostsPage })
-                        </div>
-                    }
                 </div>
-            </div>
+            </section>
+            <!-- /.content -->
         </div>
+
     </div>
+    <!-- /.content-wrapper -->
 </div>

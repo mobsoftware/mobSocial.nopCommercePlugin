@@ -1,8 +1,8 @@
-﻿@using Mob.Core.UI
+﻿@using mobSocial.Data.Enum
+@using Mob.Core.UI
 @using Nop.Core.Domain.Customers
 @using Nop.Core.Infrastructure
 @using Nop.Plugin.WebApi.MobSocial.Enums
-@using Nop.Plugin.WebApi.MobSocial.Models
 @using Nop.Plugin.Widgets.MobSocial.Constants
 @model Nop.Plugin.Widgets.MobSocial.Models.VideoBattleIndexModel
 @{
@@ -84,16 +84,16 @@
                 <div class="battle-info" ng-show="VideoBattle.timerSettings.totalSeconds > 0">
                     <h2>
                         {{VideoBattle.Name}}
-                        <span class="battle-status-name" ng-switch on="VideoBattle.VideoBattleStatus">
-                                <span ng-switch-when="@((int) VideoBattleStatus.Pending)">Open to Join</span>
-                                <span ng-switch-when="@((int) VideoBattleStatus.Locked)">Locked</span>
-                                <span ng-switch-when="@((int) VideoBattleStatus.Open)">Open</span>
-                                <span ng-switch-when="@((int) VideoBattleStatus.Closed)">Closed</span>
-                                <span ng-switch-when="@((int) VideoBattleStatus.Complete)">Complete</span>
+                        <span class="battle-status-name" ng-switch on="VideoBattle.BattleStatus">
+                                <span ng-switch-when="@((int) BattleStatus.Pending)">Open to Join</span>
+                                <span ng-switch-when="@((int) BattleStatus.Locked)">Locked</span>
+                                <span ng-switch-when="@((int) BattleStatus.Open)">Open</span>
+                                <span ng-switch-when="@((int) BattleStatus.Closed)">Closed</span>
+                                <span ng-switch-when="@((int) BattleStatus.Complete)">Complete</span>
                             </span>
                     </h2>
                     <h4>
-                        <div>Voting {{VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) ? "Starts in " : "Ends in"}}</div>
+                        <div>Voting {{VideoBattle.BattleStatus == @((int) BattleStatus.Pending) ? "Starts in " : "Ends in"}}</div>
                     </h4>
                     <div class="timer">
                         <i class="fa fa-clock-o"></i>
@@ -125,7 +125,7 @@
                 <div class="cover-buttons">
                     @Html.Partial("mobSocial/VideoBattle/_SocialShareLinks")
                     <div class="clear clearfix"></div>
-                    <div ng-if="VideoBattle.IsEditable && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending)">
+                    <div ng-if="VideoBattle.IsEditable && VideoBattle.BattleStatus == @((int) BattleStatus.Pending)">
                         <div ng-controller="VideoBattlesPageController" class="text-left">
 
                             <a class="button edit-button" ng-click="EditVideoBattle(VideoBattle.Id)"><i class="fa fa-pencil"></i> Edit</a>
@@ -208,26 +208,26 @@
 
 <div class="battle-description">
     <div ng-bind-html="renderHtml(VideoBattle.Description)"></div>
-    <div ng-if="VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Open)">
+    <div ng-if="VideoBattle.BattleStatus == @((int) BattleStatus.Open)">
         <br/>
         <br/>
         <h3 class="text-center">Note: for the sake of fair judgement, all the battle videos must be watched before voting can be done.</h3>
     </div>
 </div>
 <!--autoplay checkbox-->
-<div class="autoplay-video-battle-area" ng-if="VideoBattle.VideoBattleStatus != @((int) VideoBattleStatus.Pending)">
+<div class="autoplay-video-battle-area" ng-if="VideoBattle.BattleStatus != @((int) BattleStatus.Pending)">
     <label for="chkAutoplay"><input id="chkAutoplay" type="checkbox" ng-model="Autoplay"/> Autoplay Videos</label> &middot; <a href="/VideoBattle/{{VideoBattle.SeName}}//@((int) VideoViewMode.TheaterMode)"><i class="fa fa-television"></i> Enter Theater Mode</a>
 </div>
 
-<div class="text-center join-battle-area" ng-if="VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && VideoBattle.VideoBattleStatus == @((int) VideoBattleStatus.Pending) && !VideoBattle.IsParticipant && !VideoBattle.IsEditable">
+<div class="text-center join-battle-area" ng-if="VideoBattle.VideoBattleType != @((int) BattleParticipationType.InviteOnly) && VideoBattle.BattleStatus == @((int) BattleStatus.Pending) && !VideoBattle.IsParticipant && !VideoBattle.IsEditable">
     <div ng-if="VideoBattle.IsUserLoggedIn && !VideoBattle.IsSponsor">
-        <div ng-if="VideoBattle.VideoBattleType == @((int) VideoBattleType.Open)">
+        <div ng-if="VideoBattle.VideoBattleType == @((int) BattleParticipationType.Open)">
             <div ng-show="joinBattleProcessed">
                 <i class="fa fa-check-circle"></i> You have successfully joined the battle. <a onclick="window.location.reload()">Refresh</a> page to upload video
             </div>
             <a class="button-primary button-1 c2a-maroon" ajax-disable ng-click="JoinBattle(VideoBattle.Id)" ng-hide="joinBattleProcessed">Join Battle</a>
         </div>
-        <div ng-if="VideoBattle.VideoBattleType != @((int) VideoBattleType.Open)">
+        <div ng-if="VideoBattle.VideoBattleType != @((int) BattleParticipationType.Open)">
             <div ng-show="joinBattleProcessed">
                 <i class="fa fa-check-circle"></i> You have successfully signed up for the battle. <a onclick="window.location.reload()">Refresh</a> page to see your approval status
             </div>

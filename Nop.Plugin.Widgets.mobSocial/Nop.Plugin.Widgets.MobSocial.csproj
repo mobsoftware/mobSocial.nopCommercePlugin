@@ -49,6 +49,7 @@
     <Compile Include="Controllers\FriendsController.cs" />
     <Compile Include="Controllers\HeadController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
+    <Compile Include="Controllers\mobSocialController.cs" />
     <Compile Include="Controllers\ProxyWebController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
@@ -73,9 +74,11 @@
     <Compile Include="Models\BattleEditorModel.cs" />
     <Compile Include="Models\CustomerCommentsModel.cs" />
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
+    <Compile Include="Models\CustomerProfilePublicModel.cs" />
     <Compile Include="Models\PageDisplayModel.cs" />
     <Compile Include="Models\RouteDataModel.cs" />
     <Compile Include="Models\SkillPageModel.cs" />
+    <Compile Include="Models\SocialNetworkNavigationModel.cs" />
     <Compile Include="Models\TeamPageEditorModel.cs" />
     <Compile Include="Models\TeamPageModel.cs" />
     <Compile Include="Models\TimelinePublicModel.cs" />
@@ -115,6 +118,9 @@
     <Content Include="Content\mobSocial\js\common\mobsocial-interceptor.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mobSocial\js\common\routeProvider.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\mobSocial\js\common\webclient-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -122,6 +128,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\customer-like\customer-like-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\services\entity-property-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\follow\follow-service.js">
@@ -134,6 +143,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-profile-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\profile-pages\user-profile-controller.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\profile-pages\user-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\skills\skill-controller.js">
@@ -230,6 +245,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\mobSocial\CustomerProfile\Includes.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\mobSocial\CustomerProfile\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Views\mobSocial\Head\PublicInfo.cshtml" />
@@ -728,6 +746,9 @@
     <Content Include="Views\mobSocial\Skills\SkillEditorButton.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\mobSocial\Skills\UserSkills.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Views\mobSocial\Sponsor\ProductPrizesFormPopup.cshtml" />
     <Content Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -841,10 +862,15 @@
       <Name>Nop.Web</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Websites\Testing\nopCommerce_3.80_Source-new\Plugins\Nop.MobSocial.WebApi\Nop.MobSocial.WebApi.csproj">
+      <Project>{43f363ca-a4af-4f74-b986-4a8f5a3f9c52}</Project>
+      <Name>Nop.MobSocial.WebApi</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
       <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
       <Name>Mob.Core</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -858,7 +884,7 @@
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>$(SolutionDir)packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -867,18 +893,23 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MobAds.Public">
       <HintPath>MobLib\MobAds.Public.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="mobSocial.Core">
       <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="mobSocial.Data">
       <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="mobSocial.Services">
       <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Services.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="mobSocial.WebApi">
       <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.WebApi.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(SolutionDir)packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>

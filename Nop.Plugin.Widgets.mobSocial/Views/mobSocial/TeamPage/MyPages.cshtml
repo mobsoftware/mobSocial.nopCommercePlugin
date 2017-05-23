@@ -22,7 +22,7 @@
         </div>
         <div class="list">
             <div ng-repeat="TeamPage in TeamPages" class="team-page">
-                <div class="page-name"><a href="{{TeamPage.PageUrl}}">{{TeamPage.Name}}</a>
+                <div class="page-name"><a href="{{routeUrl('TeamPage', {teamId : TeamPage.Id})}}">{{TeamPage.Name}}</a>
                 </div>
                 <div class="actions">
                     <a href="/TeamPageEditor/{{TeamPage.Id}}">Edit</a> &middot; <a ng-click="DeletePage(TeamPage.Id)">Delete</a>

@@ -1,8 +1,8 @@
-﻿@using System.Web.UI.WebControls
+﻿@using mobSocial.Core.Infrastructure.AppEngine
+@using mobSocial.Data.Entity.Settings
 @using Mob.Core.UI
 @using Nop.Core
 @using Nop.Core.Infrastructure
-@using Nop.Plugin.WebApi.MobSocial
 @using Nop.Plugin.Widgets.MobSocial
 @using Nop.Plugin.Widgets.MobSocial.Constants
 @{
@@ -59,7 +59,8 @@
     {
        //main app
         MobSocialConstant.PluginContentPathInternal + "/js/mobSocial.js",
-
+        //main app
+        MobSocialConstant.PluginContentPathInternal + "/js/common/routeProvider.js",
 
         //custom css
 
@@ -67,6 +68,7 @@
         //services
         MobSocialConstant.PluginContentPathInternal + "/js/services/song-service.js",
         MobSocialConstant.PluginContentPathInternal + "/js/services/dialogservice.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/services/entity-property-service.js",
 
         //filters'
         MobSocialConstant.PluginContentPathInternal + "/js/filters/ms2timestr.js",
@@ -142,45 +144,42 @@
     }
 
 
-    var mobSettings = EngineContext.Current.Resolve<mobSocialSettings>();
+    //var mobSettings = mobSocialEngine.ActiveEngine.Resolve<ThirdPartySettings>();
     var store = EngineContext.Current.Resolve<IStoreContext>().CurrentStore;
 
-    Html.SetOpenGraphTags(store.Name, "", store.Url, "website", "");
+    //Html.SetOpenGraphTags(store.Name, "", store.Url, "website", "");
 
 }
 
-@if (mobSettings.EnableFacebookInvite)
-{
-    <!--og tags-->
-    <meta property="og:title" content="@Html.MobOpenGraphTitle()" />
-    <meta property="og:type" content="@Html.MobOpenGraphType()" />
-    <meta property="og:url" content="@Html.MobOpenGraphUrl()" />
-    <meta property="og:imageurl" content="@Html.MobOpenGraphImageUrl()" />
-    <meta property="og:description" content="@Html.MobOpenGraphDescription()" />
+<!--og tags-->
+<meta property="og:title" content="@Html.MobOpenGraphTitle()" />
+<meta property="og:type" content="@Html.MobOpenGraphType()" />
+<meta property="og:url" content="@Html.MobOpenGraphUrl()" />
+<meta property="og:imageurl" content="@Html.MobOpenGraphImageUrl()" />
+<meta property="og:description" content="@Html.MobOpenGraphDescription()" />
 
-    <!--fb registration-->
-    <div id="fb-root"></div>
-    <script>
-        const FBVERSION = "v2.7";
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '@mobSettings.FacebookWebsiteAppId',
-                xfbml: true,
-                version: FBVERSION
-            });
-            FB.AppEvents.logPageView();
-        };
+<!--fb registration-->
+<div id="fb-root"></div>
+<script>
+    var FBVERSION = "v2.7";
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '',
+            xfbml: true,
+            version: FBVERSION
+        });
+        FB.AppEvents.logPageView();
+    };
 
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {
-                return;
-            }
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 
-    </script>
-}
+</script>

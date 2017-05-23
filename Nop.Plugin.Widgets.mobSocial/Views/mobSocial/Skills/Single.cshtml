@@ -19,7 +19,7 @@
 <div class="skills-page" ng-controller="SkillController" ng-init="getSkillBySlug('@slug')">
     <div class="cover-area">
         <div class="cover">
-            <h1 class="cover-heading">{{skill.SkillName}}</h1>
+            <h1 class="cover-heading">{{skill.Name}}</h1>
             <div class="bgcover">
                 <img ng-src="{{skill.TemporaryFeaturedImageUrl || skillData.FeaturedMediaImageUrl}}"/>
             </div>
@@ -166,7 +166,7 @@
                                 <span class="profile-username">
                                     <a ng-href="{{userSkill.User.ProfileUrl}}">
                                         <img class="profile-user-img img-responsive img-circle margin-r-5" ng-src="{{userSkill.User.ProfileImageUrl}}">
-                                        <span>{{userSkill.User.CustomerName}}</span>
+                                        <span>{{userSkill.User.Name}}</span>
                                     </a>
                                 </span>
                             </div>

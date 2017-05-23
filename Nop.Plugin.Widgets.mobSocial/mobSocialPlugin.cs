@@ -2,42 +2,23 @@
 using System.Web.Routing;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
-using Nop.Services.Messages;
-using Nop.Services.Tasks;
 using Nop.Web.Framework.Menu;
-using System.Web.Configuration;
 using MobAds.Public;
 using Nop.Core;
-using mobSocial.Services.Battles;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
     public class mobSocialPlugin : MobAdsPublic, IAdminMenuPlugin
     {
-
-
-        private readonly ISettingService _settingService;
-        private readonly IMessageTemplateService _messageTemplateService;
-        private readonly IScheduleTaskService _scheduleTaskService;
+      
         private readonly ILocalizationService _localizationService;
-        private readonly HttpRuntimeSection _config;
-        private readonly IStoreContext _storeContext;
-        private readonly IVideoBattleService _videoBattleService;
 
-        public mobSocialPlugin(ISettingService settingService, IMessageTemplateService messageTemplateService,
-            IScheduleTaskService scheduleTaskService,
+        public mobSocialPlugin(ISettingService settingService,
             ILocalizationService localizationService,
-            IStoreContext storeContext,
-            IVideoBattleService videoBattleService)
+            IStoreContext storeContext)
             : base(storeContext, settingService)
         {
-            _settingService = settingService;
-            _messageTemplateService = messageTemplateService;
-            _scheduleTaskService = scheduleTaskService;
             _localizationService = localizationService;
-            _videoBattleService = videoBattleService;
-            _storeContext = storeContext;
-            _config = new HttpRuntimeSection(); //TODO Move to dependency registrar and perform injection
 
         }
 
@@ -46,7 +27,14 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public override IList<string> GetWidgetDisplayZones()
         {
-            return new List<string>() { "after_header_links" };
+            return new List<string>()
+            {
+                "head_html_tag",
+                "header_menu_after",
+                "account_navigation_after",
+                "profile_page_info_userdetails",
+                "searchbox_before_search_button"
+            };
         }
 
         /// <summary>
@@ -215,7 +203,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         public void SetScheduledVideoBattlesOpenOrClosed()
         {
-            _videoBattleService.SetScheduledBattlesOpenOrClosed();
+            
         }
 
 

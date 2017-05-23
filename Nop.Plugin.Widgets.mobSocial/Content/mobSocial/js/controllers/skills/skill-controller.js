@@ -9,12 +9,12 @@ appRequires(["ngSanitize",
 app.controller("SkillController",
 [
     "$scope", "$sce", "SkillService", "AutocompleteService", '$timeout', '$rootScope', function ($scope, $sce, SkillService, AutocompleteService, $timeout, $rootScope) {
-
+        
         $scope.getUserSkills = function(userId) {
             SkillService.getUserSkills(userId,
                 function(response) {
                     if (response.Success) {
-                        $scope.skills = response.Skills;
+                        $scope.skills = response.ResponseData.Skills;
                     }
                 });
         }
@@ -23,7 +23,7 @@ app.controller("SkillController",
             SkillService.getSkill(id,
                function (response) {
                    if (response.Success) {
-                       $scope.skill = response.Skill;
+                       $scope.skill = response.ResponseData.Skill;
                    }
                });
         }
@@ -36,7 +36,7 @@ app.controller("SkillController",
             SkillService.postSkill(skill,
                function (response) {
                    if (response.Success) {
-                       skill = response.Skill;
+                       skill = response.ResponseData.Skill;
                        $scope.skill = null;
                        if (!isOld) {
                            $scope.skills = $scope.skills || [];
@@ -141,12 +141,13 @@ app.controller("SkillController",
         $scope.autocompleteSkills = function (userInputString, timeoutPromise) {
             var response = AutocompleteService.autocomplete("skills", userInputString, timeoutPromise);
             response.success(function (res) {
-                if (res.AutoComplete.Skills.length == 0) {
-                    res.AutoComplete.Skills.push({
+                
+                if (res.ResponseData.AutoComplete.Skills.length == 0) {
+                    res.ResponseData.AutoComplete.Skills.push({
                         SkillName: userInputString
                     });
                 }
-                return res.AutoComplete.Skills;
+                return res.ResponseData.AutoComplete.Skills;
             });
             return response;
         }
@@ -166,7 +167,7 @@ app.controller("SkillController",
             SkillService.getSkillBySlug(slug,
                 function (response) {
                     if (response.Success) {
-                        $scope.skillData = response.SkillData;
+                        $scope.skillData = response.ResponseData.SkillData;
                         $scope.skill = $scope.skillData.Skill;
                         getUsersOptions.nextPage = 2;
                     }

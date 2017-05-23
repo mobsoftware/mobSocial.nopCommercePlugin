@@ -34,7 +34,7 @@ app.controller("VideoBattleEditorController", [
 		//ctor ;)
 	    $scope.init = function (model) {
 	        VideoBattleService.GetBattleEditor(model, function(response) {
-	            $scope.VideoBattle = response;
+	            $scope.VideoBattle = response.ResponseData.VideoBattle;
 	        }, function(response) {
 	           
 	        });

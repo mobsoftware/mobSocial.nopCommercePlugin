@@ -16,9 +16,6 @@ namespace Nop.Plugin.Widgets.MobSocial
             // Make MobSocialViewEngine views the Highest Priority
             System.Web.Mvc.ViewEngines.Engines.Add(new MobSocialViewEngine());
 
-            Debug.WriteLine("Added view engine");
-
-           
           
             // redirects to your store
             routes.MapRoute("FacebookWebsiteApp",
@@ -501,11 +498,18 @@ namespace Nop.Plugin.Widgets.MobSocial
               new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
               );
 
+            routes.MapLocalizedRoute("UserSkills",
+                "Skills/UserSkills/{userId}",
+                new { controller = "Skill", action = "UserSkills" },
+                new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
+            );
+
             routes.MapLocalizedRoute("SkillPage",
-               "Skill/{seName}",
+               "Skills/{seName}",
                new { controller = "Skill", action = "Index" },
                new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
                );
+
 
             routes.MapLocalizedRoute("SkillEditorButton",
                "SkillEditorButton",

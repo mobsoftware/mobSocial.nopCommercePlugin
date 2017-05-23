@@ -1,12 +1,12 @@
 ﻿<div class="default-friend-block">
     <div class="profile-image">
-        <a href="{{P.ProfileUrl}}">
+        <a href="/{{P.SeName}}">
             <img ng-src="{{P.PictureUrl}}" />
         </a>
     </div>
     <div class="profile-name">
         <h4>
-            <a class="" href="{{P.ProfileUrl}}">{{P.DisplayName}}</a>
+            <a class="" href="/{{P.SeName}}">{{P.DisplayName}}</a>
         </h4>
     </div>
     <friend-button friendstatus="P.FriendStatus" customerid="P.Id"></friend-button>

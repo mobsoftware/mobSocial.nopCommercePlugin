@@ -1,4 +1,4 @@
-﻿@using Nop.Plugin.WebApi.MobSocial.Enums
+﻿@using mobSocial.Data.Enum
 @{
     var timerFormat = "{{ddays}}D {{hhours}}:{{mminutes}}:{{sseconds}}"; 
 }
@@ -11,17 +11,17 @@
     </div>
     <div class="timer">
         <div ng-switch on="">
-            <div ng-switch on="VideoBattle.VideoBattleStatus">
-                <div ng-switch-when="@((int) VideoBattleStatus.Pending)">
+            <div ng-switch on="VideoBattle.BattleStatus">
+                <div ng-switch-when="@((int) BattleStatus.Pending)">
 
                     Starting in <timer countdown="VideoBattle.RemainingSeconds" max-time-unit="day" interval="1000">@timerFormat</timer>
                 </div>
-                <div ng-switch-when="@((int) VideoBattleStatus.Locked)">Battle Locked</div>
-                <div ng-switch-when="@((int) VideoBattleStatus.Open)">
+                <div ng-switch-when="@((int) BattleStatus.Locked)">Battle Locked</div>
+                <div ng-switch-when="@((int) BattleStatus.Open)">
                     Ending in <timer countdown="VideoBattle.RemainingSeconds" max-time-unit="day" interval="1000">@timerFormat</timer>
                 </div>
-                <div ng-switch-when="@((int) VideoBattleStatus.Closed)">Battle Closed</div>
-                <div ng-switch-when="@((int) VideoBattleStatus.Complete)">Battle Completed</div>
+                <div ng-switch-when="@((int) BattleStatus.Closed)">Battle Closed</div>
+                <div ng-switch-when="@((int) BattleStatus.Complete)">Battle Completed</div>
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
     .constant('globalApiEndPoint', '/api');
     
 //attach some global functions to rootScope
-app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", function ($rootScope, globalApiEndPoint, $http, $sce) {
+app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider) {
     $rootScope.login = function (returnUrl) {
         returnUrl = returnUrl || window.location.href;
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
@@ -13,7 +13,7 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", function ($rootScop
     };
 
     $rootScope.AutocompleteCustomer = function (userInputString, timeoutPromise) {
-        var response = $http.get(globalApiEndPoint + '/mobsocial/searchtermautocomplete', { params: { term: userInputString } }, { timeout: timeoutPromise });
+        var response = $http.get(globalApiEndPoint + '/autocomplete/users/get', { params: { search: userInputString, excludeLoggedInUser : true } }, { timeout: timeoutPromise });
         response.success(function (res) {
             if (res.length == 0 && validateEmail(userInputString)) {
                 //because the response is zero, let's see if it's an email, if it is, we can add it for direct email invitation
@@ -55,4 +55,11 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", function ($rootScop
         $api.sources = source;
     }
 
+    $rootScope.routeUrl = function(routeName, params, redirect) {
+        var url = routeProvider.routeUrl(routeName, params);
+        if (redirect)
+            window.location.href = url;
+
+        return url;
+    }
 }]);

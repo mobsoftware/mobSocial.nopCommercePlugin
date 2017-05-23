@@ -5,9 +5,14 @@ app.controller('customerProfileController', ['$rootScope', '$scope', 'CustomerPr
 
     $scope.Profile = null;
 
-    $scope.init = function (model) {
-        $scope.Profile = model;
-        $scope.GetVideoBattles();
+    $scope.init = function (id) {
+        CustomerProfileService.getBasicInfoById(id,
+            function(response) {
+                if (response.Success) {
+                    $scope.Profile = response.ResponseData.User;
+                }
+            });
+        
     }
 
     $scope.UploadCoverSuccess = function (fileItem, data, status, headers) {
