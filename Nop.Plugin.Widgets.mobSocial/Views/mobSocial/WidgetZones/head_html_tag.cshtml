@@ -28,6 +28,12 @@
         //jquery ui
         MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui-1.11.min.js",
 
+        //jquery signalr
+        MobSocialConstant.ThirdPartyLibraryPath + "/signalr/jquery.signalR-2.2.0.min.js",
+
+          //signalr hub
+        MobSocialConstant.ThirdPartyLibraryPath + "/signalr/signalr-hub.js",
+
         //cookie
         MobSocialConstant.ThirdPartyLibraryPath + "/jquery.cookie/jquery.cookie.js",
 
@@ -53,16 +59,21 @@
 
         //crop tool
         MobSocialConstant.ThirdPartyLibraryPath + "/angular-img-cropper/angular-img-cropper.js",
+
+      
+
     };
 
     var footerScripts = new List<string>()
     {
        //main app
         MobSocialConstant.PluginContentPathInternal + "/js/mobSocial.js",
-        //main app
         MobSocialConstant.PluginContentPathInternal + "/js/common/routeProvider.js",
 
-        //custom css
+        //conversation
+        MobSocialConstant.PluginContentPathInternal + "/js/controllers/conversation/conversation-service.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/controllers/conversation/conversation-hub.js",
+        MobSocialConstant.PluginContentPathInternal + "/js/controllers/conversation/conversation-controller.js",
 
 
         //services

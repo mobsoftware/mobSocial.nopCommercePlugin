@@ -98,6 +98,24 @@ body {
             position: initial;
         }
     }
+
+    &.chat-box {
+        .header, .header-upper, .header-menu {
+            position: initial;
+        }
+    }
+}
+//override default styles as they may not render other mob components correctly
+.header-menu, .footer-lower {
+    position: initial;
+
+    .top-menu {
+        position: relative;
+    }
+
+    .sublist {
+        z-index: 5;
+    }
 }
 
 .clear {
@@ -2581,18 +2599,21 @@ li a:hover {
 
 
         .quick-info {
-            .container-fluid{
-                padding-left:210px;
-                .info-block{
-                    float:left;
-                    width:150px;
-                    margin:0 5px;
+            .container-fluid {
+                padding-left: 210px;
+
+                .info-block {
+                    float: left;
+                    width: 150px;
+                    margin: 0 5px;
                 }
-                .button-block{
-                    float:right;
-                    margin:0 5px;
+
+                .button-block {
+                    float: right;
+                    margin: 0 5px;
                 }
             }
+
             z-index: 2;
             width: 100%;
             bottom: 0;
@@ -3064,4 +3085,199 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
 
 .margin-r-5 {
     margin-right: 5px;
+}
+
+.chat-area {
+    position: fixed;
+    bottom: 0;
+    right: 3px;
+    z-index: 10;
+
+    span.unread-count {
+        background-color: maroon;
+        color: white;
+        margin: 5px;
+        padding: 2px 6px;
+        font-size: 11px;
+        border-radius: 50%;
+    }
+
+    .chat-switcher {
+        a {
+            display: block;
+            padding: 5px 40px;
+            background-color: #ccc;
+            border: solid 1px #bbb;
+            color: #555;
+
+            &:hover, &:active {
+                color: #555;
+            }
+        }
+    }
+
+    .chat-box {
+        display: none;
+        position: absolute;
+        bottom: 32px;
+        right: 0;
+        min-width: 200px;
+
+        .friend-list {
+            ul {
+                padding: 0;
+                margin: 0;
+
+                li {
+                    list-style: none;
+                    border-bottom: dotted 1px #ccc;
+
+                    a {
+                        display: block;
+                        padding: 5px 5px;
+                        height: 45px;
+
+                        img {
+                            width: 34px;
+                            display: inline-block;
+                            float: left;
+                        }
+
+                        span {
+                            display: inline-block;
+                            padding-top: 8px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-box-section-friend-list {
+            float: left;
+            width: 25%;
+            height: 400px;
+
+            a {
+                &.active {
+                    background-color: #eee;
+                }
+            }
+        }
+
+        .chat-box-section-chat-scroll {
+            float: left;
+            width: 75%;
+            height: 400px;
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        .chat-scroll {
+            .conversation {
+                height: 347px;
+                overflow: auto;
+                padding: 10px 0;
+                background-color: #ecf0f5;
+                ul {
+                    padding: 0;
+                    margin: 0;
+
+                    li {
+                        padding: 1px 0px;
+                        list-style-type: none;
+
+                        .thread-date {
+                            text-align: center;
+                            font-weight: bold;
+                            padding: 15px 0;
+                        }
+
+                        .reply {
+                            padding: 10px;
+                            margin: 5px 20px;
+                            border-radius: 5px;
+                            background-color: #fff;
+                                box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+
+                            img.user-profile {
+                                width: 25px;
+                                float: left;
+                            }
+
+                            &.my-reply {
+                                margin-left: 45px;
+                                margin-right: 0;                                
+                            }
+                            .reply-status {
+                                    font-size: 10px;
+                                    text-align: right;
+
+                                    .sent {
+                                        color: gray;
+                                    }
+
+                                    .received {
+                                        color: blue;
+                                    }
+
+                                    .read {
+                                        color: green;
+                                    }
+                                }
+                        }
+                    }
+                }
+
+                .load-more {
+                    text-align: center;
+                    border: dashed 1px #999;
+                    padding: 5px 0;
+                    margin: 15px;
+
+                    a {
+                        color: #555;
+                    }
+                }
+
+                .typing-notify {
+                    font-size: 13px;
+                    color: gray;
+                    margin-left: 47px;
+                    padding: 5px 0;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+
+    &.expanded {
+        .chat-box {
+            display: block;
+            width: 800px;
+            height: 400px;
+            background-color: white;
+            border: solid 1px #ccc;
+            box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+
+            .friend-list {
+                border-right: solid 1px #ccc;
+                height: 400px;
+                overflow: auto;
+            }
+        }
+    }
+
+    .submission-area {
+        padding: 10px 10px;
+        background-color: #fff;
+        border-top:solid 1px #ddd;
+        #chat-input {
+            height: 30px;
+            border: 1px solid #fff;
+            padding: 8px;
+            width: 520px;
+        }
+    }
 }

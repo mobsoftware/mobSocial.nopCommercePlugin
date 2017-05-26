@@ -1,9 +1,10 @@
-﻿var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment'])
+﻿var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR"])
     .constant('rootUrl', './Plugins/Widgets.mobSocial/Content/mobSocial')
-    .constant('globalApiEndPoint', '/api');
+    .constant('globalApiEndPoint', '/api')
+    .constant('signalREndPoint', '/signalr');
     
 //attach some global functions to rootScope
-app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider) {
+app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "conversationHub", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider, conversationHub) {
     $rootScope.login = function (returnUrl) {
         returnUrl = returnUrl || window.location.href;
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
@@ -61,5 +62,13 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", fu
             window.location.href = url;
 
         return url;
+    }
+
+    $rootScope.areDatesSame = function (date1, date2, format) {
+        var d1 = new Date(date1);
+        var d2 = new Date(date2);
+        if (d1 == "Invalid Date" || d2 == "Invalid Date")
+            return false;
+        return d1.toDateString() == d2.toDateString();
     }
 }]);

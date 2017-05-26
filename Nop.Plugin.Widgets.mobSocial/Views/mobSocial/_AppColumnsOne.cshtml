@@ -1,6 +1,14 @@
-﻿@{
+﻿@using Nop.Core
+@using Nop.Core.Domain.Customers
+@using Nop.Core.Infrastructure
+@{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var showBox = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer.IsRegistered();
 }
 <div ng-app="mobSocialApp" ng-cloak>
     @RenderBody()
+    @if (showBox)
+    {
+        @Html.Partial("mobSocial/Conversation/ConversationBox")
+    }
 </div>
