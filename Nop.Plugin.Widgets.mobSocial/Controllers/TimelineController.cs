@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Nop.Core;
+using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Services;
 using Nop.Web.Controllers;
@@ -41,9 +42,11 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             return View("mobSocial/Timeline/PostForm", model);
         }
-
         public ActionResult Timeline(int customerId = 0)
         {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return new HttpUnauthorizedResult();
+
             return View("mobSocial/Timeline/Timeline", customerId);
         }
 
