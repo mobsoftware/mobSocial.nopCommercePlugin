@@ -114,36 +114,61 @@
             <section class="content">
                 <div id="main-content">
                     <div class="profile-left">
-                        <div ng-controller="FriendsController" ng-init="GetCustomerFriends({customerId : @Model, howMany: 6})">
-                            <ul>
-                                <li ng-repeat="friend in CustomerFriends">
-                                    <a href="/{{friend.SeName}}">
-                                        <img ng-src="{{friend.ProfileThumbnailUrl}}"/>
-                                        <span>{{friend.DisplayName}}</span>
-                                    </a>
-                                </li>
-                            </ul>
+                        <div class="profile-meta-box">
+                            <div ng-controller="FriendsController" ng-init="GetCustomerFriends({customerId : @Model, howMany: 6})">
+                                <div ng-if="CustomerFriends && CustomerFriends.length > 0">
+                                    <div class="box-header text-center">
+                                        Friends
+                                    </div>
+                                    <ul class="friend-list">
+                                        <li ng-repeat="friend in CustomerFriends">
+                                            <a href="/{{friend.SeName}}">
+                                                <img ng-src="{{friend.ProfileThumbnailUrl}}" />
+                                                <span>{{friend.DisplayName}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-meta-box">
+                            <div ng-controller="SkillController" ng-init="getUserSkills(@Model)">
+                                <div ng-if="skills && skills.length > 0">
+                                    <div class="box-header text-center">
+                                        Skills
+                                    </div>
+                                    <div class="skills-list">
+                                        <div class="skill-item" ng-repeat="s in skills track by s.UserSkillId">
+                                            <div class="skill-name">
+                                                <a ng-href="skills/{{s.SeName}}" target="_blank">{{s.Name}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
                         </div>
                     </div>
                     <div class="profile-center-content">
                         <script type="text/javascript">
-                            $(document).ready(function() {
+                            $(document).ready(function () {
                                 $("#tabs").easyResponsiveTabs();
-                                $("#tabs").find("[data-ajax]").each(function() {
-                                    $(this).click(function() {
+                                $("#tabs").find("[data-ajax]").each(function () {
+                                    $(this).click(function () {
                                         var url = $(this).data("ajax");
                                         var target = $(this).data("target");
                                         $.get(url,
-                                            function(r) {
+                                            function (r) {
                                                 $(target).html(r);
-                                                angular.element(target).injector().invoke(function($compile, $timeout) {
+                                                angular.element(target).injector().invoke(function ($compile, $timeout) {
                                                     var scope = angular.element("#tabs").scope(); // get scope
                                                     // compile!!!
-                                                    $timeout(function() {
-                                                            scope.$apply(function() {
-                                                                $compile(angular.element(target).contents())(scope);
-                                                            });
-                                                        },
+                                                    $timeout(function () {
+                                                        scope.$apply(function () {
+                                                            $compile(angular.element(target).contents())(scope);
+                                                        });
+                                                    },
                                                         0);
                                                 });
                                             });
@@ -159,12 +184,12 @@
                                 <li data-ajax="@Url.RouteUrl("UserSkills", new {userId = Model})" data-target="#tab-myskills"><i class="fa fa-trophy"></i> My Skills </li>
                                 <li><i class="fa fa-user"></i> @T("Profile.PersonalInfo")</li>
                                 <li><i class="fa fa-video-camera"></i> Video Battles</li>
-                                <li><i class="fa fa-group"></i> Friends</li>
+                                <li data-ajax="@Url.RouteUrl("Friends", new {customerId = Model})" data-target="#tab-friends"><i class="fa fa-group"></i> Friends</li>
                             </ul>
 
                             <div class="resp-tabs-container">
                                 <div>
-                                    @Html.Action("TimelineWidget", "Timeline", new {customerId = @Model})
+                                    @Html.Action("TimelineWidget", "Timeline", new { customerId = @Model })
                                 </div>
                                 <div id="tab-myskills">
 
@@ -179,6 +204,9 @@
                                     <div class="col-md-12" ng-repeat="VideoBattle in VideoBattles">
                                         @Html.Partial("mobSocial/VideoBattle/VideoBattleBox")
                                     </div>
+                                </div>
+                                <div id="tab-friends">
+
                                 </div>
                             </div>
 

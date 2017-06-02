@@ -128,7 +128,7 @@ body {
 
 .profile-left {
     display: inline-block;
-    max-width: 210px;
+    width: 210px;
     vertical-align: top;
 
     .profile-picture {
@@ -158,8 +158,7 @@ body {
     .profile-meta-box {
         background-color: #eee;
         padding: 5px 10px 20px 5px;
-        margin: 15px 0;
-
+        margin-bottom: 10px;
         .box-header {
             padding: 2px 5px;
             font-size: 1.3em;
@@ -203,6 +202,21 @@ body {
                 margin-right: 0px;
                 margin-bottom: 3px;
             }
+        }
+
+        ul.friend-list{
+            li{
+                    text-align:center;
+                    display:inline-block;
+                    margin:7px;
+                    a{
+                        float:left;
+                        width:80px;
+                        img{
+                            max-width:100%;
+                        }
+                    }
+                }
         }
     }
 }
@@ -323,8 +337,12 @@ input[type='number'] {
 .customer-friends-friend-block {
     width: 100px;
     padding: 0;
-    margin-bottom: 5px;
+    margin: 5px;
     display: inline-block;
+    text-align:center;
+    img{
+        max-width:100%;
+    }
 }
 
 .customer-friend-request-block {
@@ -3281,3 +3299,4 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
         }
     }
 }
+
