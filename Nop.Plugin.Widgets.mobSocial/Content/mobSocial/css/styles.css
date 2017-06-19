@@ -116,9 +116,14 @@ body.chat-box .header, body.chat-box .header-upper, body.chat-box .header-menu {
       margin: 7px; }
       .profile-left .profile-meta-box ul.friend-list li a {
         float: left;
-        width: 80px; }
+        width: 80px;
+        height: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-wrap: normal; }
         .profile-left .profile-meta-box ul.friend-list li a img {
-          max-width: 100%; }
+          width: 100%;
+          height: 80px; }
 
 a.logo {
   background: url(../images/logo.png) repeat scroll 0 0 transparent;
@@ -396,7 +401,8 @@ input[type='number'] {
     .search-result-item .left .thumbnail {
       vertical-align: top;
       min-width: 50px;
-      min-height: 50px; }
+      min-height: 50px;
+      max-height: 70px; }
 
 .search-criteria-header {
   margin-top: 12px;
@@ -2089,6 +2095,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
           height: 45px; }
           .chat-area .chat-box .friend-list ul li a img {
             width: 34px;
+            height: 34px;
             display: inline-block;
             float: left; }
           .chat-area .chat-box .friend-list ul li a span {

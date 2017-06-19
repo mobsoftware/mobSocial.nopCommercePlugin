@@ -25,7 +25,7 @@
 
             <div class="cover-upload-area" ng-if="TeamPage.IsEditable">
                 @{
-                    var uploadUrl = "/api/teampage/cover/post";
+                    var uploadUrl = "/api/media/uploadpictures";
                 }
                 <div ng-show="!TeamPage.TemporaryCover">
                     <a file-upload-button
@@ -162,8 +162,8 @@
                 <div ng-if="group.GroupMembers.length == 0" class="text-center" style="padding:20px 0">There are no members in this group</div>
                 <div class="team-member-picture" ng-repeat="member in group.GroupMembers">
                     <a href="{{member.ProfileUrl}}">
-                        <img ng-src="{{member.ProfileImageUrl}}" alt="{{member.CustomerName}}" title="{{member.CustomerName}}">
-                        <div class="team-member-name">{{member.CustomerName}}</div>
+                        <img ng-src="{{member.ProfileImageUrl}}" alt="{{member.Name}}" title="{{member.Name}}">
+                        <div class="team-member-name">{{member.Name}}</div>
                     </a>
                     
                     <a ng-click="DeleteMember(group, member)" class="remove-member-link" ng-if="TeamPage.IsEditable">Remove</a>
