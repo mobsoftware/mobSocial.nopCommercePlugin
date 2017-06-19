@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Constants\MobSocialConstant.cs" />
     <Compile Include="Controllers\ArtistPageController.cs" />
+    <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\CustomerCommentController.cs" />
     <Compile Include="Controllers\CustomerLikeController.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="GenericRouteProvider.cs" />
     <Compile Include="mobSocialPlugin.cs" />
     <Compile Include="Models\BattleEditorModel.cs" />
+    <Compile Include="Models\BusinessPageSearchModel.cs" />
     <Compile Include="Models\CustomerCommentsModel.cs" />
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
     <Compile Include="Models\CustomerProfilePublicModel.cs" />
@@ -125,6 +127,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\common\webclient-service.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\business-pages\business-controller.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\mobSocial\js\controllers\business-pages\business-service.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\mobSocial\js\controllers\conversation\conversation-controller.js">

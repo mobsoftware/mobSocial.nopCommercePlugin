@@ -1,14 +1,12 @@
 ﻿@using Nop.Plugin.Widgets.MobSocial.Constants
 
-@model mobSocial.WebApi.Models.BusinessPages.BusinessPageSearchModel
-
 @using Nop.Web.Framework.UI
 @{
     Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
     
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-pages.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-pages-search.js");
-    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-service.js");
+    Html.AddScriptParts(ResourceLocation.Foot, MobSocialConstant.PluginContentPathInternal + "/js/controllers/business-pages/business-controller.js");
+    
     Html.AddScriptParts("~/Scripts/jquery.magnific-popup.js");
     Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
     Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easy-responsive-tabs.css");
@@ -16,7 +14,7 @@
 
 }
 
-<div class="search-criteria" ng-controller="BusinessPageSearchCriteriaController">
+<div ng-controller="BusinessController" ng-init="initBusinessSearch()">
     <span class="search-criteria-header">@T("BusinessPage.SearchCriteriaHeaderText")</span>
     <br />
     <br />
@@ -24,60 +22,49 @@
         <tr>
             <td class="adminTitle">
                 Name<br />
-                <input type="text" ng-model="name" />
+                <input type="text" ng-model="filter.search" />
             </td>
         </tr>
-        <tr>
-            <td class="adminTitle">
-                City<br />
-                <input type="text" ng-model="city" />
-            </td>
-        </tr>
+       
         <tr>
             <td class="adminTitle">
                 Country<br />
-                <select class="country-input" ng-model="country" ng-options="item.Name for item in countries"></select>
+                <select class="country-input" ng-model="filter.country" ng-change="getStates(filter.country.Id)" ng-options="item.Name for item in countries"></select>
             </td>
         </tr>
         <tr>
             <td class="adminTitle">
                 State / province<br />
-                <select class="state-input" ng-model="stateProvince" ng-options="item.Name for item in states">></select>
+                <select class="state-input" ng-model="filter.stateProvince" ng-options="item.Name for item in states">></select>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                City<br />
+                <input type="text" ng-model="filter.city" />
             </td>
         </tr>
     </table>
-</div>
 
-<div ng-controller="BusinessPageSearchController">
     <div class="event-center-content">
-
         <span class="search-results-header">@T("BusinessPage.SearchResultsHeaderText")</span>
         <br />
         <br />
-        <div ng-repeat="item in results" class="search-result-item">
-
+        <div ng-repeat="item in businesses" class="search-result-item">
             <div>
                 <a href="{{item.Url}}">
-
                     <div class="left">
                         <img ng-src="{{item.ThumbnailUrl}}" title="{{item.Title}}" class="thumbnail" />
                     </div>
-
                     <div class="right">
                         <span class="title">{{item.Title}}</span><br />
                         <span class="subtitle">{{item.Subtitle}}</span>
                     </div>
-
                 </a>
             </div>
-
         </div>
-
-
-
-
     </div>
-
 </div>
+
 
 
