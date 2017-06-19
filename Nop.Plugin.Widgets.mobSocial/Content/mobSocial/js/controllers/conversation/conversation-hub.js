@@ -25,13 +25,13 @@
     }
 
     var markChatOpen = function (userId) {
-        var opened = false;
+		var opened = false;
         var cu = $rootScope.CurrentUser;
-
         for (var i = 0; i < $rootScope.Chat.openChats.length; i++) {
             var conversation = $rootScope.Chat.openChats[i].conversation;
             var conversationDetails = $rootScope.Chat.openChats[i].conversationDetails;
-            var canOpen = conversation.ReceiverId == userId && conversation.ReceiverType == "User" && conversationDetails;
+            var canOpen = (conversation.ReceiverId == userId && conversation.ReceiverType == "User") &&conversationDetails != null;
+			
             if (canOpen) {
                 $rootScope.Chat.activeChat = $rootScope.Chat.openChats[i];
                 $rootScope.Chat.activeChat.toUserId = userId;
@@ -40,54 +40,76 @@
                 break;
             }
         }
-        return opened;
+		return opened;
     }
 
     var hub = new Hub('conversation',
-    {
-        rootPath: signalREndPoint,
-        listeners: {
-            'conversationReply': function (reply, conversationId) {
-                $timeout(function () {
-                    var chat = $rootScope.Chat.getChat(reply.UserId, conversationId);
-                    if (chat) {
-                        chat.conversationDetails.ConversationReplies.push(reply);
-                        chat.unreadCount = chat.unreadCount || 0;
-                        if (reply.UserId != $rootScope.CurrentUser.Id)
-                            chat.unreadCount++;
-                        chat.activeTypingUserId = 0;
-                    } else {
-                        $rootScope.Chat.globalUnreadCount++;
-                    }
-                    $rootScope.$apply();
-                    scrollToBottom();
-                }, 0);
-            },
-            'notifyTyping': function (conversationId, userId, typing) {
-                var chat = $rootScope.Chat.activeChat;
-                if (chat && chat.conversation.ConversationId == conversationId) {
+        {
+            rootPath: signalREndPoint,
+            listeners: {
+                'conversationReply': function (reply, conversationId, toUserId) {
                     $timeout(function () {
-                        chat.activeTypingUserId = typing ? userId : 0;
+						
+                        var chat = $rootScope.Chat.getChat(reply.UserId, conversationId);
+						if(!chat)
+							var chat = $rootScope.Chat.getChat(toUserId, conversationId);
+						
+                        if (chat) {
+							chat.conversationDetails.ConversationReplies = chat.conversationDetails.ConversationReplies || [];
+                            chat.conversationDetails.ConversationReplies.push(reply);
+                            chat.unreadCount = chat.unreadCount || 0;
+                            if (reply.UserId != $rootScope.CurrentUser.Id)
+                                chat.unreadCount++;
+                            chat.activeTypingUserId = 0;
+                        } else {
+                            $rootScope.Chat.globalUnreadCount++;
+                        }
                         $rootScope.$apply();
                         scrollToBottom();
                     }, 0);
+                },
+                'notifyTyping': function (conversationId, userId, typing) {
+                    var chat = $rootScope.Chat.activeChat;
+                    if (chat && chat.conversation.ConversationId == conversationId) {
+                        $timeout(function () {
+                            chat.activeTypingUserId = typing ? userId : 0;
+                            $rootScope.$apply();
+                            scrollToBottom();
+                        }, 0);
+                    }
+                },
+                'markRead': function (conversationId) {
+                    var chat = $rootScope.Chat.getChat(0, conversationId);
+                    console.log("marking ", chat);
+                    if (chat) {
+                        $timeout(function () {
+                            for (var i = 0; i < chat.conversationDetails.ConversationReplies.length; i++) {
+                                chat.conversationDetails.ConversationReplies[i].ReplyStatus = 3; //read
+                            }
+                            $rootScope.$apply();
+                        }, 0);
+                    }
                 }
             },
-            'markRead': function (conversationId) {
-                var chat = $rootScope.Chat.getChat(0, conversationId);
-                console.log("marking ", chat);
-                if (chat) {
-                    $timeout(function () {
-                        for (var i = 0; i < chat.conversationDetails.ConversationReplies.length; i++) {
-                            chat.conversationDetails.ConversationReplies[i].ReplyStatus = 3; //read
-                        }
-                        $rootScope.$apply();
-                    }, 0);
+            methods: ['postReply', 'markRead', 'notifyTyping'],
+            stateChanged: function (state) {
+                switch (state.newState) {
+                    case $.signalR.connectionState.connecting:
+                        //your code here
+                        break;
+                    case $.signalR.connectionState.connected:
+                        //your code here
+                        break;
+                    case $.signalR.connectionState.reconnecting:
+                        //your code here
+                        break;
+                    case $.signalR.connectionState.disconnected:
+                        //try to connect again
+                        hub.connect();
+                        break;
                 }
             }
-        },
-        methods: ['postReply', 'markRead', 'notifyTyping']
-    });
+        });
 
     $rootScope.Chat = {
         openChats: [],
@@ -106,16 +128,19 @@
             if (!$rootScope.Chat.activeChat)
                 return false;
             var chat = $rootScope.Chat.activeChat.conversationDetails;
+            if (!chat || !chat.ConversationId) {
+                chat = $rootScope.Chat.activeChat.conversation;
+            }
             if (!chat)
                 return false;
             var canOpen = (chat.ReceiverId == userId || chat.UserId == userId) && chat.ReceiverType == "User";
             return canOpen;
         },
-        getChat: function (userId, conversationId) {
+        getChat: function (userId, conversationId) {			
             var cu = $rootScope.CurrentUser;
             for (var i = 0; i < $rootScope.Chat.openChats.length; i++) {
                 var chat = $rootScope.Chat.openChats[i].conversation;
-                var canOpen = chat.ReceiverId == userId && chat.UserId == cu.Id && chat.ReceiverType == "User";
+                var canOpen = chat.ReceiverId == userId && chat.ReceiverType == "User";
 
                 if (canOpen) {
                     return $rootScope.Chat.openChats[i];
@@ -127,33 +152,31 @@
             return null;
         },
         loadChat: function (userId, page, callback) {
+			
             conversationService.get(userId, page,
-                    function (response) {
-                        if (response.Success) {
-                            var chat = $rootScope.Chat.getChat(userId);
-                            if (chat.conversation.ConversationId == 0) {
-                                if (response.ResponseData.Conversation) {
-                                    chat.conversationDetails = response.ResponseData.Conversation;
-                                    chat.loadedPage = page;
-                                    scrollToBottom();
-                                }
-                            }
+                function (response) {
+                    if (response.Success) {
+                        var chat = $rootScope.Chat.getChat(userId);
+						if (chat.conversation.ConversationId == 0) {
+                            chat.conversationDetails = response.ResponseData.Conversation || {};
+                            chat.loadedPage = page;
+                            scrollToBottom();
+                        }
+                        else {
+                            if (page == 1)
+                                chat.conversationDetails = response.ResponseData.Conversation;
                             else {
-                                if (page == 1)
-                                    chat.conversationDetails = response.ResponseData.Conversation;
-                                else
-                                {
-                                    var replies = response.ResponseData.Conversation.ConversationReplies;
-                                    chat.conversationDetails.ConversationReplies = chat.conversationDetails.ConversationReplies || [];
-                                    for (var i = replies.length; i >= 0; i--)
-                                        chat.conversationDetails.ConversationReplies.unshift(replies[i]);
-                                }
-                                
+                                var replies = response.ResponseData.Conversation.ConversationReplies;
+                                chat.conversationDetails.ConversationReplies = chat.conversationDetails.ConversationReplies || [];
+                                for (var i = replies.length; i >= 0; i--)
+                                    chat.conversationDetails.ConversationReplies.unshift(replies[i]);
                             }
-                            markChatOpen(userId);
 
                         }
-                    });
+                        markChatOpen(userId);
+
+                    }
+                });
         },
         chatWith: function (userId, callback) {
             if (!markChatOpen(userId)) {
