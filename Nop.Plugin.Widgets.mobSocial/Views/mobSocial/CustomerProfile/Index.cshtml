@@ -14,93 +14,90 @@
     @Html.Partial("mobSocial/Media/Includes")
     var currentCustomer = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer;
     var isLoggedIn = !currentCustomer.IsGuest();
+    var canEdit = Model == currentCustomer.Id;
 }
+
 
 <div ng-controller="userProfileController" ng-init="init(@Model)">
     <div class="cover-area">
         <div class="cover">
-            <div class="cover-area">
-                <div class="cover">
-                    <div class="bgcover">
-                        <img ng-src="{{user.TemporaryCoverImageUrl || user.CoverImageUrl}}" />
+            <h1 class="cover-heading">{{user.Name}}</h1>
+            <div class="bgcover">
+                <img ng-src="{{user.TemporaryCoverImageUrl || user.CoverImageUrl}}" />
+            </div>
+          
+            <div class="profile-picture">
+                <img ng-src="{{user.TemporaryProfileImageUrl || user.ProfileImageUrl}}" class="img-circle img-bordered-sm" />
+                <div ng-show="!user.TemporaryProfileImage" class="profile-upload-button" ng-if="user.Id == @currentCustomer.Id">
+                    <a file-upload-button
+                       id="profileimage_{{user.Id}}"
+                       fieldname="CoverFile"
+                       uploadtype="image"
+                       onsuccessitem="uploadProfileImageSuccess"
+                       url="/api/media/uploadpictures">
+                        <i class="fa fa-camera"></i> Change
+                    </a>
+                </div>
+                <div ng-show="user.TemporaryProfileImage">
+                    <div class="keep-cover">
+                        <div class="title">Do you wish to keep or discard this image?</div>
+                        <a target="_self" ng-click="setPictureAs('DefaultPictureId', user.TemporaryProfileImageId, true)"><i class="fa fa-check"></i> Keep</a>
+                        <a target="_self" ng-click="setPictureAs('DefaultPictureId', user.TemporaryProfileImageId, false)"><i class="fa fa-times"></i> Discard</a>
                     </div>
-                    <div class="profile-picture">
-                        <img ng-src="{{user.TemporaryProfileImageUrl || user.ProfileImageUrl}}" class="img-circle img-bordered-sm" />
-                        <div ng-show="!user.TemporaryProfileImage" class="profile-upload-button" ng-if="currentUserIs(user.Id)">
-                            <a file-upload-button
-                               id="profileimage_{{user.Id}}"
-                               fieldname="CoverFile"
-                               uploadtype="image"
-                               onsuccessitem="uploadProfileImageSuccess"
-                               url="/api/media/uploadpictures">
-                                <i class="fa fa-camera"></i> Change
+                </div>
+
+            </div>
+            <div class="quick-info">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2 info-block">
+                            <i class="fa fa-users margin-r-5"></i>
+                            <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'friends', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                {{user.FriendCount}} Friends
                             </a>
                         </div>
-                        <div ng-show="user.TemporaryProfileImage">
-                            <div class="keep-cover">
-                                <div class="title">Do you wish to keep or discard this image?</div>
-                                <a target="_self" ng-click="setPictureAs('DefaultPictureId', user.TemporaryProfileImageId, true)"><i class="fa fa-check"></i> Keep</a>
-                                <a target="_self" ng-click="setPictureAs('DefaultPictureId', user.TemporaryProfileImageId, false)"><i class="fa fa-times"></i> Discard</a>
-                            </div>
-                        </div>
-                        <span ng-show="!user.TemporaryProfileImage">
-                            <h3>{{user.Name}}</h3>
-                        </span>
-                    </div>
-                    <div class="quick-info">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-2 info-block">
-                                    <i class="fa fa-users margin-r-5"></i>
-                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'friends', idOrUserName: user.UserName ? user.UserName : user.Id })">
-                                        {{user.FriendCount}} Friends
-                                    </a>
-                                </div>
-                                <div class="col-md-2 info-block">
-                                    <i class="fa fa-bell margin-r-5"></i>
-                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'followers', idOrUserName: user.UserName ? user.UserName : user.Id })">
-                                        {{user.FollowerCount}} Followers
-                                    </a>
-                                </div>
-                                <div class="col-md-2 info-block">
-                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'following', idOrUserName: user.UserName ? user.UserName : user.Id })">
-                                        <i class="fa fa-bell  margin-r-5"></i>
-                                        {{user.FollowingCount}} Following
-                                    </a>
-                                </div>
-                                <div class="col-md-4 button-block">
-                                    <a class="btn btn-default pull-right" ng-if="currentUserIs(user.Id)" ui-sref="layoutMobSocial.twoColumns.editProfile({tab: null})"><i class="fa fa-pencil"></i> Edit Info</a>
-                                    <div ng-if="!currentUserIs(user.Id)">
-                                        <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
-                                        <span class="vertical-separator"></span>
-                                        <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="cover-upload-area" ng-if="currentUserIs(user.Id)">
-                        <div ng-show="!user.TemporaryCover">
-                            <a file-upload-button
-                               class="upload-button"
-                               id="coverimage_{{user.Id}}"
-                               fieldname="CoverFile"
-                               uploadtype="image"
-                               onsuccessitem="uploadCoverSuccess"
-                               url="/api/media/uploadpictures">
-                                <i class="fa fa-camera"></i>
+                        <div class="col-md-2 info-block">
+                            <i class="fa fa-bell margin-r-5"></i>
+                            <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'followers', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                {{user.FollowerCount}} Followers
                             </a>
                         </div>
-                        <div ng-show="user.TemporaryCover">
-                            <div class="keep-cover">
-                                <div class="title">Do you wish to keep or discard this cover?</div>
-                                <a target="_self" ng-click="setPictureAs('DefaultCoverId', user.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
-                                <a target="_self" ng-click="setPictureAs('DefaultCoverId', user.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
+                        <div class="col-md-2 info-block">
+                            <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'following', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                <i class="fa fa-bell  margin-r-5"></i>
+                                {{user.FollowingCount}} Following
+                            </a>
+                        </div>
+                        <div class="col-md-4 button-block">
+                            <a class="btn btn-default pull-right" ng-if="user.Id == @currentCustomer.Id" ui-sref="layoutMobSocial.twoColumns.editProfile({tab: null})"><i class="fa fa-pencil"></i> Edit Info</a>
+                            <div ng-if="user.Id != @currentCustomer.Id && @currentCustomer.IsGuest()  == 'False'">
+                                <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
+                                <span class="vertical-separator"></span>
+                                <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
                             </div>
                         </div>
                     </div>
+                </div>
 
+            </div>
+            <div class="cover-upload-area" ng-if="user.Id == @currentCustomer.Id">
+                <div ng-show="!user.TemporaryCover">
+                    <a file-upload-button
+                       class="upload-button"
+                       id="coverimage_{{user.Id}}"
+                       fieldname="CoverFile"
+                       uploadtype="image"
+                       onsuccessitem="uploadCoverSuccess"
+                       url="/api/media/uploadpictures">
+                        <i class="fa fa-camera"></i>
+                    </a>
+                </div>
+                <div ng-show="user.TemporaryCover">
+                    <div class="keep-cover">
+                        <div class="title">Do you wish to keep or discard this cover?</div>
+                        <a target="_self" ng-click="setPictureAs('DefaultCoverId', user.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
+                        <a target="_self" ng-click="setPictureAs('DefaultCoverId', user.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
+                    </div>
                 </div>
             </div>
 
@@ -114,16 +111,16 @@
             <section class="content">
                 <div id="main-content">
                     <div class="profile-left">
-                        <div class="profile-meta-box">
-                            <div ng-controller="FriendsController" ng-init="GetCustomerFriends({customerId : @Model, howMany: 6})">
-                                <div ng-if="CustomerFriends && CustomerFriends.length > 0">
+                        <div ng-controller="FriendsController" ng-init="GetCustomerFriends({customerId : @Model, howMany: 6})">
+                            <div ng-if="CustomerFriends && CustomerFriends.length > 0">
+                                <div class="profile-meta-box">
                                     <div class="box-header text-center">
                                         Friends
                                     </div>
                                     <ul class="friend-list">
                                         <li ng-repeat="friend in CustomerFriends">
                                             <a href="/{{friend.SeName}}">
-                                                <img ng-src="{{friend.ProfileThumbnailUrl}}" />
+                                                <img ng-src="{{friend.ProfileThumbnailUrl}}"/>
                                                 <span>{{friend.DisplayName}}</span>
                                             </a>
                                         </li>
@@ -131,24 +128,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="profile-meta-box">
-                            <div ng-controller="SkillController" ng-init="getUserSkills(@Model)">
-                                <div ng-if="skills && skills.length > 0">
-                                    <div class="box-header text-center">
-                                        Skills
-                                    </div>
-                                    <div class="skills-list">
-                                        <div class="skill-item" ng-repeat="s in skills track by s.UserSkillId">
-                                            <div class="skill-name">
-                                                <a ng-href="skills/{{s.SeName}}" target="_blank">{{s.Name}}</a>
-                                            </div>
+
+                        <div ng-controller="SkillController" ng-init="getUserSkills(@Model)">
+                            <div class="profile-meta-box" ng-if="skills && skills.length > 0">
+                                <div class="box-header text-center">
+                                    Skills
+                                </div>
+                                <div class="skills-list">
+                                    <div class="skill-item" ng-repeat="s in skills track by s.UserSkillId">
+                                        <div class="skill-name">
+                                            <a ng-href="skills/{{s.SeName}}">{{s.Name}}</a>
                                         </div>
                                     </div>
                                 </div>
-                                
                             </div>
-
                         </div>
+
                     </div>
                     <div class="profile-center-content">
                         <script type="text/javascript">

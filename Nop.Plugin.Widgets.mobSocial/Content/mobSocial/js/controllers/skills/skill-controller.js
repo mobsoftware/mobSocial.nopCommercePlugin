@@ -112,19 +112,19 @@ app.controller("SkillController",
 
             if (data.Success) {
                 $scope.skill.MediaId = $scope.skill.MediaId || [];
-                if (data.Media) {
-                    $scope.skill.MediaId.push(data.Media.Id);
-                    $scope.skill.Media.push(data.Media);
+                if (data.ResponseData.Media) {
+                    $scope.skill.MediaId.push(data.ResponseData.Media.Id);
+                    $scope.skill.Media.push(data.ResponseData.Media);
                 }
-                if (data.Images) {
-                    for (var i = 0; i < data.Images.length; i++) {
-                        $scope.skill.MediaId.push(data.Images[i].Id);
+                if (data.ResponseData.Images) {
+                    for (var i = 0; i < data.ResponseData.Images.length; i++) {
+                        $scope.skill.MediaId.push(data.ResponseData.Images[i].Id);
                         $scope.skill.Media = $scope.skill.Media || [];
                         $scope.skill.Media.push(data.Images[i]);
                     }
                 }
-                if (data.Video) {
-                    $scope.skill.MediaId.push(data.Video.Id);
+                if (data.ResponseData.Video) {
+                    $scope.skill.MediaId.push(data.ResponseData.Video.Id);
                     $scope.skill.Media = $scope.skill.Media || [];
                     $scope.skill.Media.push(data.Video);
                 }
@@ -190,8 +190,8 @@ app.controller("SkillController",
         $scope.uploadCoverSuccess = function (fileItem, data, status, headers) {
 
             if (data.Success) {
-                $scope.skill.TemporaryFeaturedImageUrl = data.Images[0].Url;
-                $scope.skill.TemporaryFeaturedMediaId = data.Images[0].Id;
+                $scope.skill.TemporaryFeaturedImageUrl = data.ResponseData.Images[0].Url;
+                $scope.skill.TemporaryFeaturedMediaId = data.ResponseData.Images[0].Id;
             }
         };
 
@@ -238,12 +238,12 @@ app.controller("SkillController",
             SkillService.getSkills(getSkillOptions,
                 function(response) {
                     if (response.Success) {
-                        if (response.Page == 1)
-                            $scope.skills = response.Skills;
+                        if (response.ResponseData.Page == 1)
+                            $scope.skills = response.ResponseData.Skills;
                         else {
-                            $scope.skills = $scope.skills.concat(response.Skills);
+                            $scope.skills = $scope.skills.concat(response.ResponseData.Skills);
                         }
-                        $scope.totalSkillRecords = response.Total;
+                        $scope.totalSkillRecords = response.ResponseData.Total;
                     }
                 });
         }

@@ -57,7 +57,6 @@
     <Compile Include="Controllers\TeamPageController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
-    <Compile Include="Controllers\Admin\TeamPageController.cs" />
     <Compile Include="Controllers\FacebookWebsiteAppController.cs" />
     <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
     <Compile Include="Controllers\HeaderMenuController.cs" />

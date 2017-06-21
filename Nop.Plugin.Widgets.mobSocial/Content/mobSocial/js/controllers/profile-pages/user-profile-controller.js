@@ -16,8 +16,8 @@
         $scope.uploadCoverSuccess = function (fileItem, data, status, headers) {
 
             if (data.Success && data.ResponseData.Images.length > 0) {
-                $scope.user.TemporaryCoverImageUrl = data.ResponseData.Images[0].ImageUrl;
-                $scope.user.TemporaryCoverId = data.ResponseData.Images[0].ImageId;
+                $scope.user.TemporaryCoverImageUrl = data.ResponseData.Images[0].Url;
+                $scope.user.TemporaryCoverId = data.ResponseData.Images[0].Id;
                 $scope.user.TemporaryCover = true;
             }
         };
@@ -25,8 +25,8 @@
         $scope.uploadProfileImageSuccess = function (fileItem, data, status, headers) {
 
             if (data.Success && data.ResponseData.Images.length > 0) {
-                $scope.user.TemporaryProfileImageUrl = data.ResponseData.Images[0].ImageUrl;
-                $scope.user.TemporaryProfileImageId = data.ResponseData.Images[0].ImageId;
+                $scope.user.TemporaryProfileImageUrl = data.ResponseData.Images[0].Url;
+                $scope.user.TemporaryProfileImageId = data.ResponseData.Images[0].Id;
                 $scope.user.TemporaryProfileImage = true;
             }
         };
@@ -53,7 +53,7 @@
 
                 });
             } else {
-                if (uploadType == "cover") {
+                if (uploadType == "DefaultCoverId") {
                     $scope.user.TemporaryCoverId = 0;
                     $scope.user.TemporaryCover = false;
                     $scope.user.TemporaryCoverImageUrl = false;

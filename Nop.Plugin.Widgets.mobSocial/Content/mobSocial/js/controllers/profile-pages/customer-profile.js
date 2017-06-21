@@ -18,8 +18,8 @@ app.controller('customerProfileController', ['$rootScope', '$scope', 'CustomerPr
     $scope.UploadCoverSuccess = function (fileItem, data, status, headers) {
 
         if (data.Success && data.Images.length > 0) {
-            $scope.Profile.TemporaryCoverImageUrl = data.Images[0].ImageUrl;
-            $scope.Profile.TemporaryCoverId = data.Images[0].ImageId;
+            $scope.Profile.TemporaryCoverImageUrl = data.ResponseData.Images[0].Url;
+            $scope.Profile.TemporaryCoverId = data.ResponseData.Images[0].Id;
             $scope.Profile.TemporaryCover = true;
         }
     };
@@ -27,8 +27,8 @@ app.controller('customerProfileController', ['$rootScope', '$scope', 'CustomerPr
     $scope.UploadProfileImageSuccess = function (fileItem, data, status, headers) {
 
         if (data.Success && data.Images.length > 0) {
-            $scope.Profile.TemporaryProfileImageUrl = data.Images[0].ImageUrl;
-            $scope.Profile.TemporaryProfileImageId = data.Images[0].ImageId;
+            $scope.Profile.TemporaryProfileImageUrl = data.ResponseData.Images[0].Url;
+            $scope.Profile.TemporaryProfileImageId = data.ResponseData.Images[0].Id;
             $scope.Profile.TemporaryProfileImage = true;
         }
     };
