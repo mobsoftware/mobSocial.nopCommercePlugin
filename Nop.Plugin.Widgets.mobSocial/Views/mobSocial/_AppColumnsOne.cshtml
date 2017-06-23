@@ -3,7 +3,7 @@
 @using Nop.Core.Infrastructure
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
-    var showBox = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer.IsRegistered();
+    var showBox = true;
 }
 <div ng-app="mobSocialApp" ng-cloak>
     @RenderBody()
