@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-md-4 button-block">
                             <a class="btn btn-default pull-right" ng-if="user.Id == @currentCustomer.Id" ui-sref="layoutMobSocial.twoColumns.editProfile({tab: null})"><i class="fa fa-pencil"></i> Edit Info</a>
-                            <div ng-if="user.Id != @currentCustomer.Id && @currentCustomer.IsGuest()  == 'False'">
+                            <div ng-if="user.Id != @currentCustomer.Id && @(currentCustomer.IsGuest().ToString())  == 'False'">
                                 <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
                                 <span class="vertical-separator"></span>
                                 <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
