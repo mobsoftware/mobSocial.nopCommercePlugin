@@ -24,8 +24,26 @@
                 parameterName = "searchTerm";
                 break;
             case "people":
+                var source = function (request, response) {
+                    $.ajax({
+                        url: '/api/autocomplete/users/get',
+                        data: request,
+                        success: function (data) {
+                            if (data.Success) {
+                                response($.map(data.ResponseData.AutoComplete.Users, function (item) {
+                                    return {
+                                        DisplayName: item.Name,
+                                        PictureUrl: item.ProfileImageUrl,
+                                        ProfileUrl: "/" + item.SeName
+                                    };
+
+                                }))
+                            }
+                        }
+                    });
+                }
                 parentFormTargetUrl = "@Url.RouteUrl("SearchPeople")";
-                autoCompleteSourceUrl = "/api/mobSocial/searchtermautocomplete";
+                autoCompleteSourceUrl = source;
                 parameterName = "searchTerm";
                 renderer = function(ul, item) {
                     var t = item.DisplayName;
@@ -40,6 +58,7 @@
             default:
                 break;
         }
+        
         //autocomplete source
         $('#small-searchterms').autocomplete("option", "source", autoCompleteSourceUrl);
         $('#small-searchterms').attr("name", parameterName);

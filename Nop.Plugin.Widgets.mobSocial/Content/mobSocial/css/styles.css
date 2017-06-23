@@ -1343,7 +1343,8 @@ span.payment-method.fa {
   text-align: left; }
   .ui-autocomplete .ui-menu-item a {
     text-align: left !important;
-    display: inline-block; }
+    display: inline-block;
+    width: 100%; }
 
 @media screen and (max-width: 480px) {
   input[type="text"].search-box-text {
@@ -1598,7 +1599,8 @@ li a:hover {
   background-image: none; }
 
 .ui-menu-item a img {
-  vertical-align: top; }
+  vertical-align: top;
+  max-width: 40px; }
 
 .ui-menu-item a .subtitle {
   color: gray; }

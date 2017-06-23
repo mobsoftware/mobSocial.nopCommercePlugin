@@ -1996,6 +1996,7 @@ span {
     .ui-menu-item a {
         text-align: left !important;
         display: inline-block;
+        width:100%;
     }
 }
 
@@ -2406,6 +2407,7 @@ li a:hover {
 
     img {
         vertical-align: top;
+        max-width: 40px;
     }
 
     .details {
