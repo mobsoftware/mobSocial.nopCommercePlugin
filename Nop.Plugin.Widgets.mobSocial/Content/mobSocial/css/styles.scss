@@ -341,13 +341,14 @@ input[type='number'] {
 }
 
 .customer-friends-friend-block {
-    width: 100px;
+    width: 130px;
     padding: 0;
-    margin: 5px;
+    margin: 0 5px 25px 5px;
     display: inline-block;
-    text-align:center;
-    img{
-        max-width:100%;
+    text-align: center;
+
+    img {
+        max-width: 100%;
     }
 }
 
@@ -3175,7 +3176,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
 
                         img {
                             width: 34px;
-                            height:34px;
+                            height: 34px;
                             display: inline-block;
                             float: left;
                         }
@@ -3183,6 +3184,11 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
                         span {
                             display: inline-block;
                             padding-top: 8px;
+                            word-wrap: break-word;
+                            overflow: hidden;
+                            max-width: 120px;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
                         }
                     }
                 }
@@ -3217,6 +3223,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
                 overflow: auto;
                 padding: 10px 0;
                 background-color: #ecf0f5;
+
                 ul {
                     padding: 0;
                     margin: 0;
@@ -3236,7 +3243,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
                             margin: 5px 20px;
                             border-radius: 5px;
                             background-color: #fff;
-                                box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+                            box-shadow: 0 1px 1px rgba(0,0,0,0.2);
 
                             img.user-profile {
                                 width: 25px;
@@ -3245,24 +3252,25 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
 
                             &.my-reply {
                                 margin-left: 45px;
-                                margin-right: 0;                                
+                                margin-right: 0;
                             }
+
                             .reply-status {
-                                    font-size: 10px;
-                                    text-align: right;
+                                font-size: 10px;
+                                text-align: right;
 
-                                    .sent {
-                                        color: gray;
-                                    }
-
-                                    .received {
-                                        color: blue;
-                                    }
-
-                                    .read {
-                                        color: green;
-                                    }
+                                .sent {
+                                    color: gray;
                                 }
+
+                                .received {
+                                    color: blue;
+                                }
+
+                                .read {
+                                    color: green;
+                                }
+                            }
                         }
                     }
                 }
@@ -3300,8 +3308,12 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
 
             .friend-list {
                 border-right: solid 1px #ccc;
-                height: 400px;
+                height: 362px;
                 overflow: auto;
+            }
+
+            .conversation-filter {
+                width: 100%;
             }
         }
     }
@@ -3309,7 +3321,8 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     .submission-area {
         padding: 10px 10px;
         background-color: #fff;
-        border-top:solid 1px #ddd;
+        border-top: solid 1px #ddd;
+
         #chat-input {
             height: 30px;
             border: 1px solid #fff;

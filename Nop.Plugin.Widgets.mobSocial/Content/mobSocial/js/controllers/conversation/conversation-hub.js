@@ -116,6 +116,7 @@
         activeChat: null,
         globalUnreadCount: 0,
         firstLoadComplete: false,
+        visibleChats: [],
         getTotalUnreadCount: function () {
             return $rootScope.Chat.openChats.reduce(function (total, chat) {
                 return total + (chat.unreadCount || 0);
@@ -215,12 +216,16 @@
                         $rootScope.Chat.openChats.push({
                             conversation: conversation,
                             conversationDetails: null,
+                            visible: true,
                             replyText: '',
                             loadedPage: 0,
                             unreadCount: conversation.UnreadCount
                         });
                     }
-
+                    $timeout(function () {
+                        $rootScope.Chat.visibleChats = $rootScope.Chat.openChats.slice(0, 8);
+                        $rootScope.$apply();
+                    });
                 }
             });
         },
@@ -232,6 +237,25 @@
             }
         }
     };
+
+    $rootScope.$watch("conversationFilter",
+        function (newValue, oldValue) {
+            if (newValue == undefined && oldValue == undefined)
+                return;
+            $rootScope.Chat.visibleChats = []; //remove everything
+            var count = 8;
+
+            for (var i = 0; i < $rootScope.Chat.openChats.length; i++) {
+                var c = $rootScope.Chat.openChats[i];
+                if (!c.conversation.ReceiverName)
+                    continue;
+                if (c.conversation.ReceiverName.indexOf(newValue) == 0)
+                    $rootScope.Chat.visibleChats.push(c);
+
+                if ($rootScope.Chat.visibleChats.length >= count)
+                    break;
+            }
+        });
 
     $rootScope.$watch("Chat.activeChat.replyText",
         function (newValue, oldValue) {
