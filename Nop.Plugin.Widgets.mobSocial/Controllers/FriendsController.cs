@@ -29,7 +29,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             {
                 CustomerId = customerId,
                 HowMany = howMany,
-                Random = random
+                Random = random,
+                Page = 1
             };
             return View("mobSocial/Friends/_CustomerFriends", model);
 

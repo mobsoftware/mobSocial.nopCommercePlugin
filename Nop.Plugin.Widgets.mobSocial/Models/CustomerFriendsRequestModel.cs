@@ -8,6 +8,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Models
 
         public int HowMany { get; set; }
 
+        public int Page { get; set; }
+
         public bool Random { get; set; }
     }
 }

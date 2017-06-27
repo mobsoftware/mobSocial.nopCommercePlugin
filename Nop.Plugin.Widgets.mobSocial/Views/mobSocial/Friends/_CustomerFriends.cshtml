@@ -1,12 +1,12 @@
 ﻿@model Nop.Plugin.Widgets.MobSocial.Models.CustomerFriendsRequestModel    
 @{
+    Model.HowMany = 15;
     var json = Json.Encode(Model);
 }
 
 
 <div class="customer-friends-container">
     <div ng-controller="FriendsController" ng-init="GetCustomerFriends(@json)">
-        <div ng-if="!CustomerFriends">Loading...</div>
         <div ng-if="CustomerFriends && CustomerFriends.length > 0">            
             <ul class="friend-list">
                 <li ng-repeat="friend in CustomerFriends" class="customer-friends-friend-block">
@@ -16,6 +16,10 @@
                     </a>
                 </li>
             </ul>
+        </div>
+        <div ng-if="Loading">Loading...</div>
+        <div class="pagination-load-more" ng-if="CustomerFriends&& CustomerFriends.length > 0 && HaveMore">
+            <a ng-click="GetCustomerFriends()">Load more...</a>
         </div>
     </div>
 </div>

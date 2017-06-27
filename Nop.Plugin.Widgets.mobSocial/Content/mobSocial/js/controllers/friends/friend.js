@@ -44,12 +44,24 @@ app.controller("FriendsController", [
             });
         }
 
-        $scope.GetCustomerFriends = function(customerFriendsRequestModel) {
-            FriendService.GetCustomerFriends(customerFriendsRequestModel, function (response) {
+        $scope.filter = {};
+        $scope.GetCustomerFriends = function (customerFriendsRequestModel) {
+            if (customerFriendsRequestModel)
+                $scope.filter = customerFriendsRequestModel;
+
+            if ($scope.CustomerFriends && $scope.CustomerFriends.length > 0) {
+                $scope.filter.Page++;
+            }
+            $scope.loading = true;
+            FriendService.GetCustomerFriends($scope.filter, function (response) {
+                $scope.loading = false;
                 if (response.Success) {
-                    $scope.CustomerFriends = response.Friends;
+                    $scope.CustomerFriends = $scope.CustomerFriends || [];
+                    $scope.CustomerFriends = $scope.CustomerFriends.concat(response.Friends);
+                    $scope.HaveMore = response.HaveMore;
                 }
-            }, function() {
+            }, function () {
+                $scope.loading = false;
                 alert(response.Message);
             });
         }
