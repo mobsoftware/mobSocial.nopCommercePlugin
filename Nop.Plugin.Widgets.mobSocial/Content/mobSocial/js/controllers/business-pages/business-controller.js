@@ -47,7 +47,8 @@
                 });
             }
 
-            $scope.initBusinessSearch = function () {
+            $scope.initBusinessSearch = function (searchText) {
+                $scope.filter.search = searchText;
                 $scope.getCountries();
             }
 

@@ -3,7 +3,7 @@
     <option value="people">@T("SearchDropdown.PeopleSearchText")</option>
     <option value="videobattles">Video Battles</option>
     <option>@T("SearchDropdown.EventPageSearchText")</option>
-    <option>@T("SearchDropdown.BusinessPageSearchText")</option>
+    <option value="businesses">@T("SearchDropdown.BusinessPageSearchText")</option>
 </select>
 <script type="text/javascript">
     //depending on selected type, let's change the autocomplete source
@@ -43,6 +43,39 @@
                     });
                 }
                 parentFormTargetUrl = "@Url.RouteUrl("SearchPeople")";
+                autoCompleteSourceUrl = source;
+                parameterName = "searchTerm";
+                renderer = function(ul, item) {
+                    var t = item.DisplayName;
+                    //html encode
+                    t = htmlEncode(t);
+                    return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a href='" + item.ProfileUrl + "'><span><img src='" + item.PictureUrl + "'>" + t + "</span></a>")
+                        .appendTo(ul);
+                };
+                break;
+            case "businesses":
+                var source = function (request, response) {
+                    request.count = 5;
+                    $.ajax({
+                        url: '/api/autocomplete/businesses/get',
+                        data: request,
+                        success: function (data) {
+                            if (data.Success) {
+                                response($.map(data.ResponseData.AutoComplete.Businesses, function (item) {
+                                    return {
+                                        DisplayName: item.Name,
+                                        PictureUrl: item.ImageUrl,
+                                        ProfileUrl: "/" + item.SeName
+                                    };
+
+                                }))
+                            }
+                        }
+                    });
+                }
+                parentFormTargetUrl = "@Url.RouteUrl("BusinessPageSearchUrl")";
                 autoCompleteSourceUrl = source;
                 parameterName = "searchTerm";
                 renderer = function(ul, item) {

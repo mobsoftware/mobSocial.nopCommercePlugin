@@ -36,9 +36,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         [HttpGet]
-        public ActionResult Search()
+        public ActionResult Search(string searchTerm = "")
         {
-            return View("mobSocial/BusinessPage/Search"); 
+            return View("mobSocial/BusinessPage/Search", (object) searchTerm); 
         } 
     }
 }
