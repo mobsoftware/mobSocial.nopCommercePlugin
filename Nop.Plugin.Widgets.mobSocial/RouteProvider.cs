@@ -169,7 +169,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             // for use in views
             routes.MapLocalizedRoute("BusinessPageSearchUrl",
                 "BusinessPageSearch",
-                new {controller = "BusinessPage", action = "Search"},
+                new {controller = "BusinessPage", action = "Search", searchText = ""},
                 new[] {"Nop.Plugin.Widgets.MobSocial.Controllers"});
 
 
