@@ -1,13 +1,19 @@
-﻿@using Nop.Core
+﻿@model bool
+@using Nop.Core
 @using Nop.Core.Domain.Customers
 @using Nop.Core.Infrastructure
 @{
     var currentUser = EngineContext.Current.Resolve<IWorkContext>().CurrentCustomer;
     var isLoggedIn = !currentUser.IsGuest();
+    var includeApp = Model; //used to show chat on every screen of nopCommerce. The chatbox will be injected via body_end_html_tag_before widget zone
 }
 
 @if (isLoggedIn)
 {
+    if (includeApp)
+    {
+        @Html.Raw("<div ng-app=\"mobSocialApp\" ng-cloak>");
+    }
     <div class="chat-area">
         <div class="chat-box">
             <div class="">
@@ -95,10 +101,18 @@
             </script>
         </div>
     </div>
+    if (includeApp)
+    {
+        @Html.Raw("</div>");
+    }
 }
 else
 {
-    <a id="switch-link" href="/login">
-        <i class="fa fa-comments"></i> Chat
-    </a>
+    <div class="chat-area">
+        <div class="chat-switcher">
+            <a id="switch-link" href="/login">
+                <i class="fa fa-comments"></i> Chat
+            </a>
+        </div>
+    </div>
 }

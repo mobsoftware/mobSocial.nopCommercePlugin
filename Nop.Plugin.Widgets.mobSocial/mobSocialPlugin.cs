@@ -33,7 +33,8 @@ namespace Nop.Plugin.Widgets.MobSocial
                 "header_menu_after",
                 "account_navigation_after",
                 "profile_page_info_userdetails",
-                "searchbox_before_search_button"
+                "searchbox_before_search_button",
+                "body_end_html_tag_before"
             };
         }
 
@@ -132,10 +133,10 @@ namespace Nop.Plugin.Widgets.MobSocial
                     };
                         break;
                     }
-                case "searchbox_before_search_button":
+                case "body_end_html_tag_before":
                     {
-                        actionName = "GlobalSearchOptions";
-                        controllerName = "mobSocial";
+                        actionName = "ConversationBox";
+                        controllerName = "Conversation";
 
                         routeValues = new RouteValueDictionary()
                         {
@@ -146,6 +147,20 @@ namespace Nop.Plugin.Widgets.MobSocial
 
                         break;
                     }
+                case "searchbox_before_search_button":
+                {
+                    actionName = "GlobalSearchOptions";
+                    controllerName = "mobSocial";
+
+                    routeValues = new RouteValueDictionary()
+                    {
+                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
+                        {"area", ""},
+                        {"widgetZone", widgetZone}
+                    };
+
+                    break;
+                }
                 default:
                     {
                         actionName = "PublicInfo";

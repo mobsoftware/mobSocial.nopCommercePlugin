@@ -39,10 +39,12 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Attributes\MobSocialPageAttribute.cs" />
     <Compile Include="Constants\MobSocialConstant.cs" />
     <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
+    <Compile Include="Controllers\ConversationController.cs" />
     <Compile Include="Controllers\CustomerCommentController.cs" />
     <Compile Include="Controllers\CustomerLikeController.cs" />
     <Compile Include="Controllers\CustomerFollowController.cs" />
@@ -280,6 +282,9 @@
     <Content Include="Views\mobSocial\VideoBattle\_SocialShareLinks.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Views\mobSocial\WidgetZones\body_end_html_tag_before.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Libraries\angucomplete-alt\angucomplete-alt.css">
@@ -955,6 +960,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controllers\Admin\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
