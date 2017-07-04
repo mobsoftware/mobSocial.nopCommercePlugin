@@ -10,7 +10,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class TimelineController : BasePublicController
+    public class TimelineController : MobSocialWidgetBaseController
     {
         private readonly ITimelineWidgetLoaderService _timelineWidgetLoaderService;
         private readonly IWorkContext _workContext;

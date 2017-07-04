@@ -30,7 +30,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class mobSocialController : BasePublicController
+    public class mobSocialController : MobSocialWidgetBaseController
     {
 
         private IPermissionService _permissionService;

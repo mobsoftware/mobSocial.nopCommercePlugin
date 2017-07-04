@@ -5,7 +5,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class TeamPageController : BasePublicController
+    public class TeamPageController : MobSocialWidgetBaseController
     {
         public ActionResult Index(int teamId)
         {

@@ -8,7 +8,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class ProxyWebController : BasePublicController
+    public class ProxyWebController : MobSocialWidgetBaseController
     {
         /// <summary>
         /// Used as a proxy client for fetching url data from another domain. It can be modified to be used for keeping track of spam urls or other audits

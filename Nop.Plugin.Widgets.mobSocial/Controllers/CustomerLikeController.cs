@@ -3,7 +3,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class CustomerLikeController : BasePublicController
+    public class CustomerLikeController : MobSocialWidgetBaseController
     {
         public ActionResult CustomerLikeButton()
         {

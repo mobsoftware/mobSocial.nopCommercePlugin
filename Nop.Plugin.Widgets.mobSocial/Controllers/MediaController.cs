@@ -3,7 +3,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class MediaController : BasePublicController
+    public class MediaController : MobSocialWidgetBaseController
     {
         public ActionResult MediaModal()
         {

@@ -33,6 +33,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Constants
         public static string MobSocialMediaPath = PluginContentPath + "/uploads";
         public static string MobSocialPicturePath = MobSocialMediaPath + "/pictures";
         public static string MobSocialVideoPath = MobSocialMediaPath + "/videos";
+
+        public static bool IsMobSocialPage = false;
     }
 }
 

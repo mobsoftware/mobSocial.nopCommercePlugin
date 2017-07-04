@@ -6,7 +6,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class FriendsController : BasePublicController
+    public class FriendsController : MobSocialWidgetBaseController
     {
         
         //[Authorize]

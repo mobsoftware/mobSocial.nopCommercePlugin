@@ -22,7 +22,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
 
     [NopHttpsRequirement(SslRequirement.No)]
-    public partial class BusinessPageController : BasePublicController
+    public partial class BusinessPageController : MobSocialWidgetBaseController
     {
         
         public ActionResult Index(int? id, int? page)

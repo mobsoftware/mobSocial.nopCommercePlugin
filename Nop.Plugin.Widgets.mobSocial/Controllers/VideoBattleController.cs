@@ -6,7 +6,7 @@ using Nop.Plugin.Widgets.MobSocial.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class VideoBattleController : BasePublicController
+    public class VideoBattleController : MobSocialWidgetBaseController
     {
         #region Battles
 

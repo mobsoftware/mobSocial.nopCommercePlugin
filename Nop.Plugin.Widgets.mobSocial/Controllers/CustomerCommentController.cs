@@ -11,7 +11,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class CustomerCommentController : BasePublicController
+    public class CustomerCommentController : MobSocialWidgetBaseController
     {
         private readonly IWorkContext _workContext;
         private readonly IPictureService _pictureService;

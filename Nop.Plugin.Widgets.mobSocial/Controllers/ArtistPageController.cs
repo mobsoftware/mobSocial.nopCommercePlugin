@@ -11,7 +11,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
 
     [NopHttpsRequirement(SslRequirement.No)]
-    public partial class ArtistPageController : BasePublicController
+    public partial class ArtistPageController : MobSocialWidgetBaseController
     {
         #region variables
         private readonly IArtistPageService _artistPageService;

@@ -3,7 +3,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class HeaderMenuController : BasePublicController
+    public class HeaderMenuController : MobSocialWidgetBaseController
     {
 
         [ChildActionOnly]

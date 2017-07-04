@@ -11,7 +11,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class SponsorController : BasePublicController
+    public class SponsorController : MobSocialWidgetBaseController
     {
         #region Fields
 

@@ -11,7 +11,7 @@ using Nop.Web.Controllers;
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     // TODO: Consider making a single SocialNetworkWidget Controller for displaying widgets.
-    public class SocialNetworkNavigationController : BasePublicController
+    public class SocialNetworkNavigationController : MobSocialWidgetBaseController
     {
         private IFriendService _friendService;
         private readonly IWorkContext _workContext;

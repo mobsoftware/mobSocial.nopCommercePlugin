@@ -15,7 +15,7 @@ using Nop.Web.Models.Profile;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class CustomerProfileController : BasePublicController
+    public class CustomerProfileController : MobSocialWidgetBaseController
     {
         private readonly IWorkContext _workContext;
         public CustomerProfileController(IWorkContext workContext)

@@ -5,7 +5,7 @@ using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class SkillController : BasePublicController
+    public class SkillController : MobSocialWidgetBaseController
     {
         private readonly IWorkContext _workContext;
         public SkillController(IWorkContext workContext)

@@ -51,6 +51,7 @@
     <Compile Include="Controllers\HeadController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\mobSocialController.cs" />
+    <Compile Include="Controllers\MobSocialWidgetBaseController.cs" />
     <Compile Include="Controllers\ProxyWebController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
