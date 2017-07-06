@@ -1976,7 +1976,8 @@ li a:hover {
   .comment-box .commenter-info a {
     font-weight: bold;
     color: black;
-    padding-bottom: 3px; }
+    padding-bottom: 3px;
+    padding-left: 10px; }
   .comment-box .commenter-info .post-time {
     color: #aaaaaa;
     display: block;
