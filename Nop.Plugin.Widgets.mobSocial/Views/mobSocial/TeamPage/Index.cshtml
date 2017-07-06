@@ -83,10 +83,11 @@
                                       placeholder="Type a name or an email"
                                       selected-object="CustomerSelected"
                                       remote-api-handler="AutocompleteCustomer"
+                                      remote-url-data-field="ResponseData.AutoComplete.Users"
                                       minlength="3"
                                       pause="300"
-                                      image-field="PictureUrl"
-                                      title-field="DisplayName"
+                                      image-field="ProfileImageUrl"
+                                      title-field="Name"
                                       input-class="form-control form-control-small"></angucomplete-alt>
                     <div ng-show="membersToAdd.length > 0">
                         <h3>
@@ -95,7 +96,7 @@
                         <div>
                             <div ng-repeat="c in membersToAdd">
                                 <div class="selected-receiver">
-                                    {{c.DisplayName}}
+                                    {{c.Name}}
                                     <a ng-click="RemoveMember(c.Id)" ng-if="TeamPage.IsEditable"><i class="fa fa-times"></i></a>
                                 </div>
                             </div>
@@ -125,7 +126,7 @@
             <h2 ng-hide="group.Edit || GroupEditorActive">
                 {{group.Name}} <a ng-if="group.IsDefault && TeamPage.IsEditable">(Default)</a>
                 <a ng-show="group.Id > 0 && TeamPage.IsEditable" ng-click="GroupEditor(group.Id)"><i class="fa fa-pencil"></i> Edit</a>
-                <a ng-show="group.Id > 0 && TeamPage.IsEditable && !group.IsDefault" ng-click="DeleteGroup(group)"><i class="fa fa-times"></i> Delete</a>
+                <a ng-show="group.Id > 0 && TeamPage.IsEditable && (!group.IsDefault || (group.IsDefault && group.GroupMembers.length == 0))" ng-click="DeleteGroup(group)"><i class="fa fa-times"></i> Delete</a>
                 <a ng-if="!group.IsDefault && TeamPage.IsEditable" ng-click="SetDefaultGroup(group)"><i class="fa fa-star"></i> Set as default</a>
             </h2>
             <div ng-show="group.Edit" class="fieldset">
@@ -135,7 +136,7 @@
                 <div class="form-fields">
                     <div class="inputs">
                         <label for="title">Name <span class="required">*</span></label>
-                        <input type="text" name="name" id="name" data-ng-model="group.Name" required />
+                        <input type="text" name="name" id="name" data-ng-model="group.Name" required/>
                     </div>
                     <div class="inputs">
                         <label for="description">Description</label>
@@ -143,29 +144,29 @@
                     </div>
                     <div class="inputs">
                         <label for="displayorder">Display Order</label>
-                        <input name="displayorder" id="displayorder" type="number" data-ng-model="group.DisplayOrder" />
+                        <input name="displayorder" id="displayorder" type="number" data-ng-model="group.DisplayOrder"/>
                     </div>
                     <div class="inputs">
                         <label for="paypaldonateurl">Paypal Donate Url</label>
-                        <input name="paypaldonateurl" id="paypaldonateurl" type="text" data-ng-model="group.PaypalDonateUrl" />
+                        <input name="paypaldonateurl" id="paypaldonateurl" type="text" data-ng-model="group.PaypalDonateUrl"/>
                     </div>
                     <div class="buttons text-center">
                         <div ng-show="processing">
                             Please wait...
                         </div>
-                        <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveGroup(group)" value="Save Group" />
+                        <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveGroup(group)" value="Save Group"/>
                         <a ng-click="CancelEdit(group)">Cancel</a>
                     </div>
                 </div>
             </div>
             <div class="group-members-container" ng-hide="group.Edit || GroupEditorActive">
-                <div ng-if="group.GroupMembers.length == 0" class="text-center" style="padding:20px 0">There are no members in this group</div>
+                <div ng-if="group.GroupMembers.length == 0" class="text-center" style="padding: 20px 0">There are no members in this group</div>
                 <div class="team-member-picture" ng-repeat="member in group.GroupMembers">
                     <a href="{{member.ProfileUrl}}">
                         <img ng-src="{{member.ProfileImageUrl}}" alt="{{member.Name}}" title="{{member.Name}}">
                         <div class="team-member-name">{{member.Name}}</div>
                     </a>
-                    
+
                     <a ng-click="DeleteMember(group, member)" class="remove-member-link" ng-if="TeamPage.IsEditable">Remove</a>
                 </div>
             </div>

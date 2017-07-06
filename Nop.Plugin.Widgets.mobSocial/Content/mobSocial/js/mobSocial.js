@@ -21,9 +21,9 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "c
     $rootScope.AutocompleteCustomer = function (userInputString, timeoutPromise) {
         var response = $http.get(globalApiEndPoint + '/autocomplete/users/get', { params: { search: userInputString, excludeLoggedInUser : true } }, { timeout: timeoutPromise });
         response.success(function (res) {
-            if (res.length == 0 && validateEmail(userInputString)) {
+            if (res.ResponseData.AutoComplete.Users.length == 0 && validateEmail(userInputString)) {
                 //because the response is zero, let's see if it's an email, if it is, we can add it for direct email invitation
-                res.push({ DisplayName: userInputString, Id: userInputString, EmailInvite: true });
+                res.ResponseData.AutoComplete.Users.push({ DisplayName: userInputString, Id: userInputString, EmailInvite: true });
             }
         });
         return response;

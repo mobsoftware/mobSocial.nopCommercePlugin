@@ -120,8 +120,11 @@
         $scope.membersToAdd = [];
         $scope.groupsToAdd = [];
         $scope.CustomerSelected = function (callbackObject) {
-            $scope.membersToAdd.push(callbackObject.originalObject);
-            $scope.$broadcast('angucomplete-alt:clearInput', 'customer-autocomplete');
+            if (callbackObject) {
+                console.log($scope.membersToAdd);
+                $scope.membersToAdd.push(callbackObject.originalObject);
+                $scope.$broadcast('angucomplete-alt:clearInput', 'customer-autocomplete');
+            }
         }
 
 
@@ -172,6 +175,10 @@
                         //reload groups to show updated members
                         $scope.LoadGroups();
                     }
+                    else {
+                        alert(response.Message);
+
+                    }
                 },
                 function (response) {
                     alert("An error occured while adding member(s)");
@@ -194,7 +201,7 @@
                 return;
             }
             TeamPageService.DeleteGroupMember(group.Id,
-                member.CustomerId,
+                member.Id,
                 function (response) {
                     if (response.Success) {
                         //delete member from the list
@@ -202,8 +209,8 @@
                             var g = $scope.TeamPage.Groups[i];
                             if (g.Id == group.Id) {
                                 for (var j = 0; j < group.GroupMembers.length; j++) {
-                                    var member = group.GroupMembers[j];
-                                    if (member.CustomerId == memberId) {
+                                    var m = group.GroupMembers[j];
+                                    if (member.Id == m.Id) {
                                         group.GroupMembers.splice(j, 1);
                                         break;
                                     }
@@ -221,7 +228,7 @@
         }
 
         $scope.DeleteGroup = function (group) {
-            if (group.IsDefault) {
+            if (group.IsDefault && group.GroupMembers.length > 0) {
                 alert("This is a default group and can't be deleted. Please make another group as default and try again.");
                 return;
             }
@@ -322,7 +329,7 @@ app.controller("TeamPageEditorController",
         $scope.SaveTeamPage = function () {
             if ($scope.FormValid) {
                 $scope.processing = true;
-                var method = $scope.TeamPage.Id == 0 ? "Insert" : "Update";
+                var method = !$scope.TeamPage.Id || $scope.TeamPage.Id == 0 ? "Insert" : "Update";
                 TeamPageService[method]($scope.TeamPage,
                     function (response) {
                         $scope.processing = false;
