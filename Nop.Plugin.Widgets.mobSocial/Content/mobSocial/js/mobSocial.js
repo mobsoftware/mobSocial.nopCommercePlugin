@@ -1,4 +1,9 @@
-﻿var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR"])
+﻿String.prototype.replaceAll = function (search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR"])
     .constant('rootUrl', './Plugins/Widgets.mobSocial/Content/mobSocial')
     .constant('globalApiEndPoint', '/api')
     .constant('signalREndPoint', '/signalr');

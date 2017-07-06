@@ -1,22 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Web.Mvc;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
-using Nop.Core.Domain.Media;
-using Nop.Services.Customers;
-using Nop.Services.Directory;
-using Nop.Services.Forums;
-using Nop.Services.Helpers;
-using Nop.Services.Localization;
-using Nop.Services.Media;
-using Nop.Services.Seo;
 using Nop.Web.Framework.Security;
-using Nop.Web.Controllers;
-using System.Linq;
+using DryIoc;
+using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Services.BusinessPages;
-using Nop.Core;
-using Nop.Web.Models.Media;
-using Nop.Plugin.Widgets.MobSocial.Models;
+using mobSocial.Services.Extensions;
+using mobSocial.Services.MediaServices;
+using mobSocial.WebApi.Models.BusinessPages;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -25,10 +15,25 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     public partial class BusinessPageController : MobSocialWidgetBaseController
     {
         
-        public ActionResult Index(int? id, int? page)
+        public ActionResult Index(int id, int? page)
         {
-
-           return View("mobSocial/BusinessPage/Index");
+            var model = new BusinessPageModel();
+            using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
+            {
+                var businessService = mobSocialEngine.ActiveEngine.Resolve<IBusinessPageService>();
+                var mediaService = mobSocialEngine.ActiveEngine.Resolve<IMediaService>();
+                var business = businessService.Get(id);
+                model.Name = business.Name;
+                model.Description = business.Description;
+                model.MetaDescription = business.MetaDescription;
+                model.MetaKeywords = business.MetaKeywords;
+                model.City = business.City;
+                model.FullSizeImageUrl = mediaService.GetPictureUrl(null, returnDefaultIfNotFound: true);
+                model.Address1 = business.Address1;
+                model.Address2 = business.Address2;
+                model.ZipPostalCode = business.ZipPostalCode;
+            }
+           return View("mobSocial/BusinessPage/Index", model);
 
         }
 

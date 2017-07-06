@@ -67,7 +67,7 @@
                                     return {
                                         DisplayName: item.Name,
                                         PictureUrl: item.ImageUrl,
-                                        ProfileUrl: "/" + item.SeName
+                                        ProfileUrl: "/" + item.SeName.replaceAll("-", "")
                                     };
 
                                 }))

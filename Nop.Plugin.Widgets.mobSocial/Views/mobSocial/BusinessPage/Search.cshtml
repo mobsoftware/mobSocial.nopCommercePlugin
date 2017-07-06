@@ -53,7 +53,7 @@
         <br />
         <div ng-repeat="item in businesses" class="search-result-item">
             <div>
-                <a href="{{item.Url}}">
+                <a href="/{{item.SeName.replace('-', '')}}">
                     <div class="left">
                         <img ng-src="{{item.ThumbnailUrl}}" title="{{item.Title}}" class="thumbnail" />
                     </div>

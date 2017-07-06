@@ -48,8 +48,8 @@
     </style>
 
     <div style="position: relative;">
-        <a href="@Model.FullSizeImageUrl" title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
-            <img id="main-event-img-@Model.Id" class="event-picture" src="@Model.MainPictureUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture"/>
+        <a title="@Model.Name" id="main-event-img-lightbox-anchor-@Model.Id">
+            <img id="main-event-img-@Model.Id" style="max-width: 100%;" class="event-picture" src="@Model.FullSizeImageUrl" itemprop="image" title="@(Model.Name) Picture" alt="@(Model.Name) picture"/>
 
         </a>
 
