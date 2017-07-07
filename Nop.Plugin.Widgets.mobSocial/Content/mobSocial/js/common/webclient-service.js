@@ -1,4 +1,4 @@
-﻿app.service("WebClientService", ["$http", function ($http) {
+﻿app.service("WebClientService", ["$http", "$rootScope", function ($http, $rootScope) {
 
     this._connect = function (method, url, params, success, error) {
         var config = {
@@ -11,11 +11,13 @@
             config["data"] = params;
             config["dataType"] = "json";
         }
-
-        $http(config).then(function(response) {
+        $rootScope.BlockUi = true;
+        $http(config).then(function (response) {
+            $rootScope.BlockUi = false;
             if (success)
                 success(response.data);
-        }, function(response) {
+        }, function (response) {
+            $rootScope.BlockUi = false;
             if (error)
                 error(response.data);
         });

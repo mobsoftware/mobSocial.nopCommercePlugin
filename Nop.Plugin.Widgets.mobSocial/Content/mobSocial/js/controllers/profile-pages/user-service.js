@@ -56,4 +56,12 @@
             error);
     }
 
+    this.getConfigurations = function (success, error) {
+        webClientService.get(apiEndPoint + "/configuration/get", null, success, error);
+    }
+
+    this.postConfiguration = function (configurationName, configurationValue, success, error) {
+        webClientService.post(apiEndPoint + "/configuration/post/" + configurationName + "/" + configurationValue, null, success, error);
+    }
+
 }]);

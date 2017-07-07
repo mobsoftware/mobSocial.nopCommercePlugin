@@ -3333,3 +3333,39 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     }
 }
 
+.block-ui-container {
+    position: relative;
+
+    .block-ui {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 500;
+        background-color: rgba(255,255,255, 0.7);
+
+        &.dark {
+            background-color: rgba(0,0,0, 0.7);
+        }
+
+        .spinner {
+            display: block;
+            position: absolute;
+            z-index: 2000;
+            top: 45%;
+            right: 45%;
+            width: 14px;
+            height: 14px;
+            border: solid 2px transparent;
+            border-top-color: #666;
+            border-left-color: #666;
+            border-radius: 10px;
+            -webkit-animation: pace-spinner 400ms linear infinite;
+            -moz-animation: pace-spinner 400ms linear infinite;
+            -ms-animation: pace-spinner 400ms linear infinite;
+            -o-animation: pace-spinner 400ms linear infinite;
+            animation: pace-spinner 400ms linear infinite;
+        }
+    }
+}

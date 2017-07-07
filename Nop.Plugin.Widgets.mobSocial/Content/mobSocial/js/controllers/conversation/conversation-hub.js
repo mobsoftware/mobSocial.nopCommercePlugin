@@ -117,6 +117,12 @@
         globalUnreadCount: 0,
         firstLoadComplete: false,
         visibleChats: [],
+        loading: false,
+        setCurrentUser: function(id) {
+            $rootScope.CurrentUser = {
+                Id: id
+            };
+        },
         getTotalUnreadCount: function () {
             return $rootScope.Chat.openChats.reduce(function (total, chat) {
                 return total + (chat.unreadCount || 0);
@@ -198,12 +204,14 @@
 
         },
         //get online friends
-        loadOnlineFriends: function (currentUserId) {
-            $rootScope.CurrentUser = {
-                Id: currentUserId
-            };
+        loadOnlineFriends: function (firstRun) {
+            //save to database the status of chatbox
+            if (!firstRun)
+                $rootScope.updateUserConfiguration("ChatBoxOpen",
+                    $rootScope.userConfiguration.ChatBoxOpen == 'true' ? 'false' : 'true');
             if (this.firstLoadComplete)
                 return;
+            $rootScope.Chat.loading = true;
             conversationService.getAll(function (response) {
                 if (response.Success) {
                     $rootScope.Chat.firstLoadComplete = true;
@@ -227,6 +235,7 @@
                         $rootScope.$apply();
                     });
                 }
+                $rootScope.Chat.loading = false;
             });
         },
         markConversationRead: function (conversationId) {
@@ -281,6 +290,6 @@
                 return;
             }
         });
-
+   
     return this;
 }]);

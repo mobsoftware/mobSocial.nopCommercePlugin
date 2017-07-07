@@ -9,7 +9,7 @@ var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-
     .constant('signalREndPoint', '/signalr');
     
 //attach some global functions to rootScope
-app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "conversationHub", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider, conversationHub) {
+app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "conversationHub", "userService", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider, conversationHub, userService) {
     $rootScope.login = function (returnUrl) {
         returnUrl = returnUrl || window.location.href;
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
@@ -75,5 +75,31 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "c
         if (d1 == "Invalid Date" || d2 == "Invalid Date")
             return false;
         return d1.toDateString() == d2.toDateString();
+    }
+
+    $rootScope.userConfiguration = {};
+    $rootScope.getUserConfigurations = function() {
+        userService.getConfigurations(function(res) {
+            if (res.Success) {
+                for (var i = 0; i < res.ResponseData.ConfigurationValues.length; i++) {
+                    var cv = res.ResponseData.ConfigurationValues[i];
+                    $rootScope.userConfiguration[cv.PropertyName] = cv.PropertyValue;
+                }
+                if ($rootScope.userConfiguration.ChatBoxOpen == 'true') {
+                    $rootScope.Chat.loadOnlineFriends(true);
+                }
+            }
+        });
+    }
+    $rootScope.getUserConfigurations(); //load configurations on startup
+
+    $rootScope.updateUserConfiguration = function(key, value) {
+        userService.postConfiguration(key,
+            value,
+            function(response) {
+                if (response.Success) {
+                    $rootScope.userConfiguration[key] = value;
+                }
+            });
     }
 }]);

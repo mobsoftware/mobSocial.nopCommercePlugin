@@ -14,7 +14,7 @@
     {
         @Html.Raw("<div ng-app=\"mobSocialApp\" ng-cloak>");
     }
-    <div class="chat-area">
+    <div class="chat-area" ng-init="Chat.setCurrentUser(@currentUser.Id)" ng-class="{'expanded' : userConfiguration.ChatBoxOpen == 'true'}">
         <div class="chat-box">
             <div class="">
                 <div class="chat-box-section-friend-list">
@@ -86,15 +86,10 @@
             </div>
         </div>
         <div class="chat-switcher">
-            <a id="switch-link" ng-click="Chat.loadOnlineFriends(@currentUser.Id)">
+            <a id="switch-link" ng-click="Chat.loadOnlineFriends()">
                 <i class="fa fa-comments"></i> Chat <span class="unread-count" ng-if="(Chat.getTotalUnreadCount() || Chat.globalUnreadCount) > 0">{{Chat.getTotalUnreadCount() || Chat.globalUnreadCount || ''}}</span>
             </a>
             <script type="text/javascript">
-                jQuery("#switch-link")
-                    .click(function(e) {
-                        jQuery(".chat-area").toggleClass("expanded");
-                        e.preventDefault();
-                    });
                 var focusToInput = function() {
                     jQuery("#chat-input").focus();
                 }
