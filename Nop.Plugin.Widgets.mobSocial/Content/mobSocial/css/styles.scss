@@ -342,13 +342,15 @@ input[type='number'] {
 
 .customer-friends-friend-block {
     width: 130px;
+    height:130px;
     padding: 0;
     margin: 0 5px 25px 5px;
     display: inline-block;
     text-align: center;
 
     img {
-        max-width: 100%;
+        width: 100%;
+        height:100%;
     }
 }
 

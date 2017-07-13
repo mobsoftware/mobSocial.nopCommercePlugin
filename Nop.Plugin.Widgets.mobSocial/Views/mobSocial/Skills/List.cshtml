@@ -20,8 +20,8 @@
                     </h1>
                     <div class="skill-box" ng-repeat="skill in skills">
                         <h4>
-                            <a ng-href="skill/{{skill.SeName}}">
-                                {{skill.SkillName}}
+                            <a ng-href="skills/{{skill.SeName}}">
+                                {{skill.Name}}
                             </a>
                         </h4>
                         <div class="description" title="{{skill.Description}}">
@@ -29,7 +29,7 @@
                             <i ng-if="!skill.Description || skill.Description == ''">No description</i>
                         </div>
                     </div>
-                    <div class="load-more" ng-if="totalSkillRecords > skills.length">
+                    <div class="paginatino-load-more" ng-if="totalSkillRecords > skills.length">
                         <a block-ui ng-click="getAllSkills()">Load More</a>
                     </div>
                 </div>

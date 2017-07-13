@@ -81,6 +81,8 @@ app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "c
     $rootScope.getUserConfigurations = function() {
         userService.getConfigurations(function(res) {
             if (res.Success) {
+                if (!res.ResponseData)
+                    return;
                 for (var i = 0; i < res.ResponseData.ConfigurationValues.length; i++) {
                     var cv = res.ResponseData.ConfigurationValues[i];
                     $rootScope.userConfiguration[cv.PropertyName] = cv.PropertyValue;
