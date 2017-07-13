@@ -184,7 +184,14 @@
 
                             <div class="resp-tabs-container">
                                 <div>
-                                    @Html.Action("TimelineWidget", "Timeline", new { customerId = @Model })
+                                    @if (isLoggedIn)
+                                    {
+                                        @Html.Action("TimelineWidget", "Timeline", new {customerId = @Model})
+                                    }
+                                    else
+                                    {
+                                        <p>Please <a href="/login">Login</a> to view {{user.Name}}'s activities</p>
+                                    }
                                 </div>
                                 <div id="tab-myskills">
 
