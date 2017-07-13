@@ -30,7 +30,6 @@
                             for (var i = 0; i < response.ResponseData.BusinessPages.length; i++) {
                                 var b = response.ResponseData.BusinessPages[i];
                                 b.SeName = b.SeName.replaceAll("-", "");
-                                console.log(b.SeName);
                                 businesses.push(b);
                             }
                             $scope.businesses = businesses;
