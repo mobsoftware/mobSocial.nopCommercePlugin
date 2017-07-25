@@ -2734,6 +2734,16 @@ li a:hover {
         }
     }
 
+    &.user-profile{
+        .cover{
+            overflow:visible;
+            .bgcover{
+                img{
+                    height:100%;
+                }
+            }
+        }
+    }
     .fixed-popup {
         .content {
             h1, h2, h3, h4, h5, h6, td, span, a, button, i {
@@ -3369,5 +3379,21 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
             -o-animation: pace-spinner 400ms linear infinite;
             animation: pace-spinner 400ms linear infinite;
         }
+    }
+}
+
+.friendship-dropdown-button {
+    position: relative;
+
+    .dropdown {
+        position: absolute;
+        top: 23px;
+        background-color: white;
+        color: #555!important;
+        border: solid 1px #555;
+        left: 0;
+        width: 150px;
+        padding: 10px;
+        display:none;
     }
 }

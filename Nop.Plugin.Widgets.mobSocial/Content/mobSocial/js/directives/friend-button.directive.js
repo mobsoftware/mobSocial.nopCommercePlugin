@@ -33,6 +33,8 @@
                     });
                 }
                 else if (type == "decline") {
+                    if (!confirm("Are you sure you wish to cancel friendship?"))
+                        return;
                     FriendService.DeclineFriend($scope.CustomerId, function (response) {
                         if (response.Success) {
                             $scope.FriendStatus = response.NewStatus;

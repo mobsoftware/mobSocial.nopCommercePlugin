@@ -11,9 +11,13 @@
         </a>
     </span>
     <span ng-switch-when="@((int) FriendStatus.Friends)">
-        <a class="button-primary button" ng-click="UpdateFriendship('decline')">
-            Cancel Friendship
-        </a>
+        <span class="friendship-dropdown-button">
+            <a class="button-primary button" onclick="jQuery(this).next('a').toggle();"><i class="fa fa-check-circle"></i> Friends <i class="fa fa-angle-down"></i></a>
+            <a class="dropdown" ng-click="UpdateFriendship('decline')">
+                Cancel Friendship
+            </a>
+
+        </span>
     </span>
     <span ng-switch-when="@((int) FriendStatus.NeedsConfirmed)">
         <a class="button-primary button" ng-click="UpdateFriendship('confirm')">

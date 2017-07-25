@@ -1810,6 +1810,11 @@ li a:hover {
       box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
       height: 100%; }
 
+.cover-area.user-profile .cover {
+  overflow: visible; }
+  .cover-area.user-profile .cover .bgcover img {
+    height: 100%; }
+
 .cover-area .fixed-popup .content h1, .cover-area .fixed-popup .content h2, .cover-area .fixed-popup .content h3, .cover-area .fixed-popup .content h4, .cover-area .fixed-popup .content h5, .cover-area .fixed-popup .content h6, .cover-area .fixed-popup .content td, .cover-area .fixed-popup .content span, .cover-area .fixed-popup .content a, .cover-area .fixed-popup .content button, .cover-area .fixed-popup .content i {
   color: #777; }
 
@@ -2232,4 +2237,17 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
       -ms-animation: pace-spinner 400ms linear infinite;
       -o-animation: pace-spinner 400ms linear infinite;
       animation: pace-spinner 400ms linear infinite; }
+
+.friendship-dropdown-button {
+  position: relative; }
+  .friendship-dropdown-button .dropdown {
+    position: absolute;
+    top: 23px;
+    background-color: white;
+    color: #555 !important;
+    border: solid 1px #555;
+    left: 0;
+    width: 150px;
+    padding: 10px;
+    display: none; }
 
