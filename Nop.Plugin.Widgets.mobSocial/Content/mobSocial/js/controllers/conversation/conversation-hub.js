@@ -253,12 +253,12 @@
                 return;
             $rootScope.Chat.visibleChats = []; //remove everything
             var count = 8;
-
+            newValue = newValue.toLowerCase();
             for (var i = 0; i < $rootScope.Chat.openChats.length; i++) {
                 var c = $rootScope.Chat.openChats[i];
                 if (!c.conversation.ReceiverName)
                     continue;
-                if (c.conversation.ReceiverName.indexOf(newValue) == 0)
+                if (c.conversation.ReceiverName.toLowerCase().indexOf(newValue) == 0)
                     $rootScope.Chat.visibleChats.push(c);
 
                 if ($rootScope.Chat.visibleChats.length >= count)
