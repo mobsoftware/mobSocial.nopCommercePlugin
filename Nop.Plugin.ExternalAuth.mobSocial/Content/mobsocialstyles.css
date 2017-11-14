@@ -1,0 +1,7 @@
+﻿.mobSocial-btn {
+    display: inline-block;
+    width: 150px;
+    height: 23px;
+    background-image: url('images/mobsocial-signin.png');
+    background-repeat: no-repeat;
+}

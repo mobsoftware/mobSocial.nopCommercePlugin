@@ -1,0 +1,9 @@
+﻿Group: ExternalAuth methods
+FriendlyName: MobSocial authentication
+SystemName: ExternalAuth.MobSocial
+Version: 1.0
+SupportedVersions: 3.90
+Author: nopCommerce team
+DisplayOrder: 5
+FileName: Nop.Plugin.ExternalAuth.mobSocial.dll
+Description: This plugin enables MobSocial authentication (login using MobSocial account)
