@@ -1,16 +1,5 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using mobSocial.Core.Infrastructure.AppEngine;
-using mobSocial.Data.Constants;
-using mobSocial.Data.Entity.Users;
-using mobSocial.Data.Enum;
-using mobSocial.Services.Extensions;
-using mobSocial.Services.MediaServices;
-using mobSocial.Services.Social;
-using mobSocial.Services.Users;
+﻿using System.Web.Mvc;
 using Nop.Core;
-using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Web.Controllers;
 using Nop.Web.Models.Profile;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -41,5 +30,9 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
            return View("mobSocial/AboutMe/PublicInfo");
         }
 
+        public ActionResult Register()
+        {
+            return View("mobSocial/User/Register");
+        }
     }
 }

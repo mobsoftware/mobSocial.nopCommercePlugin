@@ -1,0 +1,57 @@
+﻿<span ng-switch on="customField.FieldType">
+    <span ng-switch-when="1">
+        <input class="form-control" type="text" id="fieldType" ng-model="customField.Value" />
+    </span>
+    <span ng-switch-when="2">
+        <textarea class="form-control" id="fieldType" ng-model="customField.Value"></textarea>
+    </span>
+    <span ng-switch-when="3">
+        <textarea wyswyg class="form-control" id="fieldType" ng-model="customField.Value"></textarea>
+    </span>
+    <span ng-switch-when="4">
+        <input class="form-control" type="number" id="fieldType" ng-model="customField.Value" />
+    </span>
+    <span ng-switch-when="5">
+        <input class="form-control" type="email" id="fieldType" ng-model="customField.Value" />
+    </span>
+    <span ng-switch-when="6">
+        <input class="form-control" type="password" id="fieldType" ng-model="customField.Value" />
+    </span>
+    <span ng-switch-when="7">
+        <input icheck class="form-control" type="checkbox" id="fieldType" ng-model="customField.Value" />
+    </span>
+    <span ng-switch-when="8">
+        <span ng-if="availableValues.length > 0" ng-repeat="av in availableValues">
+            <span>
+                <input icheck type="checkbox" value="{{av}}" ng-checked="selectedValues.indexOf(av) > -1" id="fieldType" ng-click="handleCheckboxListChange(av)" />
+                {{av}}
+            </span>
+        </span>
+    </span>
+    <span ng-switch-when="9">
+    </span>
+    <span ng-switch-when="10">
+        <span ng-if="availableValues.length > 0" ng-repeat="av in availableValues">
+            <span>
+                <input type="radio" value="{{av}}" ng-selected="customField.Value == av" id="fieldType" ng-model="customField.Value" />
+                {{av}}
+            </span>
+        </span>
+    </span>
+    <span ng-switch-when="11">
+    </span>
+    <span ng-switch-when="12">
+    </span>
+    <span ng-switch-when="13">
+        <span ng-if="availableValues.length > 0">
+            <select class="form-control" id="fieldType" ng-model="customField.Value">
+                <option ng-repeat="av in availableValues" value="{{av}}">
+                    {{av}}
+                </option>
+            </select>
+        </span>
+    </span>
+    <span ng-switch-when="14" id="nestedDropdown_{{fieldUId}}">
+
+    </span>
+</span>

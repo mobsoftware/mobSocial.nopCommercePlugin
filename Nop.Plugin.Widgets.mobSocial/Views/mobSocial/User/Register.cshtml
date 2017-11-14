@@ -1,0 +1,63 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+@{
+    Html.Partial("mobSocial/User/Includes");
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
+}
+<div class="page registration-page" ng-controller="RegistrationController">
+    <div class="page-title">
+        <h1>@T("Account.Register")</h1> <a class="text-muted text-right">Powered by mobSocial</a>
+    </div>
+    <div class="page-body">
+        <div class="fieldset" ng-if="!registrationSuccess">
+            <div class="title">
+                <strong>@T("Account.YourPersonalDetails")</strong>
+            </div>
+            <div class="form-fields">
+                <div class="message-error">
+                    {{errorMessage}}
+                </div>
+                <div class="inputs">
+                    <label>Email:</label>
+                    <input type="text" ng-model="user.Email"/>
+                </div>
+                <div class="inputs">
+                    <label>First Name:</label>
+                    <input type="text" ng-model="user.FirstName"/>
+                </div>
+                <div class="inputs">
+                    <label>Last Name:</label>
+                    <input type="text" ng-model="user.LastName"/>
+                </div>
+                <div class="inputs">
+                    <label>Password:</label>
+                    <input type="password" ng-model="user.Password"/>
+                </div>
+                <div class="inputs">
+                    <label>Confirm Password:</label>
+                    <input type="password" ng-model="user.ConfirmPassword"/>
+                </div>
+                <div class="inputs" ng-repeat="customField in customFields">
+                    <label>{{customField.Label}}:</label>
+                    <custom-field customfield="customField"></custom-field>
+                </div>
+                <div class="inputs">
+                    <label></label>
+                    <label><input type="checkbox" ng-model="user.Agreement"/> By signing up, you agree to mobSocial Terms</label>
+                </div>
+                <div class="message-error">
+                    {{errorMessage}}
+                </div>
+            </div>
+            <div class="buttons">
+                <input type="button" ng-click="register()" id="register-button" class="button-1 register-next-step-button" value="@T("Account.Register.Button")" name="register-button" />
+            </div>
+        </div>
+        <div class="fieldset" ng-if="registrationSuccess">
+            <div class="title">
+                <strong>Registration Success!</strong>
+            </div>
+            <p>Thank you for registering with mobSocial. Please check your email to validate your account.</p>
+            @Html.Widget("mobsocial_login")
+        </div>
+    </div>
+</div>
