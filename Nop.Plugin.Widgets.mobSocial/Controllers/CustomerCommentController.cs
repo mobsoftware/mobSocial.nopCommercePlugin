@@ -2,11 +2,11 @@
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
-using Nop.MobSocial.WebApi.Extensions;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Media;
+using Nop.Services.Seo;
 using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -26,11 +26,19 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         public ActionResult CustomerComments()
         {
-            var model = new CustomerCommentsModel() {
+            var model = new CustomerCommentsModel()
+            {
                 CustomerName = _workContext.CurrentCustomer.GetFullName(),
                 CanPost = _workContext.CurrentCustomer.IsRegistered(),
-                CustomerProfileUrl = Url.RouteUrl("CustomerProfileUrl", new { SeName = _workContext.CurrentCustomer.GetSeName(_workContext.WorkingLanguage.Id, true, false) }),
-                CustomerProfileImageUrl = _pictureService.GetPictureUrl(_workContext.CurrentCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), _mediaSettings.AvatarPictureSize, true),
+                CustomerProfileUrl = Url.RouteUrl("CustomerProfileUrl",
+                    new
+                    {
+                        Id = _workContext.CurrentCustomer.Id
+                    }),
+                CustomerProfileImageUrl =
+                    _pictureService.GetPictureUrl(
+                        _workContext.CurrentCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mediaSettings.AvatarPictureSize, true),
                 PreloadComments = true, //TODO: Make this property configurable using settings
                 SinglePageCommentCount = 5
             };

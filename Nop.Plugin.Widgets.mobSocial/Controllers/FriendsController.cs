@@ -1,7 +1,5 @@
 ﻿using System.Web.Mvc;
-using mobSocial.WebApi.Models.Social;
 using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Web.Controllers;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers

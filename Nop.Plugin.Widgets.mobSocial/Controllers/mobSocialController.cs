@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Web.Mvc;
 using System.Linq;
 using Nop.Core;
@@ -18,14 +16,6 @@ using Nop.Services.Media;
 using Nop.Services.Orders;
 using Nop.Services.Security;
 using Nop.Services.Seo;
-using Mob.Core;
-using System.Web;
-using mobSocial.Data.Entity.Albums;
-using mobSocial.Data.Entity.GroupPages;
-using mobSocial.Data.Entity.TeamPages;
-using mobSocial.Data.Entity.Videos;
-using mobSocial.Data.Enum;
-using Nop.Web.Controllers;
 
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers

@@ -1,7 +1,4 @@
 ﻿using System.Web.Mvc;
-using mobSocial.Data.Enum;
-using mobSocial.WebApi.Models.Battles;
-using Nop.Web.Controllers;
 using Nop.Plugin.Widgets.MobSocial.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -11,26 +8,26 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #region Battles
 
         [Authorize]
-        public ActionResult VideoBattleEditor(int VideoBattleId = 0)
+        public ActionResult VideoBattleEditor(int videoBattleId = 0)
         {
             var model = new BattleEditorModel()
             {
-                Id = VideoBattleId
+                Id = videoBattleId
             };
             return View("mobSocial/VideoBattle/VideoBattleEditor", model);
         }
 
-        public ActionResult Index(string SeName, VideoViewMode ViewMode = VideoViewMode.Regular)
+        public ActionResult Index(string seName, string viewMode)
         {
             var model = new VideoBattleIndexModel()
             {
-                SeName = SeName,
-                ViewMode = ViewMode
+                SeName = seName,
+                ViewMode = viewMode
             };
-            return View(ViewMode == VideoViewMode.TheaterMode ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
+            return View(viewMode == "TheaterMode" ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
-        public ActionResult VideoBattles(string viewType = "open", string searchTerm = "", BattlesSortBy sortBy = BattlesSortBy.Id, SortOrder sortOrder = SortOrder.Descending)
+        public ActionResult VideoBattles(string viewType = "open", string searchTerm = "", string sortBy = "Id", string sortOrder = "Descending")
         {
             var model = new VideoBattleQueryModel() {
                 SearchTerm = searchTerm,

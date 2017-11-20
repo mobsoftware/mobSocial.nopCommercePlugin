@@ -79,7 +79,6 @@
     <Compile Include="Models\BusinessPageSearchModel.cs" />
     <Compile Include="Models\CustomerCommentsModel.cs" />
     <Compile Include="Models\CustomerFriendsRequestModel.cs" />
-    <Compile Include="Models\CustomerProfilePublicModel.cs" />
     <Compile Include="Models\PageDisplayModel.cs" />
     <Compile Include="Models\RouteDataModel.cs" />
     <Compile Include="Models\SkillPageModel.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="Models\TimelinePublicModel.cs" />
     <Compile Include="Models\TimelineWidgetModel.cs" />
     <Compile Include="Models\VideoBattleIndexModel.cs" />
+    <Compile Include="Models\VideoBattleQueryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteProvider.cs" />
     <Compile Include="Services\ITimelineWidgetLoaderService.cs" />
@@ -891,12 +891,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)Libraries\Nop.Data\Nop.Data.csproj">
+    <ProjectReference Include="F:\Websites\Testing\nopCommerce_3.90_Source\Libraries\Nop.Data\Nop.Data.csproj">
       <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
       <Name>Nop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+    <ProjectReference Include="F:\Websites\Testing\nopCommerce_3.90_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
       <Name>Nop.Admin</Name>
       <Private>False</Private>
@@ -921,24 +921,10 @@
       <Name>Nop.Web</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Websites\Testing\nopCommerce_3.80_Source-new\Plugins\Nop.MobSocial.WebApi\Nop.MobSocial.WebApi.csproj">
-      <Project>{43f363ca-a4af-4f74-b986-4a8f5a3f9c52}</Project>
-      <Name>Nop.MobSocial.WebApi</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Mob.Core\Mob.Core.csproj">
-      <Project>{bb97781d-33c7-4c20-b404-8c6acc382b7a}</Project>
-      <Name>Mob.Core</Name>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+    <Reference Include="Autofac">
+      <HintPath>..\..\..\..\..\Websites\Testing\nopCommerce_3.90_Source\packages\Autofac.4.4.0\lib\net45\Autofac.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack">
@@ -953,26 +939,6 @@
     <Reference Include="MobAds.Public">
       <HintPath>MobLib\MobAds.Public.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="mobSocial.Core">
-      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="mobSocial.Data">
-      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Data.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="mobSocial.Services">
-      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.Services.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="mobSocial.WebApi">
-      <HintPath>..\..\..\Standalone\Presentation\mobSocial.WebApi\bin\mobSocial.WebApi.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(SolutionDir)packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -1015,14 +981,6 @@
     xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets'))" />
-  </Target>
-  <Import Project="$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets" Condition="Exists('$(SolutionDir)packages\BuildWebCompiler.1.11.315\build\BuildWebCompiler.targets')" />
   <!--<Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
