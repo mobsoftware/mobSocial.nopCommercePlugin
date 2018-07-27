@@ -1,0 +1,29 @@
+﻿<div class="box">
+    <div class="box-header with-border">
+        <h1 class="box-title">
+            Edit User - {{user.Name}} <small><a ui-sref="layoutAdministration.users.list"> <i class="fa fa fa-arrow-circle-left"></i> back to user list</a></small>
+        </h1>
+        <div class="pull-right">
+            <a class="btn btn-danger btn-block" ng-click="delete()"><i class="fa fa-times"></i> Delete</a>
+        </div>
+    </div>
+    <div class="box-body no-padding">
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li ui-sref-active="active"><a ui-sref="layoutAdministration.users.edit.basic" ui-sref-opts="{reload: true}">Basic Details</a></li>
+                <li ui-sref-active="active"><a ui-sref="layoutAdministration.users.edit.timeline" ui-sref-opts="{reload: true}">Timeline</a></li>
+                
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <div ui-view></div>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+        </div>
+
+        
+    </div>
+</div>

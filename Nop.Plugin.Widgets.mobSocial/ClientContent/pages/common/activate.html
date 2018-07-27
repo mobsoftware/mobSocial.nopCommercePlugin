@@ -1,0 +1,26 @@
+﻿<div class="register-box">
+    <div class="register-logo">
+        <a href="/"><b>mob</b>Social</a>
+    </div>
+    <!-- /.register-logo -->
+    <div class="register-box-body" block-ui>
+        <span ng-bind-html="_Notifications('activate')"></span>
+        <form action="" method="post" ng-if="!activated">
+            <fieldset>
+                <div class="form-group has-feedback">
+                    <input type="email" class="form-control" placeholder="Email" ng-model="dataModel.email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat" ng-click="activate()">Activate</button>
+                </div>
+            </fieldset>
+
+        </form>
+        <!-- /.social-auth-links -->
+        Click <a ui-sref="layoutZero.login" class="text-center">Login</a> to continue
+    </div>
+    <!-- /.register-box-body -->
+</div>
+<!-- /.register-box -->

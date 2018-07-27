@@ -1,0 +1,54 @@
+﻿<span>
+
+    <a class="link-black text-sm  margin-r-5" ng-click="toggleComments()" href="">
+        <i class="fa fa-comments-o margin-r-5"></i> Comments({{TotalComments}})
+    </a>
+    <div class="comment-list" ng-show="commmentsVisible">
+        <div ng-repeat="comment in CommentList" class="comment-box">
+            <div class="commenter-info">
+                <img ng-src="{{comment.User.ProfileImageUrl}}" class="img-circle img-sm img-bordered-sm" />
+                <span class="username">
+                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: null, idOrUserName: comment.User.UserName ? comment.User.UserName : comment.User.Id })">{{comment.User.Name}}</a>
+                    <a ng-if="comment.CanDelete" class="comment-delete pull-right btn-box-tool" ng-click="Delete(comment.Id)"><i class="fa fa-times"></i></a>
+
+                </span>
+                <span class="description">
+                    <span class="post-time">
+                        <i class="fa fa-clock-o"></i>
+                        <time am-time-ago="comment.DateCreated"></time>
+                    </span>
+                </span>
+            </div>
+            <div class="comment-text">
+                <p ng-bind-html="comment.CommentText | linky:'_blank' | unescape"></p>
+                <div>
+                    <like-button entityid="{{comment.Id}}" entityname="Comment" likestatus="comment.LikeStatus" totallikes="{{comment.LikeCount}}"></like-button>
+                </div>
+
+            </div>
+        </div>
+        <div ng-show="CommentsLoading">Loading comments...</div>
+        <a href="" ng-show="CommentList.length > 0 && CommentList.length < TotalComments && !NoMoreComments && !CommentsLoading" ng-click="Get()" class="view-more-comments">View more comments</a>
+    </div>
+    <div class="comment-form">
+        <!--img ng-src="{{CurrentUser.ProfileImageUrl}}" class="img-circle img-sm img-bordered-sm" /-->
+        <form type="post">
+            <div class="input-group input-group-sm">
+                <textarea ng-model="Comment.CommentText"
+                          mentio  
+                          mentio-trigger-char="'@'" 
+                          mentio-items="mentionedUsers" 
+                          mentio-search="HandleMention(term)" 
+                          mentio-select="TagUser(item)"
+                          ng-trim="true" 
+                          class="form-control input-sm" 
+                          placeholder="Type a comment"
+                          mentio-id="'comment-area-{{EntityId}}'"></textarea>
+                <span class="input-group-btn">
+                    <button type="submit" ng-click="Post()" class="btn btn-secondary btn-flat">Comment</button>
+                </span>
+            </div>
+        </form>
+
+    </div>
+</span>

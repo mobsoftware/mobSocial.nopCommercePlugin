@@ -10,7 +10,7 @@
                 return;
             }
             if (response.status === 404) {
-                window.location.href = "/404";
+                //window.location.href = "/404";
                 return;
             }
             

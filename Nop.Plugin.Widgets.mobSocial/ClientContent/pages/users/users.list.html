@@ -1,0 +1,52 @@
+﻿ <!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1 class="box-title">
+        &nbsp;
+    </h1>
+    <ol class="breadcrumb">
+        <li><a ui-sref="layoutAdministration.dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Users</li>
+    </ol>
+</section>
+<div class="box">
+    <div class="box-header">
+        <h1 class="box-title">
+            Manage Users
+        </h1>
+        <div class="pull-right">
+            <a ui-sref="layoutAdministration.users.edit.basic({ id:0 })" class="btn btn-primary"><i class="fa fa-plus"></i> Add User</a>
+        </div>
+    </div>
+    <div class="box-body no-padding">
+        <div class="table-responsive">
+            <table class="table no-margin user-list">
+                <tr>
+                    <th>Name</th>
+                    <th>Last Logged in</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="user in users">
+                    <td>
+                        <a ui-sref="layoutAdministration.users.edit.basic({ id: user.Id })">
+                            <img ng-src="{{user.ProfileImageUrl}}" class="img-circle" /> {{user.Name}}
+                        </a>
+                    </td>
+                    <td>
+                        <i class="fa fa-clock"></i> <time am-time-ago="user.LastLoginDateLocal"></time>
+                    </td>
+                    <td>
+                        <span class="badge" ng-class="{'bg-green' : user.Active, 'bg-red': !user.Active}">{{user.Active ? "Active" : "Not Active"}}</span>
+                        
+                    </td>
+                    <td>
+                        <span class="pull-right">
+                            <a ui-sref="layoutAdministration.users.edit.basic({ id: user.Id })" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                        </span>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

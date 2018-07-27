@@ -1,0 +1,63 @@
+﻿<div class="activity-list" ng-controller="timelineController">
+    <div class="post post-form">
+        <div class="user-block row">
+            <div class="col-xs-1">
+                <img class="img-circle img-bordered-sm hidden-sm hidden-xs" ng-src="{{CurrentUser.ProfileImageUrl}}" alt="user image" />
+            </div>
+            <div class="post-box col-xs-11">
+                <div class="form-group">
+                    <textarea ng-model="PostData.Message" 
+                              mentio  
+                              mentio-trigger-char="'@'" 
+                              mentio-items="mentionedUsers" 
+                              mentio-search="HandleMention(term)"
+                              mentio-select="TagUser(item)"
+                              ng-trim="false" placeholder="What's on your mind" class="form-control"></textarea>
+                </div>
+                <div class="form-group text-right">
+                    <span ng-include="'/pages/components/timelinePostFormWidgets.html'"></span>
+                    <button ng-click="PostToTimeline()" class="btn btn-primary">Post</button>
+                </div>
+                <div class="post-preview-area">
+                    <div ng-show="ProcessingPreview" class="preview-loader">
+                        Please wait...
+                    </div>
+                    <div ng-switch on="PostData.PostTypeName">
+                        <ng-include src="'/pages/components/timelinePostFormWidgetsPreview.html'"></ng-include>
+                    </div>
+                </div>
+                <button ng-if="PostData.AdditionalAttributeValue" ng-click="ClearPostFormExtraData()" class="btn btn-secondary">Clear</button>
+            </div>
+        </div>
+        <!-- /.user-block -->
+    </div>
+    <!-- Post -->
+    <div class="post" ng-repeat="Post in TimelinePosts track by Post.Id">
+        <div class="user-block">
+            <img class="img-circle img-bordered-sm" ng-src="{{Post.OwnerImageUrl}}" alt="user image">
+            <span class="username">
+                <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  Post.OwnerId })">{{Post.OwnerName}}</a>
+                <a ng-if="Post.CanDelete" href="" ng-click="DeletePost(Post.Id)" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+            </span>
+            <span class="description"><span class="time"><i class="fa fa-clock-o"></i> <time am-time-ago="Post.DateCreated"></time></span></span>
+        </div>
+        <!-- /.user-block -->
+        <p ng-bind-html="Post.Message | linky:'_blank' | unescape"></p>
+        <div class=" post-content-display">
+            <ng-include src="'/pages/components/timelinePostDisplay.html'"></ng-include>
+        </div>
+        <div>
+            <a href="#" class="link-black text-sm  margin-r-5"><i class="fa fa-share margin-r-5"></i> Share</a>
+            <like-button entityid="{{Post.Id}}" entityname="TimelinePost" likestatus="Post.LikeStatus" totallikes="{{Post.TotalLikes}}"></like-button>
+            <comments-box entityid="{{Post.Id}}" entityname="TimelinePost" canedit="{{Post.CanEdit}}" totalcomments="{{Post.TotalComments}}"></comments-box>
+        </div>
+    </div>
+    <!-- /.post -->
+    <div ng-if="TimelinePosts && TimelinePosts.length == 0">
+        <div class="col-xs-12">
+            <div class="alert alert-danger">
+                No recent posts found
+            </div>
+        </div>
+    </div>
+</div>

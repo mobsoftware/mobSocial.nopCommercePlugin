@@ -1,0 +1,34 @@
+﻿<div class="box box-primary" ng-controller="applicationController" ng-init="getApplications()">
+    <div class="box-header with-border">
+        <h1 class="box-title">
+            Your Applications 
+        </h1>
+        <a class="btn btn-primary btn-sm pull-right" ui-sref="layoutApplication.twoColumns.editApplication">Create New Application</a>
+    </div>
+    <div class="box-body no-padding">
+        <fieldset block-ui>
+            <table class="table" ng-if="applications && applications.length > 0">
+                <tr ng-repeat="app in applications">
+                    <td>
+                        <h4 class="margin-r-5">
+                            {{app.Name}}
+                            <span ng-if="app.Active"><i class="fa fa-check-circle text-success"></i></span>
+                            <span ng-if="!app.Active"><i class="fa fa-times-circle text-danger"></i></span>
+                        </h4>
+                        
+                    </td>
+                    <td>
+                        <button class="btn btn-default btn-sm pull-right margin-r-5" ui-sref="layoutApplication.twoColumns.listCustomFields({id : app.Id, type : 'user'})">Custom Fields</button>
+                        <button class="btn btn-default btn-sm pull-right margin-r-5" ui-sref="layoutApplication.twoColumns.editApplication({id : app.Id})">Edit</button>
+                    </td>
+                </tr>
+            </table>
+            <div ng-if="applications && applications.length == 0">
+                <div colspan="2" class="text-center">
+                    <p>You have't created any application. <a ui-sref="layoutApplication.twoColumns.editApplication">Create Application</a></p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>

@@ -46,6 +46,7 @@
     var hub = new Hub('conversation',
         {
             rootPath: signalREndPoint,
+            withCredentials : false,
             listeners: {
                 'conversationReply': function (reply, conversationId, toUserId) {
                     $timeout(function () {

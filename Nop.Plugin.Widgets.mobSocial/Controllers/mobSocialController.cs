@@ -9,6 +9,7 @@ using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Seo;
+using Nop.Plugin.Widgets.MobSocial.Attributes;
 using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Localization;
@@ -344,6 +345,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
+        public ActionResult Social()
+        {
+            return View("mobSocial/Social/Index");
+        }
     }
 
 

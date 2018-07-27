@@ -1,0 +1,12 @@
+﻿<div class="row" ng-controller="followController" ng-init="getFollowing()">
+    <div class="col-md-4" ng-repeat="u in following">
+        <user-profile-mini user="u"></user-profile-mini>
+    </div>
+    <div ng-if="following && following.length == 0">
+        <div class="col-xs-12">
+            <div class="alert alert-danger">
+                No visible followings found
+            </div>
+        </div>
+    </div>
+</div>

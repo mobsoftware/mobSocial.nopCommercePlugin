@@ -3,13 +3,14 @@
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR"])
+var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR", 'ui.router'])
     .constant('rootUrl', './Plugins/Widgets.mobSocial/Content/mobSocial')
     .constant('globalApiEndPoint', 'http://mobsocial.com/api')
-    .constant('signalREndPoint', 'http://mobsocial.com/signalr')
-    .constant('mobSocialClientId', '123456');
+    .constant('signalREndPoint', 'http://mobsocial.com/api/signalr')
+    .constant('mobSocialClientId', '714c2b79f006444fa089466cee4433c6');
 //attach some global functions to rootScope
-app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "conversationHub", "userService", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider, conversationHub, userService) {
+app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "conversationHub", "userService", "$state", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider, conversationHub, userService, $state) {
+    
     $rootScope.login = function (returnUrl) {
         returnUrl = returnUrl || window.location.href;
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning

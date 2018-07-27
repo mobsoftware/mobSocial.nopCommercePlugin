@@ -1,2 +1,5 @@
 ﻿@using Nop.Plugin.Widgets.MobSocial.Constants
-@Html.Partial("mobSocial/Conversation/ConversationBox", MobSocialConstant.IsMobSocialPage)
+@if (!MobSocialConstant.IsMobSocialPage)
+{
+    @Html.Partial("mobSocial/Conversation/ConversationBox", true)
+}

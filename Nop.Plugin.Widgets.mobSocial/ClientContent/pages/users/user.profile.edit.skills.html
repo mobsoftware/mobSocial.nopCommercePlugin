@@ -1,0 +1,30 @@
+﻿<div class="box box-primary" ng-init="init()">
+    <div class="box-header with-border  text-center">
+        <h1 class="box-title">
+            Skills 
+        </h1>
+        <a class="btn btn-primary btn-sm pull-right"  ng-if="skill==null" ng-click="add()">Add New</a>
+    </div>
+    <div class="box-body">
+        <form role="form" name="formSkillEditor" class="form-horizontal">
+            <fieldset block-ui>
+                <table ng-if="skill==null" class="table">
+                    <tr ng-repeat="skill in skills">
+                        <td>
+                            <strong class="margin-r-5">{{skill.Name}}</strong>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm pull-right" ng-click="deleteUserSkill(skill.UserSkillId)">Delete</button>
+                            <button class="btn btn-default btn-sm pull-right margin-r-5" ng-click="edit(skill)">Edit</button>
+                        </td>
+                    </tr>
+                </table>
+                <div ng-if="skill">
+                    <ng-include src="'/pages/skills/skill.editor.public.html'"></ng-include>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+
+</div>

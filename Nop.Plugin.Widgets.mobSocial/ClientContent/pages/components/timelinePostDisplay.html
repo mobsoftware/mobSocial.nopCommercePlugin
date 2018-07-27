@@ -1,0 +1,138 @@
+﻿<div ng-if="Post.PostTypeName == 'picture'" ng-init="FilterFunction['picture'](Post)">
+    <img ng-src="{{Post.SmallImageUrl}}" style="max-width: 100%" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $scope = attachFunctionToTimelineScope("setPostImage", function (Post) {
+                
+                var jsonValue = Post.AdditionalAttributeValue;
+                try {
+                    jsonValue = JSON.parse(jsonValue);
+                } catch (e) {
+                    return;
+                }
+                Post.SmallImageUrl = jsonValue.ResponseData.Images[0].Url;
+            });
+            //add to filter function. this will execute when a picture type post is being shown
+            $scope.FilterFunction['picture'] = function (Post) {
+                $scope.setPostImage(Post);
+            }
+
+        });
+    </script>
+</div>
+<div ng-if="Post.PostTypeName == 'url'"  ng-init="FilterFunction['url'](Post)">
+   
+    <div class="url-preview" ng-if="!Post.YoutubeVideo">
+        <div class="image">
+            <img ng-src="{{Post.PostData.Images[0]}}" />
+        </div>
+        <div class="url-data">
+            <a href="{{Post.PostData.AbsoluteUrl}}" target="_blank">{{Post.PostData.Title}}</a>
+            <div class="description">{{Post.PostData.Description}}</div>
+            <div class="host-name">{{Post.PostData.HostName}}</div>
+        </div>
+    </div>
+    <div ng-if="Post.YoutubeVideo" class="video-container">
+        <videogular vg-player-ready="PlayerReadyForDisplayYoutube($API, Post)" vg-responsive="true" vg-theme="Post.Config.theme">
+            <vg-media vg-src="Post.VideoSource" vg-tracks="" preload="metadata" vg-youtube="rel=1;showinfo=1"></vg-media>
+
+            <vg-controls>
+                <vg-play-pause-button></vg-play-pause-button>
+                <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
+                <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
+                <vg-volume>
+                    <vg-mute-button></vg-mute-button>
+                    <vg-volume-bar></vg-volume-bar>
+                </vg-volume>
+                <vg-fullscreen-button></vg-fullscreen-button>
+            </vg-controls>
+        </videogular>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $scope = attachFunctionToTimelineScope("setupUrlPostData", function (Post) {
+
+                var jsonValue = Post.AdditionalAttributeValue;
+                try {
+                    jsonValue = JSON.parse(jsonValue);
+                } catch (e) {
+                    return;
+                }
+                jsonValue = jsonValue.ResponseData;
+                Post.PostData = jsonValue;
+                //if it's a youtube video
+                var isYoutubeUrl = isValidYouTubeUrl(Post.PostData.AbsoluteUrl);
+                Post.YoutubeVideo = isYoutubeUrl;
+
+            });
+
+            attachFunctionToTimelineScope("PlayerReadyForDisplayYoutube", function ($API, Post) {
+                //we need $sce for videos
+                var rootUrl = window.location.origin;
+                var source = [{
+                    src: Post.PostData.AbsoluteUrl
+                }];
+                Post.VideoSource = source;
+
+
+                Post.Config = {
+                    theme: rootUrl + "/libraries/videogular/theme/videogular.css"
+                }
+                $API.changeSource(Post.VideoSource);
+                $API.sources = Post.VideoSource;
+            });
+
+            //add to filter function. this will execute when a url type post is being shown
+            $scope.FilterFunction['url'] = function (Post) {
+                $scope.setupUrlPostData(Post);
+            }
+        });
+    </script>
+</div>
+<div ng-if="Post.PostTypeName == 'video'"  ng-init="FilterFunction['video'](Post)">
+    <div class="video-container">
+        <videogular vg-player-ready="PlayerReadyForDisplay($API, Post)" vg-responsive="true" vg-theme="videogularConfig.theme">
+            <vg-media vg-src="Post.VideoSource" vg-tracks="" preload="videogularConfig.preload"></vg-media>
+
+            <vg-controls>
+                <vg-play-pause-button></vg-play-pause-button>
+                <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
+                <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
+                <vg-volume>
+                    <vg-mute-button></vg-mute-button>
+                    <vg-volume-bar></vg-volume-bar>
+                </vg-volume>
+                <vg-fullscreen-button></vg-fullscreen-button>
+            </vg-controls>
+            <vg-overlay-play></vg-overlay-play>
+            <vg-poster vg-url='Post.ThumbnailUrl'></vg-poster>
+
+        </videogular>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            attachFunctionToTimelineScope("PlayerReadyForDisplay", function ($API, Post) {
+                //we need $sce for videos
+                var $sce = angular.element(".activity-list").injector().get('$sce');
+                var jsonValue = Post.AdditionalAttributeValue;
+                try {
+                    jsonValue = JSON.parse(jsonValue);
+                } catch (e) {
+                    return;
+                }
+                jsonValue = jsonValue.ResponseData.Media;
+                Post.ThumbnailUrl = jsonValue.ThumbnailUrl;
+                var source = [{
+                    src: $sce.trustAsResourceUrl(jsonValue.Url),
+                    type: jsonValue.MimeType
+                }];
+                
+                Post.VideoSource = source;
+                $API.changeSource(Post.VideoSource);
+                $API.sources = Post.VideoSource;
+            });
+        });
+    </script>
+</div>

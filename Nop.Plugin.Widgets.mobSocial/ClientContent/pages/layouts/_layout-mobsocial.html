@@ -1,0 +1,228 @@
+﻿<header class="main-header">
+    <nav class="navbar navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand"><b>mob</b>Social</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                    </div>
+                </form>
+            </div>
+            <!-- /.navbar-collapse -->
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown notifications-menu">
+                        <!-- Menu toggle button -->
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-user-o"></i>
+                            <span class="label label-success" ng-if="PendingFriendRequestsCount() > 0">
+                                {{PendingFriendRequestsCount()}}
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have {{PendingFriendRequestsCount()}} friend request(s)</li>
+                            <li>
+                                <!-- inner menu: contains the messages -->
+                                <ul class="menu">
+                                    <li ng-repeat="notification in CurrentUser.Notifications">
+                                        <span ng-if="notification.EventName == 'UserSentFriendRequest'" style="padding: 10px; display: block;" onclick="preventClosure(event)" class="friend-notification-block">
+                                            <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
+                                            <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">{{notification.InitiatorDisplayName}}</a> wants to be friends with you.
+                                            <p>
+                                                <friend-button class="friend-button" friendstatus="notification.FriendStatus" customerid="notification.InitiatorId"></friend-button>
+                                            </p>
+                                        </span>
+                                    </li>
+                                    <!-- end notification -->
+                                </ul>
+                                <!-- /.menu -->
+                                <script type="text/javascript">
+                                    function preventClosure(e) {
+                                        e.stopPropagation();
+                                    }
+                                </script>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- /.messages-menu -->
+                    <!-- Notifications Menu -->
+                    <li class="dropdown notifications-menu" ng-controller="notificationController">
+                        <!-- Menu toggle button -->
+                        <a class="dropdown-toggle" data-toggle="dropdown" ng-click="markNotificationsRead()">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning" ng-if="UnreadNotificationCount() > 0">
+                                {{UnreadNotificationCount()}}
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have {{CurrentUser.UnreadNotificationCount}} new notification(s)</li>
+                            <li>
+                                <!-- Inner Menu: contains the notifications -->
+                                <ul class="menu">
+                                    <li ng-repeat="notification in CurrentUser.Notifications">
+                                        <a ng-if="notification.EventName == 'UserFollowed'" ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">
+                                            <div>
+                                                <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
+                                                <strong>{{notification.InitiatorDisplayName}}</strong> is now following you
+                                            </div>
+                                        </a>
+                                        <a ng-if="notification.EventName == 'UserAcceptedFriendRequest'" ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">
+                                            <div>
+                                                <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
+                                                <strong>{{notification.InitiatorDisplayName}}</strong> has accepted your friend request
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end notification -->
+                                </ul>
+                            </li>
+                            <li class="footer" ng-if="CurrentUser.UnreadNotificationCount > 0"><a href="#">View all</a></li>
+                        </ul>
+                    </li>
+                    <!-- User Account Menu -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" target="_self" data-toggle="dropdown">
+                            <img ng-src="{{CurrentUser.ProfileImageUrl}}" class="user-image" alt="User Image">
+                            <span class="hidden-xs">{{CurrentUser.Name}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img ng-src="{{CurrentUser.ProfileImageUrl}}" class="img-circle"
+                                     alt="User Image">
+
+                                <p>
+                                    {{CurrentUser.Name}}
+                                    <small>Member since {{CurrentUser.DateCreatedUtc}}</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a ui-sref="layoutApplication.twoColumns.listApplications">My Apps</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a ui-sref="layoutMobSocial.twoColumns.editProfile({ tab: null })" href="#" class="btn btn-default btn-flat">Edit</a>
+                                </div>
+                                <div class="pull-right" ng-controller="loginController">
+                                    <a href="#" class="btn btn-default btn-flat" ng-click="logout()">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-custom-menu -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</header>
+
+<div ui-view></div>
+
+<div class="chat-area">
+    <div class="chat-box">
+        <div class="">
+            <div class="chat-box-section-friend-list">
+                <div class="friend-list" block-ui>
+                    <ul>
+                        <li ng-repeat="chat in Chat.openChats">
+                            <a ng-click="Chat.chatWith(chat.conversation.ReceiverId, attachReadScroller())" ng-class="{'active': Chat.isActiveChat(chat.conversation.ReceiverId)}" onclick="focusToInput()">
+                                <img class="img-sm img-circle margin-r-5" ng-src="{{chat.conversation.ReceiverImageUrl}}" />
+                                <span>{{chat.conversation.ReceiverName}}</span><span ng-if="chat.unreadCount > 0" class="unread-count">{{chat.unreadCount}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chat-box-section-chat-scroll" ng-class="{'hidden' : !Chat.isOpen()}">
+                <div class="chat-scroll">
+                    <div class="conversation">
+                        <div ng-if="Chat.activeChat.conversation.ConversationReplies.length < Chat.activeChat.conversation.TotalReplies" class="load-more">
+                            <a ng-click="Chat.loadChat(Chat.activeChat.userId, Chat.activeChat.loadedPage + 1)">Load More</a>
+                        </div>
+                        <ul>
+                            <li ng-repeat="reply in Chat.activeChat.conversationDetails.ConversationReplies track by $index">
+                                <div class="thread-date" ng-if="!areDatesSame(reply.DateCreatedLocal, Chat.activeChat.conversationDetails.ConversationReplies[$index - 1].DateCreatedLocal)">
+                                    {{reply.DateCreatedLocal | date : "fullDate"}}
+                                </div>
+                                <div class="reply" ng-class="{'my-reply': reply.UserId == CurrentUser.Id}">
+                                    <a ng-if="reply.UserId != CurrentUser.Id">
+                                        <img class="img-sm img-circle margin-r-5 user-profile" ng-src="{{Chat.activeChat.conversationDetails.Users[reply.UserId].ProfileImageUrl}}" />
+                                        <span>{{Chat.activeChat.conversationDetails.Users[reply.UserId].Name}}</span>
+                                    </a>
+                                    <div class="reply-text">
+                                        {{reply.ReplyText}}
+                                    </div>
+                                    <div class="reply-status">
+                                        <span ng-if="reply.ReplyStatus != 0 && reply.UserId == CurrentUser.Id">
+                                            <span ng-switch on="reply.ReplyStatus">
+                                                <span ng-switch-when="2" class="received">
+                                                    <i class="fa fa-check"></i>
+                                                </span>
+                                                <span ng-switch-when="3" class="read">
+                                                    <i class="fa fa-check-circle"></i>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <span class="reply-date">
+                                            {{reply.DateCreatedLocal | date : "h:mm a"}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div ng-if="Chat.activeChat.activeTypingUserId" class="typing-notify">
+                            <i class="fa fa-circle-o-notch fa-spin"></i> <span>{{Chat.activeChat.conversationDetails.Users[Chat.activeChat.activeTypingUserId].Name}}</span> is typing
+                        </div>
+                    </div>
+                    <div class="submission-area col-xs-12 col-md-12">
+                        <form method="post">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control" id="chat-input" ng-model="Chat.activeChat.replyText" autocomplete="off" placeholder="start typing your message..." />
+                                <span class="input-group-btn">
+                                    <button type="submit" ng-click="Chat.sendReply()" class="btn btn-secondary btn-flat">Send</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chat-switcher">
+        <a id="switch-link" ng-click="Chat.loadOnlineFriends(CurrentUser.Id)">Online <span class="unread-count" ng-if="(Chat.getTotalUnreadCount() || Chat.globalUnreadCount) > 0">{{Chat.getTotalUnreadCount() || Chat.globalUnreadCount || ''}}</span></a>
+        <script type="text/javascript">
+            jQuery("#switch-link")
+                .click(function (e) {
+                    jQuery(".chat-area").toggleClass("expanded");
+                    e.preventDefault();
+                });
+            var focusToInput = function() {
+                jQuery("#chat-input").focus();
+            }
+        </script>
+    </div>
+</div>

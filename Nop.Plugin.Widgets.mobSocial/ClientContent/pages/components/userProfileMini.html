@@ -1,0 +1,41 @@
+﻿<div class="box box-widget widget-user">
+    <!-- Add the bg color to the header using any of the bg-* classes -->
+    <div class="widget-user-header bg-primary">
+        <h3 class="widget-user-username text-center">
+            <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  user.UserName || user.Id, tab: null })">{{user.Name}}</a>
+        </h3>
+        <h5 class="widget-user-desc"></h5>
+    </div>
+    <div class="widget-user-image">
+        <img class="img-circle"  ng-src="{{user.ProfileImageUrl}}" alt="{{user.Name}}">
+    </div>
+    <div class="box-footer">
+        <div class="row">
+            <div class="col-sm-4 border-right">
+                <div class="description-block">
+                    <h5 class="description-header">{{user.FollowerCount}}</h5>
+                    <span class="description-text">Followers</span>
+                </div>
+                <!-- /.description-block -->
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 border-right">
+                <div class="description-block">
+                    <h5 class="description-header">{{user.FollowingCount}}</h5>
+                    <span class="description-text">Following</span>
+                </div>
+                <!-- /.description-block -->
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4">
+                <div class="description-block">
+                    <h5 class="description-header">{{user.FriendCount}}</h5>
+                    <span class="description-text">Friends</span>
+                </div>
+                <!-- /.description-block -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+</div>
