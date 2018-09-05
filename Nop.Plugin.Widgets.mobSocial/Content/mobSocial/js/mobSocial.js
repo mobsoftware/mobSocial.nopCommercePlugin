@@ -5,8 +5,8 @@
 
 var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR", 'ui.router'])
     .constant('rootUrl', './Plugins/Widgets.mobSocial/Content/mobSocial')
-    .constant('globalApiEndPoint', 'http://mobsocial.com/api')
-    .constant('signalREndPoint', 'http://mobsocial.com/api/signalr')
+    .constant('globalApiEndPoint', '/api')
+    .constant('signalREndPoint', '/signalr')
     .constant('mobSocialClientId', '714c2b79f006444fa089466cee4433c6');
 //attach some global functions to rootScope
 app.run(["$rootScope", "globalApiEndPoint", "$http", "$sce", "routeProvider", "conversationHub", "userService", "$state", function ($rootScope, globalApiEndPoint, $http, $sce, routeProvider, conversationHub, userService, $state) {
