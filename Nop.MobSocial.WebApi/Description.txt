@@ -1,0 +1,8 @@
+﻿Group: mobSocial
+FriendlyName: WebApi For MobSocial
+SystemName: MobSocial.WebApi
+Version: 1.0
+SupportedVersions: 3.80
+Author: Mob Software Team
+DisplayOrder: -1
+FileName: Nop.MobSocial.WebApi.dll
