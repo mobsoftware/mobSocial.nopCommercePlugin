@@ -1,26 +1,33 @@
-﻿app.service("WebClientService", ["$http", "$rootScope", function ($http, $rootScope) {
+﻿app.service("WebClientService", ["$http", "$rootScope", "oauthService", function ($http, $rootScope, oauthService) {
 
     this._connect = function (method, url, params, success, error) {
         var config = {
             method: method,
             url: url
         };
+        //to make any calls access token is required
         if (method === "GET")
             config["params"] = params;
         else {
             config["data"] = params;
             config["dataType"] = "json";
         }
-        $rootScope.BlockUi = true;
-        $http(config).then(function (response) {
-            $rootScope.BlockUi = false;
-            if (success)
-                success(response.data);
-        }, function (response) {
-            $rootScope.BlockUi = false;
-            if (error)
-                error(response.data);
+
+        oauthService.getAccessToken(function (token) {
+            //set bearer token
+            $http.defaults.headers.common.Authorization = 'Bearer ' + token;
+            $rootScope.BlockUi = true;
+            $http(config).then(function (response) {
+                $rootScope.BlockUi = false;
+                if (success)
+                    success(response.data);
+            }, function (response) {
+                $rootScope.BlockUi = false;
+                if (error)
+                    error(response.data);
+            });
         });
+
     }
 
     this.get = function (url, params, success, error) {

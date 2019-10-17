@@ -6,7 +6,7 @@
 // #endregion
 
 using System;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Nop.Plugin.Widgets.MobSocial.Constants;
 
 namespace Nop.Plugin.Widgets.MobSocial.Attributes

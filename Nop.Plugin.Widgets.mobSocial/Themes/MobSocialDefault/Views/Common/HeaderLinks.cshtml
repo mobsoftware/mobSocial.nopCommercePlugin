@@ -1,7 +1,5 @@
 ﻿@model HeaderLinksModel
 @using Nop.Core.Infrastructure
-@using Nop.Core.Plugins
-@using Nop.Web.Models.Common;
 @{
     //check if mobsocial is installed
     var pd = EngineContext.Current.Resolve<IPluginFinder>().GetPluginDescriptorBySystemName("Widgets.mobSocial", LoadPluginsMode.InstalledOnly);

@@ -1,4 +1,4 @@
-﻿using System.Web.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {

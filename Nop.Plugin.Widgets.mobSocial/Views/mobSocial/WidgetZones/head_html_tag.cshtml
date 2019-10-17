@@ -1,162 +1,49 @@
 ﻿@using Nop.Core
 @using Nop.Core.Infrastructure
-@using Nop.Plugin.Widgets.MobSocial
 @using Nop.Plugin.Widgets.MobSocial.Constants
 @{
     var headerScripts = new List<string>()
     {
-        //THIRD PARTY RESOURCES
-
-        //font-awesome icons
-         "~/Scripts/jquery.magnific-popup.js",
-
-        //moment
-        MobSocialConstant.ThirdPartyLibraryPath + "/moment.min.js",
-
-        //angular core
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular/angular.min.js",
-
-        //angular moment
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular-moment.min.js",
-
-        //angular ui router
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular-ui-router.js",
-
-        MobSocialConstant.ThirdPartyLibraryPath + "/ui-router-tabs.js",
-
-        //jquery core
-        //MobSocialConstant.ThirdPartyLibraryPath + "/jquery/jquery-1.11.min.js",
-
-        //jquery ui
-        MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui-1.11.min.js",
-
-        //jquery signalr
-        MobSocialConstant.ThirdPartyLibraryPath + "/signalr/jquery.signalR-2.2.0.min.js",
-
-          //signalr hub
-        MobSocialConstant.ThirdPartyLibraryPath + "/signalr/signalr-hub.js",
-
-        //cookie
-        MobSocialConstant.ThirdPartyLibraryPath + "/jquery.cookie/jquery.cookie.js",
-
-        //datepicker
-
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular-datetimepicker/datetimepicker.js",
-
-        //easy responsive tabs
-        MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easyResponsiveTabs.js",
-
-        //x-editable
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/js/xeditable.min.js",
-
-
-        //audio
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular-audio/js/angular.audio.js",
-
-        //autocomplete
-        MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.js",
-
-        //file upload
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular-file-upload-1.1.5/angular-file-upload.js",
-
-        //crop tool
-        MobSocialConstant.ThirdPartyLibraryPath + "/angular-img-cropper/angular-img-cropper.js",
-
-      
-
+        
     };
 
     var footerScripts = new List<string>()
     {
-       //main app
-        MobSocialConstant.PluginContentPathInternal + "/js/mobSocial.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/common/routeProvider.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/common/router.js",
-
-        //conversation
-        MobSocialConstant.PluginContentPathInternal + "/js/controllers/conversation/conversation-service.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/controllers/conversation/conversation-hub.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/controllers/conversation/conversation-controller.js",
-
-
-        //services
-        MobSocialConstant.PluginContentPathInternal + "/js/services/song-service.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/services/dialogservice.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/services/entity-property-service.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/controllers/profile-pages/user-service.js",
-
-        //filters'
-        MobSocialConstant.PluginContentPathInternal + "/js/filters/ms2timestr.js",
-
-
-
-        //custom directives
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/contenteditable.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/blockUi.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/whenscrolled.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/ajaxdisable.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-preview-song-button.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/share-song-button.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/buy-song-button.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/mob-live-video.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/fileupload.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/friend-button.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/controllers/follow/follow-service.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/follow-button.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/controllers/customer-like/customer-like-service.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/like-button.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/controllers/customer-comments/customer-comments-service.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/customer-comments.directive.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/directives/checkbox-list.directive.js",
-
-        //common js
-        MobSocialConstant.PluginContentPathInternal + "/js/common/add-friend-button.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/common/common.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/common/mobsocial-interceptor.js",
-        MobSocialConstant.PluginContentPathInternal + "/js/common/webclient-service.js"
+        MobSocialConstant.PluginPath + "/app/scripts/bundles/essentials.bundle.js",
+        MobSocialConstant.PluginPath + "/app/scripts/bundles/init.js",
+        
     };
 
-    //nopcommerce installation
-    Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+    var cssFiles = new List<string>()
+    {
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+        "https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css",
+        MobSocialConstant.PluginPath +"/app/libraries/bootstrap/css/bootstrap.min.css",
+        MobSocialConstant.PluginPath +"/app/libraries/angucomplete-alt/angucomplete-alt.css",
+        MobSocialConstant.PluginPath + "/app/styles/styles.min.css"
+    };
 
-    //THIRD PARTY RESOURCES
+    foreach (var cssFile in cssFiles)
+    {
+        if (cssFile.StartsWith("http"))
+        {
+            Html.AddCssFileParts(cssFile, excludeFromBundle: true);
+        }
+        else
+        {
+            Html.AddCssFileParts(cssFile);
+        }
+    }
 
-    //font-awesome icons
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/fonts/font-awesome.min.css");
-
-    //jquery ui
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.min.css");
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui/jquery-ui.structure.min.css");
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/jquery-ui//jquery-ui.theme.min.css");
-
-
-    //datepicker
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-datetimepicker/datetimepicker.css");
-
-
-    //easy responsive tabs
-
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/easy-responsive-tabs/easy-responsive-tabs.css");
-
-
-    //x-editable
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angular-xeditable/css/xeditable.css");
-
-    //autocomplete
-    Html.AddCssFileParts(MobSocialConstant.ThirdPartyLibraryPath + "/angucomplete-alt/angucomplete-alt.css");
-
-
-    //custom css
-    Html.AddCssFileParts(MobSocialConstant.PluginContentPathInternal + "/css/styles.css");
 
     //append in reverse to render in correct order
-    for (var i = 0; i < headerScripts.Count ; i++)
+    foreach (var t in headerScripts)
     {
-        Html.AddScriptParts(ResourceLocation.Head, headerScripts[i]);
+        Html.AddScriptParts(ResourceLocation.Head, t);
     }
     for (var i = footerScripts.Count - 1; i > -1; i--)
     {
-        Html.AppendScriptParts(ResourceLocation.Foot, footerScripts[i]);
+        Html.AddScriptParts(ResourceLocation.Footer, footerScripts[i]);
     }
 
 

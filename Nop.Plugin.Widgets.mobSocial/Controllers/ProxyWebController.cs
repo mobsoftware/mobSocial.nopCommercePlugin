@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using HtmlAgilityPack;
-using Nop.Web.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -15,7 +14,8 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public ActionResult FetchUrl(string url)
+        [HttpGet]
+        public IActionResult FetchUrl(string url)
         {
             //to extract meta data, we use htmlagilitypack from http://htmlagilitypack.codeplex.com/
             var htmlDocument = new HtmlWeb().Load(url);
@@ -105,7 +105,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                 Images = listImageUrls,
                 AbsoluteUrl = uriParsed.AbsoluteUri,
                 HostName = uriParsed.Host,
-            }, JsonRequestBehavior.AllowGet);
+            });
         }
     }
 }

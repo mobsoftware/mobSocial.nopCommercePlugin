@@ -1,13 +1,13 @@
-﻿using System.Web.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 using Nop.Web.Framework.Localization;
-using Nop.Web.Framework.Mvc.Routes;
+using Nop.Web.Framework.Mvc.Routing;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
     public partial class GenericRouteProvider : IRouteProvider
     {
 
-        public void RegisterRoutes(RouteCollection routes)
+        public void RegisterRoutes(IRouteBuilder routes)
         {
 
             // override the nopCommerce customer profile route 

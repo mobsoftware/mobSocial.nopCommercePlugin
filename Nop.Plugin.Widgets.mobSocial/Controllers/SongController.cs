@@ -1,5 +1,4 @@
-﻿using Nop.Web.Controllers;
-using Nop.Web.Framework.Security;
+﻿using Nop.Web.Framework.Security;
 using Nop.Services.Localization;
 using Nop.Services.Media;
 using Nop.Services.Customers;
@@ -8,37 +7,22 @@ using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
 using System.Collections.Generic;
-using Nop.Plugin.WebApi.MobSocial.Domain;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using System.Web;
-using mobSocial.Data.Entity.Songs;
-using mobSocial.Services.ArtistPages;
-using mobSocial.Services.Music;
-using mobSocial.Services.Songs;
-using mobSocial.WebApi.Models.Songs;
-using Mob.Core;
-using Nop.Plugin.WebApi.MobSocial.Helpers;
-using Nop.Core.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Services.Catalog;
 using Nop.Core.Domain.Catalog;
-using Nop.Plugin.WebApi.MobSocial;
-using Nop.Plugin.WebApi.MobSocial.Extensions;
-using Nop.Plugin.WebApi.MobSocial.Models;
-using Nop.Plugin.WebApi.MobSocial.Services;
-using Nop.Services.Seo;
-using Nop.Web.Models.Media;
+using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     [NopHttpsRequirement(SslRequirement.No)]
-    public partial class SongController : BasePublicController
+    public partial class SongController : BaseController
     {
         #region variables
         private readonly ILocalizationService _localizationService;
@@ -105,7 +89,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #endregion
 
         #region Actions
-        public ActionResult Index(int Id)
+        public IActionResult Index(int Id)
         {
             var song = _songService.GetById(Id);
 
@@ -165,7 +149,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// <summary>
         /// Imports a new song from remote api if it doesn't exist in our database
         /// </summary>
-        public ActionResult RemoteSong(string RemoteEntityId)
+        public IActionResult RemoteSong(string RemoteEntityId)
         {
             if (!string.IsNullOrEmpty(RemoteEntityId))
             {
@@ -192,7 +176,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         [HttpPost]
-        public ActionResult GetSongPreviewUrl(string TrackId, int SongId = 0)
+        public IActionResult GetSongPreviewUrl(string TrackId, int SongId = 0)
         {
             int iTrackId;
             if (int.TryParse(TrackId, out iTrackId))
@@ -217,7 +201,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
+        public IActionResult Search(string Term, int Count = 15, int Page = 1, bool SearchDescriptions = false, bool SearchArtists = false, string ArtistName = "")
         {
             //we search for artists both in our database as well as the remote api
             var model = new List<object>();
@@ -309,7 +293,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// Gets the similar songs to a given song
         /// </summary>
         [HttpPost]
-        public ActionResult GetSimilarSongs(string RemoteTrackId, int Count = 5)
+        public IActionResult GetSimilarSongs(string RemoteTrackId, int Count = 5)
         {
 
             var model = new List<object>();
@@ -346,7 +330,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// Generic method for all inline updates
         /// </summary>
         [HttpPost]
-        public ActionResult UpdateSongData(FormCollection Parameters)
+        public IActionResult UpdateSongData(FormCollection Parameters)
         {
             if (!_workContext.CurrentCustomer.IsRegistered())
                 return InvokeHttp404();
@@ -413,7 +397,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
-        public ActionResult ShareSong(int TrackId, string RemoteTrackId = "")
+        public IActionResult ShareSong(int TrackId, string RemoteTrackId = "")
         {
             if (!_workContext.CurrentCustomer.IsRegistered())
             {
@@ -465,7 +449,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShareSong(int TrackId, int[] CustomerIds, string Message = "", string RemoteTrackId = "")
+        public IActionResult ShareSong(int TrackId, int[] CustomerIds, string Message = "", string RemoteTrackId = "")
         {
             if (CustomerIds == null)
                 return Json(new { Success = false, Message = "Failed" });
@@ -522,13 +506,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// <summary>
         /// The shared songs page for user's profile
         /// </summary>
-        public ActionResult SharedSongs()
+        public IActionResult SharedSongs()
         {
             return View("mobSocial/SongPage/SharedSongs");
         }
 
         [HttpPost]
-        public ActionResult GetReceivedSongs(int Count = 15, int Page = 1)
+        public IActionResult GetReceivedSongs(int Count = 15, int Page = 1)
         {
             var smodel = new List<object>();
             int totalPages = 0;
@@ -570,7 +554,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetSharedSongs(int Count = 15, int Page = 1)
+        public IActionResult GetSharedSongs(int Count = 15, int Page = 1)
         {
             var smodel = new List<object>();
             int totalPages = 0;
@@ -629,7 +613,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteSong(int SongId)
+        public IActionResult DeleteSong(int SongId)
         {
             var song = _songService.GetById(SongId);
             if (CanDelete(song))
@@ -658,7 +642,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadPicture(int SongId, IEnumerable<HttpPostedFileBase> file)
+        public IActionResult UploadPicture(int SongId, IEnumerable<HttpPostedFileBase> file)
         {
 
             //first get song
@@ -741,7 +725,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// Generic method for handling song uploads. Handles samples and actual song uploading
         /// </summary>        
         [HttpPost]
-        public ActionResult UploadSongFile(int SongId, string FieldName, HttpPostedFileBase File)
+        public IActionResult UploadSongFile(int SongId, string FieldName, HttpPostedFileBase File)
         {
             //lets get the song first
             var song = _songService.GetById(SongId);
@@ -821,7 +805,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [Authorize]
-        public ActionResult SongEditor(int ArtistPageId)
+        public IActionResult SongEditor(int ArtistPageId)
         {
             if (ArtistPageId == 0)
                 return RedirectToRoute("HomePage");
@@ -835,7 +819,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveSong(SongModel model)
+        public IActionResult SaveSong(SongModel model)
         {
             if (!ModelState.IsValid)
                 return Json(new { Success = true });
@@ -886,7 +870,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #region Utilities
 
         //page not found
-        public ActionResult PageNotFound()
+        public IActionResult PageNotFound()
         {
             this.Response.StatusCode = 404;
             this.Response.TrySkipIisCustomErrors = true;

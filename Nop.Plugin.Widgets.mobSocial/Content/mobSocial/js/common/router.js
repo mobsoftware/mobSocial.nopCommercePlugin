@@ -19,17 +19,17 @@
              .state("layoutZero",
              {
                  abstract: true,
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/layouts/_layout-none.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/layouts/_layout-none.html"
              })
              .state("layoutZero.login",
              {
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/login.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/login.html",
                  url: "/login",
                  controller: "loginController"
              })
              .state("layoutZero.register",
              {
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/common/register.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/common/register.html",
                  url: "/register",
                  resolve: {
                      resolver: ["controllerProvider", function (controllerProvider) {
@@ -40,7 +40,7 @@
              })
              .state("layoutZero.activate",
              {
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/common/activate.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/common/activate.html",
                  url: "/activate?code",
                  resolve: {
                      resolver: ["controllerProvider", function (controllerProvider) {
@@ -51,7 +51,7 @@
              })
             .state("layoutZero.install",
              {
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/common/install.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/common/install.html",
                  url: "/install",
                  controller: "installController",
                  resolve: {
@@ -69,12 +69,12 @@
                          return authProvider.isLoggedIn();
                      }]
                  },
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/layouts/_layout-administration.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/layouts/_layout-administration.html"
              })
              .state("layoutAdministration.dashboard",
              {
                  url: adminPrefix,
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/dashboard.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/dashboard.html"
              })
              .state("layoutAdministration.users",
              {
@@ -90,31 +90,31 @@
              .state("layoutAdministration.users.list",
              {
                  url: '',
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/users/users.list.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/users/users.list.html",
                  controller: "userController"
              })
              .state("layoutAdministration.users.edit",
              {
                  abstract: true,
                  url: "/edit/:id",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/users/user.edit.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/users/user.edit.html",
                  controller: "userEditController"
              })
              .state('layoutAdministration.users.edit.basic',
              {
                  url: '',
-                 templateUrl: '/Plugins/Widgets.mobSocial/ClientContent/pages/users/user.edit.basic.html'
+                 templateUrl: '/Plugins/Widgets.mobSocial/app/pages/users/user.edit.basic.html'
              })
              .state('layoutAdministration.users.edit.timeline',
              {
                  url: '/timeline',
-                 templateUrl: '/Plugins/Widgets.mobSocial/ClientContent/pages/users/user.edit.timeline.html'
+                 templateUrl: '/Plugins/Widgets.mobSocial/app/pages/users/user.edit.timeline.html'
              })
              .state("layoutAdministration.settings",
              {
                  url: adminPrefix + "/settings/:settingType",
                  templateUrl: function(stateParams) {
-                     return "/Plugins/Widgets.mobSocial/ClientContent/pages/settings/" + stateParams.settingType + "Settings.edit.html";
+                     return "/Plugins/Widgets.mobSocial/app/pages/settings/" + stateParams.settingType + "Settings.edit.html";
                  },
                  controllerProvider: ["$stateParams",function($stateParams) {
                      if (!$stateParams.settingType)
@@ -146,25 +146,25 @@
              {
                  url: "/emailaccounts",
                  controller: "emailAccountController",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/emails/emailAccount.list.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/emails/emailAccount.list.html"
              })
              .state("layoutAdministration.emails.accountedit",
              {
                  url: "/emailaccount/:id",
                  controller: "emailAccountController",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/emails/emailAccount.editor.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/emails/emailAccount.editor.html"
              })
             .state("layoutAdministration.emails.templatelist",
              {
                  url: "/emailtemplates",
                  controller: "emailTemplateController",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/emails/emailTemplate.list.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/emails/emailTemplate.list.html"
              })
              .state("layoutAdministration.emails.templateedit",
              {
                  url: "/emailtemplate/:id",
                  controller: "emailTemplateController",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/emails/emailTemplate.editor.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/emails/emailTemplate.editor.html"
              })
              .state("layoutAdministration.skills",
              {
@@ -180,7 +180,7 @@
             .state("layoutAdministration.skills.list",
              {
                  url: "",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/skills/skill.list.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/skills/skill.list.html",
                  controller: "skillController"
              });
 
@@ -189,17 +189,12 @@
              {
                  abstract: true,
                  url: "",
-                 resolve: {
-                     auth: ["authProvider",function (authProvider) {
-                         return authProvider.isLoggedIn();
-                     }]
-                 },
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/layouts/_layout-mobsocial.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/layouts/_layout-mobsocial.html"
              })
              .state("layoutMobSocial.activity",
              {
-                 url: "social",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/users/activity.html",
+                 url: "/social",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/users/activity.html",
                  resolve: {
                      resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider
@@ -211,7 +206,7 @@
              {
                  abstract: true,
                  url: "/u/:idOrUserName?tab",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/users/user.profile.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/users/user.profile.html",
                  resolve: {
                      resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider
@@ -224,9 +219,9 @@
                  url: "",
                  templateProvider: ['$stateParams', '$templateFactory', function ($stateParams, $templateFactory) {
                      if ([undefined, "main", "pictures", "videos", "friends", "followers", "following", "skills"].indexOf($stateParams.tab) == -1) {
-                         return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/ClientContent/pages/common/404.html");
+                         return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/app/pages/common/404.html");
                      }
-                     return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/ClientContent/pages/users/user.profile." +
+                     return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/app/pages/users/user.profile." +
                          ($stateParams.tab || "main") +
                          ".html");
                  }]
@@ -234,7 +229,7 @@
             .state("layoutMobSocial.skill",
              {
                  url: "/skill/:slug",
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/skills/skill.single.html",
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/skills/skill.single.html",
                  resolve: {
                      resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider
@@ -248,7 +243,7 @@
              .state("layoutMobSocial.twoColumns",
              {
                  abstract: true,
-                 templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/layouts/_layout-mobsocial-two-columns.html"
+                 templateUrl: "/Plugins/Widgets.mobSocial/app/pages/layouts/_layout-mobsocial-two-columns.html"
              })
              .state("layoutMobSocial.twoColumns.editProfile",
              {
@@ -261,14 +256,14 @@
                  },
                  views: {
                      "left": {
-                         templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/users/user.profile.edit.navigation.html"
+                         templateUrl: "/Plugins/Widgets.mobSocial/app/pages/users/user.profile.edit.navigation.html"
                      },
                      "right": {
                          templateProvider: ["$state", "$templateFactory", function ($state, $templateFactory) {
                              if ([undefined, "basic", "education", "skills"].indexOf($state.tab) == -1) {
-                                 return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/ClientContent/pages/common/404.html");
+                                 return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/app/pages/common/404.html");
                              }
-                             return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/ClientContent/pages/users/user.profile.edit." + ($state.params.tab || "basic") + ".html");
+                             return $templateFactory.fromUrl("/Plugins/Widgets.mobSocial/app/pages/users/user.profile.edit." + ($state.params.tab || "basic") + ".html");
                          }],
                          resolve: {
                              resolver: ["controllerProvider",function (controllerProvider) {
@@ -297,7 +292,7 @@
                  {
                      abstract: true,
                      url: "/apps",
-                     templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/layouts/_layout-application.html",
+                     templateUrl: "/Plugins/Widgets.mobSocial/app/pages/layouts/_layout-application.html",
                      resolve: {
                          auth: ["authProvider",function (authProvider) {
                              return authProvider.isLoggedIn();
@@ -307,7 +302,7 @@
              .state("layoutApplication.twoColumns",
                  {
                      abstract: true,
-                     templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/layouts/_layout-mobsocial-two-columns.html",
+                     templateUrl: "/Plugins/Widgets.mobSocial/app/pages/layouts/_layout-mobsocial-two-columns.html",
                      resolve: {
                          resolver: ["controllerProvider",function (controllerProvider) {
                              return controllerProvider
@@ -320,10 +315,10 @@
                      url: "",
                      views: {
                          "left" : {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.navigation.html"
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.navigation.html"
                          },
                          "right" : {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.list.html"
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.list.html"
                          }
                      }
              })
@@ -332,10 +327,10 @@
                      url: "/edit/?id",
                      views: {
                          "left": {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.navigation.html"
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.navigation.html"
                          },
                          "right": {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.edit.html"
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.edit.html"
                          }
                      }
              })
@@ -344,10 +339,10 @@
                      url: "",
                      views: {
                          "left": {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.navigation.html"
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.navigation.html"
                          },
                          "right": {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.logins.html"
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.logins.html"
                          }
                      }
              })
@@ -362,7 +357,7 @@
                      },
                      views: {
                          "left": {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.customfields.navigation.html",
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.customfields.navigation.html",
                              controller: ["applicationService", "$scope", "$state", function(applicationService, $scope, $state) {
                                  applicationService.getById($state.params.id,
                                      function(response) {
@@ -371,18 +366,17 @@
                              }]
                          },
                          "right": {
-                             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/applications/application.customfields.list.html"
+                             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/applications/application.customfields.list.html"
                          }
                      }
                  });
          $stateProvider.state("layoutZero.404",
          {
-             templateUrl: "/Plugins/Widgets.mobSocial/ClientContent/pages/common/404.html"
+             templateUrl: "/Plugins/Widgets.mobSocial/app/pages/common/404.html"
          });
          $urlRouterProvider.otherwise(function ($injector, $location) {
              
              var state = $injector.get('$state');
-             console.trace(state);
              state.go('layoutZero.404');
              return $location.path();
          });

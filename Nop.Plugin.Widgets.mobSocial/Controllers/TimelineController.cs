@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
-using System.Web.Routing;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Plugin.Widgets.MobSocial.Services;
-using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -21,8 +19,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _workContext = workContext;
         }
 
-        [ChildActionOnly]
-        public ActionResult PostForm()
+        public IActionResult PostForm()
         {
             var timelineWidgets = _timelineWidgetLoaderService.GetTimelineWidgetsAcrossApp();
             if (!timelineWidgets.Any())
@@ -42,10 +39,10 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             }
             return View("mobSocial/Timeline/PostForm", model);
         }
-        public ActionResult Timeline(int customerId = 0)
+        public IActionResult Timeline(int customerId = 0)
         {
             if (!_workContext.CurrentCustomer.IsRegistered())
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             return View("mobSocial/Timeline/Timeline", customerId);
         }
@@ -53,8 +50,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
        
         #region Built-In Widgets
 
-        [ChildActionOnly]
-        public ActionResult TimelineWidget(int customerId = 0, int page = 1, int count = 15)
+        public IActionResult TimelineWidget(int customerId = 0, int page = 1, int count = 15)
         {
             var model = new TimelinePublicModel() {
                 CustomerId = customerId,
@@ -83,43 +79,43 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/Timeline/TimelineWidget", model);
         }
 
-        public ActionResult VideoWidget()
+        public IActionResult VideoWidget()
         {
             return View("mobSocial/Timeline/Widget.Video");
         }
-        public ActionResult VideoPostDisplay()
+        public IActionResult VideoPostDisplay()
         {
             return View("mobSocial/Timeline/PostDisplay.Video");
         }
-        public ActionResult VideoPostPreview()
+        public IActionResult VideoPostPreview()
         {
             return View("mobSocial/Timeline/PostPreview.Video");
         }
-        public ActionResult PictureWidget()
+        public IActionResult PictureWidget()
         {
             return View("mobSocial/Timeline/Widget.Picture");
         }
-        public ActionResult PicturePostDisplay()
+        public IActionResult PicturePostDisplay()
         {
             return View("mobSocial/Timeline/PostDisplay.Picture");
         }
-        public ActionResult PicturePostPreview()
+        public IActionResult PicturePostPreview()
         {
             return View("mobSocial/Timeline/PostPreview.Picture");
         }
-        public ActionResult UrlWidget()
+        public IActionResult UrlWidget()
         {
             return View("mobSocial/Timeline/Widget.Url");
         }
-        public ActionResult UrlPostDisplay()
+        public IActionResult UrlPostDisplay()
         {
             return View("mobSocial/Timeline/PostDisplay.Url");
         }
-        public ActionResult UrlPostPreview()
+        public IActionResult UrlPostPreview()
         {
             return View("mobSocial/Timeline/PostPreview.Url");
         }
-        public ActionResult VideoBattlePostDisplay()
+        public IActionResult VideoBattlePostDisplay()
         {
             return View("mobSocial/Timeline/PostDisplay.VideoBattle");
         }

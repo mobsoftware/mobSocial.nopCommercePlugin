@@ -1,14 +1,14 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Nop.Web.Framework.Mvc.Filters;
 using Nop.Web.Framework.Security;
-using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
 
-    [NopHttpsRequirement(SslRequirement.No)]
+    [HttpsRequirement(SslRequirement.No)]
     public partial class FacebookWebsiteAppController : MobSocialWidgetBaseController
     {
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View("mobSocial/FacebookWebsiteApp/Index");
         }

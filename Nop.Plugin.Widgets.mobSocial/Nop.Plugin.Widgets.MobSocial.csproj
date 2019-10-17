@@ -1,1210 +1,184 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C225665C-D310-4FB9-B59A-77AD88A752C3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nop.Plugin.Widgets.MobSocial</RootNamespace>
-    <AssemblyName>Nop.Plugin.Widgets.MobSocial</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Downloads\nopCommerce_3.40_Source\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <WebGreaseLibPath>$(SolutionDir)packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Copyright>Copyright © mobSoftware</Copyright>
+    <Company>mobSoftware</Company>
+    <Authors>mobSoftware</Authors>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl>http://www.mobsocial.co/</PackageProjectUrl>
+    <OutputPath>$(SolutionDir)Presentation\Nop.Web\Plugins\Widgets.MobSocial</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <!--Set this parameter to true to get the dlls copied from the NuGet cache to the output of your project.
+    You need to set this parameter to true if your plugin has a nuget package 
+    to ensure that the dlls copied from the NuGet cache to the output of your project-->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)Presentation\Nop.Web\Plugins\Widgets.mobSocial\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Attributes\MobSocialPageAttribute.cs" />
-    <Compile Include="Constants\MobSocialConstant.cs" />
-    <Compile Include="Controllers\ArtistPageController.cs" />
-    <Compile Include="Controllers\BusinessPageController.cs" />
-    <Compile Include="Controllers\ControllerUtil.cs" />
-    <Compile Include="Controllers\ConversationController.cs" />
-    <Compile Include="Controllers\CustomerCommentController.cs" />
-    <Compile Include="Controllers\CustomerLikeController.cs" />
-    <Compile Include="Controllers\CustomerFollowController.cs" />
-    <Compile Include="Controllers\CustomerProfileController.cs" />
-    <Compile Include="Controllers\CustomFieldController.cs" />
-    <Compile Include="Controllers\FriendsController.cs" />
-    <Compile Include="Controllers\HeadController.cs" />
-    <Compile Include="Controllers\MediaController.cs" />
-    <Compile Include="Controllers\mobSocialController.cs" />
-    <Compile Include="Controllers\MobSocialWidgetBaseController.cs" />
-    <Compile Include="Controllers\ProxyWebController.cs" />
-    <Compile Include="Controllers\SkillController.cs" />
-    <Compile Include="Controllers\SponsorController.cs" />
-    <Compile Include="Controllers\TeamPageController.cs" />
-    <Compile Include="Controllers\TimelineController.cs" />
-    <Compile Include="Controllers\VideoBattleController.cs" />
-    <Compile Include="Controllers\FacebookWebsiteAppController.cs" />
-    <Compile Include="Controllers\SocialNetworkNavigationController.cs" />
-    <Compile Include="Controllers\HeaderMenuController.cs" />
-    <Compile Include="DependencyRegistrar.cs" />
-    <Compile Include="Feature\FeatureToggle.cs" />
-    <Compile Include="Feature\Timeline\ITimelineWidget.cs" />
-    <Compile Include="Feature\Timeline\Widgets\UrlWidget.cs" />
-    <Compile Include="Feature\Timeline\Widgets\PictureWidget.cs" />
-    <Compile Include="Feature\Timeline\Widgets\VideoBattleCompleteWidget.cs" />
-    <Compile Include="Feature\Timeline\Widgets\VideoBattleStartWidget.cs" />
-    <Compile Include="Feature\Timeline\Widgets\VideoBattlePublishWidget.cs" />
-    <Compile Include="Feature\Timeline\Widgets\VideoWidget.cs" />
-    <Compile Include="GenericRouteProvider.cs" />
-    <Compile Include="mobSocialPlugin.cs" />
-    <Compile Include="Models\BattleEditorModel.cs" />
-    <Compile Include="Models\BusinessPageSearchModel.cs" />
-    <Compile Include="Models\CustomerCommentsModel.cs" />
-    <Compile Include="Models\CustomerFriendsRequestModel.cs" />
-    <Compile Include="Models\FriendSearchModel.cs" />
-    <Compile Include="Models\PageDisplayModel.cs" />
-    <Compile Include="Models\RouteDataModel.cs" />
-    <Compile Include="Models\SkillPageModel.cs" />
-    <Compile Include="Models\SocialNetworkNavigationModel.cs" />
-    <Compile Include="Models\TeamPageEditorModel.cs" />
-    <Compile Include="Models\TeamPageModel.cs" />
-    <Compile Include="Models\TimelinePublicModel.cs" />
-    <Compile Include="Models\TimelineWidgetModel.cs" />
-    <Compile Include="Models\VideoBattleIndexModel.cs" />
-    <Compile Include="Models\VideoBattleQueryModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RouteProvider.cs" />
-    <Compile Include="Services\ITimelineWidgetLoaderService.cs" />
-    <Compile Include="Services\TimelineWidgetLoaderService.cs" />
-    <Compile Include="ViewEngines\MobSocialViewEngine.cs" />
-    <None Include="Content\Libraries\fonts\fontawesome-webfont.woff2" />
-    <None Include="Content\mobSocial\css\styles.css.map">
-      <DependentUpon>styles.css</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\mobSocial\css\styles.scss" />
-    <None Include="Scripts\jquery-2.2.0.min.map" />
-    <Content Include="ClientContent\pages\applications\application.customfields.list.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\applications\application.customfields.navigation.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\applications\application.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\applications\application.list.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\applications\application.logins.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\applications\application.navigation.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\common\404.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\common\activate.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\common\install.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\common\register.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\commentsBox.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\customField.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\customFieldEditor.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\followButton.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\friendButton.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\likeButton.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\mediaButton.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\mediaModal.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\timeline.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\timelinePostDisplay.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\timelinePostFormWidgets.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\timelinePostFormWidgetsPreview.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\components\userProfileMini.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\custom-fields\custom-field-list.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\dashboard.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\education\education.editor.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\education\school.editor.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\emails\emailAccount.editor.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\emails\emailAccount.list.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\emails\emailTemplate.editor.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\emails\emailTemplate.list.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\layouts\_layout-administration.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\layouts\_layout-application.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\layouts\_layout-mobsocial-two-columns.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\layouts\_layout-mobsocial.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\layouts\_layout-none.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\battleSettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\datetimeSettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\generalSettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\mediaSettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\paymentSettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\securitySettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\thirdPartySettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\urlSettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\settings\userSettings.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\skills\skill.editor.admin.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\skills\skill.editor.public.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\skills\skill.list.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\skills\skill.single.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\activity.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.edit.basic.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.edit.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.edit.timeline.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.edit.basic.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.edit.education.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.edit.navigation.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.edit.skills.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.followers.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.following.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.friends.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.main.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.pictures.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.skills.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\user.profile.videos.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientContent\pages\users\users.list.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-img-cropper\angular-img-cropper.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-moment.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-ui-router.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\moment.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\signalr\signalr-hub.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\ui-router-tabs.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\youtube.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\styles.min.css">
-      <DependentUpon>styles.css</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\autocomplete-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\customFieldProvider.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\helpers\arrayHelper.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\router.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\custom-fields\customFieldService.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\user\registration-controller.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\user\registration-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\blockUi.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\mobsocial-interceptor.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\routeProvider.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\webclient-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\business-pages\business-controller.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\business-pages\business-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\conversation\conversation-controller.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\conversation\conversation-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\conversation\conversation-hub.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\customer-comments\customer-comments-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\customer-like\customer-like-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\customField.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\services\entity-property-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\follow\follow-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\friends\friend.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\friends\friend-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-profile-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\profile-pages\user-profile-controller.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\profile-pages\user-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\skills\skill-controller.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\skills\skill-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\sponsors\sponsor.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\team-pages\team-page-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\team-pages\team-page.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\timeline\timeline-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\timeline\timeline.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\customer-comments.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\checkbox-list.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\skill-editor-button.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\like-button.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\follow-button.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\friend-button.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\media-button.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\media-modal.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\services\media-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\uploads\pictures\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\uploads\videos\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\jquery-2.2.0.intellisense.js" />
-    <Content Include="Scripts\jquery-2.2.0.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.js" />
-    <Content Include="Views\mobSocial\Friends\FriendBlock.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Friends\FriendRequests.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Friends\SearchPeople.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Friends\_AddFriendButton.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Friends\_CustomerFriends.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Friends\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Friends\FriendButton.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\CustomerProfile\Profile.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\CustomerFollow\CustomerFollowButton.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\CustomerLike\CustomerLikeButton.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\CustomerComments\CustomerComments.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\CustomerProfile\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\CustomerProfile\Index.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Conversation\ConversationBox.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\CustomFields\CustomField.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Views\mobSocial\Head\PublicInfo.cshtml" />
-    <Content Include="Views\mobSocial\Payment\PaymentFormPopup.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\_SocialShareLinks.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\User\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Social\Index.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Views\mobSocial\User\Register.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\mobSocial\WidgetZones\body_end_html_tag_before.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Remove="Content\mobSocial\**" />
+    <Compile Remove="Controllers\Admin\**" />
+    <Compile Remove="Data\**" />
+    <Compile Remove="dest\**" />
+    <Compile Remove="dist\**" />
+    <Compile Remove="Domain\**" />
+    <Compile Remove="node_modules\**" />
+    <Compile Remove="ViewEngines\**" />
+    <EmbeddedResource Remove="Content\mobSocial\**" />
+    <EmbeddedResource Remove="Controllers\Admin\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="dest\**" />
+    <EmbeddedResource Remove="dist\**" />
+    <EmbeddedResource Remove="Domain\**" />
+    <EmbeddedResource Remove="node_modules\**" />
+    <EmbeddedResource Remove="ViewEngines\**" />
+    <None Remove="Content\mobSocial\**" />
+    <None Remove="Controllers\Admin\**" />
+    <None Remove="Data\**" />
+    <None Remove="dest\**" />
+    <None Remove="dist\**" />
+    <None Remove="Domain\**" />
+    <None Remove="node_modules\**" />
+    <None Remove="ViewEngines\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <Content Include="Content\Libraries\angucomplete-alt\angucomplete-alt.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angucomplete-alt\angucomplete-alt.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-audio\js\angular.audio.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-datetimepicker\datetimepicker.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-datetimepicker\datetimepicker.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-file-upload-1.1.5\angular-file-upload.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-file-upload-1.1.5\angular-file-upload.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-file-upload-1.1.5\license.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-file-upload-1.1.5\src\intro.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-file-upload-1.1.5\src\module.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-file-upload-1.1.5\src\outro.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-xeditable\css\xeditable.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-xeditable\js\xeditable.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular-xeditable\js\xeditable.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\jquery.cookie\jquery.cookie.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\payments\payment-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\payments\payment.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\ajaxdisable.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\contenteditable.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\fileupload.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\images\poweredby.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\share-song-button.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\artist-pages\artist-page-search.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\artist-pages\artist-pages.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\autocomplete.directive.js" />
-    <Content Include="Content\mobSocial\js\directives\mob-live-video.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\mob-preview-song-button.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\mob-video.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\business-pages\business-pages-search.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\business-pages\business-pages.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\ngthumb.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\profile-pages\my-health.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\easy-responsive-tabs\easy-responsive-tabs.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\easy-responsive-tabs\easyResponsiveTabs.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\ie6.css" />
-    <Content Include="Content\mobSocial\css\ie7.css" />
-    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-video-albums.js" />
-    <Content Include="Content\Libraries\signalr\RTCMultiConnection.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\song-list.directive.js" />
-    <Content Include="Content\mobSocial\html\song-list.template.html" />
-    <Content Include="Content\mobSocial\js\controllers\song-pages\song-pages.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\whenscrolled.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\filters\ms2timestr.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\services\dialogservice.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\services\song-service.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\directives\buy-song-button.directive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\video-battles\video-battle-services.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\video-battles\video-battles.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\styles.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\styles.rtl.css" />
-    <Content Include="Content\Libraries\videogular\angular-sanitize.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\angular-timer.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\humanize-duration.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\moment.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.dev.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\theme\videogular.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\theme\videogular.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\waypoints.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\vg-buffering.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\vg-controls.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\vg-ima-ads.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\vg-overlay-play.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\vg-poster.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\videogular.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="license.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\signalr\jquery.signalR-1.2.2.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\signalr\jquery.signalR-1.2.2.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\signalr\jquery.signalR-2.2.0.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
-    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
-    <Content Include="Uploads\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageTeamPage\List.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\Edit.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Pictures.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\List.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Info.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\Create.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Hotels.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="logo.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-profile.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\event-pages\event-pages.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\fonts\fontawesome-webfont.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\jquery-ui\jquery-ui.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\jquery-ui\jquery-ui.structure.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\jquery-ui\jquery-ui.theme.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\angular\angular.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\mobSocial.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\jquery\jquery-1.11.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\jquery-ui\jquery-ui-1.11.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\jquery.simplyscroll.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\css\jquery.simplyscroll.old2.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\add-friend-button.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\common\common.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\mobSocial\js\controllers\profile-pages\customer-albums.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\fonts\font-awesome.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\jquery-form\jquery.form.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Content\Libraries\angular-file-upload-1.1.5\.jshintrc" />
-    <None Include="Content\Libraries\angular-file-upload-1.1.5\angular-file-upload.min.map">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Libraries\angular-file-upload-1.1.5\bower.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Libraries\angular-file-upload-1.1.5\Gruntfile.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Libraries\angular-file-upload-1.1.5\package.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Libraries\angular-file-upload-1.1.5\README.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.eot">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\videogular\theme\fonts\videogular.woff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Views\mobSocial\BusinessPage\Search.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\FacebookWebsiteApp\Index.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\fonts\fontawesome-webfont.eot">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\fonts\fontawesome-webfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\fonts\fontawesome-webfont.woff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Libraries\fonts\FontAwesome.otf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\EventPage\Search.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\_CustomerAlbumPictures.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\SocialNetworkNavigation\PublicInfo.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\EventPage\Search.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\EventPage\Index.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\HeaderMenu\PublicInfo.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\AddCustomerAlbumPicture.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\ProfileInformation.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\TeamPage.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\TeamPage_old.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\_ColumnsThree.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\_CustomerFriendBlock.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\_ProfilePicture.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\_TeamPageInfo.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\_CustomerVideoAlbums.cshtml">
+    <Compile Remove="Controllers\EventPageController.cs" />
+    <Compile Remove="Controllers\PaymentController.cs" />
+    <Compile Remove="Controllers\SkateMoveController.cs" />
+    <Compile Remove="Controllers\SongController.cs" />
+    <Compile Remove="Feature\FeatureToggle.cs" />
+    <Compile Remove="GenericRouteProvider.cs" />
+    <Compile Remove="Models\CustomerProfilePublicModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="plugin.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Websites\Testing\nopCommerce_4.20_Source\Presentation\Nop.Web\Nop.Web.csproj" />
+    <ClearPluginAssemblies Include="$(SolutionDir)Build\ClearPluginAssemblies.proj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="app\libraries\angucomplete-alt\angucomplete-alt.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\_FeaturedVideosBlock.cshtml">
+    <Content Include="app\libraries\angucomplete-alt\angucomplete-alt.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="web.config">
+    <Content Include="app\libraries\angular\angular-file-upload.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.SEO.cshtml">
+    <Content Include="app\libraries\angular\angular-local-storage.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\Admin\ManageEventPage\_CreateOrUpdate.Tickets.cshtml">
+    <Content Include="app\libraries\angular\angular-moment.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\AboutMe\PublicInfo.cshtml">
+    <Content Include="app\libraries\angular\angular-route.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\BusinessPage\Index.cshtml">
+    <Content Include="app\libraries\angular\angular-sanitize.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\MyHealth.cshtml">
+    <Content Include="app\libraries\angular\angular-slimscroll.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\BusinessPage\AddPicture.cshtml">
+    <Content Include="app\libraries\angular\angular-timer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\BusinessPage\Search.cshtml">
+    <Content Include="app\libraries\angular\angular-ui-router.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\ArtistPage\Editor.cshtml">
+    <Content Include="app\libraries\angular\angular.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\ArtistPage\Index.cshtml">
+    <Content Include="app\libraries\angular\signalr-hub.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\ArtistPage\ArtistBlock.cshtml">
+    <Content Include="app\libraries\angular\ui-router-tabs.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\ArtistPage\Search.cshtml">
+    <Content Include="app\scripts\bundles\init.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\ArtistPage\MyPages.cshtml">
+    <Content Include="app\styles\ie6.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\ArtistPage\PictureEditor.cshtml">
+    <Content Include="app\styles\ie7.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\SongPage\Index.cshtml">
+    <Content Include="app\styles\jquery.simplyscroll.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\SongPage\SongBlock.cshtml">
+    <Content Include="app\styles\jquery.simplyscroll.old2.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\SongPage\ShareSong.cshtml">
+    <Content Include="app\styles\styles.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\SongPage\SharedSongs.cshtml">
+    <Content Include="app\styles\styles.css.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\SongPage\PictureEditor.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\_MustLogin.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\SongPage\SongEditor.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\VideoBattleEditor.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\Single.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\ParticipantBox.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\VideoBattleBox.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\Single.TheaterView.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\ParticipantBox.TheaterView.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\VideoBattle\TheaterView.VideoPlayer.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Payment\AddressFormPopup.cshtml">
-      <SubType>Code</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Media\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Skills\Single.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Skills\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Media\MediaModal.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Skills\List.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Skills\SkillEditorButton.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Skills\UserSkills.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Views\mobSocial\Sponsor\ProductPrizesFormPopup.cshtml" />
-    <Content Include="Views\mobSocial\Sponsor\SponsorDashboard.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostForm.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\Timeline.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\Widget.Video.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostDisplay.Video.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostDisplay.Picture.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\Widget.Picture.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostPreview.Video.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostPreview.Picture.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostPreview.Url.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\Widget.Url.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostDisplay.Url.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\TimelineWidget.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\Timeline\PostDisplay.VideoBattle.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\TeamPage\Includes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\TeamPage\TeamPageEditor.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\TeamPage\Index.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\mobSocial\TeamPage\MyPages.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Views\mobSocial\VideoBattle\VideoBattles.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Views\mobSocial\WidgetZones\head_html_tag.cshtml">
+    <Content Include="app\styles\styles.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\_AppColumnsTwo.cshtml">
+    <Content Include="app\styles\styles.rtl.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\_AppColumnsOne.cshtml">
+    <Content Include="app\styles\styles.scss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\WidgetZones\searchbox_before_search_button.cshtml">
+    <Content Include="plugin.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\mobSocial\_AppLayoutTheater.cshtml">
+    <Content Include="Views\_ViewImports.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Description.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="app\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="F:\Websites\Testing\nopCommerce_3.90_Source\Libraries\Nop.Data\Nop.Data.csproj">
-      <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
-      <Name>Nop.Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="F:\Websites\Testing\nopCommerce_3.90_Source\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
-      <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
-      <Name>Nop.Admin</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)Libraries\Nop.Core\Nop.Core.csproj">
-      <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
-      <Name>Nop.Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)Libraries\Nop.Services\Nop.Services.csproj">
-      <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
-      <Name>Nop.Services</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
-      <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
-      <Name>Nop.Web.Framework</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)Presentation\Nop.Web\Nop.Web.csproj">
-      <Project>{4f1f649c-1020-45be-a487-f416d9297ff3}</Project>
-      <Name>Nop.Web</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <None Include="Views\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\..\..\..\..\Websites\Testing\nopCommerce_3.90_Source\packages\Autofac.4.4.0\lib\net45\Autofac.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>$(SolutionDir)packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MobAds.Public">
-      <HintPath>MobLib\MobAds.Public.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SolutionDir)packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\mobSocial Standalone\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.XML" />
+    <None Remove="app\libraries\angucomplete-alt\angucomplete-alt.css" />
+    <None Remove="app\libraries\angucomplete-alt\angucomplete-alt.js" />
+    <None Remove="app\libraries\angular\angular-file-upload.min.js" />
+    <None Remove="app\libraries\angular\angular-local-storage.min.js" />
+    <None Remove="app\libraries\angular\angular-moment.min.js" />
+    <None Remove="app\libraries\angular\angular-route.min.js" />
+    <None Remove="app\libraries\angular\angular-sanitize.min.js" />
+    <None Remove="app\libraries\angular\angular-slimscroll.js" />
+    <None Remove="app\libraries\angular\angular-timer.js" />
+    <None Remove="app\libraries\angular\angular-ui-router.js" />
+    <None Remove="app\libraries\angular\angular.min.js" />
+    <None Remove="app\libraries\angular\signalr-hub.js" />
+    <None Remove="app\libraries\angular\ui-router-tabs.js" />
+    <None Remove="app\scripts\bundles\init.js" />
+    <None Remove="app\styles\ie6.css" />
+    <None Remove="app\styles\ie7.css" />
+    <None Remove="app\styles\jquery.simplyscroll.css" />
+    <None Remove="app\styles\jquery.simplyscroll.old2.css" />
+    <None Remove="app\styles\styles.css" />
+    <None Remove="app\styles\styles.css.map" />
+    <None Remove="app\styles\styles.min.css" />
+    <None Remove="app\styles\styles.rtl.css" />
+    <None Remove="app\styles\styles.scss" />
+    <None Remove="Views\_ViewImports.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ClientContent\pages\conversation\" />
-    <Folder Include="Controllers\Admin\" />
-    <Folder Include="Helpers\" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- <Import Project="..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\..\Downloads\nopCommerce_3.10_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\..\..\..\Downloads\nopCommerce_3.40_Source\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target> -->
-  <PropertyGroup>
-    <PostBuildEvent>
-    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
-    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"
-    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
-    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
-  </PropertyGroup>
-  <Import Project="$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <!--<Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>-->
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+
+  <!-- This target execute after "Build" target -->
+  <Target Name="NopTarget" AfterTargets="Build">
+    <!-- Delete unnecessary libraries from plugins path -->
+    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

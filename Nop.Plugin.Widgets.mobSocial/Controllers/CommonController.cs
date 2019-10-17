@@ -1,9 +1,9 @@
-﻿using System.Web.Mvc;
-using Nop.Web.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public partial class CommonController : BasePublicController
+    public partial class CommonController : BaseController
     {
         #region Fields
 
@@ -15,31 +15,6 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         public CommonController()
         {
             
-        }
-
-        #endregion
-
-        #region Utilities
-
-        //page not found
-        public ActionResult PageNotFound()
-        {
-            this.Response.StatusCode = 404;
-            this.Response.TrySkipIisCustomErrors = true;
-
-            return View();
-        }
-
-     
-
-        #endregion
-
-        #region Methods
-        
-        public ActionResult GenericUrl()
-        {
-            //seems that no entity was found
-            return InvokeHttp404();
         }
 
         #endregion

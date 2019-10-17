@@ -1,7 +1,4 @@
-﻿@using Nop.Core
-@using Nop.Core.Domain.Customers
-@using Nop.Core.Infrastructure
-@{
+﻿@{
     Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
     var showBox = true;
 }
@@ -18,11 +15,11 @@
     }
 }
 
-<div ng-app="mobSocialApp" ng-cloak>
+<div ng-app="mobSocialApp" class="mobsocialapp" ng-cloak>
     @RenderBody()
 
     @if (showBox)
     {
-        @Html.Partial("mobSocial/Conversation/ConversationBox", false)
+        @Html.Partial("~/Plugins/Widgets.MobSocial/Views/mobSocial/Conversation/ConversationBox.cshtml", false)
     }
 </div>

@@ -2,5 +2,21 @@
   {
     "outputFile": "Content/mobSocial/css/styles.css",
     "inputFile": "Content/mobSocial/css/styles.scss"
+  },
+  {
+    "outputFile": "gulpfile.es5.js",
+    "inputFile": "gulpfile.js"
+  },
+  {
+    "outputFile": "app/styles/overrides.css",
+    "inputFile": "app/styles/overrides.scss"
+  },
+  {
+    "outputFile": "webpack.config.es5.js",
+    "inputFile": "webpack.config.js"
+  },
+  {
+    "outputFile": "app/styles/styles.css",
+    "inputFile": "app/styles/styles.scss"
   }
 ]

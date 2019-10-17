@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -24,14 +24,14 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #region Methods
        
         
-        public ActionResult SponsorDashboard(int battleId)
+        public IActionResult SponsorDashboard(int battleId)
         {
             return View("mobSocial/Sponsor/SponsorDashboard");
         }
 
         [HttpPost]
         [Authorize]
-        public ActionResult ProductPrizesFormPopup(int battleId)
+        public IActionResult ProductPrizesFormPopup(int battleId)
         {
             return View("mobSocial/Sponsor/ProductPrizesFormPopup");
         }

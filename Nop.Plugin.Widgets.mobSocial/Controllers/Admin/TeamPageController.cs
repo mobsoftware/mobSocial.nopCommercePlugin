@@ -1,8 +1,4 @@
-﻿using System.Web.Mvc;
-using mobSocial.Services.TeamPages;
-using Nop.Admin.Controllers;
-using Nop.Services.Security;
-using Nop.Web.Framework.Controllers;
+﻿using Nop.Services.Security;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
 {
@@ -28,7 +24,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         #region Methods
 
         [AdminAuthorize]
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View(ControllerUtil.MobSocialViewsFolder + "/Views/mobSocial/Admin/ManageTeamPage/List.cshtml");
         }

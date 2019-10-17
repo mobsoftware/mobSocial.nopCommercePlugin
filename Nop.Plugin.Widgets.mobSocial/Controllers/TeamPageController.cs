@@ -1,13 +1,12 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     public class TeamPageController : MobSocialWidgetBaseController
     {
-        public ActionResult Index(int teamId)
+        public IActionResult Index(int teamId)
         {
             var model = new TeamPageModel()
             {
@@ -16,7 +15,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/TeamPage/Index", model);
         }
         [Authorize]
-        public ActionResult TeamPageEditor(int id = 0)
+        public IActionResult TeamPageEditor(int id = 0)
         {
             var model = new TeamPageEditorModel()
             {
@@ -26,7 +25,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/TeamPage/TeamPageEditor", model);
         }
         [Authorize]
-        public ActionResult MyPages()
+        public IActionResult MyPages()
         {
             return View("mobSocial/TeamPage/MyPages");
         }

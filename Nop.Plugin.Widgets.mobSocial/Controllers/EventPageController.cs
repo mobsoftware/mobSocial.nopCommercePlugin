@@ -1,35 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Media;
-using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Directory;
 using Nop.Services.Forums;
 using Nop.Services.Helpers;
 using Nop.Services.Localization;
 using Nop.Services.Media;
-using Nop.Services.Seo;
 using Nop.Web.Framework.Security;
-using Nop.Plugin.WebApi.MobSocial.Domain;
-using Nop.Web.Controllers;
-using System.Linq;
-using mobSocial.Data.Entity.EventPages;
-using mobSocial.Data.Enum;
 using Nop.Core;
-using Nop.Plugin.WebApi.MobSocial;
-using Nop.Plugin.WebApi.MobSocial.Enums;
-using Nop.Plugin.WebApi.MobSocial.Services;
-using Nop.Plugin.WebApi.MobSocial.Models;
-using Nop.Web.Models.Media;
-using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
+using Nop.Web.Framework.Controllers;
+using Nop.Web.Framework.Mvc.Filters;
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
 
-    [NopHttpsRequirement(SslRequirement.No)]
-    public partial class EventPageController : BasePublicController
+    [HttpsRequirement(SslRequirement.No)]
+    public partial class EventPageController : BaseController
     {
         private readonly IForumService _forumService;
         private readonly ILocalizationService _localizationService;
@@ -70,7 +57,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _workContext = workContext;
         }
 
-        public ActionResult Index(int? id, int? page)
+        public IActionResult Index(int? id, int? page)
         {
 
             if (!_customerSettings.AllowViewingProfiles)

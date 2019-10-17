@@ -1,7 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Plugin.Widgets.MobSocial.Models;
-using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -13,7 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _workContext = workContext;
         }
 
-        public ActionResult Index(string seName)
+        public IActionResult Index(string seName)
         {
            
             var model = new SkillPageModel()
@@ -25,17 +24,17 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/Skills/Single",model);
         }
 
-        public ActionResult List()
+        public IActionResult List()
         {
             return View("mobSocial/Skills/List");
         }
 
-        public ActionResult SkillEditorButton()
+        public IActionResult SkillEditorButton()
         {
             return View("mobSocial/Skills/SkillEditorButton");
         }
 
-        public ActionResult UserSkills(int userId)
+        public IActionResult UserSkills(int userId)
         {
             return View("mobSocial/Skills/UserSkills", userId);
         }

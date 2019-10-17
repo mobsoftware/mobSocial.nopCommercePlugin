@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -12,8 +12,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             _workContext = workContext;
         }
 
-        [ChildActionOnly]
-        public ActionResult PublicInfo(string widgetZone)
+        public IActionResult PublicInfo(string widgetZone)
         {
           /*  int friendRequestCount = 0;
             //todo: remove this call and move this to client to api call directly

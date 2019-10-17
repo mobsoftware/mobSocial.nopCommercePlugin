@@ -1,6 +1,5 @@
-﻿using System.Web.Mvc;
-using mobSocial.Services.Battles;
-using mobSocial.Services.Payments;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Services.Catalog;
@@ -9,12 +8,11 @@ using Nop.Services.Customers;
 using Nop.Services.Directory;
 using Nop.Services.Localization;
 using Nop.Services.Orders;
-using Nop.Web.Controllers;
-using Nop.Web.Models.Customer;
+using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class PaymentController : BasePublicController
+    public class PaymentController : BaseController
     {
         private readonly IWebHelper _webHelper;
         private readonly IProductService _productService;
@@ -76,13 +74,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult PaymentFormPopup()
+        public IActionResult PaymentFormPopup()
         {
             return View("mobSocial/Payment/PaymentFormPopup");
         }
 
         [Authorize]
-        public ActionResult AddressFormPopup(CustomerPaymentModel CustomerPaymentModel)
+        public IActionResult AddressFormPopup(CustomerPaymentModel CustomerPaymentModel)
         {
             var model = new CustomerPaymentWithAddressModel { CustomerAddressEditModel = new CustomerAddressEditModel(), CustomerPaymentModel = CustomerPaymentModel };
 

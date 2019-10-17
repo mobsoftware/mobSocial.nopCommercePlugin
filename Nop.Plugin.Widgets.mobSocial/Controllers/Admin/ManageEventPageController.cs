@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Nop.Admin.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
-using Nop.Plugin.WebApi.MobSocial.Constants;
-using Nop.Plugin.WebApi.MobSocial.Domain;
+using Nop.Plugin.Widgets.MobSocial.Constants;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
 using Nop.Services.Media;
 using Nop.Services.Security;
 using Nop.Services.Seo;
-using Nop.Web.Framework.Controllers;
-using Nop.Web.Framework.Kendoui;
-using Nop.Web.Framework.Mvc;
-using Nop.Plugin.WebApi.MobSocial.Extensions;
-using Nop.Plugin.WebApi.MobSocial.Models;
-using Nop.Plugin.WebApi.MobSocial.Services;
+using Nop.Web.Framework.Mvc.Filters;
 using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
@@ -61,7 +53,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         #region Utilities
 
         //page not found
-        public ActionResult PageNotFound()
+        public IActionResult PageNotFound()
         {
             this.Response.StatusCode = 404;
             this.Response.TrySkipIisCustomErrors = true;
@@ -76,7 +68,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         #region Methods
 
         [HttpPost]
-        public ActionResult GetAll(DataSourceRequest command)
+        public IActionResult GetAll(DataSourceRequest command)
         {
 
             var entities = _eventPageService.GetAll();
@@ -116,13 +108,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         }
 
         [AdminAuthorize]
-        public ActionResult List()
+        public IActionResult List()
         {
             return View(MobSocialConstant.ViewsPath + "/Views/mobSocial/Admin/ManageEventPage/List.cshtml");
         }
 
         [AdminAuthorize]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             // todo add permissions later
             //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
@@ -134,7 +126,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
 
 
         [AdminAuthorize]
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             //todo: add later
             //if (!_permissionService.Authorize(MobSocialPermissionProvider.ManageEventPages))
@@ -176,7 +168,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         }
 
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
-        public ActionResult Create(EventPageModel model, bool continueEditing)
+        public IActionResult Create(EventPageModel model, bool continueEditing)
         {
             //if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             //    return AccessDeniedView();
@@ -232,7 +224,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
 
 
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
-        public ActionResult Edit(EventPageModel model, bool continueEditing)
+        public IActionResult Edit(EventPageModel model, bool continueEditing)
         {
             //todo: add later
             //if (!_permissionService.Authorize(MobSocialPermissionProvider.ManageEventPages))
@@ -296,7 +288,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers.Admin
         }
 
         [HttpPost]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             //todo: add later
             //if (!_permissionService.Authorize(MobSocialPermissionProvider.ManageEventPages))

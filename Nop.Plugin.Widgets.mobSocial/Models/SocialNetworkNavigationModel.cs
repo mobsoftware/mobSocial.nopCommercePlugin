@@ -1,7 +1,10 @@
-﻿using Nop.Web.Framework.Mvc;
-using Nop.Web.Models.Customer;
+﻿
 
 //todo put models in folders named after main view. for instance, this model goes in the 'Customer' folder 
+
+using Nop.Web.Framework.Models;
+using Nop.Web.Models.Customer;
+
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {
     public partial class SocialNetworkNavigationModel : BaseNopModel

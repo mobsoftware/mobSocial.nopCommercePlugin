@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Web.Mvc;
-using Nop.Web.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
-    public class SkateMoveController : BasePublicController
+    public class SkateMoveController : BaseController
     {
         private readonly IMobSocialService _socialNetworkService;
         private readonly mobSocialSettings _socialNetworkSettings;
@@ -17,13 +18,13 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult PublicInfo(string widgetZone)
+        public IActionResult PublicInfo(string widgetZone)
         {
            throw new NotImplementedException();
         }
 
         
-        public ActionResult Configure()
+        public IActionResult Configure()
         {
 
             var model = new ConfigurationModel

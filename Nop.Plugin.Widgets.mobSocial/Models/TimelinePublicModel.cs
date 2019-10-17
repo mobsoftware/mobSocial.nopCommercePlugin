@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Web.Routing;
-using Nop.Web.Framework.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Nop.Web.Framework.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {

@@ -1,16 +1,12 @@
-﻿using System.Web.Mvc;
-using Nop.Web.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     public class CustomerLikeController : MobSocialWidgetBaseController
     {
-        public ActionResult CustomerLikeButton()
+        public IActionResult CustomerLikeButton()
         {
             return View("mobSocial/CustomerLike/CustomerLikeButton");
         }
-
-
-      
     }
 }

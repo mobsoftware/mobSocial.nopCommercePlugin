@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Widgets.MobSocial.Models;
 
 
@@ -8,20 +9,20 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
     {
         
         //[Authorize]
-        public ActionResult FriendButton()
+        public IActionResult FriendButton()
         {
             return View("mobSocial/Friends/FriendButton");
         }
 
         
         [Authorize]
-        public ActionResult FriendRequests()
+        public IActionResult FriendRequests()
         {
             return View("mobSocial/Friends/FriendRequests");
         }
 
         //[Authorize]
-        public ActionResult CustomerFriends(int customerId, int howMany = 0, bool random = false)
+        public IActionResult CustomerFriends(int customerId, int howMany = 0, bool random = false)
         {
             var model = new CustomerFriendsRequestModel()
             {
@@ -34,7 +35,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
 
         }
 
-        public ActionResult SearchPeople(string searchTerm = "", bool excludeLoggedInUser = true, int page = 1, int count = 15)
+        public IActionResult SearchPeople(string searchTerm = "", bool excludeLoggedInUser = true, int page = 1, int count = 15)
         {
             var model = new FriendSearchModel() {
                 SearchTerm = searchTerm,

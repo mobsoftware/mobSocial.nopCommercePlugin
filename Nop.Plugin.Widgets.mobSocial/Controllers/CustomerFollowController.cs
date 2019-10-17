@@ -1,11 +1,10 @@
-﻿using System.Web.Mvc;
-using Nop.Web.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
     public class CustomerFollowController : MobSocialWidgetBaseController
     {
-        public ActionResult CustomerFollowButton()
+        public IActionResult CustomerFollowButton()
         {
             return View("mobSocial/CustomerFollow/CustomerFollowButton");
         }

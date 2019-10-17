@@ -1,35 +1,34 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using Nop.Plugin.Widgets.MobSocial.ViewEngines;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Nop.Web.Framework.Localization;
-using Nop.Web.Framework.Mvc.Routes;
-using Nop.Web.Framework.Themes;
-using System.Linq;
-using System.Diagnostics;
+using Nop.Web.Framework.Mvc.Routing;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
     public partial class RouteProvider : IRouteProvider
     {
-        public void RegisterRoutes(RouteCollection routes)
+        public void RegisterRoutes(IRouteBuilder routes)
         {
-            // Make MobSocialViewEngine views the Highest Priority
-            System.Web.Mvc.ViewEngines.Engines.Add(new MobSocialViewEngine());
-
-          
-            // redirects to your store
-            routes.MapRoute("FacebookWebsiteApp",
-                "FacebookWebsiteApp",
-                new {controller = "FacebookWebsiteApp", action = "Index"},
-                new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
-                );
+            //// redirects to your store
+            //routes.MapRoute("FacebookWebsiteApp",
+            //    "FacebookWebsiteApp",
+            //    new {controller = "FacebookWebsiteApp", action = "Index"},
+            //    new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
+            //    );
 
 
-            routes.MapRoute("GetCustomerProfile",
-                "MobSocial/GetCustomerProfile/{customerId}",
-                new {controller = "mobSocial", action = "GetCustomerProfile"},
-                new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
-                );
+            //routes.MapRoute("GetCustomerProfile",
+            //    "MobSocial/GetCustomerProfile/{customerId}",
+            //    new {controller = "mobSocial", action = "GetCustomerProfile"},
+            //    new[] {"Nop.Plugin.Widgets.mobSocial.Controllers"}
+            //    );
+           
+            routes.MapRoute("MobSocialAccessToken", "social/access-token",
+                new { controller = "MobSocial", action = "AccessToken" });
+
+            routes.MapRoute("MobSocialRoute", "social/{*url}",
+                new { controller = "MobSocial", action = "Index", url = "" });
+            return;
 
             routes.MapLocalizedRoute("CustomerProfileUploadPicture",
                           "CustomerProfile/UploadPicture",
@@ -120,7 +119,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             routes.MapLocalizedRoute("Friends",
             "Friends/{CustomerId}",
-            new { controller = "Friends", action = "CustomerFriends", CustomerId = UrlParameter.Optional },
+            new { controller = "Friends", action = "CustomerFriends", CustomerId = 0 },
             new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
             );
 
@@ -266,7 +265,7 @@ namespace Nop.Plugin.Widgets.MobSocial
             //video battles
             routes.MapLocalizedRoute("VideoBattles",
                           "VideoBattles/view/{ViewType}",
-                          new { controller = "VideoBattle", action = "VideoBattles", ViewType = UrlParameter.Optional },
+                          new { controller = "VideoBattle", action = "VideoBattles", ViewType = "" },
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );
@@ -279,7 +278,7 @@ namespace Nop.Plugin.Widgets.MobSocial
 
             routes.MapLocalizedRoute("VideoBattleEditor",
                           "VideoBattles/Editor/{VideoBattleId}",
-                          new { controller = "VideoBattle", action = "VideoBattleEditor", VideoBattleId = UrlParameter.Optional },
+                          new { controller = "VideoBattle", action = "VideoBattleEditor", VideoBattleId = 0 },
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );
@@ -311,7 +310,7 @@ namespace Nop.Plugin.Widgets.MobSocial
                          );
             routes.MapLocalizedRoute("VideoBattlePage",
                           "VideoBattle/{SeName}/{ViewMode}",
-                          new { controller = "VideoBattle", action = "Index", ViewMode = UrlParameter.Optional },
+                          new { controller = "VideoBattle", action = "Index", ViewMode = "" },
                           new[] { "Nop.Plugin.Widgets.mobSocial.Controllers" }
 
                           );
@@ -523,15 +522,23 @@ namespace Nop.Plugin.Widgets.MobSocial
               new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
               );
 
-            routes.MapLocalizedRoute("MobSocialRegister",
-                "register",
-                new { controller = "CustomerProfile", action = "Register" },
+           
+
+            routes.MapLocalizedRoute("MobSocialConsent",
+                "social/saveconsent",
+                new { controller = "mobSocial", action = "SaveConsent" },
                 new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
             );
 
             routes.MapLocalizedRoute("MobSocialSocial",
                 "social/{*path}",
                 new { controller = "mobSocial", action = "Social" },
+                new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
+            );
+
+            routes.MapLocalizedRoute("MobSocialToken",
+                "oauth/token",
+                new { controller = "OAuth", action = "GetAccessToken" },
                 new[] { "Nop.Plugin.Widgets.MobSocial.Controllers" }
             );
 

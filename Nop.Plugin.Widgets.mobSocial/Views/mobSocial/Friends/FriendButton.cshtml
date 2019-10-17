@@ -1,5 +1,4 @@
-﻿@using mobSocial.Data.Enum
-<span ng-switch on="FriendStatus">
+﻿<span ng-switch on="FriendStatus">
     <span ng-switch-when="@((int) FriendStatus.None)">
         <a class="button-primary button" ng-click="UpdateFriendship('add')">
             Add Friend

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Configuration;
 
 namespace Nop.Plugin.Widgets.MobSocial.Constants
 {
     public class MobSocialConstant
     {
-        public static bool SuiteInstallation = Convert.ToBoolean(ConfigurationManager.AppSettings["suiteInstall"] ?? "false");
+        public static bool SuiteInstallation = false; // Convert.ToBoolean(ConfigurationManager.AppSettings["suiteInstall"] ?? "false");
 
         public static string PluginPath = "~/Plugins" + (SuiteInstallation ? "/MobSocial.Suite" : "/Widgets.mobSocial");
 

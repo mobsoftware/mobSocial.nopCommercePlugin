@@ -1,7 +1,5 @@
 ﻿using System;
-using mobSocial.Data.Enum;
-using Nop.Web.Framework.Mvc;
-using Nop.Web.Models.Profile;
+using Nop.Web.Framework.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Models
 {

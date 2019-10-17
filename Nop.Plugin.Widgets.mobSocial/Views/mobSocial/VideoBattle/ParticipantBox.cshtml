@@ -1,5 +1,4 @@
-﻿@using Nop.Plugin.WebApi.MobSocial.Enums
-@{
+﻿@{
     var videouploadUrl = "/api/videobattles/uploadvideo";
 }
 <div class="participant-box participant-{{participant.VideoBattleParticipantStatus}}" ng-class="{'me' : participant.CanEdit}" ng-hide="!participant.CanEdit && participant.VideoBattleParticipantStatus == @((int) VideoBattleParticipantStatus.NotChallenged) && VideoBattle.VideoBattleType != @((int) VideoBattleType.InviteOnly) && participant.VideoPath == null">

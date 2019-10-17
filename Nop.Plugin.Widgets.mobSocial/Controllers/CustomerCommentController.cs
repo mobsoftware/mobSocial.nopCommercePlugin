@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
@@ -6,8 +6,6 @@ using Nop.Plugin.Widgets.MobSocial.Models;
 using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Media;
-using Nop.Services.Seo;
-using Nop.Web.Controllers;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
@@ -16,19 +14,22 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         private readonly IWorkContext _workContext;
         private readonly IPictureService _pictureService;
         private readonly MediaSettings _mediaSettings;
-
-        public CustomerCommentController(IWorkContext workContext, IPictureService pictureService, MediaSettings mediaSettings)
+        private readonly IGenericAttributeService _genericAttributeService;
+        private readonly ICustomerService _customerService;
+        public CustomerCommentController(IWorkContext workContext, IPictureService pictureService, MediaSettings mediaSettings, IGenericAttributeService genericAttributeService, ICustomerService customerService)
         {
             _workContext = workContext;
             _pictureService = pictureService;
             _mediaSettings = mediaSettings;
+            _genericAttributeService = genericAttributeService;
+            _customerService = customerService;
         }
 
-        public ActionResult CustomerComments()
+        public IActionResult CustomerComments()
         {
             var model = new CustomerCommentsModel()
             {
-                CustomerName = _workContext.CurrentCustomer.GetFullName(),
+                CustomerName = _customerService.GetCustomerFullName(_workContext.CurrentCustomer),
                 CanPost = _workContext.CurrentCustomer.IsRegistered(),
                 CustomerProfileUrl = Url.RouteUrl("CustomerProfileUrl",
                     new
@@ -37,7 +38,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
                     }),
                 CustomerProfileImageUrl =
                     _pictureService.GetPictureUrl(
-                        _workContext.CurrentCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _genericAttributeService.GetAttribute<int>(_workContext.CurrentCustomer, NopCustomerDefaults.AvatarPictureIdAttribute),
                         _mediaSettings.AvatarPictureSize, true),
                 PreloadComments = true, //TODO: Make this property configurable using settings
                 SinglePageCommentCount = 5

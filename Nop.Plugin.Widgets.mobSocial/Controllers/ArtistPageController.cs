@@ -1,11 +1,13 @@
 ﻿using Nop.Core;
 using Nop.Web.Framework.Security;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Nop.Web.Framework.Mvc.Filters;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
 {
 
-    [NopHttpsRequirement(SslRequirement.No)]
+    [HttpsRequirement(SslRequirement.No)]
     public partial class ArtistPageController : MobSocialWidgetBaseController
     {
         #region variables
@@ -19,12 +21,12 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #endregion
 
         #region Actions
-        public ActionResult Index(int Id)
+        public IActionResult Index(int Id)
         {
             return View("mobSocial/ArtistPage/Index");
         }
         
-        public ActionResult Search()
+        public IActionResult Search()
         {
             return View("mobSocial/ArtistPage/Search"); 
         }
@@ -34,7 +36,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// Returns artists pages for logged in user
         /// </summary>
         [Authorize]
-        public ActionResult MyArtistPages()
+        public IActionResult MyArtistPages()
         {
             return View("mobSocial/ArtistPage/MyPages");
         }
@@ -43,7 +45,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         /// Loads the artist editor page
         /// </summary>
         [Authorize]
-        public ActionResult Editor(int artistPageId = 0)
+        public IActionResult Editor(int artistPageId = 0)
         {
             return View("mobSocial/ArtistPage/Editor", null);
 

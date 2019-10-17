@@ -1,31 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Web.Routing;
-using Nop.Services.Configuration;
+using Microsoft.AspNetCore.Routing;
+using Nop.Plugin.Widgets.MobSocial.Components;
 using Nop.Services.Localization;
 using Nop.Web.Framework.Menu;
-using MobAds.Public;
-using Nop.Core;
+using Nop.Services.Cms;
+using Nop.Services.Plugins;
 
 namespace Nop.Plugin.Widgets.MobSocial
 {
-    public class mobSocialPlugin : MobAdsPublic, IAdminMenuPlugin
+    public class mobSocialPlugin : BasePlugin, IAdminMenuPlugin, IWidgetPlugin
     {
       
         private readonly ILocalizationService _localizationService;
-
-        public mobSocialPlugin(ISettingService settingService,
-            ILocalizationService localizationService,
-            IStoreContext storeContext)
-            : base(storeContext, settingService)
+        public mobSocialPlugin(ILocalizationService localizationService)
         {
             _localizationService = localizationService;
-
         }
 
 
         #region Methods
 
-        public override IList<string> GetWidgetDisplayZones()
+        public IList<string> GetWidgetZones()
         {
             return new List<string>()
             {
@@ -44,139 +39,12 @@ namespace Nop.Plugin.Widgets.MobSocial
         /// <param name="actionName">Action name</param>
         /// <param name="controllerName">Controller name</param>
         /// <param name="routeValues">Route values</param>
-        public override void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
+        public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
             actionName = "";
             controllerName = "";
             routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Widgets.mobSocial.Controllers" }, { "area", null } };
         }
-
-        /// <summary>
-        /// Gets a route for displaying widget
-        /// </summary>
-        /// <param name="widgetZone">Widget zone where it's displayed</param>
-        /// <param name="actionName">Action name</param>
-        /// <param name="controllerName">Controller name</param>
-        /// <param name="routeValues">Route values</param>
-        public override void GetWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
-        {
-
-            switch (widgetZone)
-            {
-                case "head_html_tag":
-                    {
-                        actionName = "HeadTagInclusions";
-                        controllerName = "mobSocial";
-
-                        routeValues = new RouteValueDictionary()
-                        {
-                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
-                            {"area", null},
-                            {"widgetZone", widgetZone}
-                        };
-
-                        break;
-                    }
-                case "footer":
-                    {
-                        actionName = "SocialNetworkByMobSocial";
-                        controllerName = "mobSocial";
-
-                        routeValues = new RouteValueDictionary()
-                        {
-                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
-                            {"area", null},
-                            {"widgetZone", widgetZone}
-                        };
-
-                        break;
-                    }
-
-                case "header_menu_after":
-                    {
-                        actionName = "PublicInfo";
-                        controllerName = "HeaderMenu";
-
-                        routeValues = new RouteValueDictionary()
-                    {
-                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
-                        {"area", null},
-                        {"widgetZone", widgetZone}
-                    };
-                        break;
-                    }
-
-
-                case "account_navigation_after":
-                    {
-                        actionName = "PublicInfo";
-                        controllerName = "SocialNetworkNavigation";
-
-                        routeValues = new RouteValueDictionary()
-                    {
-                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
-                        {"area", null},
-                        {"widgetZone", widgetZone}
-                    };
-                        break;
-                    }
-                case "profile_page_info_userdetails":
-                    {
-                        actionName = "PublicInfo";
-                        controllerName = "CustomerProfile";
-
-                        routeValues = new RouteValueDictionary()
-                    {
-                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
-                        {"area", null},
-                        {"widgetZone", widgetZone}
-                    };
-                        break;
-                    }
-                case "body_end_html_tag_before":
-                    {
-                        actionName = "ConversationBox";
-                        controllerName = "Conversation";
-
-                        routeValues = new RouteValueDictionary()
-                        {
-                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
-                            {"area", ""},
-                            {"widgetZone", widgetZone}
-                        };
-
-                        break;
-                    }
-                case "searchbox_before_search_button":
-                {
-                    actionName = "GlobalSearchOptions";
-                    controllerName = "mobSocial";
-
-                    routeValues = new RouteValueDictionary()
-                    {
-                        {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers"},
-                        {"area", ""},
-                        {"widgetZone", widgetZone}
-                    };
-
-                    break;
-                }
-                default:
-                    {
-                        actionName = "PublicInfo";
-                        controllerName = "mobSocial";
-
-                        routeValues = new RouteValueDictionary()
-                        {
-                            {"Namespaces", "Nop.Plugin.Widgets.MobSocial.Controllers" },
-                            {"area", null},
-                            {"widgetZone", widgetZone}
-                        };
-                        break;
-                    }
-            }
-        }
-
 
         /// <summary>
         /// Install plugin
@@ -191,12 +59,12 @@ namespace Nop.Plugin.Widgets.MobSocial
         public override void Uninstall()
         {
             //locales
-            this.DeletePluginLocaleResource("MobSocial.MessageButtonText");
-            this.DeletePluginLocaleResource("MobSocial.AddFriendButtonText");
-            this.DeletePluginLocaleResource("MobSocial.FriendsLabelText");
-            this.DeletePluginLocaleResource("MobSocial.FriendRequestSentLabel");
-            this.DeletePluginLocaleResource("MobSocial.ConfirmFriendButtonText");
-            this.DeletePluginLocaleResource("SearchDropdown.PeopleSearchText");
+            _localizationService.DeletePluginLocaleResource("MobSocial.MessageButtonText");
+            _localizationService.DeletePluginLocaleResource("MobSocial.AddFriendButtonText");
+            _localizationService.DeletePluginLocaleResource("MobSocial.FriendsLabelText");
+            _localizationService.DeletePluginLocaleResource("MobSocial.FriendRequestSentLabel");
+            _localizationService.DeletePluginLocaleResource("MobSocial.ConfirmFriendButtonText");
+            _localizationService.DeletePluginLocaleResource("SearchDropdown.PeopleSearchText");
             // do not remove core locales
 
             base.Uninstall();
@@ -272,30 +140,30 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         private void AddLocaleResourceStrings()
         {
-            this.AddOrUpdatePluginLocaleResource("MobSocial.MessageButtonText", "Send Message");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.AddFriendButtonText", "Add Friend");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendsLabelText", "Friends");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.FriendRequestSentLabel", "Friend Request Sent!");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmFriendButtonText", "Confirm");
-            this.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmedButtonText", "Confirmed!");
-            this.AddOrUpdatePluginLocaleResource("SearchDropdown.PeopleSearchText", "People");
-            this.AddOrUpdatePluginLocaleResource("SearchDropdown.EventPageSearchText", "Events");
-            this.AddOrUpdatePluginLocaleResource("SearchDropdown.BusinessPageSearchText", "Businesses");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.Text", "Social Network");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage", "Manage Team Pages");
-            this.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage", "Manage Event Pages");
-            this.AddOrUpdatePluginLocaleResource("Admin.EventPage.BackToList", "Back to list");
-            this.AddOrUpdatePluginLocaleResource("BusinessPages.HoursOfOperationText", "Hours of Operation");
-            this.AddOrUpdatePluginLocaleResource("BusinessPages.HeaderMenuName", "Businesses");
-            this.AddOrUpdatePluginLocaleResource("ArtistPages.SendPaymentMessageText", "When my song purchases reach $10 net amount, send payment to:");
+            _localizationService.AddOrUpdatePluginLocaleResource("MobSocial.MessageButtonText", "Send Message");
+            _localizationService.AddOrUpdatePluginLocaleResource("MobSocial.AddFriendButtonText", "Add Friend");
+            _localizationService.AddOrUpdatePluginLocaleResource("MobSocial.FriendsLabelText", "Friends");
+            _localizationService.AddOrUpdatePluginLocaleResource("MobSocial.FriendRequestSentLabel", "Friend Request Sent!");
+            _localizationService.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmFriendButtonText", "Confirm");
+            _localizationService.AddOrUpdatePluginLocaleResource("MobSocial.ConfirmedButtonText", "Confirmed!");
+            _localizationService.AddOrUpdatePluginLocaleResource("SearchDropdown.PeopleSearchText", "People");
+            _localizationService.AddOrUpdatePluginLocaleResource("SearchDropdown.EventPageSearchText", "Events");
+            _localizationService.AddOrUpdatePluginLocaleResource("SearchDropdown.BusinessPageSearchText", "Businesses");
+            _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.Text", "Social Network");
+            _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageTeamPage", "Manage Team Pages");
+            _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Widgets.MobSocial.AdminMenu.SubMenu.ManageEventPage", "Manage Event Pages");
+            _localizationService.AddOrUpdatePluginLocaleResource("Admin.EventPage.BackToList", "Back to list");
+            _localizationService.AddOrUpdatePluginLocaleResource("BusinessPages.HoursOfOperationText", "Hours of Operation");
+            _localizationService.AddOrUpdatePluginLocaleResource("BusinessPages.HeaderMenuName", "Businesses");
+            _localizationService.AddOrUpdatePluginLocaleResource("ArtistPages.SendPaymentMessageText", "When my song purchases reach $10 net amount, send payment to:");
 
 
             // Update core locales. do not remove core locales during uninstall
-            this.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}");
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar", "Profile Picture");
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar.MaximumUploadedFileSize", "Maximum profile picture size is {0} bytes");
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar.RemoveAvatar", "Remove Profile Picture");
-            this.AddOrUpdatePluginLocaleResource("Account.Avatar.UploadRules", "Profile Picture must be in GIF or JPEG format with the maximum size of 20 KB");
+            _localizationService.AddOrUpdatePluginLocaleResource("Profile.ProfileOf", "{0}");
+            _localizationService.AddOrUpdatePluginLocaleResource("Account.Avatar", "Profile Picture");
+            _localizationService.AddOrUpdatePluginLocaleResource("Account.Avatar.MaximumUploadedFileSize", "Maximum profile picture size is {0} bytes");
+            _localizationService.AddOrUpdatePluginLocaleResource("Account.Avatar.RemoveAvatar", "Remove Profile Picture");
+            _localizationService.AddOrUpdatePluginLocaleResource("Account.Avatar.UploadRules", "Profile Picture must be in GIF or JPEG format with the maximum size of 20 KB");
 
         }
         #endregion
@@ -345,20 +213,39 @@ namespace Nop.Plugin.Widgets.MobSocial
 
         }
 
+        public string GetWidgetViewComponentName(string widgetZone)
+        {
+            switch (widgetZone)
+            {
+                case "head_html_tag":
+                    return HeadTagInclusionsViewComponent.ViewName;
+                case "header_menu_after":
+                    return HeaderMenuViewComponent.ViewName;
+                case "account_navigation_after":
+                    return AccountNavigationViewComponent.ViewName;
+                case "profile_page_info_userdetails":
+                    return CustomerProfileViewComponent.ViewName;
+                case "body_end_html_tag_before":
+                    return ConversationBoxViewComponent.ViewName;
+                case "searchbox_before_search_button":
+                    return GlobalSearchViewComponent.ViewName;
+                default:
+                    return null;
+            }
+        }
 
-        public override string AppId
+        public string AppId
         {
             get { return "MobSocialPluginNop3.5"; }
         }
 
 
-        public override int MobAdsClientId
+        public int MobAdsClientId
         {
             get { return 0; }
         }
 
-
-
+        public bool HideInWidgetList => false;
     }
 }
 

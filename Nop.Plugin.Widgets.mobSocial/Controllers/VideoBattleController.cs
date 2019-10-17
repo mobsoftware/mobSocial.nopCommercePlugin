@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Widgets.MobSocial.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Controllers
@@ -8,7 +9,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
         #region Battles
 
         [Authorize]
-        public ActionResult VideoBattleEditor(int videoBattleId = 0)
+        public IActionResult VideoBattleEditor(int videoBattleId = 0)
         {
             var model = new BattleEditorModel()
             {
@@ -17,7 +18,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View("mobSocial/VideoBattle/VideoBattleEditor", model);
         }
 
-        public ActionResult Index(string seName, string viewMode)
+        public IActionResult Index(string seName, string viewMode)
         {
             var model = new VideoBattleIndexModel()
             {
@@ -27,7 +28,7 @@ namespace Nop.Plugin.Widgets.MobSocial.Controllers
             return View(viewMode == "TheaterMode" ? "mobSocial/VideoBattle/Single.TheaterView" : "mobSocial/VideoBattle/Single", model);
         }
 
-        public ActionResult VideoBattles(string viewType = "open", string searchTerm = "", string sortBy = "Id", string sortOrder = "Descending")
+        public IActionResult VideoBattles(string viewType = "open", string searchTerm = "", string sortBy = "Id", string sortOrder = "Descending")
         {
             var model = new VideoBattleQueryModel() {
                 SearchTerm = searchTerm,

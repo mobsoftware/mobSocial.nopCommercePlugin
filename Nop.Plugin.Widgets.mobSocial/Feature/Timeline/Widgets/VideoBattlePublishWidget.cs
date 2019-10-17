@@ -1,4 +1,4 @@
-﻿using System.Web.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 using Nop.Plugin.Widgets.MobSocial.Models;
 
 namespace Nop.Plugin.Widgets.MobSocial.Feature.Timeline.Widgets

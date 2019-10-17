@@ -3,9 +3,10 @@
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR", 'ui.router'])
+var app = angular.module('mobSocialApp', ['xeditable', 'ngAudio', 'LocalStorageModule', 'angucomplete-alt', 'ngDateTimePicker', 'angularMoment', "SignalR", 'ui.router'])
     .constant('rootUrl', './Plugins/Widgets.mobSocial/Content/mobSocial')
-    .constant('globalApiEndPoint', '/api')
+    .constant('globalApiEndPoint', 'https://mobsocial.co/api')
+    .constant('accessTokenEndPoint', '/oauth/token')
     .constant('signalREndPoint', '/signalr')
     .constant('mobSocialClientId', '714c2b79f006444fa089466cee4433c6');
 //attach some global functions to rootScope
