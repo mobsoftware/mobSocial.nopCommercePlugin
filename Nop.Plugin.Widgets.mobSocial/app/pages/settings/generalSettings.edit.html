@@ -1,0 +1,54 @@
+﻿<div class="box">
+    <div class="box-header with-border">
+        <h1 class="box-title">
+            General Settings
+        </h1>
+    </div>
+    <div class="box-body no-padding">
+        <form role="form" name="formSettingEditor" class="form-horizontal">
+            <fieldset  block-ui>
+                <div class="box-body">
+                    <span ng-bind-html="_Notifications('post_setting') "></span>
+                    <div class="form-group">
+                        <label for="applicationUIDomain" class="col-md-2 control-label">Application UI Domain</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="applicationUIDomain" placeholder="www.yoursite.com" ng-model="setting.ApplicationUiDomain">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="applicationApiRoot" class="col-md-2 control-label">Application Api Root</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="applicationApiRoot" placeholder="www.yoursite.com/api" ng-model="setting.ApplicationApiRoot">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageServerDomain" class="col-md-2 control-label">Image Server Domain</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="imageServerDomain" placeholder="images.yoursite.com" ng-model="setting.ImageServerDomain">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="videoServerDomain" class="col-md-2 control-label">Video Server Domain</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="videoServerDomain" placeholder="videos.yoursite.com" ng-model="setting.VideoServerDomain">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="DefaultTimeZoneId" class="col-md-2 control-label">Default Timezone</label>
+                        <div class="col-md-10">
+                            <select id="DefaultTimeZoneId" class="form-control" ng-model="setting.DefaultTimeZoneId" ng-required>
+                                <option ng-selected="{{setting.DefaultTimeZoneId == timezone.Id}}" ng-repeat="timezone in setting.AvailableTimeZones" ng-value="timezone.Id">{{timezone.DisplayName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</div>

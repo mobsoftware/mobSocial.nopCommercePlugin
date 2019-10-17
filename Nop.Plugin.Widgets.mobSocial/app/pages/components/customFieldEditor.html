@@ -1,0 +1,88 @@
+﻿<div class="custom-field-editor">
+    <fieldset>
+        <div class="form-group row">
+            <label for="customFieldType" class="col-md-3 control-label">{{ "Field Type"}}</label>
+            <div class="col-md-9">
+                <select id="customFieldType" class="form-control" ng-model="customField.FieldType">
+                    <option ng-repeat="x in fieldTypes track by x.Id" value="{{x.Id}}">{{x.Text}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="description" class="col-md-3 control-label">{{"Description"}}</label>
+            <div class="col-md-9">
+                <textarea id="description" class="form-control" placeholder="Description" ng-model="customField.Description"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 control-label">{{"Display Order"}}</label>
+            <div class="col-md-9">
+                <input type="number" class="form-control" ng-model="customField.DisplayOrder" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="label" class="col-md-3 control-label">{{"Label"}}</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="label" ng-model="customField.Label">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="systemName" class="col-md-3 control-label">{{"System Name"}}</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="systemName" ng-model="customField.SystemName">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="label" class="col-md-3 control-label">{{"Visible"}}</label>
+            <div class="col-md-9">
+                <input icheck type="checkbox" class="form-control" id="visible" ng-model="customField.Visible">
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label for="label" class="col-md-3 control-label">{{"Required"}}</label>
+            <div class="col-md-9">
+                <input icheck type="checkbox" class="form-control" id="required" ng-model="customField.Required">
+
+            </div>
+        </div>
+        <h5 ng-if="['8', '10', '13', '14', '4', '9'].indexOf(customField.FieldType) > -1">{{"Values"}}</h5>
+        <div class="form-group row" ng-if="['8', '10', '13', '14'].indexOf(customField.FieldType) > -1">
+            <label for="availableValues" class="col-md-3 control-label">{{"Available Values"}}</label>
+            <div class="col-md-9">
+                <div>
+                    <textarea autogrow class="form-control" ng-model="customField.AvailableValues" id="availableValues"></textarea>
+                </div>
+            </div>
+        </div>
+        <div ng-if="['4', '9'].indexOf(customField.FieldType) > -1">
+            <div class="form-group row">
+                <label class="col-md-3 control-label">{{"Value Range"}}</label>
+                <div class="col-md-9">
+                    <div class="col-xs-6">
+                        {{ "Min"}} <input type="number" class="form-control" ng-model="customField.MinimumValue"/>
+                    </div>
+                    <div class="col-xs-6">
+                        {{ "Max"}} <input type="number" class="form-control" ng-model="customField.MaximumValue"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box box-solid box-default">
+            <div class="box-header">
+                <h3 class="box-title">{{"Preview"}}</h3>
+            </div>
+            <div class="box-body">
+                <custom-field customfield="customField"></custom-field>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <div class="col-md-9 col-md-offset-2">
+                <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+                <button type="button" class="btn btn-secondary" ng-click="oncancel()">Cancel</button>
+            </div>
+        </div>
+    </fieldset>
+</div>

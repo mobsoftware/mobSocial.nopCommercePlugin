@@ -1,0 +1,46 @@
+﻿<div class="box">
+    <div class="box-header with-border">
+        <h1 class="box-title">
+            General Settings
+        </h1>
+    </div>
+    <div class="box-body no-padding">
+        <form role="form" name="formSettingEditor" class="form-horizontal">
+            <fieldset  block-ui>
+                <div class="box-body">
+                    <span ng-bind-html="_Notifications('post_setting') "></span>
+                    <div class="form-group">
+                        <label for="EchonestApiKey" class="col-md-2 control-label">Echonest Api Key</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="EchonestApiKey"  ng-model="setting.EchonestApiKey">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SevenDigitalPartnerId" class="col-md-2 control-label">Seven Digital Partner Id</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="SevenDigitalPartnerId" ng-model="setting.SevenDigitalPartnerId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SevenDigitalOAuthConsumerKey" class="col-md-2 control-label">Seven Digital OAuth Consumer Key</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="SevenDigitalOAuthConsumerKey"  ng-model="setting.SevenDigitalOAuthConsumerKey">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SevenDigitalOAuthConsumerSecret" class="col-md-2 control-label">Seven Digital OAuth Consumer Secret</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="SevenDigitalOAuthConsumerSecret"  ng-model="setting.SevenDigitalOAuthConsumerSecret">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,236 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-md-offset-1">
+            <h4>mobSocial Installation</h4>
+            <ol class="install-wizard-links">
+                <li ng-class="{'active' : activeStep == 'welcome', 'done': stepIndex > 0}">
+                    <a>Welcome</a>
+                </li>
+                <li ng-class="{'active' : activeStep == 'license' , 'done': stepIndex > 1}">
+                    <a>License</a>
+                </li>
+                <li ng-class="{'active' : activeStep == 'configuration', 'done': stepIndex > 2}">
+                    <a>Configuration</a>
+                </li>
+                <li ng-class="{'active' : activeStep == 'information', 'done': stepIndex > 3}">
+                    <a>Information</a>
+                </li>
+                <li ng-class="{'active' : activeStep == 'review-configuration', 'done': stepIndex > 4}">
+                    <a>Review</a>
+                </li>
+                <li ng-class="{'active' : activeStep == 'finish', 'done': stepIndex > 5}">
+                    <a>Installation Complete</a>
+                </li>
+            </ol>
+        </div>
+        <div class="col-md-6">
+            <div class="install-wizard-pane" block-ui>
+                <div ng-switch on="activeStep">
+                    <div ng-switch-when="welcome">
+                        <h4>Welcome</h4>
+                        <p>
+                            This wizard helps you to install and configuration mobSocial Social Network.
+                        </p>
+                        <p>
+                            <strong>
+                                Before you begin
+                            </strong>
+                        </p>
+                        <ul>
+                            <li>Create a virtual directory called 'api' under this website in IIS</li>
+                            <li>Make this 'api' directory a web application</li>
+                            <li>Copy the contents of api project/folder to this 'api' web application</li>
+                        </ul>
+                        <div class="actions text-center">
+                            <button class="btn btn-success btn-lg" ng-click="stepUp()">Let's begin</button>
+                        </div>
+                    </div>
+                    <div ng-switch-when="license">
+                        <h4>License</h4>
+                        <div class="license-terms">
+                            <p>
+                                <strong>The MobSocial Public License Version 1.0 ("MPL")</strong>
+                            </p>
+                            <p>
+                                mobSocial open source edition is licensed under MobSocial Public License. It's basically a GPLv3 License plus the <strong>"social network by MobSocial"</strong> text requirement on every single page. The mobSocial Public License Version 3.0 ("MPL") consists of the GPL3 License with the Additional Terms below. The original GPLv3 License can be found at: <a href="http://opensource.org/licenses/GPL-3.0" target="_blank"> http://opensource.org/licenses/GPL-3.0</a>
+
+                            </p>
+                            <p>
+                                <strong>
+                                    Additional MobSocial terms
+                                </strong>
+                            </p>
+                            <p>
+                                However, in addition to the other notice obligations,
+                                <ol>
+                                    <li>
+                                        all copies of the Program in Executable and Source Code form must, as a form of attribution of the original author, include on each user interface screen (i) some form of "social network by mobSocial" or "powered by mobSocial" text; and (2) all derivative works and copies of derivative works of the Covered Code in Executable and Source Code form must include on each user interface screen (i) the "social network by mobSocial" text. In addition, the "social network by mobSocial" text, as appropriate, must be visible to all users, must appear in each user interface screen, and must be in the same position. When users click on the "social network by mobSocial" text it must direct them to http://mobSocial.codeplex.com
+                                    </li>
+                                    <li>
+                                        Any ads and affiliate links must also remain as is and unchanged. These obligations shall also apply to any copies or derivative works.
+                                    </li>
+                                </ol>
+                            </p>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-secondary" ng-click="stepDown()"><i class="fa fa-caret-left"></i> Back</button>
+                            <button class="btn btn-success pull-right" ng-click="stepUp()">I Agree</button>
+                        </div>
+                    </div>
+                    <div ng-switch-when="configuration">
+                        <h4>Database Configuration</h4>
+                        <div class="alert alert-success alert-dismissible" ng-if="validDatabaseConfiguration && testConnectionDone">
+                            <h4><i class="icon fa fa-check"></i>Success</h4>
+                            Successfully connected to the database
+                        </div>
+                        <div class="alert alert-danger alert-dismissible" ng-if="!validDatabaseConfiguration && testConnectionDone">
+                            <h4><i class="icon fa fa-ban"></i>Error</h4>
+                            Failed to connect to the database. Please check values and try again.
+                        </div>
+                        <form role="form" name="formInstallation" class="form-horizontal">
+                            <fieldset>
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="radioDbValues">
+                                            <input id="radioDbValues" type="radio" checked="checked" ng-model="installRequest.isConnectionString" ng-value="false"/> Use Provider Settings
+                                        </label>
+                                        <label for="radioConnectionString">
+                                            <input id="radioConnectionString" type="radio" ng-model="installRequest.isConnectionString" ng-value="true"/> Use Connection String
+                                        </label>
+                                    </div>
+                                    <div class="form-group" ng-show="!installRequest.isConnectionString">
+                                        <label for="serverUrl" class="control-label">Database Server</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="serverUrl" ng-model="installRequest.ServerUrl">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="!installRequest.isConnectionString">
+                                        <label for="dbName" class="control-label">Database Name</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="dbName" ng-model="installRequest.DatabaseName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="!installRequest.isConnectionString">
+                                        <label for="dbUser" class="control-label">Database User</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="dbUser" ng-model="installRequest.DatabaseUserName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="!installRequest.isConnectionString">
+                                        <label for="dbPassword" class="control-label">Database Password</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="dbPassword" ng-model="installRequest.DatabasePassword">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="installRequest.isConnectionString">
+                                        <label for="connectionString" class="control-label">Connection String</label>
+                                        <div>
+                                            <textarea id="connectionString" class="form-control" ng-model="installRequest.ConnectionString"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <button class="btn btn-secondary" ng-click="testConnection(false)">Test Connection</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <button class="btn btn-secondary" ng-click="stepDown()"><i class="fa fa-caret-left"></i> Back</button>
+                                    <button class="btn btn-success pull-right" ng-click="testConnection(true)">Next</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div ng-switch-when="information">
+                        <h4>Admin Info</h4>
+                        <form role="form" name="formInstallation" class="form-horizontal">
+                            <fieldset>
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="adminEmail" class="control-label">Admin Email</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="adminEmail" ng-model="installRequest.AdminEmail">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" class="control-label">Password</label>
+                                        <div>
+                                            <input type="text" class="form-control" id="password" ng-model="installRequest.Password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <button class="btn btn-secondary" ng-click="stepDown()"><i class="fa fa-caret-left"></i> Back</button>
+                                    <button class="btn btn-success pull-right" ng-click="stepUp()">Next</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div ng-switch-when="review-configuration">
+                        <h4>Review</h4>
+                        <p>Great! We have all the information required to perform the installation. Here are the details you filled in.</p>
+                        <table class="table">
+                            <tr>
+                                <th colspan="2">Database Configuration</th>
+                            </tr>
+                            <tr ng-if="!installRequest.isConnectionString">
+                                <td>Server</td>
+                                <td>{{installRequest.ServerUrl}}</td>
+                            </tr>
+                            <tr ng-if="!installRequest.isConnectionString">
+                                <td>Database Name</td>
+                                <td>{{installRequest.DatabaseName}}</td>
+                            </tr>
+                            <tr ng-if="!installRequest.isConnectionString">
+                                <td>Database User</td>
+                                <td>{{installRequest.DatabaseUserName}}</td>
+                            </tr>
+                            <tr ng-if="!installRequest.isConnectionString">
+                                <td>Database Password</td>
+                                <td>{{installRequest.DatabasePassword}}</td>
+                            </tr>
+                            <tr ng-if="installRequest.isConnectionString">
+                                <td>Connection String</td>
+                                <td>{{installRequest.ConnectionString}}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Site Info</th>
+                            </tr>
+                            <tr>
+                                <td>Admin Email</td>
+                                <td>{{installRequest.AdminEmail}}</td>
+                            </tr>
+                            <tr>
+                                <td>Password</td>
+                                <td>{{installRequest.Password}}</td>
+                            </tr>
+                        </table>
+                        <div class="actions">
+                            <button class="btn btn-secondary" ng-click="stepDown()"><i class="fa fa-caret-left"></i> Back</button>
+                            <button class="btn btn-success pull-right" ng-click="install()">Install Now</button>
+                        </div>
+                    </div>
+                    <div ng-switch-when="finish">
+                        <h4>Installation Complete :)</h4>
+                        <p>Thank you for installing mobSocial. The installation was successful.</p>
+                        <p>You can now login with the following credentials</p>
+                        <table>
+                            <tr>
+                                <td>Email</td>
+                                <td>{{installRequest.AdminEmail}}</td>
+                            </tr>
+                            <tr>
+                                <td>Password</td>
+                                <td><em>your chosen password</em></td>
+                            </tr>
+                        </table>
+                        <div class="actions text-center">
+                            <a class="btn btn-success btn-lg" ui-sref="layoutZero.login">Login Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

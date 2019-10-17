@@ -1,0 +1,116 @@
+﻿<div class="btn-group pull-left">
+    <!--picture-->
+    <a file-upload-button
+       id="btn-timeline-picture-upload"
+       fieldname="File"
+       uploadtype="image"
+       onsuccessitem="uploadPictureSuccess"
+       class="btn bg-orange btn-flat"
+       url="/media/uploadpictures">
+        <i class="fa fa-camera"></i>
+    </a>
+    <script type="text/javascript">
+        $(document)
+            .ready(function () {
+                //on picture success
+                var $scope = attachFunctionToTimelineScope("uploadPictureSuccess",
+                    function (fileItem, response, status, headers) {
+                        if (response.Success) {
+
+                            $scope.PostData.PostTypeName = "picture";
+                            $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
+                            $scope.PostPreview = {
+                                SmallImageUrl: response.ResponseData.Images[0].Url
+                            };
+                        }
+                    });
+            });
+    </script>
+    <!--video-->
+    <a file-upload-button
+       id="btn-timeline-video-upload"
+       fieldname="File"
+       uploadtype="video"
+       onsuccessitem="uploadVideoSuccess"
+       class="btn bg-purple btn-flat"
+       url="/media/uploadvideo">
+        <i class="fa fa-video-camera"></i>
+    </a>
+
+    <script type="text/javascript">
+        $(document)
+            .ready(function() {
+                var $scope = attachFunctionToTimelineScope("PlayerReady",
+                    function($API) {
+                        $API.changeSource($scope.PostPreview.VideoSource);
+                        $API.sources = $scope.PostPreview.VideoSource;
+                    });
+
+                //on video success
+                attachFunctionToTimelineScope("uploadVideoSuccess",
+                    function(fileItem, response, status, headers) {
+                        if (response.Success) {
+
+                            //create a url based on the root
+                            var rootUrl = "/plugins/Widgets.mobSocial/app";
+
+                            //we need $sce for videos
+                            var $sce = angular.element(".activity-list").injector().get('$sce');
+
+                            $scope.PostData.PostTypeName = "video";
+                            $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
+                            $scope.PostPreview = {
+                                ThumbnailPath: response.ResponseData.Media.ThumbnailUrl,
+                                VideoSource: [
+                                    {
+                                        src: $sce.trustAsResourceUrl(response.ResponseData.Media.Url),
+                                        type: response.MimeType
+                                    }
+                                ],
+                                //config for video player
+
+                                Config: {
+                                    theme: rootUrl + "/libraries/videogular/theme/videogular.css"
+                                }
+                            };
+
+
+                        }
+                    });
+            });
+    </script>
+
+    <!--url-->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var $scope = attachFunctionToTimelineScope("fetchUrlContents", function(url) {
+            var proxyUrl = "/api/webproxy/get";
+
+            //we need WebClientService to fetch the data
+            var webClientService = angular.element(".activity-list").injector().get('webClientService');
+            $scope.ProcessingPreview = true;
+            webClientService.get(proxyUrl, { url: url }, function(response) {
+                if (response.Success) {
+                    $scope.PostData.PostTypeName = "url";
+                    $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
+                    $scope.PostPreview = response.ResponseData;
+                }
+                $scope.ProcessingPreview = false;
+            }, function(reponse) {
+                $scope.ProcessingPreview = false;
+            });
+        });
+
+        $scope.$watch("PostData.Message", function (newValue, oldValue) {
+            if (!newValue)
+                return;
+            var urls = newValue.match(/\b((http|https)?(:\/\/)?(\S*)\.(\w{2,4})(\/?\S)*)\b/g);
+
+            if (!urls || urls.length == 0)
+                return;
+
+            $scope.fetchUrlContents(urls[0]);
+        });
+    });
+    </script>
+</div>

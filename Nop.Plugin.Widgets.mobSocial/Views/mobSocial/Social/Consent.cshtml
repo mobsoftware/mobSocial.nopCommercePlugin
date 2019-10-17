@@ -1,0 +1,16 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+@{
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsOne.cshtml";
+}
+
+<p>
+    The social network on this site is powered by mobSocial. To use the social network, please accept the terms below.
+    You'll need to reenter your password to confirm.
+    @using (Html.BeginForm("SaveConsent", "mobsocial", FormMethod.Post))
+    {
+        <input type="password" name="password" />
+        <button type="submit">I agree</button>
+    }
+
+
+</p>

@@ -1,0 +1,54 @@
+﻿<div ng-controller="businessController" ng-init='initBusinessSearch("")'>
+    <span class="search-criteria-header">Search Filters</span>
+    <br />
+    <br />
+    <table>
+        <tr>
+            <td class="adminTitle">
+                Name<br />
+                <input type="text" ng-model="filter.search" />
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="adminTitle">
+                Country<br />
+                <select class="country-input" ng-model="filter.country" ng-change="getStates(filter.country.Id)" ng-options="item.Name for item in countries"></select>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                State / province<br />
+                <select class="state-input" ng-model="filter.stateProvince" ng-options="item.Name for item in states">></select>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                City<br />
+                <input type="text" ng-model="filter.city" />
+            </td>
+        </tr>
+    </table>
+
+    <div class="event-center-content">
+        <span class="search-results-header">Search Results</span>
+        <br />
+        <br />
+        <div ng-repeat="item in businesses" class="search-result-item">
+            <div>
+                <a href="/{{item.SeName.replace('-', '')}}">
+                    <div class="left">
+                        <img ng-src="{{item.ThumbnailUrl}}" title="{{item.Title}}" class="thumbnail" />
+                    </div>
+                    <div class="right">
+                        <span class="title">{{item.Title}}</span><br />
+                        <span class="subtitle">{{item.Subtitle}}</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

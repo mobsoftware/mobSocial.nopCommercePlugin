@@ -1,0 +1,81 @@
+﻿<form role="form" name="formUserEditor" class="form-horizontal">
+    <fieldset block-ui>
+        <div class="box-body">
+            <span ng-bind-html="_Notifications('post_user') "></span>
+            <div class="form-group">
+                <label for="firstName" class="col-md-2 control-label">First Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="firstName" placeholder="First Name" ng-model="user.FirstName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="col-md-2 control-label">Last Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="lastName" placeholder="Last Name" ng-model="user.LastName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userName" class="col-md-2 control-label">User Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="userName" placeholder="User Name" ng-model="user.UserName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="roles" class="col-md-2 control-label">Roles</label>
+                <div class="col-md-10">
+                    <select id="roles" class="select2 form-control" multiple="multiple" ng-model="user.RoleIds" ng-required>
+                        <option ng-selected="{{user.RoleIds.indexOf(role.Id) > -1}}" ng-repeat="role in AvailableRoles" ng-value="role.Id">{{role.RoleName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-md-2 control-label">Email address</label>
+                <div class="col-md-10">
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="user.Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-md-2 control-label">Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.Password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword" class="col-md-2 control-label">Confirm Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Password" ng-model="user.ConfirmPassword">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="active" class="col-md-2 control-label">Active</label>
+                <div class="col-md-10">
+                    <input type="checkbox" id="active" ng-model="user.Active">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="active" class="col-md-2 control-label">Profile Picture</label>
+                <div class="col-md-10">
+                    <img ng-src="{{user.ProfileImageUrl}}"/>
+                    <p class="t">
+                        <button file-upload-button
+                                id="profile-picture-{{user.Id}}"
+                                class="btn btn-warning"
+                                uploadtype="image"
+                                onsuccessitem="uploadProfilePictureSuccess"
+                                url="/api/media/uploadpictures">
+                            Change
+                        </button>
+                    </p>
+                    
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10 col-md-offset-2">
+                    <button type="button" class="btn btn-primary" ng-click="saveFull()">Save</button>
+                    <button type="button" class="btn btn-secondary" ui-sref="layoutAdministration.users.list" ui-sref-opts="{reload: true}">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    
+</form>

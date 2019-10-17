@@ -1,0 +1,61 @@
+﻿<article ng-init="getCustomFields()" ng-if="!customField" block-ui>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="generic-content-box">
+                    <div class="page-title">
+                        {{"Custom Fields"}}  <small><a ui-sref="layoutAdministration.cp"> <i class="fa fa fa-arrow-circle-left"></i> {{"back to control panel"}}</a></small>
+                        <div class="pull-right">
+                            <a class="btn btn-primary btn-sm" ng-click="edit()"><i class="fa fa-plus"></i> {{"Add Field"}}</a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover grid">
+
+                            <tbody>
+                                <tr ng-if="customFields && customFields.length == 0">
+                                    <td colspan="2">
+                                        <div>
+                                            {{"You don't have any custom fields"}}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat="customField in customFields">
+                                    <td>
+                                        <a ng-click="edit(customField)">{{customField.Label}}</a>
+                                        <small class="text-muted text-capitalize text-bold">({{getFieldTypeName(customField.FieldType)}})</small>
+                                        <a class="btn btn-secondary btn-sm pull-right" ng-click="edit(customField)">Edit</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+
+    </div>
+
+</article>
+<article class="editor" ng-if="customField" block-ui>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="editor-area">
+                    <div class="editor-title">
+                        {{"Custom Field Editor - "}}<small><a ng-click="cancelEdit()"> <i class="fa fa fa-arrow-circle-left"></i> back to extra fields</a></small>
+                    </div>
+                    <form role="form" name="formEditor" class="form-horizontal">
+                        <extra-field-editor extrafield="customField" entityname="entityData.entityName" oncancel="cancelEdit()"></extra-field-editor>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</article>

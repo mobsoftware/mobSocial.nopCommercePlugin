@@ -1,0 +1,42 @@
+﻿<span ng-switch on="FriendStatus">
+    <span ng-switch-when="0"><!--none-->
+        <a class="btn btn-primary" ng-click="UpdateFriendship('add')">
+            Add Friend
+        </a>
+    </span>
+    <span ng-switch-when="1"><!--friend request sent-->
+        <span class="btn-group">
+
+            <button type="button" class="btn btn-primary" ng-click="UpdateFriendship('decline')">Cancel Request</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="UpdateFriendship('decline')">Cancel Friendship Request</a></li>
+            </ul>
+        </span>
+    </span>
+    <span ng-switch-when="2">
+        <!--needs confirmed-->
+        <a class="btn btn-primary" ng-click="UpdateFriendship('confirm')">
+            Accept
+        </a>
+        <a class="btn btn-danger" ng-click="UpdateFriendship('decline')">
+            Decline
+        </a>
+    </span>
+    <span ng-switch-when="3"><!--friends-->
+        <span class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Friends</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="UpdateFriendship('decline')">Cancel Friendship Request</a></li>
+            </ul>
+        </span>
+    </span>
+    
+</span>

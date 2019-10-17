@@ -1,0 +1,30 @@
+﻿<div class="box box-primary" ng-controller="applicationController" ng-init="getLogins()">
+    <div class="box-header with-border">
+        <h1 class="box-title">
+            Active Logins 
+        </h1>
+    </div>
+    <div class="box-body no-padding">
+        <fieldset block-ui>
+            <table class="table" ng-if="logins && logins.length > 0">
+                <tr ng-repeat="login in logins">
+                    <td>
+                        <h4 class="margin-r-5">
+                            {{login.Name}}
+                        </h4>
+                        <p class="text-muted">{{login.ApplicationUrl}}</p>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm pull-right" ng-click="removeLogin(login.Id)">Revoke Access</button>
+                    </td>
+                </tr>
+            </table>
+            <div ng-if="logins && logins.length == 0">
+                <div colspan="2" class="text-center">
+                    <p>You don't have any active logins</p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>

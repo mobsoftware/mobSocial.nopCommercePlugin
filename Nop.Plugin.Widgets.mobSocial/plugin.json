@@ -1,0 +1,11 @@
+﻿{
+  "Group": "mobSocial",
+  "FriendlyName": "mobSocial",
+  "SystemName": "Widgets.mobSocial",
+  "Version": "1.0",
+  "SupportedVersions": [ "4.20" ],
+  "Author": "mobSoftware Team",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.mobSocial.dll",
+  "Description": "The mobSocial widget plugin"
+}

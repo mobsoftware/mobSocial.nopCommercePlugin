@@ -1,0 +1,31 @@
+﻿<div data-ng-controller="TeamPageEditorController" ng-init="init(@json)">
+    <div ng-show="recordSaved" class="text-center">
+        Team Page @(Model.Id == 0 ? "created" : "updated") successfully. Redirecting to the page...
+    </div>
+    <form name="createTeamPageForm" ng-show="!recordSaved">
+        <div class="fieldset">
+            <div class="title">
+                <strong>Team Page Editor</strong>
+            </div>
+            <div class="form-fields">
+                <div class="inputs">
+                    <label for="title">Name <span class="required">*</span></label>
+                    <input type="text" name="name" id="name" data-ng-model="TeamPage.Name" required />
+                    <span ng-show="createTeamPageForm.name.$invalid && createTeamPageForm.name.$dirty">Name is required</span>
+                </div>
+                <div class="inputs">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" data-ng-model="TeamPage.Description"></textarea>
+                </div>
+                <div class="buttons text-center">
+                    <div ng-show="processing">
+                        Please wait...
+                    </div>
+                    <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveTeamPage()" value="@(Model.Id == 0 ? "Create" : "Update") Team Page"/>
+                    <a href="@Url.RouteUrl("MyTeamPages")">Cancel</a>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

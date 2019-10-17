@@ -1,0 +1,34 @@
+﻿<div ng-switch-when="picture">
+    <img ng-src="{{PostPreview.SmallImageUrl}}" />
+</div>
+<div ng-switch-when="url">
+    <div class="url-preview">
+        <div class="image">
+            <img ng-src="{{PostPreview.Images[0]}}"/>
+        </div>
+        <div class="url-data">
+            <a href="{{PostPreview.AbsoluteUrl}}">{{PostPreview.Title}}</a>
+            <div class="description">{{PostPreview.Description}}</div>
+            <div class="host-name">{{PostPreview.HostName}}</div>
+        </div>
+    </div>
+</div>
+<div ng-switch-when="video">
+    <videogular vg-player-ready="PlayerReady($API)" vg-responsive="true" vg-theme="PostPreview.Config.theme">
+        <vg-media vg-src="PostPreview.VideoSource" vg-tracks="" preload="metadata"></vg-media>
+
+        <vg-controls>
+            <vg-play-pause-button></vg-play-pause-button>
+            <vg-time-display>{{ currentTime | ms2timestr }}</vg-time-display>
+            <vg-time-display>{{ timeLeft | ms2timestr }}</vg-time-display>
+            <vg-volume>
+                <vg-mute-button></vg-mute-button>
+                <vg-volume-bar></vg-volume-bar>
+            </vg-volume>
+            <vg-fullscreen-button></vg-fullscreen-button>
+        </vg-controls>
+        <vg-overlay-play></vg-overlay-play>
+        <vg-poster vg-url='PostPreview.ThumbnailPath'></vg-poster>
+
+    </videogular>
+</div>

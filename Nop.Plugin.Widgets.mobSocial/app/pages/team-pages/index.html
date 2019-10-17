@@ -1,0 +1,165 @@
+﻿<div data-ng-controller="teamPageController" ng-init="init();options={popup:false}">
+    <div ng-if="TeamPage">
+        <div class="cover-area">
+            <div class="cover">
+                <div class="bgcover">
+                    <img ng-src="{{TeamPage.TemporaryCoverImageUrl || TeamPage.TeamPictureUrl}}" />
+                    <div class="quick-info">
+                        <h2>
+                            {{TeamPage.Name}}
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="cover-upload-area" ng-if="TeamPage.IsEditable">
+                    <div ng-show="!TeamPage.TemporaryCover">
+                        <a file-upload-button
+                           class="upload-button"
+                           id="coverimage_{{TeamPage.Id}}"
+                           fieldname="CoverFile"
+                           extradata='{"Id": "{{TeamPage.Id}}"}'
+                           uploadtype="image"
+                           onsuccessitem="UploadCoverSuccess"
+                           url="http://mobsocial.co/api/media/uploadpictures">
+                            <i class="fa fa-camera"></i>
+                        </a>
+                    </div>
+                    <div ng-show="TeamPage.TemporaryCover">
+                        <div class="keep-cover">
+                            <div class="title">Do you wish to keep or discard this cover?</div>
+                            <a ng-click="SetPictureAsCover(TeamPage.TemporaryCoverId, true)"><i class="fa fa-check"></i> Keep</a>
+                            <a ng-click="SetPictureAsCover(TeamPage.TemporaryCoverId, false)"><i class="fa fa-times"></i> Discard</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="members-area">
+            <div class="member-actions text-right" ng-if="TeamPage.IsEditable && !GroupEditorActive">
+                <button ng-click="options.popup=true" id="add-member-button">Add Member(s)</button>
+                <script type="text/javascript">
+                    jQuery(document)
+                        .ready(function () {
+                            jQuery("#add-member-button")
+                                .click(function () {
+                                    jQuery("body").addClass("no-scroll");
+                                });
+                        })
+                </script>
+                <button ng-click="GroupEditor(0)">Add Group</button>
+            </div>
+            <div id="add-member-popup" ng-show="options.popup">
+                <div class="fixed-popup team-member-popup">
+                    <div class="overlay"></div>
+                    <div class="content">
+                        <a class="close-popup" id="close-popup-button" ng-click="options.popup=false"><i class="fa fa-times"></i></a>
+                        <script type="text/javascript">
+                            jQuery(document).ready(function () {
+                                jQuery("#close-popup-button")
+                                    .click(function () {
+                                        jQuery("body").removeClass("no-scroll");
+                                    });
+                            })
+                        </script>
+                        <h3>Add member(s) to group(s)</h3>
+                        <angucomplete-alt id="customer-autocomplete"
+                                          placeholder="Type a name or an email"
+                                          selected-object="CustomerSelected"
+                                          remote-api-handler="AutocompleteCustomer"
+                                          remote-url-data-field="ResponseData.AutoComplete.Users"
+                                          minlength="3"
+                                          pause="300"
+                                          image-field="ProfileImageUrl"
+                                          title-field="Name"
+                                          input-class="form-control form-control-small"></angucomplete-alt>
+                        <div ng-show="membersToAdd.length > 0">
+                            <h3>
+                                Selected Members
+                            </h3>
+                            <div>
+                                <div ng-repeat="c in membersToAdd">
+                                    <div class="selected-receiver">
+                                        {{c.Name}}
+                                        <a ng-click="RemoveMember(c.Id)" ng-if="TeamPage.IsEditable"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <h3>
+                                Groups <em class="small">(If no groups are selected, members are added to default group)</em>
+                            </h3>
+                            <ul>
+                                <li ng-repeat="group in TeamPage.Groups">
+                                    <label for="group_{{group.Id}}"><input type="checkbox" value="{{group.Id}}" id="group_{{group.Id}}" checkbox-list="groupsToAdd" /> {{group.Name}} {{group.IsDefault ? "(Default)" : ""}}</label>
+                                </li>
+                            </ul>
+                            <button ng-click="AddMembersToGroups();">
+                                Add members to {{groupsToAdd.length > 0 ? "selected group(s)" : "default group"}}
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div ng-show="ProgressGroupLoading">
+                Loading...
+            </div>
+            <div ng-repeat="group in TeamPage.Groups" class="group-container">
+                <h2 ng-hide="group.Edit || GroupEditorActive">
+                    {{group.Name}} <a ng-if="group.IsDefault && TeamPage.IsEditable">(Default)</a>
+                    <a ng-show="group.Id > 0 && TeamPage.IsEditable" ng-click="GroupEditor(group.Id)"><i class="fa fa-pencil"></i> Edit</a>
+                    <a ng-show="group.Id > 0 && TeamPage.IsEditable && (!group.IsDefault || (group.IsDefault && group.GroupMembers.length == 0))" ng-click="DeleteGroup(group)"><i class="fa fa-times"></i> Delete</a>
+                    <a ng-if="!group.IsDefault && TeamPage.IsEditable" ng-click="SetDefaultGroup(group)"><i class="fa fa-star"></i> Set as default</a>
+                </h2>
+                <div ng-show="group.Edit" class="fieldset">
+                    <div class="title">
+                        <strong>Group Editor</strong>
+                    </div>
+                    <div class="form-fields">
+                        <div class="inputs">
+                            <label for="title">Name <span class="required">*</span></label>
+                            <input type="text" name="name" id="name" data-ng-model="group.Name" required />
+                        </div>
+                        <div class="inputs">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" data-ng-model="group.Description"></textarea>
+                        </div>
+                        <div class="inputs">
+                            <label for="displayorder">Display Order</label>
+                            <input name="displayorder" id="displayorder" type="number" data-ng-model="group.DisplayOrder" />
+                        </div>
+                        <div class="inputs">
+                            <label for="paypaldonateurl">Paypal Donate Url</label>
+                            <input name="paypaldonateurl" id="paypaldonateurl" type="text" data-ng-model="group.PaypalDonateUrl" />
+                        </div>
+                        <div class="buttons text-center">
+                            <div ng-show="processing">
+                                Please wait...
+                            </div>
+                            <input type="button" class="c2a-maroon" ng-show="!processing" ng-click="SaveGroup(group)" value="Save Group" />
+                            <a ng-click="CancelEdit(group)">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-members-container" ng-hide="group.Edit || GroupEditorActive">
+                    <div ng-if="group.GroupMembers.length == 0" class="text-center" style="padding: 20px 0">There are no members in this group</div>
+                    <div class="team-member-picture" ng-repeat="member in group.GroupMembers">
+                        <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName: member.Id })">
+                            <img ng-src="{{member.ProfileImageUrl}}" alt="{{member.Name}}" title="{{member.Name}}">
+                            <div class="team-member-name">{{member.Name}}</div>
+                        </a>
+
+                        <a ng-click="DeleteMember(group, member)" class="remove-member-link" ng-if="TeamPage.IsEditable">Remove</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div ng-if="!TeamPage">
+        Please wait while the page is loading...
+    </div>
+</div>

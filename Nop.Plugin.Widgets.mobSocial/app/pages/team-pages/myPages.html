@@ -1,0 +1,33 @@
+﻿@using Nop.Plugin.Widgets.MobSocial.Constants
+@{
+    Layout = MobSocialConstant.ViewsPath + "/mobSocial/_AppColumnsTwo.cshtml";
+
+    Html.AppendTitleParts("My Team Pages");
+
+    Html.Partial("mobSocial/TeamPage/Includes");
+
+}
+@section left
+{
+    @Html.Action("PublicInfo", "SocialNetworkNavigation", new { widgetZone = "account_navigation_after" })
+}
+
+<div class="page my-team-pages" data-ng-controller="TeamPageController" ng-init="GetMyPages()">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - My Team Pages</h1>
+    </div>
+    <div class="page-body">
+        <div style="text-align:right">
+            <a href="@Url.RouteUrl("TeamPageEditor")"><i class="fa fa-plus-circle"></i> Create New Page</a>
+        </div>
+        <div class="list">
+            <div ng-repeat="TeamPage in TeamPages" class="team-page">
+                <div class="page-name"><a href="{{routeUrl('TeamPage', {teamId : TeamPage.Id})}}">{{TeamPage.Name}}</a>
+                </div>
+                <div class="actions">
+                    <a href="/TeamPageEditor/{{TeamPage.Id}}">Edit</a> &middot; <a ng-click="DeletePage(TeamPage.Id)">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

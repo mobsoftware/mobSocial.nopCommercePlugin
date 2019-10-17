@@ -1,0 +1,21 @@
+﻿<span ng-if="CanFollow">
+    <span ng-switch on="FollowStatus">
+        <span ng-switch-when="0">
+            <a class="btn btn-primary" ng-click="Follow()">
+                Follow
+            </a>
+        </span>
+        <span ng-switch-when="1">
+            <span class="btn-group">
+                <button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Following</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="Unfollow()">Unfollow</a></li>
+                </ul>
+            </span>
+        </span>
+    </span>
+</span>
